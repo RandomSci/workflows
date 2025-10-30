@@ -1,0 +1,1362 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "actorId": {
+          "__rl": true,
+          "value": "iHaiR8VIUt13olbXg",
+          "mode": "list",
+          "cachedResultName": "Amazon Bestsellers Scraper (junglee/amazon-bestsellers)",
+          "cachedResultUrl": "https://console.apify.com/actors/iHaiR8VIUt13olbXg/input"
+        },
+        "customBody": "={\n    \"categoryUrls\": [\n        \"{{ $json.amazon.best_seller_urls[0] }}\"\n    ],\n    \"depthOfCrawl\": 1,\n    \"detailedInformation\": false,\n    \"maxItemsPerStartUrl\": 30,\n    \"useCaptchaSolver\": false\n}",
+        "timeout": {},
+        "memory": 256
+      },
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [
+        192,
+        512
+      ],
+      "id": "ca45beea-6709-4dfa-ab92-79127e0ba68c",
+      "name": "Amazon Best Sellers",
+      "notesInFlow": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput",
+      "notes": "Amazon Best Sellers Data Extractor"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "try:\n  if _input.first().json.status == \"SUCCEEDED\":\n    return {\n      \"res\": _input.all()\n    }  \n  else:\n    return {\n      \"res\": f\"Error: Faild to extract Amazon Data\\n\"\n  }\nexcept AttributeError as Err:\n  return {\n    \"res\": f\"Error: Faild to extract Amazon Data {Err}\"\n  } "
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        512
+      ],
+      "id": "6224bb70-c824-4b3b-b8a6-38f299d8cfa2",
+      "name": "Amazon Data Handling",
+      "onError": "continueRegularOutput",
+      "notes": "Proper Error and Data handling to ensure connection quality"
+    },
+    {
+      "parameters": {
+        "resource": "Datasets",
+        "datasetId": "={{ $json.res[0].json.defaultDatasetId }}",
+        "offset": 20
+      },
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [
+        640,
+        512
+      ],
+      "id": "a76c1246-cdd8-439c-93b8-757ecc2842e1",
+      "name": "Amazon Dataset Items",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const allInput = $input.all(); \nlet output = [];\n\nallInput.forEach(item => {\n  const products = item.json.items || []; \n  const processedProducts = products.map(product => ({\n    ...product,\n    processed: true\n  }));\n  \n  output.push({\n    json: {\n      ...item.json,\n      items: processedProducts\n    }\n  });\n});\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        864,
+        512
+      ],
+      "id": "1a0ab0ed-1743-4c6f-81bf-29785384a0a6",
+      "name": "Code1",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1536,
+        512
+      ],
+      "id": "d5037027-ef1a-47bb-b6ee-1fc0f2ad1af9",
+      "name": "Loop Over Items1",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "id": "9dc4f61c-5478-4142-bc67-15f615cb20da",
+      "name": "Workflow Complete",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        16
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        512
+      ],
+      "id": "2f0bfcd3-f8c3-4622-9a24-181019a55640",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nreturn items.map(item => {\n  const product = item.json;\n  \n  return {\n    json: {\n      ...product,\n      amazonPrice: product.price?.value || null,\n      amazonCurrency: product.price?.currency || 'USD',\n      amazonUrl: product.url || '',\n      amazonReviews: product.reviewsCount || 0,\n      amazonRating: product.stars || 0\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1312,
+        512
+      ],
+      "id": "520eab2d-be4c-44ff-ad5d-018cbfd67118",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "content": "# Image\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1888,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "ac127875-f430-4cdb-a789-a84f8ef519c7",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "current_item = _input.first().json\n\nAMZ_IMG = current_item.get('thumbnailUrl', '')\nAMZ_URL = current_item.get('url', '')\nAMZ_NAME = current_item.get('name', '')\n\nreturn {\n  \"img\": AMZ_IMG,\n  \"url\": AMZ_URL,\n  \"name\": AMZ_NAME\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        208
+      ],
+      "id": "4102ce40-e124-4c0d-9a6a-c4cbe569387f",
+      "name": "Comparison Test"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2432,
+        208
+      ],
+      "id": "e6b0e544-ee33-4d2d-8cef-64ae7057f07a",
+      "name": "AI Agent3",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import re\nimport json\n\nraw = _input.first().json[\"output\"]\nmatch = re.search(r\"```json\\s*(.*?)\\s*```\", raw, flags=re.S)\nif match:\n    json_text = match.group(1).strip()\nelse:\n    json_match = re.search(r'\\{.*\\}', raw, flags=re.S)\n    if json_match:\n        json_text = json_match.group(0)\n    else:\n        json_text = raw.strip()\n\ntry:\n    parsed = json.loads(json_text)\nexcept json.JSONDecodeError as e:\n    raise ValueError(f\"Invalid JSON: {e}\\nExtracted text: {json_text[:500]}\")\n\nif not isinstance(parsed, dict):\n    raise ValueError(f\"Expected dict, got {type(parsed)}\")\n\n# Get product URL and platform\nproduct_url = parsed.get(\"Product_URL\", \"False\")\nplatform = parsed.get(\"Platform\", \"None\")\nmatch_found = product_url and product_url != \"False\"\n\n# Get Amazon data from a node that has the original product info\n# Try to get from 'Comparison Test' or 'Code in JavaScript' node\ntry:\n    amazon_data = _('Comparison Test').first().json\nexcept:\n    try:\n        amazon_data = _('Code in JavaScript').first().json\n    except:\n        # Fallback: get from HTTP Request node\n        amazon_data = _('HTTP Request').first().json\n\n# Handle NO MATCH scenario\nif not match_found:\n    return [{\n        \"json\": {\n            \"match_found\": False,\n            \"amazon\": {\n                \"name\": amazon_data.get(\"name\"),\n                \"url\": amazon_data.get(\"url\", \"\"),\n                \"asin\": amazon_data.get(\"asin\"),\n                \"price\": amazon_data.get(\"price\", {}).get(\"value\") if isinstance(amazon_data.get(\"price\"), dict) else amazon_data.get(\"amazonPrice\"),\n                \"currency\": amazon_data.get(\"price\", {}).get(\"currency\", \"$\") if isinstance(amazon_data.get(\"price\"), dict) else amazon_data.get(\"amazonCurrency\", \"$\")\n            },\n            \"reason\": parsed.get(\"Notes\", \"No matching product found on any platform\"),\n            \"confidence_level\": parsed.get(\"Confidence_Level\", 0),\n            \"match_type\": parsed.get(\"Match_Type\", \"not_found\"),\n            \"platform\": \"None\",\n            \"_metadata\": {\n                \"is_match\": False,\n                \"match_confidence\": 0\n            }\n        }\n    }]\n\n# Handle MATCH found scenario\nresult = {\n    \"match_found\": True,\n    \"product\": {\n        \"url\": product_url,\n        \"platform\": platform,\n        \"confidence_level\": parsed.get(\"Confidence_Level\", 0),\n        \"match_type\": parsed.get(\"Match_Type\", \"unknown\"),\n        \"search_tool_used\": parsed.get(\"Search_Tool_Used\", \"unknown\"),\n        \"notes\": parsed.get(\"Notes\", \"\")\n    },\n    \"amazon\": {\n        \"name\": amazon_data.get(\"name\"),\n        \"url\": amazon_data.get(\"url\", amazon_data.get(\"amazonUrl\", \"\")),\n        \"asin\": amazon_data.get(\"asin\"),\n        \"price\": amazon_data.get(\"price\", {}).get(\"value\") if isinstance(amazon_data.get(\"price\"), dict) else amazon_data.get(\"amazonPrice\"),\n        \"currency\": amazon_data.get(\"price\", {}).get(\"currency\", \"$\") if isinstance(amazon_data.get(\"price\"), dict) else amazon_data.get(\"amazonCurrency\", \"$\"),\n        \"reviews_count\": amazon_data.get(\"reviewsCount\", amazon_data.get(\"amazonReviews\")),\n        \"stars\": amazon_data.get(\"stars\", amazon_data.get(\"amazonRating\"))\n    },\n    \"_metadata\": {\n        \"validated\": True,\n        \"match_found\": True,\n        \"confidence\": parsed.get(\"Confidence_Level\", 0),\n        \"match_quality\": \"high\" if parsed.get(\"Confidence_Level\", 0) >= 80 else \"medium\" if parsed.get(\"Confidence_Level\", 0) >= 60 else \"low\",\n        \"is_aliexpress\": platform.lower() == \"aliexpress\"\n    }\n}\n\nreturn [{\"json\": result}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2784,
+        208
+      ],
+      "id": "65ee1582-6651-4e8a-8d1b-a21e93f1f006",
+      "name": "Code in Python (Beta)4",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.match_found }}",
+              "rightValue": 90,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "id": "3d5bf69f-5873-48c6-9cb7-9aac8f8baa98"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "eafef996-27fe-44ed-832b-9aeaaa260da2",
+      "name": "Filter: AliExpress Validation",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        3008,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Check the proper Result if they are exactly the same. \nTry the Image only research for products",
+        "height": 256,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        336,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "30bd59af-d444-4f1c-9a41-1de046748584",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        512
+      ],
+      "id": "eca85910-ff81-452f-9297-1466643d8807",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.img }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1984,
+        208
+      ],
+      "id": "e231bcb7-b012-41b6-99c8-2420da34bbb6",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import re\nimport json\n\nraw = _input.first().json[\"output\"]\nmatch = re.search(r\"```json\\s*(.*?)\\s*```\", raw, flags=re.S)\nif match:\n    json_text = match.group(1).strip()\nelse:\n    json_match = re.search(r'\\{.*\\}', raw, flags=re.S)\n    if json_match:\n        json_text = json_match.group(0)\n    else:\n        json_text = raw.strip()\n\ntry:\n    parsed = json.loads(json_text)\nexcept json.JSONDecodeError as e:\n    raise ValueError(f\"Invalid JSON: {e}\\nExtracted text: {json_text[:500]}\")\n\nif not isinstance(parsed, dict):\n    raise ValueError(f\"Expected dict, got {type(parsed)}\")\n\n# 2. Check if match was found (NEW FORMAT)\naliexpress_url = parsed.get(\"AliExpress_URL\", \"False\")\nmatch_found = aliexpress_url and aliexpress_url != \"False\"\n\n# 3. Handle NO MATCH scenario\nif not match_found:\n    amazon_data = _('Amazon Dataset Items').first().json\n    return [{\n        \"json\": {\n            \"match_found\": False,\n            \"amazon\": {\n                \"name\": amazon_data.get(\"name\"),\n                \"url\": parsed.get(\"Amazon_URL\", amazon_data.get(\"url\", \"\")),\n                \"asin\": amazon_data.get(\"asin\"),\n                \"price\": amazon_data.get(\"price\", {}).get(\"value\") if isinstance(amazon_data.get(\"price\"), dict) else None,\n                \"currency\": amazon_data.get(\"price\", {}).get(\"currency\", \"USD\") if isinstance(amazon_data.get(\"price\"), dict) else \"USD\"\n            },\n            \"reason\": parsed.get(\"Notes\", \"No matching AliExpress product found\"),\n            \"confidence_level\": parsed.get(\"Confidence_Level\", 0),\n            \"match_type\": parsed.get(\"Match_Type\", \"not_found\"),\n            \"_metadata\": {\n                \"is_match\": False,\n                \"match_confidence\": 0\n            }\n        }\n    }]\n\n# 4. Handle MATCH FOUND scenario\namazon_data = _('Amazon Dataset Items').first().json\n\nresult = {\n    \"match_found\": True,\n    \"aliexpress\": {\n        \"url\": aliexpress_url,\n        \"confidence_level\": parsed.get(\"Confidence_Level\", 0),\n        \"match_type\": parsed.get(\"Match_Type\", \"unknown\"),\n        \"notes\": parsed.get(\"Notes\", \"\")\n    },\n    \"amazon\": {\n        \"name\": amazon_data.get(\"name\"),\n        \"url\": parsed.get(\"Amazon_URL\", amazon_data.get(\"url\", \"\")),\n        \"asin\": amazon_data.get(\"asin\"),\n        \"price\": amazon_data.get(\"price\", {}).get(\"value\") if isinstance(amazon_data.get(\"price\"), dict) else None,\n        \"currency\": amazon_data.get(\"price\", {}).get(\"currency\", \"USD\") if isinstance(amazon_data.get(\"price\"), dict) else \"USD\",\n        \"reviews_count\": amazon_data.get(\"reviewsCount\"),\n        \"stars\": amazon_data.get(\"stars\")\n    },\n    \"_metadata\": {\n        \"validated\": True,\n        \"match_found\": True,\n        \"confidence\": parsed.get(\"Confidence_Level\", 0),\n        \"match_quality\": \"high\" if parsed.get(\"Confidence_Level\", 0) >= 80 else \"medium\" if parsed.get(\"Confidence_Level\", 0) >= 60 else \"low\"\n    }\n}\n\nreturn [{\"json\": result}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "43c5152f-fdef-4ee7-a010-5dbe6d359001",
+      "name": "Code in Python (Beta)",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from urllib.parse import urlparse\n\nfor item in _input.all():\n  # Get URL from the 'product' object, not 'aliexpress'\n  url = item.json.get('product', {}).get('url', '')\n  \n  if url and url != 'False':\n    domain = urlparse(url).netloc.lower()\n    is_real_aliexpress = 'aliexpress.com' in domain or 'aliexpress.us' in domain or domain.startswith('aliexpress.')\n  else:\n    domain = ''\n    is_real_aliexpress = False\n  \n  item.json['domain'] = domain\n  item.json['is_real_aliexpress'] = is_real_aliexpress\n\nreturn _input.all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3232,
+        112
+      ],
+      "id": "b1780bf7-1a70-480f-a6bb-36e9570ce885",
+      "name": "Code in Python (Beta)1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6923e925-173d-478d-a74a-5a1c8912942d",
+              "leftValue": "={{ $json.is_real_aliexpress }}",
+              "rightValue": "=true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3456,
+        112
+      ],
+      "id": "bff659de-1262-44e0-aa3c-f1a6edca398b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "Scrape single URL",
+        "url": "={{ $json.aliexpress.url }}"
+      },
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [
+        0,
+        224
+      ],
+      "id": "2d5a4488-8ed2-4e09-b664-fb7d0bcb1e04",
+      "name": "Scrape single URL",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1aOa3hpjksSOLYVjTzM-C1MXGZub3XYS6ohorjIzS-2U",
+          "mode": "list",
+          "cachedResultName": "Rejected  Products",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aOa3hpjksSOLYVjTzM-C1MXGZub3XYS6ohorjIzS-2U/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aOa3hpjksSOLYVjTzM-C1MXGZub3XYS6ohorjIzS-2U/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Product Name": "={{ $json.amazon.name }}",
+            "Dominant Category": "=NA",
+            "Date Fetched": "={{ $now.setZone('Asia/Manila').toFormat('yyyy-MM-dd HH:mm:ss') }}\n",
+            "Product Comparison": "={{ $json.product.notes }}",
+            "Exact Monthly Search Volume > 300": "NA",
+            "Monthly Trend > 0": "NA",
+            "Relevancy Score > 10": "NA",
+            "Organic Product Count < 300": "NA",
+            "Amazon Product URL": "={{ $json.amazon.url }}",
+            "AliExpressProduct URL": "=N/A",
+            "Non-AliExpress URL": "={{ $json.product.url }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Exact Monthly Search Volume > 300",
+              "displayName": "Exact Monthly Search Volume > 300",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Monthly Trend > 0",
+              "displayName": "Monthly Trend > 0",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Relevancy Score > 10",
+              "displayName": "Relevancy Score > 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Organic Product Count < 300",
+              "displayName": "Organic Product Count < 300",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Sponsored Product Count < 10",
+              "displayName": "Sponsored Product Count < 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Ease of Ranking Score > 70",
+              "displayName": "Ease of Ranking Score > 70",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Dominant Category",
+              "displayName": "Dominant Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Number of products sold/orders on AliExpress < 25,000",
+              "displayName": "Number of products sold/orders on AliExpress < 25,000",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Minimum price of the product in USD > $3",
+              "displayName": "Minimum price of the product in USD > $3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Amazon Product URL",
+              "displayName": "Amazon Product URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AliExpressProduct URL",
+              "displayName": "AliExpressProduct URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Non-AliExpress URL",
+              "displayName": "Non-AliExpress URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product Comparison",
+              "displayName": "Product Comparison",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date Fetched",
+              "displayName": "Date Fetched",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3680,
+        560
+      ],
+      "id": "ca7e3ceb-8322-4e09-8e66-12253945b128",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Q33u7QDdFT7kx3S6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "image_url = _input.first().json.img\nsource_amazon_url = _input.first().json.url\namazon_product_name = _input.first().json.get('name', '')\n\n# Extract brand name (first 1-3 words before specs/numbers)\nbrand_words = []\nfor word in amazon_product_name.split():\n    if any(char.isdigit() for char in word):  # Stop at numbers\n        break\n    if word.lower() not in ['the', 'a', 'an', 'pack', 'count']:\n        brand_words.append(word)\n    if len(brand_words) >= 3:  # Usually brand is 1-3 words\n        break\n\nbrand_name = ' '.join(brand_words)\n\nprompt = f\"\"\"Execute \"Run an Actor and get dataset in Apify\" tool.\n\nAMAZON PRODUCT: \"{amazon_product_name}\"\nBRAND NAME: \"{brand_name}\"\n\nCRITICAL REQUIREMENT: You MUST find the EXACT BRAND on AliExpress.\n\nYOUR JOB: \n1. Search through ALL Apify results\n2. Find results where productTitle contains \"{brand_name}\"\n3. Return ONLY results with the exact brand name\n4. If NO exact brand match exists, return empty candidates array\n\nMATCHING RULES:\n- productTitle MUST contain \"{brand_name}\" (case-insensitive)\n- Product type must match\n- Generic/different brands are NOT acceptable\n\nOUTPUT (JSON):\n{{\n  \"candidates\": [\n    {{\n      \"productLink\": \"URL\",\n      \"productTitle\": \"exact title\",\n      \"reason\": \"Contains brand '{brand_name}' and matches product type\",\n      \"score\": 0-100\n    }}\n  ]\n}}\n\nCRITICAL: Return ONLY exact brand matches. If brand not found, return empty array.\"\"\"\n\nreturn {\n  \"chatInput\": prompt\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2208,
+        208
+      ],
+      "id": "308fc97a-d4bb-4dde-beb2-33a4d1718bef",
+      "name": "Code in Python (Beta)2"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1aOa3hpjksSOLYVjTzM-C1MXGZub3XYS6ohorjIzS-2U",
+          "mode": "list",
+          "cachedResultName": "Rejected  Products",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aOa3hpjksSOLYVjTzM-C1MXGZub3XYS6ohorjIzS-2U/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aOa3hpjksSOLYVjTzM-C1MXGZub3XYS6ohorjIzS-2U/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Product Name": "={{ $json.amazon.name }}",
+            "Dominant Category": "=NA",
+            "Date Fetched": "={{ $now.setZone('Asia/Manila').toFormat('yyyy-MM-dd HH:mm:ss') }}\n",
+            "Product Comparison": "={{ $json.product.notes }}",
+            "Exact Monthly Search Volume > 300": "NA",
+            "Monthly Trend > 0": "NA",
+            "Relevancy Score > 10": "NA",
+            "Organic Product Count < 300": "NA",
+            "Amazon Product URL": "={{ $json.amazon.url }}",
+            "AliExpressProduct URL": "=N/A",
+            "Non-AliExpress URL": "N/A"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Exact Monthly Search Volume > 300",
+              "displayName": "Exact Monthly Search Volume > 300",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Monthly Trend > 0",
+              "displayName": "Monthly Trend > 0",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Relevancy Score > 10",
+              "displayName": "Relevancy Score > 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Organic Product Count < 300",
+              "displayName": "Organic Product Count < 300",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Sponsored Product Count < 10",
+              "displayName": "Sponsored Product Count < 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Ease of Ranking Score > 70",
+              "displayName": "Ease of Ranking Score > 70",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Dominant Category",
+              "displayName": "Dominant Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Number of products sold/orders on AliExpress < 25,000",
+              "displayName": "Number of products sold/orders on AliExpress < 25,000",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Minimum price of the product in USD > $3",
+              "displayName": "Minimum price of the product in USD > $3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Amazon Product URL",
+              "displayName": "Amazon Product URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AliExpressProduct URL",
+              "displayName": "AliExpressProduct URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Non-AliExpress URL",
+              "displayName": "Non-AliExpress URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product Comparison",
+              "displayName": "Product Comparison",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date Fetched",
+              "displayName": "Date Fetched",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3232,
+        304
+      ],
+      "id": "9fe21b49-448c-4588-ba25-1d8d205c5ee3",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Q33u7QDdFT7kx3S6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1aOa3hpjksSOLYVjTzM-C1MXGZub3XYS6ohorjIzS-2U",
+          "mode": "list",
+          "cachedResultName": "Rejected  Products",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aOa3hpjksSOLYVjTzM-C1MXGZub3XYS6ohorjIzS-2U/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aOa3hpjksSOLYVjTzM-C1MXGZub3XYS6ohorjIzS-2U/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Product Name": "={{ $json.amazon.name }}",
+            "Dominant Category": "=NA",
+            "Date Fetched": "={{ $now.setZone('Asia/Manila').toFormat('yyyy-MM-dd HH:mm:ss') }}\n",
+            "Product Comparison": "={{ $json.product.notes }}",
+            "Exact Monthly Search Volume > 300": "NA",
+            "Monthly Trend > 0": "NA",
+            "Relevancy Score > 10": "NA",
+            "Organic Product Count < 300": "NA",
+            "Amazon Product URL": "={{ $json.amazon.url }}",
+            "AliExpressProduct URL": "={{ $json.product.url }}",
+            "Non-AliExpress URL": "N/A"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Exact Monthly Search Volume > 300",
+              "displayName": "Exact Monthly Search Volume > 300",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Monthly Trend > 0",
+              "displayName": "Monthly Trend > 0",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Relevancy Score > 10",
+              "displayName": "Relevancy Score > 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Organic Product Count < 300",
+              "displayName": "Organic Product Count < 300",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Sponsored Product Count < 10",
+              "displayName": "Sponsored Product Count < 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Ease of Ranking Score > 70",
+              "displayName": "Ease of Ranking Score > 70",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Dominant Category",
+              "displayName": "Dominant Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Number of products sold/orders on AliExpress < 25,000",
+              "displayName": "Number of products sold/orders on AliExpress < 25,000",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Minimum price of the product in USD > $3",
+              "displayName": "Minimum price of the product in USD > $3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Amazon Product URL",
+              "displayName": "Amazon Product URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AliExpressProduct URL",
+              "displayName": "AliExpressProduct URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Non-AliExpress URL",
+              "displayName": "Non-AliExpress URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product Comparison",
+              "displayName": "Product Comparison",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date Fetched",
+              "displayName": "Date Fetched",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3680,
+        336
+      ],
+      "id": "ee854f11-7292-45e6-967c-09ba002ee94d",
+      "name": "Append row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Q33u7QDdFT7kx3S6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "Run actor and get dataset",
+        "actorId": {
+          "__rl": true,
+          "value": "cYEmPjGF3TJTLBEFB",
+          "mode": "list",
+          "cachedResultName": "Search By Image Aliexpress (freecamp008/search-by-image-aliexpress)",
+          "cachedResultUrl": "https://console.apify.com/actors/cYEmPjGF3TJTLBEFB/input"
+        },
+        "customBody": "={\n    \"imageUrl\": \"{{ $('HTTP Request').item.json.img }}\"\n} "
+      },
+      "type": "@apify/n8n-nodes-apify.apifyTool",
+      "typeVersion": 1,
+      "position": [
+        2576,
+        432
+      ],
+      "id": "5957c73d-4c96-4ca2-8d3d-ac9654f4eebc",
+      "name": "Run an Actor and get dataset in Apify"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-pro-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2448,
+        432
+      ],
+      "id": "dc316ff0-30a9-4bed-bacb-946c20371edb",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Qn2KmHKfcYN7JBvq",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Amazon Best Sellers": {
+      "main": [
+        [
+          {
+            "node": "Amazon Data Handling",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Amazon Data Handling": {
+      "main": [
+        [
+          {
+            "node": "Amazon Dataset Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Amazon Dataset Items": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Workflow Complete",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Comparison Test",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Comparison Test": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)4": {
+      "main": [
+        [
+          {
+            "node": "Filter: AliExpress Validation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: AliExpress Validation": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Amazon Best Sellers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run an Actor and get dataset in Apify": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "Amazon Best Sellers": [
+      {
+        "id": "xUcC1dvgG2ncX7OP5",
+        "actId": "iHaiR8VIUt13olbXg",
+        "userId": "z8gy8PQyTkuksNilq",
+        "startedAt": "2025-10-18T03:19:10.179Z",
+        "finishedAt": "2025-10-18T03:19:25.499Z",
+        "status": "SUCCEEDED",
+        "statusMessage": "Finished! Total 1 requests: 1 succeeded, 0 failed.",
+        "isStatusMessageTerminal": true,
+        "meta": {
+          "origin": "API",
+          "userAgent": "axios/1.12.0"
+        },
+        "stats": {
+          "inputBodyLen": 197,
+          "migrationCount": 0,
+          "rebootCount": 0,
+          "restartCount": 0,
+          "durationMillis": 15156,
+          "resurrectCount": 0,
+          "runTimeSecs": 15.156,
+          "metamorph": 0,
+          "computeUnits": 0.01684,
+          "memAvgBytes": 121339298.93702796,
+          "memMaxBytes": 150392832,
+          "memCurrentBytes": 0,
+          "cpuAvgUsage": 6.321861616456121,
+          "cpuMaxUsage": 74.47585259212993,
+          "cpuCurrentUsage": 0,
+          "netRxBytes": 185607,
+          "netTxBytes": 43098
+        },
+        "options": {
+          "build": "0.0.205",
+          "timeoutSecs": 1800,
+          "memoryMbytes": 4096,
+          "maxItems": 106,
+          "diskMbytes": 512
+        },
+        "buildId": "eumi8hTKN9Nd1UnOU",
+        "exitCode": 0,
+        "defaultKeyValueStoreId": "gOD8DYkOlb7p0sc2K",
+        "defaultDatasetId": "9km1a9IcvKpF9rEcq",
+        "defaultRequestQueueId": "Zxyao8LsI5Sw6J8ga",
+        "pricingInfo": {
+          "pricingModel": "PRICE_PER_DATASET_ITEM",
+          "unitName": "item",
+          "createdAt": "2025-06-05T11:56:00.000Z",
+          "startedAt": "2025-06-05T11:56:00.000Z",
+          "notifiedAboutChangeAt": "2025-06-05T11:56:00.000Z",
+          "apifyMarginPercentage": 0.2,
+          "pricePerUnitUsd": 0.0059
+        },
+        "platformUsageBillingModel": "DEVELOPER",
+        "integrationTracking": {
+          "platform": "n8n",
+          "appId": null,
+          "isAiTool": false
+        },
+        "generalAccess": "FOLLOW_USER_SETTING",
+        "buildNumber": "0.0.205",
+        "containerUrl": "https://6cslleudsejh.runs.apify.net",
+        "consoleUrl": "https://console.apify.com/view/runs/xUcC1dvgG2ncX7OP5"
+      }
+    ],
+    "Code in Python (Beta)": [
+      {
+        "match_found": true,
+        "aliexpress": {
+          "url": "https://imall.com/product/60-billion-colony-units-of-probiotics-10-strains-organic-prebiotics-immunity-digestion-intestinal-health/Beauty-Care/aliexpress.com/1005007108806095/565-336500946/en?utm_medium=organic&utm_source=yandexsmartcamera",
+          "confidence_level": 70,
+          "match_type": "visual",
+          "notes": ""
+        },
+        "amazon": {
+          "name": "Physician's Choice Probiotics 60 Billion CFU - 10 Strains + Organic Prebiotics - Immune, Digestive & Gut Health - Supports Occasional Constipation, Diarrhea, Gas & Bloating - for Women & Men - 30ct",
+          "url": "https://www.amazon.com/dp/B079H53D2B",
+          "asin": "B079H53D2B",
+          "currency": "USD",
+          "reviews_count": 133741,
+          "stars": 4.5
+        },
+        "_metadata": {
+          "validated": true,
+          "match_found": true,
+          "confidence": 70,
+          "match_quality": "medium"
+        }
+      }
+    ]
+  },
+  "meta": {
+    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+  }
+}

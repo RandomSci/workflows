@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-whatsable.whatsAbleTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6b9bfc58-5627-4b30-98d0-8786932e7279",
+      "name": "WhatsAble Trigger",
+      "webhookId": "15a2f5f8-5a3f-4667-b3d0-433ed86817d5",
+      "credentials": {
+        "whatsAbleTriggerApi": {
+          "id": "gGs01wjeanWZd3dX",
+          "name": "WhatsAble Trigger account"
+        }
+      }
+    }
+  ],
+  "connections": {},
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+  }
+}

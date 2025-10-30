@@ -1,0 +1,368 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        32
+      ],
+      "id": "bb672156-16f4-4f79-8bf5-b7f132db18f1",
+      "name": "Manual Trigger"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -128,
+        32
+      ],
+      "id": "a8261f48-ac37-4458-b382-b268c8f83f4d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "links = [i.json.get(\"product_urls\") for i in _input.all()]\n\nchat_Input = f\"\"\"\nCreate professional seller outreach messages using Greg from Silver Polar LLC (Wyoming, US), email: support@saleviking.com\n\nUse these 3 clean formats with natural platform variations:\n\nFORMAT 1 (Direct & Concise):\n\"Dear [Sir/Ma'am/Seller],\nI hope this message finds you well.\nI am writing to inquire about this product. I am interested in including this product in my online store and would like to know if you offer dropshipping services. Additionally, I would like to confirm if the minimum order quantity (MOQ) for dropshipping is 1 piece.\nFurthermore, could you please provide the estimated shipping fees for the following countries:\nUSA\nCanada  \nAustralia\nUK\nPhilippines\nA response within 24-48 hours would be greatly appreciated as it will help us in planning and decision-making.\nThank you for your time and assistance.\nBest regards,\nGreg\nsupport@saleviking.com\n\nAdditional questions:\n1. Do you support the dropshipping business model and allow for single customer orders and have the capacity to fulfill large quantities of single customer orders?\n2. What are the fastest shipping routes you have available? and what are the costs associated with each one?\n3. What kind of packaging do you provide? Could you please send a photo of the packaging?\n4. Do you offer customization for the products (laser etching, printing, etc.)?\n5. If I were to provide you with a consistent amount of daily orders, would you be able to provide any pricing discounts?\n6. Are you a manufacturer of the product or a forwarder?\"\n\nFORMAT 2 (Business Introduction):\n\"Dear Sir / Ma'am,\nI hope this message finds you well. My name is Greg and I am the Marketing Officer of Silver Polar LLC, a thriving online retail business based in Wyoming, United States.\nWe are currently expanding our product range targeting the Philippines and US markets and are very interested in this [product/item]. We believe that this product aligns perfectly with our business model and customer base.\nWe would like to request for you to so kindly provide us with the following information:\n1. A comprehensive list of the variants along with detailed descriptions and pricing for each variant.\n2. Information about your dropshipping policies, procedures, and pricing for sample purchases so that we can test the market properly before buying in bulk.\n3. Details about your return policies and procedures.\n4. Do you offer customization for the products (laser etching, printing, etc.)?\n5. If I were to provide you with a consistent amount of daily orders, would you be able to provide any pricing discounts?\n6. Are you a manufacturer of the product or a forwarder?\n7. What kind of packaging do you provide? Could you please send photos of the packaging?\n8. Any additional information that you think would be helpful for us to know.\nWe are excited about the possibility of doing business with you and look forward to hearing from you soon. A response within 24-48 hours would be greatly appreciated.\nThank you for your time and consideration.\nBest regards,\nGreg\nMarketing Officer\nsupport@saleviking.com\"\n\nFORMAT 3 (Volume Business Focus):\n\"Hello,\nMy name is Greg from Silver Polar LLC, an online retailer based in Wyoming, United States. We're expanding our catalog for the US and Philippines markets.\nThis product caught our attention and we're interested in exploring a partnership. We typically process 50-100 orders monthly and are looking for reliable suppliers.\nCould you please provide information on:\n1. Dropshipping availability with MOQ of 1 piece\n2. Shipping costs and delivery times to USA, Canada, Australia, UK, Philippines\n3. Volume pricing for consistent orders (20+ units monthly)\n4. Product customization options\n5. Your role as manufacturer or reseller\n6. Packaging specifications and photos\n7. Fastest shipping methods available\nWe're looking to launch within 30-60 days and would appreciate your response within 48 hours.\nThank you,\nGreg\nsupport@saleviking.com\"\n\nPLATFORM-SPECIFIC NATURAL INTEGRATION:\n- Alibaba: In Format 2, add after business intro: \"We're particularly interested in long-term manufacturing partnerships and bulk purchasing opportunities.\"\n- AliExpress: In Format 1 or 3, naturally mention \"for our growing e-commerce business\" when describing interest\n- Amazon: In any format, replace \"We're expanding\" with \"We're exploring wholesale partnerships with established sellers\"\n- eBay: In Format 1, add \"We specialize in sourcing quality products for resale\" after product interest\n- Bol.com: Write ENTIRE message in Dutch using same structure but Dutch language\n\nBOL.COM DUTCH TEMPLATE:\n\"Geachte heer/mevrouw,\nIk hoop dat dit bericht u goed vindt. Mijn naam is Greg en ik ben Marketing Officer van Silver Polar LLC, een online retailbedrijf uit Wyoming, Verenigde Staten.\nWij breiden momenteel ons productassortiment uit voor de markten in de Filipijnen en de VS en zijn zeer geïnteresseerd in dit product. Wij geloven dat dit product perfect aansluit bij ons bedrijfsmodel en onze klantenkring.\nWij willen u vriendelijk verzoeken om ons de volgende informatie te verstrekken:\n1. Uitgebreide lijst van varianten met gedetailleerde beschrijvingen en prijzen\n2. Informatie over uw dropshipping-beleid en procedures voor proefaankopen\n3. Details over uw retourbeleid\n4. Biedt u productaanpassingen aan (laser-etsen, bedrukken, etc.)?\n5. Bij consistente dagelijkse bestellingen, zijn er prijskortingen mogelijk?\n6. Bent u fabrikant of doorverkoper?\n7. Verpakkingsinformatie en foto's indien mogelijk\n8. Aanvullende nuttige informatie\nEen reactie binnen 24-48 uur zou zeer gewaardeerd worden.\nMet vriendelijke groet,\nGreg\nMarketing Officer\nsupport@saleviking.com\"\n\nVARIATION RULES:\n- Rotate between the 3 formats naturally\n- Use different greetings: \"Dear Sir/Ma'am\", \"Dear Seller\", \"Hello\", \"Dear Sales Team\" \n- Vary interest phrases: \"caught our attention\", \"interested in\", \"impressed by\", \"aligns with our needs\"\n- Mix \"this product\" and \"this item\"\n- Keep platform additions flowing naturally within sentences, not as separate additions\n- For Bol.com, use complete Dutch message structure\n\nProduct links: {links}\n\nReturn JSON: [{{\"Platform\": \"...\", \"Product link\": \"...\", \"Message\": \"...\"}}]\n\"\"\"\n\nreturn {\n  \"chatInput\": chat_Input\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -288,
+        32
+      ],
+      "id": "02d527ad-383e-4e18-8bdc-1cbbe378528a",
+      "name": "Code in Python (Beta)"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        192
+      ],
+      "id": "8932e638-57a2-4c01-a871-e1b9440deeb6",
+      "name": "Google Gemini Chat Model"
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "1-nRSGeCtpKliIqKShOMDCt7eRVTSa4wHtP1xdIYXoJA",
+          "mode": "list",
+          "cachedResultName": "connect_to_stores",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-nRSGeCtpKliIqKShOMDCt7eRVTSa4wHtP1xdIYXoJA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-nRSGeCtpKliIqKShOMDCt7eRVTSa4wHtP1xdIYXoJA/edit#gid=0"
+        },
+        "clear": "specificRows",
+        "startIndex": 2,
+        "rowsToDelete": 1000
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        288,
+        32
+      ],
+      "id": "24b47901-adf6-48b3-a959-d6febcd3b1b4",
+      "name": "Clear sheet",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1-nRSGeCtpKliIqKShOMDCt7eRVTSa4wHtP1xdIYXoJA",
+          "mode": "list",
+          "cachedResultName": "connect_to_stores",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-nRSGeCtpKliIqKShOMDCt7eRVTSa4wHtP1xdIYXoJA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GuGK9q_Y65Fe2dptwDIpSqpba665oHm-ByGVtmmCrtI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Platform": "={{ $json.Platform }}",
+            "Message": "={{ $json.Message }}",
+            "Product link": "={{ $json[\"Product link\"] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Platform",
+              "displayName": "Platform",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product link",
+              "displayName": "Product link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        432,
+        32
+      ],
+      "id": "2bece18c-31b3-4c61-a6e6-e224ed43d43e",
+      "name": "Append",
+      "notesInFlow": false,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "highlevelclicks@gmail.com",
+        "subject": "Connect to other product sellers",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n  <title>Product Seller Sheet</title>\n  <style>\n    body {\n      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n      margin: 0;\n      padding: 20px;\n      background-color: #f0f2f5;\n      color: #333;\n    }\n\n    .container {\n      max-width: 620px;\n      margin: 0 auto;\n      background: #fff;\n      border-radius: 12px;\n      padding: 40px 30px;\n      box-shadow: 0 4px 15px rgba(0,0,0,0.1);\n    }\n\n    .header {\n      text-align: center;\n      margin-bottom: 25px;\n    }\n\n    .header h1 {\n      font-size: 24px;\n      margin: 0;\n      color: #2c3e50;\n    }\n\n    .description {\n      font-size: 15px;\n      color: #555;\n      line-height: 1.6;\n      margin-bottom: 35px;\n      text-align: center;\n    }\n\n    .button {\n      display: inline-block;\n      background-color: #4a90e2;\n      color: #fff !important;\n      text-decoration: none !important;\n      padding: 16px 28px;\n      border-radius: 8px;\n      font-weight: bold;\n      font-size: 16px;\n      text-align: center;\n      transition: background-color 0.3s ease;\n    }\n\n    .button:hover {\n      background-color: #357ab8;\n    }\n\n    .footer {\n      font-size: 12px;\n      color: #888;\n      margin-top: 40px;\n      text-align: center;\n    }\n\n    @media only screen and (max-width: 600px) {\n      .container {\n        padding: 30px 20px;\n      }\n\n      .header h1 {\n        font-size: 20px;\n      }\n\n      .description {\n        font-size: 14px;\n      }\n\n      .button {\n        width: 100%;\n        font-size: 15px;\n      }\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>📋 Product Seller Sheet</h1>\n    </div>\n\n    <p class=\"description\">\n      This sheet contains all product links from various platforms along with AI-generated messages for contacting sellers. Each row includes: Platform, Product link, and Suggested message for outreach.\n    </p>\n\n    <div style=\"text-align:center;\">\n      <a href=\"https://docs.google.com/spreadsheets/d/1-nRSGeCtpKliIqKShOMDCt7eRVTSa4wHtP1xdIYXoJA/edit?usp=sharing\" target=\"_blank\" class=\"button\">\n        Open Latest Sheet\n      </a>\n    </div>\n\n    <div class=\"footer\">\n      🤖 Automatically generated by workflow. Internal use only.\n    </div>\n  </div>\n</body>\n</html>\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        752,
+        32
+      ],
+      "id": "4697a481-68ea-4c96-9d36-f3673e8cf1d9",
+      "name": "Send a message",
+      "webhookId": "f6ae8ab6-3c6c-4202-b731-22673e908790",
+      "executeOnce": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "product_urls = [\n  'https://www.alibaba.com/product-detail/2024-Trending-Hot-Products-Winter-Manufacturer_1601279866395.html',\n  'https://www.alibaba.com/product-detail/Trending-Products-2024-New-Arrivals-Inflatable_1601062897218.html',\n  'https://fr.aliexpress.com/item/3256808396067108.html',\n  'https://fr.aliexpress.com/item/3256809737267434.html', \n  'https://fr.aliexpress.com/item/3256809491382336.html',\n  'https://fr.aliexpress.com/item/3256809192822523.html',\n  'https://www.bol.com/nl/nl/p/houten-decoratie-met-metalen-beeld-modern-woonacce/9300000236017967/',\n  'https://www.bol.com/nl/nl/p/jubblyr-wasmand-wassorteerder-opbergmand-wasmand-o/9300000193883171/',\n  'https://www.bol.com/nl/nl/p/zandkunst-rosegoud-bewegende-zandkunst-zandloper/9300000150592162/',\n  'https://www.ebay.com/itm/387743539033',\n  'https://www.ebay.com/itm/236248459361',\n  'https://www.amazon.com/dp/B09RSC2JT3',\n  'https://www.amazon.com/dp/B0748J34WZ',\n  'https://www.amazon.com/dp/B009GDBNF8'\n]\n\n\nreturn {\n  \"product_urls\": product_urls\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        32
+      ],
+      "id": "23528aa9-4fa2-4ea1-9485-a26a5e60851a",
+      "name": "Product Links"
+    },
+    {
+      "parameters": {
+        "url": "https://docs.google.com/spreadsheets/d/1-nRSGeCtpKliIqKShOMDCt7eRVTSa4wHtP1xdIYXoJA/export?format=xlsx&id=1-nRSGeCtpKliIqKShOMDCt7eRVTSa4wHtP1xdIYXoJA",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        592,
+        32
+      ],
+      "id": "0b0c4294-04f0-4b6c-a936-549f256182bb",
+      "name": "HTTP Request",
+      "notesInFlow": true,
+      "executeOnce": true,
+      "onError": "continueRegularOutput",
+      "notes": "Updated every week"
+    },
+    {
+      "parameters": {
+        "content": "## Product Links -> AI Message Enhancer -> Add result to Spreadsheet ",
+        "height": 80,
+        "width": 784
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "51a7d3f5-df33-47cc-96d2-b02efe079ff8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import re\nimport json\n\nraw = _input.first().json[\"output\"]\n\nmatch = re.search(r\"```json\\s*(.*?)\\s*```\", raw, flags=re.S)\nif not match:\n    raise ValueError(\"No JSON block found in output\")\n\njson_text = match.group(1).strip()\nparsed = json.loads(json_text)\n\nresults = []\n\nif isinstance(parsed, list):\n    for item in parsed:\n        if not isinstance(item, dict):\n            raise ValueError(f\"Array element is not a dict: {item}\")\n        platform = item.get(\"Platform\")\n        product_link = item.get(\"Product link\")\n        message = item.get(\"Message\")\n\n        if platform is None:\n            raise ValueError(f\"No 'Platform' key in: {item}\")\n\n        results.append({\n            \"Platform\": platform,\n            \"Product link\": product_link,\n            \"Message\": message\n        })\n\nelif isinstance(parsed, dict):\n    results = [parsed]\nelse:\n    raise ValueError(f\"Unexpected JSON type: {type(parsed)}\")\n\nreturn [{\"json\": r} for r in results]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        32
+      ],
+      "id": "44a5a117-eaa9-47fd-9013-2472e521de1a",
+      "name": "Code in Python (Beta)2"
+    },
+    {
+      "parameters": {
+        "content": "### Use Puppeteer for chrome automation",
+        "height": 80,
+        "width": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        512,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "272df359-15bd-4074-9579-dfff9e09ccef",
+      "name": "Sticky Note1"
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Product Links",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear sheet": {
+      "main": [
+        [
+          {
+            "node": "Append",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Product Links": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)2": {
+      "main": [
+        [
+          {
+            "node": "Clear sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+  }
+}

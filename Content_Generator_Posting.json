@@ -1,0 +1,578 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $('Code in Python (Beta)1').item.json.txt }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.8
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -496,
+        144
+      ],
+      "id": "7f33944f-cf5c-4949-9fd5-4f1067db78b7",
+      "name": "Generate Text Content",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vwg2FlhVu2bY7dZ6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "={{ $('Code in Python (Beta)1').item.json.img }}",
+        "options": {
+          "returnImageUrls": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -144,
+        144
+      ],
+      "id": "211ed382-3021-4b3a-a2f2-e7c70540f75c",
+      "name": "Generate an image1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vwg2FlhVu2bY7dZ6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=61582619558041",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Facebook Post\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1376,
+        336
+      ],
+      "id": "08c8afd4-dc06-4241-8150-849d6fe70c8f",
+      "name": "Facebook Graph API1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "KMspAwgUmqwyOsNp",
+          "name": "Facebook Graph account"
+        }
+      },
+      "disabled": true,
+      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import random\nimport datetime\n\nnow = datetime.datetime.now()\nhour = now.hour\nday_name = now.strftime(\"%A\")\ndate_str = now.strftime(\"%B %d, %Y\")\nmonth = now.month\nday = now.day\n\n# ============================================================================\n# SEASONAL & CONTEXT DETECTION (Keep this - it's good data for AI)\n# ============================================================================\n\ndef get_seasonal_context(month, day):\n    seasonal_hooks = {\n        \"winter\": {\n            \"months\": [12, 1, 2],\n            \"themes\": [\"New Year planning\", \"Q1 goals\", \"fresh starts\", \"winter productivity\"],\n            \"urgency\": \"Start the year right with automation\",\n            \"pain_points\": \"Don't waste another year on manual tasks\"\n        },\n        \"spring\": {\n            \"months\": [3, 4, 5],\n            \"themes\": [\"spring cleaning workflows\", \"Q2 optimization\", \"growth season\", \"renewal\"],\n            \"urgency\": \"Spring into automation and grow faster\",\n            \"pain_points\": \"Stop letting manual work slow your spring growth\"\n        },\n        \"summer\": {\n            \"months\": [6, 7, 8],\n            \"themes\": [\"summer efficiency\", \"work smarter not harder\", \"vacation mode\", \"mid-year push\"],\n            \"urgency\": \"Automate before summer slowdown hits\",\n            \"pain_points\": \"Don't let summer drain your productivity\"\n        },\n        \"fall\": {\n            \"months\": [9, 10, 11],\n            \"themes\": [\"Q4 preparation\", \"year-end push\", \"back to business\", \"harvest results\"],\n            \"urgency\": \"Finish the year strong with automation\",\n            \"pain_points\": \"Don't let Q4 chaos overwhelm you\"\n        }\n    }\n    \n    for season, data in seasonal_hooks.items():\n        if month in data[\"months\"]:\n            return season, data\n    \n    return \"spring\", seasonal_hooks[\"spring\"]\n\nseason, seasonal_data = get_seasonal_context(month, day)\n\ndef get_holiday_hook(month, day):\n    holidays = {\n        (1, 1): {\"name\": \"New Year's Day\", \"hook\": \"New year, new automated workflows\", \"urgency\": \"New Year Special\"},\n        (2, 14): {\"name\": \"Valentine's Day\", \"hook\": \"Fall in love with automation\", \"urgency\": \"Valentine's special\"},\n        (3, 17): {\"name\": \"St. Patrick's Day\", \"hook\": \"Find your pot of gold with automation\", \"urgency\": \"Lucky deals\"},\n        (7, 4): {\"name\": \"Independence Day\", \"hook\": \"Declare independence from manual work\", \"urgency\": \"Freedom sale\"},\n        (10, 31): {\"name\": \"Halloween\", \"hook\": \"Don't let manual tasks haunt you\", \"urgency\": \"Halloween special\"},\n        (11, 27): {\"name\": \"Black Friday\", \"hook\": \"Biggest automation sale\", \"urgency\": \"BLACK FRIDAY\"},\n        (12, 25): {\"name\": \"Christmas\", \"hook\": \"Gift yourself time back\", \"urgency\": \"Holiday special\"},\n        (12, 31): {\"name\": \"New Year's Eve\", \"hook\": \"End strong, start automated\", \"urgency\": \"Last chance 2025\"}\n    }\n    \n    if (month, day) in holidays:\n        return holidays[(month, day)]\n    \n    for (h_month, h_day), holiday_data in holidays.items():\n        if month == h_month and h_day - 7 <= day < h_day:\n            return {\n                \"name\": f\"Week before {holiday_data['name']}\", \n                \"hook\": f\"Prepare for {holiday_data['name']}\",\n                \"urgency\": f\"Get ready for {holiday_data['name']}\"\n            }\n    \n    return None\n\nholiday_hook = get_holiday_hook(month, day)\n\n# ============================================================================\n# VIRAL POST PATTERNS & EXAMPLES\n# ============================================================================\n\n# Pattern rotation by day\npattern_choice = day % 4\n\npattern_info = {\n    0: {\n        \"name\": \"Personal Result + How\",\n        \"structure\": \"Hook (I just did X) → Problem (Most people struggle) → Solution (I built this) → Benefits (Bullet list) → CTA (Comment keyword)\",\n        \"examples\": [\n            \"I just automated my entire content calendar in 15 minutes.\\n\\nMost people are still doing this manually. Wasting 10+ hours every week.\\n\\nI built one n8n workflow that handles it all automatically.\\n\\n• Saves 10+ hours per week\\n• Zero monthly fees\\n• Runs 24/7\\n• Pays for itself in days\\n\\nWant the workflow?\\n\\nComment 'WORKFLOW' below.\",\n            \n            \"I automated what most people pay $500/month for.\\n\\nEveryone's buying expensive tools for social media management.\\n\\nOne n8n workflow replaced 3 subscriptions for me.\\n\\n• $500 saved monthly\\n• Better results\\n• Full control\\n• No vendor lock-in\\n\\nInterested?\\n\\nDrop 'YES' and I'll send it over.\"\n        ]\n    },\n    1: {\n        \"name\": \"Contrarian Take\",\n        \"structure\": \"Hook (Unpopular opinion) → Expand (Why conventional wisdom is wrong) → Proof (Your better approach) → CTA (Agree? Comment)\",\n        \"examples\": [\n            \"Unpopular opinion: Most automation tools are overpriced.\\n\\nI see businesses paying $200/month for features they don't use.\\n\\nMeanwhile, n8n does it better for $0/month.\\n\\nI cancelled 5 subscriptions last month.\\n\\nBuilt everything with n8n instead.\\n\\nAgree?\\n\\nComment 'FACTS'\",\n            \n            \"Hot take: You don't need expensive email marketing software.\\n\\nThe problem isn't tools. It's workflow thinking.\\n\\nMost people need ONE good automation, not another subscription.\\n\\nWhat costs others $300/month:\\n• Behavior-triggered emails\\n• Personalized follow-ups\\n• Auto-tag and segment\\n\\nI built it all with n8n for free.\\n\\nWant to learn how?\\n\\nComment 'TEACH ME'\"\n        ]\n    },\n    2: {\n        \"name\": \"Story/Transformation\",\n        \"structure\": \"Hook (This is how I...) → Before (Pain/struggle) → After (Results/benefits) → CTA (Want same? Comment)\",\n        \"examples\": [\n            \"This is how I went from 15-hour workweeks to 5 hours.\\n\\n6 months ago, I was struggling with content creation.\\n\\nSpending 3 hours daily on manual posting.\\n\\nBurnt out and falling behind.\\n\\nThen I discovered n8n.\\n\\nBuilt my first workflow in 20 minutes.\\n\\nNow:\\n• Work 5 hours instead of 15\\n• 80% more productive\\n• Actually have time to grow\\n\\nWant the same results?\\n\\nComment 'INTERESTED'\",\n            \n            \"6 months ago I was paying $400/month for lead generation tools.\\n\\nThen I discovered n8n and everything changed.\\n\\nI built workflows that do MORE than the paid tools.\\n\\nFor $0 ongoing cost.\\n\\nResults:\\n• $400 saved monthly\\n• Better performance\\n• Full customization\\n• Complete control\\n\\nCurious how?\\n\\nComment 'CURIOUS'\"\n        ]\n    },\n    3: {\n        \"name\": \"Quick Tip\",\n        \"structure\": \"Hook (This X will save Y) → Tip (How to do it) → CTA (Want template? Comment)\",\n        \"examples\": [\n            \"This 5-minute automation will save you 10 hours a week.\\n\\nConnect your Notion to social media in n8n.\\n\\nSet one trigger.\\n\\nWatch it run automatically.\\n\\nNo more manual posting. Ever.\\n\\nWant the template?\\n\\nComment 'TEMPLATE'\",\n            \n            \"The email marketing hack that changed my business.\\n\\nStop sending emails manually.\\n\\nAutomate it with n8n:\\n\\nCRM → n8n → Email platform\\n\\nDone in 10 minutes.\\n\\nSaved me 8 hours weekly.\\n\\nNeed help setting this up?\\n\\nComment 'HELP'\"\n        ]\n    }\n}\n\nselected_pattern = pattern_info[pattern_choice]\n\n# ============================================================================\n# TOPICS WITH REALISTIC DATA\n# ============================================================================\n\ntopics = [\n    {\n        \"name\": \"content creation\",\n        \"time\": \"15 minutes\",\n        \"hours_saved\": \"10\",\n        \"cost_saved\": \"500\",\n        \"subscriptions_cancelled\": \"5\",\n        \"percent_improvement\": \"80\",\n        \"old_hours\": \"15\",\n        \"new_hours\": \"5\",\n        \"timeframe\": \"6 months\",\n        \"tools\": [\"Notion\", \"social media platforms\", \"Canva\"],\n        \"benefits\": [\"Auto-schedule posts\", \"Generate captions with AI\", \"Cross-post to all platforms\"]\n    },\n    {\n        \"name\": \"email marketing\",\n        \"time\": \"10 minutes\",\n        \"hours_saved\": \"8\",\n        \"cost_saved\": \"300\",\n        \"subscriptions_cancelled\": \"4\",\n        \"percent_improvement\": \"70\",\n        \"old_hours\": \"12\",\n        \"new_hours\": \"4\",\n        \"timeframe\": \"3 months\",\n        \"tools\": [\"CRM\", \"email platform\", \"automation tool\"],\n        \"benefits\": [\"Behavior-triggered emails\", \"Personalized follow-ups\", \"Auto-tag and segment\"]\n    },\n    {\n        \"name\": \"lead generation\",\n        \"time\": \"20 minutes\",\n        \"hours_saved\": \"12\",\n        \"cost_saved\": \"400\",\n        \"subscriptions_cancelled\": \"6\",\n        \"percent_improvement\": \"85\",\n        \"old_hours\": \"18\",\n        \"new_hours\": \"3\",\n        \"timeframe\": \"4 months\",\n        \"tools\": [\"forms\", \"CRM\", \"email sequences\"],\n        \"benefits\": [\"Instant lead capture\", \"Auto-nurture sequences\", \"Smart lead scoring\"]\n    },\n    {\n        \"name\": \"social media management\",\n        \"time\": \"10 minutes\",\n        \"hours_saved\": \"12\",\n        \"cost_saved\": \"350\",\n        \"subscriptions_cancelled\": \"4\",\n        \"percent_improvement\": \"85\",\n        \"old_hours\": \"12\",\n        \"new_hours\": \"2\",\n        \"timeframe\": \"2 months\",\n        \"tools\": [\"content calendar\", \"scheduling tool\", \"analytics\"],\n        \"benefits\": [\"Schedule weeks in advance\", \"Cross-post automatically\", \"Optimal timing always\"]\n    },\n    {\n        \"name\": \"data synchronization\",\n        \"time\": \"5 minutes\",\n        \"hours_saved\": \"15\",\n        \"cost_saved\": \"200\",\n        \"subscriptions_cancelled\": \"3\",\n        \"percent_improvement\": \"95\",\n        \"old_hours\": \"20\",\n        \"new_hours\": \"2\",\n        \"timeframe\": \"2 months\",\n        \"tools\": [\"database\", \"multiple apps\", \"spreadsheets\"],\n        \"benefits\": [\"Auto-sync across platforms\", \"Zero manual updates\", \"Real-time accuracy\"]\n    }\n]\n\nselected_topic = random.choice(topics)\n\n# ============================================================================\n# IMAGE PROMPT GENERATION (Your seasonal system - keep it!)\n# ============================================================================\n\ndef get_seasonal_robot_prompts(month, day):\n    if month == 10:  # Halloween\n        return [\n            \"Adorable 3D rendered robot character wearing a tiny witch hat with cute Halloween decorations, glowing cyan blue eyes, sitting on smartphone, cozy autumn workspace with pumpkins and warm lighting, absolutely no text anywhere, professional product photography, Pixar quality\",\n            \"Cute friendly robot with wizard hat, holding tiny magic wand, warm orange and purple lighting, autumn leaves, sitting on tablet, no text visible, cinematic 3D render\",\n            \"Charming small AI robot wearing vampire cape and small fangs, friendly expression, surrounded by mini jack-o-lanterns, wooden desk, Halloween themed but not scary, zero text, warm cozy lighting\",\n            \"Sweet robot character dressed as little ghost with cute face showing through, sitting on laptop, autumn office with orange and black accents, no text, professional tech photography\"\n        ]\n    elif month == 12:  # Christmas\n        return [\n            \"Adorable 3D robot wearing tiny Santa hat and red scarf, glowing blue eyes, sitting on smartphone surrounded by miniature Christmas ornaments and twinkling lights, cozy winter workspace, absolutely no text visible, Pixar quality\",\n            \"Cute friendly robot with small elf hat, candy cane decorations, snow-dusted desk, sitting on tablet, winter wonderland aesthetic, zero text, professional Christmas photography\",\n            \"Charming AI robot wrapped in tiny Christmas lights, sitting next to mini decorated tree, warm cozy office with laptop, holiday spirit, no text, cinematic 3D render\"\n        ]\n    elif month == 2 and 10 <= day <= 14:  # Valentine's\n        return [\n            \"Adorable robot surrounded by tiny pink and red hearts floating, warm romantic lighting, sitting on smartphone, cozy workspace, absolutely no text visible, cute valentine theme, Pixar quality\",\n            \"Cute AI robot holding miniature heart shape, soft pink and white colors, sitting on tablet, romantic office, zero text, professional photography\"\n        ]\n    elif month in [3, 4, 5]:  # Spring\n        return [\n            \"Adorable robot surrounded by tiny pastel flowers and butterflies, fresh spring aesthetic, sitting on smartphone, bright natural lighting, workspace with plants, no text, Pixar quality\",\n            \"Cute AI robot with small flower crown, sitting on tablet in garden-like workspace, spring blossoms, soft natural light, zero text, professional photography\"\n        ]\n    elif month in [6, 7, 8]:  # Summer\n        return [\n            \"Adorable robot wearing tiny sunglasses, beach-inspired workspace with seashells, sitting on smartphone, bright sunny lighting, vacation vibes, no text, professional 3D render\",\n            \"Cute friendly robot with small sun hat, tropical plants nearby, sitting on tablet, summer office, warm golden hour lighting, zero text, lifestyle photography\"\n        ]\n    elif month == 11 and day >= 20:  # Thanksgiving\n        return [\n            \"Adorable robot wearing tiny pilgrim hat, surrounded by miniature pumpkins and autumn leaves, warm harvest colors, sitting on smartphone, cozy thankful aesthetic, no text, Pixar quality\",\n            \"Cute AI robot with small turkey feather accessories, autumn office, sitting on tablet, warm orange and brown tones, zero text, professional photography\"\n        ]\n    elif month == 1:  # New Year\n        return [\n            \"Adorable robot wearing tiny party hat with 2025 theme, confetti around it, sitting on smartphone, fresh start aesthetic, modern clean workspace, no text, celebratory but professional, Pixar quality\",\n            \"Cute friendly robot with small noisemaker accessory, new beginnings theme, sitting on tablet, bright optimistic lighting, clean modern office, zero text\"\n        ]\n    else:  # Default professional\n        return [\n            \"Adorable 3D robot with glowing cyan blue eyes sitting on smartphone, modern minimalist workspace with laptop and coffee cup, warm ambient lighting, absolutely no text visible, professional product photography, Pixar quality\",\n            \"Cute friendly small AI robot with rounded design and blue LED lights, positioned on wooden desk next to laptop, natural window lighting, cozy home office, zero text, ultra realistic 3D render\"\n        ]\n\nseasonal_robot_prompts = get_seasonal_robot_prompts(month, day)\nimg_prompt = random.choice(seasonal_robot_prompts)\n\n# ============================================================================\n# AI PROMPT FOR GENERATING VIRAL POSTS\n# ============================================================================\n\nai_prompt = f\"\"\"You are a viral social media content creator. Generate 3 platform-specific posts following this EXACT pattern:\n\nTODAY'S CONTEXT:\n- Date: {date_str} ({day_name})\n- Season: {season}\n- Holiday: {holiday_hook['name'] if holiday_hook else 'None'}\n- Pattern: {selected_pattern['name']}\n\nTOPIC: {selected_topic['name']}\nDATA TO USE:\n- Setup time: {selected_topic['time']}\n- Hours saved weekly: {selected_topic['hours_saved']}\n- Monthly cost saved: ${selected_topic['cost_saved']}\n- Subscriptions cancelled: {selected_topic['subscriptions_cancelled']}\n- Improvement: {selected_topic['percent_improvement']}%\n- Old workload: {selected_topic['old_hours']} hours\n- New workload: {selected_topic['new_hours']} hours\n- Timeframe: {selected_topic['timeframe']}\n- Tools automated: {', '.join(selected_topic['tools'])}\n- Benefits: {', '.join(selected_topic['benefits'])}\n\nPATTERN TO FOLLOW: {selected_pattern['name']}\nStructure: {selected_pattern['structure']}\n\nEXAMPLE POSTS (use as inspiration, don't copy exactly):\n{selected_pattern['examples'][0]}\n\nCRITICAL RULES:\n1. Use FIRST PERSON (\"I just...\", \"I built...\", \"I automated...\")\n2. Include SPECIFIC NUMBERS from the data above\n3. Keep it SHORT (100-130 words for Facebook, 80-100 for Instagram, 200-240 chars for Twitter)\n4. Use LINE BREAKS between every section (hook, problem, solution, benefits, CTA)\n5. Strong HOOK in first line (grab attention immediately)\n6. Clear CTA: \"Comment '[KEYWORD]' below\"\n7. Sound like a PERSON, not a brand\n8. Add subtle seasonal flavor as P.S. only if holiday exists (optional)\n9. NO EMOJIS in main text (only Instagram can have ⚡ at start)\n10. Use bullet points ONLY for benefits list\n11. Keep each section SHORT (2-3 lines max per section)\n\nFACEBOOK POST (100-130 words):\n- Structure: {selected_pattern['structure']}\n- Put BLANK LINE between each section\n- If holiday exists, add on NEW LINE: \"P.S. {holiday_hook['hook'] if holiday_hook else ''}\"\n- Then BLANK LINE, then on NEW LINE: \"All built with n8n → zkllmt.gumroad.com\"\n- Then BLANK LINE, then hashtags on NEW LINE: #n8n #Automation #NoCode #Productivity\n- Format example:\n  [Hook]\n  \n  [Problem]\n  \n  [Solution]\n  \n  [Benefits bullets]\n  \n  [CTA]\n  \n  P.S. [seasonal if exists]\n  \n  All built with n8n → zkllmt.gumroad.com\n  \n  #n8n #Automation #NoCode #Productivity\n\nINSTAGRAM POST (80-100 words):\n- Start with: ⚡ (then space, then your hook)\n- Structure: {selected_pattern['structure']}\n- Put BLANK LINE between sections\n- End on NEW LINE with: \"Link in bio → zkllmt.gumroad.com\"\n- Then BLANK LINE, then hashtags on NEW LINE: #n8n #automation #nocode #productivity #entrepreneur #tech #business #workflows\n\nX/TWITTER POST (200-240 characters total):\n- Structure: Shortened version - hook + 1-2 key benefits + CTA\n- Use line breaks for readability (2-3 short lines)\n- End on NEW LINE with: \"zkllmt.gumroad.com\"\n- Then BLANK LINE, then hashtags: #n8n #Automation\n\nOUTPUT FORMAT:\nFACEBOOK:\n[your facebook post here]\n\nINSTAGRAM:\n[your instagram post here]\n\nX:\n[your x post here]\n\nGenerate now:\"\"\"\n\n# ============================================================================\n# RETURN FOR N8N\n# ============================================================================\n\nreturn {\n    \"txt\": ai_prompt,\n    \"img\": img_prompt,\n    \"topic\": selected_topic['name'],\n    \"pattern\": selected_pattern['name'],\n    \"day\": day_name,\n    \"date\": date_str,\n    \"season\": season,\n    \"holiday\": holiday_hook['name'] if holiday_hook else \"None\"\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        144
+      ],
+      "id": "f4df6fab-8d70-4f42-ad9c-b490856cc2dd",
+      "name": "Code in Python (Beta)1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8,12,17,21 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -944,
+        144
+      ],
+      "id": "8e782f94-d1bd-4e44-afde-d57faba7f7e5",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "content": "## Page link\n**Double click** to copy the link. [AlgoNova Labs](https://web.facebook.com/profile.php?id=61582619558041)",
+        "height": 80,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        272,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "588f83b0-b3ef-43ff-b79e-748f34569c78",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Social Media Automation Setup\n\n**What this does:**\nPosts business content automatically to Facebook with matching images. No manual work needed once it's running.\n\n**Content Strategy:**\nEach day focuses on different topics so posts don't get repetitive:\n- Monday: Workflow automation stuff\n- Tuesday: AI assistants and chatbots  \n- Wednesday: Digital transformation\n- Thursday: Reporting and scheduling tools\n- Friday: Marketing automation\n- Weekends: Business planning content\n\n**How it works:**\nPython code picks random topics and writing styles, then OpenAI creates the post and image. Everything gets posted to Facebook automatically.\n\n**Key improvements made:**\n- Fixed the \"Plan tomorrow's success\" repetition problem\n- No more bullet points or dashes in posts\n- Images look professional, not obviously generated\n- Content varies based on time of day and day of week\n\n**Technical setup:**\n1. Python generates prompts\n2. OpenAI creates text content\n3. OpenAI generates business image\n4. Facebook API posts everything\n\n**Important settings:**\n- FB Page ID: 746873475186274\n- Switch to schedule trigger for auto-posting\n- Images are set to avoid text overlays\n- Content forbidden from using repetitive phrases\n\n**Expansion ideas:**\nCould add LinkedIn, Twitter, Instagram posting. Could customize for different industries by changing the topics list. Might be worth selling this setup to other businesses.\n\n**Legal notes:**\nAll content is generated, so no copyright issues. Images are AI-created specifically for this use.",
+        "height": 912,
+        "width": 784
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        704
+      ],
+      "typeVersion": 1,
+      "id": "47eb92a1-37e4-4b64-a6c1-15883669e1b1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## How to Run Your Automated Social Media Workflow\n\n**CURRENT STATUS:** \nYour workflow is set to post every 20 seconds (for testing). You'll want to change this!\n\n**TO START THE WORKFLOW:**\n1. Look for the big blue \"Execute Workflow\" button at the top\n2. Click it once\n3. That's it! The workflow will start running automatically\n\n**TO CHANGE POSTING SCHEDULE:**\n1. Click on the \"Schedule Trigger\" node (the clock icon on the left)\n2. In the right panel, you'll see \"Rule\" settings\n3. Change \"seconds: 20\" to something more reasonable like:\n   - Every 2 hours: Change to \"hours: 2\" \n   - Every 4 hours: Change to \"hours: 4\"\n   - Daily at 9am: Change to \"hours: 24\" and set time to 09:00\n\n**TO STOP THE WORKFLOW:**\n1. Look for \"Active\" toggle switch at the top\n2. Click it to turn it off (it will say \"Inactive\")\n3. Workflow stops running\n\n**TO MONITOR WHAT'S HAPPENING:**\n1. Check the \"Executions\" tab on the left sidebar\n2. Green = successful posts\n3. Red = something went wrong\n\n**IMPORTANT WARNINGS:**\n- Currently posts every 20 seconds = 4,320 posts per day!\n- Facebook will ban you for spam at this rate\n- Change to 2-4 hours between posts immediately\n\n**SAFE POSTING SCHEDULE:**\n- 3-4 times per day maximum\n- Set to every 6-8 hours\n- Test with longer intervals first\n\n**CREDENTIALS NEEDED:**\n- OpenAI API key (already set up)\n- Facebook Page access (already set up)\n- Both should work if workflow ran before\n\n**IF SOMETHING BREAKS:**\n1. Check \"Executions\" tab for error messages\n2. Red nodes = problems\n3. Click on red node to see error details",
+        "height": 1024,
+        "width": 736
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        528,
+        704
+      ],
+      "typeVersion": 1,
+      "id": "191aeaed-5494-43c4-81a6-a151dc5c7b96",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "Credentials for fb graph API expires ever 1-2 hrs",
+        "height": 224,
+        "width": 246
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1328,
+        272
+      ],
+      "typeVersion": 1,
+      "id": "2e280b5b-0ed0-4cf4-9f0a-7e17e09ac0ca",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1KuxCw3LPw-qtgEe3oqIq0iuwy79YIiru3uku2WbzHus",
+          "mode": "list",
+          "cachedResultName": "Scheduled Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KuxCw3LPw-qtgEe3oqIq0iuwy79YIiru3uku2WbzHus/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KuxCw3LPw-qtgEe3oqIq0iuwy79YIiru3uku2WbzHus/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.Date }}",
+            "Time": "={{ $json.Time }}",
+            "Image URL": "={{ $('Upload file').item.json.webViewLink }}",
+            "Status": "={{ $json.Status }}",
+            "Category": "={{ $json.Category }}",
+            "Notes": "={{ $json.Notes }}",
+            "Facebook Post": "={{ $json[\"Facebook Post\"] }}",
+            "Instagram Post": "={{ $json[\"Instagram Post\"] }}",
+            "X Post": "={{ $json[\"X Post\"] }}",
+            "Season": "={{ $json.Season }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Facebook Post",
+              "displayName": "Facebook Post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Instagram Post",
+              "displayName": "Instagram Post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "X Post",
+              "displayName": "X Post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Image URL",
+              "displayName": "Image URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Season",
+              "displayName": "Season",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1104,
+        144
+      ],
+      "id": "8aae74b9-4f11-4fa0-abdf-65108b9934f9",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Q33u7QDdFT7kx3S6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        528,
+        144
+      ],
+      "id": "2eb9e526-bcb5-4469-bb9e-a89826eaafcf",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        608,
+        368
+      ],
+      "id": "a2a67bd1-ad34-4f25-9e45-8170612285f4",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Qn2KmHKfcYN7JBvq",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# Get the generated post text from AI - this contains all 3 platform posts\nai_response = _('Generate Text Content').item.json['message']['content']\n\n# Parse the three posts from AI response\nimport re\n\n# Extract each platform's post\nfacebook_match = re.search(r'FACEBOOK:\\s*(.*?)\\s*(?=INSTAGRAM:|$)', ai_response, re.DOTALL)\ninstagram_match = re.search(r'INSTAGRAM:\\s*(.*?)\\s*(?=X:|$)', ai_response, re.DOTALL)\nx_match = re.search(r'X:\\s*(.*?)$', ai_response, re.DOTALL)\n\nfacebook_post = facebook_match.group(1).strip() if facebook_match else \"Error parsing Facebook post\"\ninstagram_post = instagram_match.group(1).strip() if instagram_match else \"Error parsing Instagram post\"\nx_post = x_match.group(1).strip() if x_match else \"Error parsing X post\"\n\nfrom datetime import datetime\n\n# FIXED: Get current execution time instead of hardcoded 14:00\nnow = datetime.now()\ncurrent_date = now.strftime('%Y-%m-%d')\ncurrent_time = now.strftime('%H:%M')\n\n# Determine season based on current month\nmonth = now.month\nif month in [12, 1, 2]:\n    season = 'Winter'\nelif month in [3, 4, 5]:\n    season = 'Spring'\nelif month in [6, 7, 8]:\n    season = 'Summer'\nelse:  # months 9, 10, 11\n    season = 'Fall'\n\nstructure = {\n    'Date': current_date,\n    'Time': current_time,\n    'Season': season,\n    'Facebook Post': facebook_post,\n    'Instagram Post': instagram_post,\n    'X Post': x_post,\n    'Image URL': '<IMAGE_URL_PLACEHOLDER>',\n    'Status': 'To Post',\n    'Category': 'Product Update',\n    'Notes': '#AI #Automation #Innovation'\n}\n\nprompt = f'''Return ONLY this exact JSON with no markdown or extra text:\n{{\n    \"Date\": \"{structure['Date']}\",\n    \"Time\": \"{structure['Time']}\",\n    \"Season\": \"{structure['Season']}\",\n    \"Facebook Post\": \"{structure['Facebook Post'].replace('\"', '\\\\\"').replace(chr(10), ' ')}\",\n    \"Instagram Post\": \"{structure['Instagram Post'].replace('\"', '\\\\\"').replace(chr(10), ' ')}\",\n    \"X Post\": \"{structure['X Post'].replace('\"', '\\\\\"').replace(chr(10), ' ')}\",\n    \"Image URL\": \"{structure['Image URL']}\",\n    \"Status\": \"{structure['Status']}\",\n    \"Category\": \"{structure['Category']}\",\n    \"Notes\": \"{structure['Notes']}\"\n}}'''\n\nreturn {\n    \"chatInput\": prompt\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        144
+      ],
+      "id": "7be857c2-1004-49e5-96f4-1d750ade29ca",
+      "name": "Code in Python (Beta)"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# Parse the AI Agent output and structure it for Google Sheets\nimport json\nfrom datetime import datetime\n\n# Get the AI Agent's response\nai_output = _input.first().json\n\n# Try to extract JSON from the AI response\nif 'output' in ai_output:\n    data = ai_output['output']\nelif 'text' in ai_output:\n    data = ai_output['text']\nelse:\n    data = ai_output\n\n# If data is a string, parse it as JSON\nif isinstance(data, str):\n    try:\n        # Remove markdown code blocks if present\n        data = data.replace('```json', '').replace('```', '').strip()\n        parsed = json.loads(data)\n        \n        # If AI returned an array, convert to object\n        if isinstance(parsed, list):\n            # Map array items to column names\n            data = {\n                'Date': parsed[0],\n                'Time': parsed[1],\n                'Platform': parsed[2],\n                'Post Text': parsed[3],\n                'Image URL': parsed[4],\n                'Status': parsed[5],\n                'Category': parsed[6],\n                'Notes': parsed[7]\n            }\n        else:\n            data = parsed\n            \n    except Exception as e:\n        # If parsing fails, return error\n        return [{\n            'Date': datetime.now().strftime('%Y-%m-%d'),\n            'Time': datetime.now().strftime('%H:%M'),\n            'Platform': 'Facebook',\n            'Post Text': 'Error parsing AI output',\n            'Image URL': 'N/A',\n            'Status': 'Error',\n            'Category': 'Product Update',\n            'Notes': f'Failed to parse: {str(e)}'\n        }]\n\nif isinstance(data, dict):\n    return [data]\nelse:\n    return [{\n        'Date': datetime.now().strftime('%Y-%m-%d'),\n        'Time': datetime.now().strftime('%H:%M'),\n        'Platform': 'Facebook',\n        'Post Text': 'Invalid data format',\n        'Image URL': 'N/A',\n        'Status': 'Error',\n        'Category': 'Product Update',\n        'Notes': 'AI returned unexpected format'\n    }]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        144
+      ],
+      "id": "e73be5ff-cbfa-4edd-a0ea-c32cac7d36b4",
+      "name": "Code in Python (Beta)2"
+    },
+    {
+      "parameters": {
+        "name": "={{ $now.format('YYYY-MM-DD_HHmmss') }}.png",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "root",
+          "cachedResultName": "/ (Root folder)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        80,
+        144
+      ],
+      "id": "af678992-7554-4537-a4a6-91bccfed2a72",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "2KupETq4QLi8d9l8",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{ $json[\"X Post\"] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        1360,
+        48
+      ],
+      "id": "a8c0d114-9167-4210-a32e-0d31b3c10005",
+      "name": "Create Tweet",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "5D5HJ8WIowbKcvzG",
+          "name": "X account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Generate Text Content": {
+      "main": [
+        [
+          {
+            "node": "Generate an image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image1": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)1": {
+      "main": [
+        [
+          {
+            "node": "Generate Text Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Facebook Graph API1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Tweet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)2": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+  }
+}
