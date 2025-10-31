@@ -27,8 +27,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -64,
-        512
+        -112,
+        528
       ],
       "id": "b95af535-688d-414b-99f9-5f2c5144f733",
       "name": "AI Agent - Image Prompt"
@@ -48,14 +48,14 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"prompt\": \"={{ $('AI Agent - Image Prompt').item.json.output }}\",\n  \"image_urls\": [\n    \"={{ $node['Code in Python (Beta)4'].json.img_link }}\"\n  ]\n}\n",
+        "jsonBody": "={\n  \"prompt\": \"={{ $('AI Agent - Image Prompt').item.json.output }}\",\n  \"image_urls\": [\n    \"{{ $node['Code in Python (Beta)4'].json.img_link }}\"\n  ]\n}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        256,
-        512
+        208,
+        528
       ],
       "id": "b0239e3a-3070-4dfd-a3e2-c8ad9391af7a",
       "name": "HTTP Request - Create Image 1"
@@ -67,8 +67,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        448,
-        512
+        400,
+        528
       ],
       "id": "e545a952-2312-44ba-9d81-71bcad0005f2",
       "name": "Wait - 30s",
@@ -91,8 +91,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        672,
-        512
+        624,
+        528
       ],
       "id": "3c4ffc2f-f478-41da-846c-a7cc4fa27fc5",
       "name": "HTTP Request - Get Image 1"
@@ -100,13 +100,13 @@
     {
       "parameters": {
         "content": "## Image Creation",
-        "height": 352,
-        "width": 1504,
+        "height": 368,
+        "width": 1520,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -576,
+        -592,
         400
       ],
       "typeVersion": 1,
@@ -209,12 +209,12 @@
       "parameters": {
         "content": "## Create Video ",
         "height": 304,
-        "width": 1216,
+        "width": 1248,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1152,
+        1168,
         -128
       ],
       "typeVersion": 1,
@@ -236,7 +236,7 @@
       "typeVersion": 1,
       "position": [
         1264,
-        560
+        528
       ],
       "id": "22bcdeb7-c9d6-4153-8c44-192a26840b3a",
       "name": "Aggregate"
@@ -259,7 +259,7 @@
       "typeVersion": 4.2,
       "position": [
         1888,
-        560
+        528
       ],
       "id": "b7b1b9b6-7ccc-45dd-b28e-a63ffed5b7a7",
       "name": "HTTP Request - Final Video"
@@ -275,7 +275,7 @@
       "typeVersion": 1.2,
       "position": [
         2080,
-        560
+        528
       ],
       "id": "ed567274-34f6-45b9-91a1-cb0cf5de4c3b",
       "name": "Send a video",
@@ -296,7 +296,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         1168,
-        448
+        416
       ],
       "typeVersion": 1,
       "id": "02f4a7e5-324f-4af1-ab4c-a9485b6c9906",
@@ -310,7 +310,7 @@
       "typeVersion": 1.1,
       "position": [
         1680,
-        560
+        528
       ],
       "id": "05d74bc8-b401-4450-870b-89028de009f4",
       "name": "Wait 30s",
@@ -352,7 +352,7 @@
       "typeVersion": 4.2,
       "position": [
         1472,
-        560
+        528
       ],
       "id": "ddf03529-b599-429f-94e5-0cb04343b98a",
       "name": "HTTP Request - Combine"
@@ -951,8 +951,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -416,
-        512
+        -464,
+        528
       ],
       "id": "d2e099d2-c30d-46ed-87e8-2382e43ec7ed",
       "name": "Merge1"
@@ -964,8 +964,8 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        -240,
-        512
+        -288,
+        528
       ],
       "id": "d18fc690-0e1d-41e8-a325-bda4c86b6af3",
       "name": "Limit1"
@@ -979,8 +979,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        1504,
-        288
+        1424,
+        224
       ],
       "id": "385f29f7-5edd-4f4e-926b-390d14638261",
       "name": "Structured Output Parser"
@@ -992,7 +992,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        992,
+        976,
         272
       ],
       "id": "68d355ab-f7e4-4407-a2af-c1099b5e7710",
