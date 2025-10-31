@@ -4,13 +4,13 @@
       "parameters": {
         "content": "## Content Idea",
         "height": 400,
-        "width": 1776,
+        "width": 1520,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -656,
-        -144
+        -592,
+        -128
       ],
       "typeVersion": 1,
       "id": "39173dc7-8ff6-444b-ad0d-485c8942303a",
@@ -27,8 +27,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        32,
-        448
+        -64,
+        512
       ],
       "id": "b95af535-688d-414b-99f9-5f2c5144f733",
       "name": "AI Agent - Image Prompt"
@@ -48,14 +48,14 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"prompt\": \"{{ $('AI Agent - Image Prompt').item.json.output }}\",\n  \"image_urls\": [\n  \"{{ $node['Code in Python (Beta)4'].json.img_link }}\"\n]\n\n} ",
+        "jsonBody": "={\n  \"prompt\": \"={{ $('AI Agent - Image Prompt').item.json.output }}\",\n  \"image_urls\": [\n    \"={{ $node['Code in Python (Beta)4'].json.img_link }}\"\n  ]\n}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        352,
-        448
+        256,
+        512
       ],
       "id": "b0239e3a-3070-4dfd-a3e2-c8ad9391af7a",
       "name": "HTTP Request - Create Image 1"
@@ -67,8 +67,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        544,
-        448
+        448,
+        512
       ],
       "id": "e545a952-2312-44ba-9d81-71bcad0005f2",
       "name": "Wait - 30s",
@@ -91,8 +91,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        768,
-        448
+        672,
+        512
       ],
       "id": "3c4ffc2f-f478-41da-846c-a7cc4fa27fc5",
       "name": "HTTP Request - Get Image 1"
@@ -101,13 +101,13 @@
       "parameters": {
         "content": "## Image Creation",
         "height": 352,
-        "width": 1280,
+        "width": 1504,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -352,
-        352
+        -576,
+        400
       ],
       "typeVersion": 1,
       "id": "66760818-89de-46bc-923d-6914d3391fda",
@@ -161,7 +161,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "=={{ {\n  prompt: $json['output.scenes'],\n  model: 'veo3_fast',\n  aspectRatio: '9:16'\n} }}",
+        "jsonBody": "={\n  \"prompt\": \"={{ $json['output.scenes'] }}\",\n  \"model\": \"veo3_fast\",\n  \"aspectRatio\": \"9:16\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -377,8 +377,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        3392,
-        -144
+        3632,
+        -128
       ],
       "id": "5bd44b26-4fe7-4aa5-9063-393efdd1752c",
       "name": "Upload file",
@@ -397,8 +397,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2576,
-        -48
+        2816,
+        -32
       ],
       "id": "cfec57c1-dc86-4ad0-960d-2640067dc26c",
       "name": "HTTP Request"
@@ -419,8 +419,8 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        2736,
-        -48
+        2976,
+        -32
       ],
       "id": "9816b730-462b-4477-becd-9715d9bf8e04",
       "name": "Analyze video",
@@ -439,8 +439,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2912,
-        -48
+        3152,
+        -32
       ],
       "id": "34ea9471-f74e-4973-af1d-5c5e80c4747c",
       "name": "Code in Python (Beta)"
@@ -452,8 +452,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        3088,
-        -48
+        3328,
+        -32
       ],
       "id": "f0624f7a-bb8b-491b-84d3-61a62dc2b18a",
       "name": "AI Agent"
@@ -465,8 +465,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        3136,
-        112
+        3376,
+        128
       ],
       "id": "0105e54b-0ca2-426b-aaae-ac0a1c791872",
       "name": "Google Gemini Chat Model",
@@ -485,8 +485,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3392,
-        0
+        3632,
+        16
       ],
       "id": "cc4969f9-ffcd-4651-aaca-b55f42188716",
       "name": "Code in Python (Beta)1"
@@ -494,14 +494,14 @@
     {
       "parameters": {
         "content": "## Analyze Video | Create Descriptions",
-        "height": 384,
-        "width": 1856,
+        "height": 352,
+        "width": 1728,
         "color": 2
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2448,
-        -160
+        2688,
+        -144
       ],
       "typeVersion": 1,
       "id": "7e50f6db-0e55-4c12-bb57-9c6e22de56d0",
@@ -512,8 +512,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        3616,
-        -16
+        3856,
+        0
       ],
       "id": "a8451e30-8c95-4381-8c8b-5b5560f2ef85",
       "name": "Merge"
@@ -526,8 +526,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        3808,
-        -16
+        4048,
+        0
       ],
       "id": "97f341c3-09ce-4a60-a3b0-9c6287ff191c",
       "name": "Aggregate1"
@@ -535,14 +535,14 @@
     {
       "parameters": {
         "content": "## Upload Videos",
-        "height": 368,
-        "width": 1856,
+        "height": 352,
+        "width": 1728,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2448,
-        400
+        2688,
+        464
       ],
       "typeVersion": 1,
       "id": "87a8c59f-c7f9-46c0-8983-990959d1e59f",
@@ -556,8 +556,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2928,
-        528
+        3168,
+        544
       ],
       "id": "80fec2f3-ecc2-4e5a-a5f3-9a673209f13b",
       "name": "HTTP Request1"
@@ -582,8 +582,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        3312,
-        528
+        3552,
+        544
       ],
       "id": "8950efb2-49dc-43b8-8adb-394d5889de61",
       "name": "Upload a video",
@@ -729,8 +729,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3984,
-        -16
+        4224,
+        0
       ],
       "id": "34ae6e96-f4f9-4d2e-ab5a-8024c5e17ab5",
       "name": "Append row in sheet",
@@ -763,8 +763,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2592,
-        528
+        2832,
+        544
       ],
       "id": "a0e5b97a-c22d-425a-94c8-ea027c5458f0",
       "name": "Get row(s) in sheet",
@@ -782,8 +782,8 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        2752,
-        528
+        2992,
+        544
       ],
       "id": "a7e92ef8-4a18-41b0-8ff6-ad15c20d4d20",
       "name": "Limit"
@@ -795,8 +795,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        3120,
-        528
+        3360,
+        544
       ],
       "id": "87d5c953-b0d5-458d-b843-18a68a16eee1",
       "name": "Wait",
@@ -819,8 +819,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        816,
-        0
+        752,
+        48
       ],
       "id": "0b223f5f-f0df-4b7b-9010-9ce913289abb",
       "name": "Analyze image1",
@@ -842,8 +842,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -496,
-        -64
+        -560,
+        -16
       ],
       "id": "953bc20f-5427-42b2-9e8e-deb95b0dd014",
       "name": "Schedule Trigger"
@@ -856,8 +856,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -320,
-        -64
+        -384,
+        -16
       ],
       "id": "e8c67567-59c9-4ba5-9a0e-3cb46b5078b4",
       "name": "Code in Python (Beta)2"
@@ -877,8 +877,8 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        400,
-        -64
+        336,
+        -16
       ],
       "id": "85fb605f-ec28-4175-89bf-8c130aa73015",
       "name": "Generate an image",
@@ -897,8 +897,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        208,
-        -64
+        144,
+        -16
       ],
       "id": "650244f6-70b8-46f0-97b6-0c1b154019fa",
       "name": "Code in Python (Beta)3"
@@ -910,8 +910,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -112,
-        -64
+        -176,
+        -16
       ],
       "id": "b821c1d0-ae07-4c7d-8f11-4bac63d16b34",
       "name": "AI Agent1"
@@ -934,8 +934,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        592,
-        -128
+        528,
+        -80
       ],
       "id": "77d4e5e2-c913-48c0-bb5a-490f241f4bf7",
       "name": "Upload file1",
@@ -951,8 +951,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -320,
-        448
+        -416,
+        512
       ],
       "id": "d2e099d2-c30d-46ed-87e8-2382e43ec7ed",
       "name": "Merge1"
@@ -964,8 +964,8 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        -144,
-        448
+        -240,
+        512
       ],
       "id": "d18fc690-0e1d-41e8-a325-bda4c86b6af3",
       "name": "Limit1"
@@ -992,8 +992,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1072,
-        352
+        992,
+        272
       ],
       "id": "68d355ab-f7e4-4407-a2af-c1099b5e7710",
       "name": "Google Gemini Chat Model2",
@@ -1012,8 +1012,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        816,
-        -128
+        752,
+        -80
       ],
       "id": "314f077a-6201-4bbf-9756-ddb1f533a157",
       "name": "Code in Python (Beta)4"
@@ -1028,8 +1028,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        48,
-        -464
+        208,
+        -384
       ],
       "id": "ee3815f8-6f83-4c9c-9d28-317f9c997cc0",
       "name": "Telegram Trigger",
@@ -1059,8 +1059,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        240,
-        -464
+        400,
+        -384
       ],
       "id": "594d7a92-93ad-427f-9fe6-ad270c3ccb1c",
       "name": "Edit Fields - Bot ID 1",
@@ -1074,8 +1074,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        432,
-        -464
+        592,
+        -384
       ],
       "id": "03ffb725-9871-44ec-a191-da8551905511",
       "name": "HTTP Request - Image Path",
@@ -1098,8 +1098,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        608,
-        -464
+        768,
+        -384
       ],
       "id": "bbd4894a-2676-4264-a8a0-7d6f6c9815e9",
       "name": "Analyze image",
