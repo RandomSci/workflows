@@ -10,8 +10,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        64,
-        -64
+        48,
+        -464
       ],
       "id": "ee3815f8-6f83-4c9c-9d28-317f9c997cc0",
       "name": "Telegram Trigger",
@@ -21,7 +21,8 @@
           "id": "k7m8mevEdyBrdj98",
           "name": "Telegram account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -40,11 +41,12 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        256,
-        -64
+        240,
+        -464
       ],
       "id": "594d7a92-93ad-427f-9fe6-ad270c3ccb1c",
-      "name": "Edit Fields - Bot ID 1"
+      "name": "Edit Fields - Bot ID 1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -54,11 +56,12 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        448,
-        -64
+        432,
+        -464
       ],
       "id": "03ffb725-9871-44ec-a191-da8551905511",
-      "name": "HTTP Request - Image Path"
+      "name": "HTTP Request - Image Path",
+      "disabled": true
     },
     {
       "parameters": {
@@ -77,8 +80,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        640,
-        -64
+        608,
+        -464
       ],
       "id": "bbd4894a-2676-4264-a8a0-7d6f6c9815e9",
       "name": "Analyze image",
@@ -92,13 +95,13 @@
     {
       "parameters": {
         "content": "## Content Idea",
-        "height": 288,
-        "width": 848,
+        "height": 400,
+        "width": 1776,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -32,
+        -656,
         -144
       ],
       "typeVersion": 1,
@@ -108,7 +111,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Make one image prompt.\n\nEnsure you use the details of the reference image as accurately as possible for your final output.\n\nUser Instructions:\n{{ $('Telegram Trigger').item.json.message.caption }}\n\n\nDescription of the reference image:\n{{ $json.content }}",
+        "text": "=Make one image prompt.\n\nEnsure you use the details of the reference image as accurately as possible for your final output.\n\nUser Instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image:\n{{ $json.content }}",
         "options": {
           "systemMessage": "=Role: You create image prompts for cute, animated cartoon-style characters and scenes.\n\nMain objective: Transform the reference image into an adorable, animated character in a cartoonish art style.\n\nArt Style Guidelines:\n- Cute cartoon/anime aesthetic\n- Big expressive eyes\n- Soft rounded features\n- Pastel or vibrant colors\n- Chibi or kawaii style elements\n- 3D animated look (Pixar/Disney style) OR 2D illustration style\n- Adorable proportions (slightly big head, small body)\n- Warm, inviting color palette\n\nCharacter Design:\n- Always make characters look friendly and approachable\n- Exaggerated cute features (rosy cheeks, sparkly eyes)\n- Simplified but expressive\n- Child-friendly and wholesome\n- Emphasize cuteness factor\n\nScene Style:\n- Dreamy, soft lighting\n- Magical atmosphere\n- Whimsical environments\n- Storybook quality\n- Fantasy elements welcome\n\nRULES:\n- Always use single quotes ('') never double quotes (\"\")\n- Output only the image prompt\n- No hyphens or dashes\n- ALWAYS specify \"cute animated style\" or \"cartoon style\"\n- Describe as if it's a frame from an animated movie\n\nEXAMPLE OUTPUTS:\n\n✅ GOOD:\n\"Adorable cartoon character with big sparkling eyes and rosy cheeks, wearing a cozy pastel blue winter jacket, standing in a magical snowy ice field with cute stylized snowflakes floating around, northern lights glowing softly in the background, holding up a heart-shaped sign that says 'I Love You' with both hands, warm smile, 3D animated Pixar style, soft dreamy lighting, whimsical and heartwarming atmosphere\"\n\n✅ GOOD:\n\"Cute chibi-style animated girl with large expressive anime eyes, fluffy pink scarf, standing on a cartoon cloud, pastel sky background with tiny twinkling stars, holding a kawaii-style message board, soft gradient colors, Disney-inspired 3D animation aesthetic, magical and sweet vibe\"\n\n❌ BAD:\n\"Woman in winter jacket holding sign in snow\"\n\nSTYLE VARIATIONS YOU CAN USE:\n- \"3D Pixar animation style\"\n- \"Disney animated movie aesthetic\"\n- \"Cute 2D illustration style\"\n- \"Kawaii anime chibi style\"\n- \"Storybook illustration\"\n- \"Dreamy watercolor animation\"\n- \"Studio Ghibli inspired soft style\"\n```\n\n---\n\n### **2. Video Prompt Generator (AI Agent - Video Prompter)**\n```\nYou are an AI agent that generates CINEMATIC ZOOM video prompts in CUTE ANIMATED CARTOON STYLE.\n\nCRITICAL: Every scene must be described as ANIMATED/CARTOON style, never realistic.\n\nYour output must be 3 scenes:\n\n{\n  \"scenes\": {\n    \"scene 1\": \"\",\n    \"scene 2\": \"\",\n    \"scene 3\": \"\"\n  }\n}\n\nANIMATED CINEMATIC ZOOM FRAMEWORK:\n\nScene 1 (WIDE/MACRO - Animated):\nStart from the biggest scale IN CARTOON STYLE:\n- Cute cartoon Earth floating in sparkly space with stars\n- Animated aerial view with soft colors\n- Storybook-style landscape overview\n- Dreamy animated establishing shot\n- Whimsical wide view\n\nScene 2 (MEDIUM/TRANSITION - Animated):\nZoom into specific region IN CARTOON STYLE:\n- Animated environment becomes visible\n- Cute stylized landscape (cartoonish trees, clouds, buildings)\n- Fantasy elements can appear\n- Magical atmosphere builds\n- Soft color transitions\n\nScene 3 (CLOSE/MICRO - Animated):\nFinal cute character moment:\n- Adorable animated character from reference image\n- Big expressive eyes, cute features\n- Holding/showing their message\n- Kawaii/chibi proportions\n- Heartwarming expression\n\nSCENE STRUCTURE:\n\nEach scene must include:\n\nDialogue:\n- Sweet, wholesome narration\n- Can be whimsical/poetic\n- Heartwarming tone\n- Use single quotes ('')\n- Keep it cute and positive\n\nDescription:\n- ALWAYS specify animation style\n- Describe cute/whimsical elements\n- Soft colors and dreamy atmosphere\n- Fantasy elements welcome\n- Camera movement\n- Magical details (sparkles, glows, soft lighting)\n\nCamera:\n- \"Smooth animated camera zoom\"\n- \"Dreamy cinematic animation\"\n- \"Storybook-style camera movement\"\n- Specify animation quality\n\nANIMATION STYLE KEYWORDS TO ALWAYS INCLUDE:\n✅ \"cute animated style\"\n✅ \"cartoon aesthetic\"\n✅ \"3D Pixar-style animation\"\n✅ \"kawaii chibi design\"\n✅ \"Disney-inspired animation\"\n✅ \"soft pastel colors\"\n✅ \"whimsical cartoon world\"\n✅ \"adorable animated character\"\n✅ \"storybook illustration style\"\n✅ \"dreamy animated scenery\"\n\nEXAMPLES OF CUTE ANIMATED CINEMATIC JOURNEY:\n\nExample 1 (Space to Arctic - Cute Animated):\n\nScene 1:\nDialogue: 'Once upon a time, somewhere magical...'\nDescription: Adorable cartoon Earth floating in sparkly starlit space, soft pastel blue and purple colors, tiny twinkling stars surrounding the planet, cute shooting stars passing by, Earth has a soft glow, 3D Pixar animation style, dreamy and whimsical atmosphere, camera begins smooth animated zoom toward the snowy northern region\nCamera: Smooth cinematic animated zoom from space, storybook-style establishing shot, Disney-quality 3D animation, gentle descent begins\n\nScene 2:\nDialogue: '...in the most magical winter wonderland...'\nDescription: Camera zooming through cute fluffy white clouds, arriving at a gorgeous cartoon Arctic landscape, stylized ice fields with soft rounded snow drifts, adorable animated northern lights dancing in pastel green and pink colors, tiny sparkles floating in the air, kawaii-style snowflakes gently falling, cartoon pine trees with snow caps, dreamy winter fantasy aesthetic, camera continues smooth descent\nCamera: Aerial animated drone-style shot descending through whimsical clouds, smooth cartoon camera transition, soft focus effects, continuing zoom toward specific cute location\n\nScene 3:\nDialogue: '...lives someone with a message just for you'\nDescription: Adorable cartoon character with big sparkling eyes and rosy cheeks, cute button nose, wearing a soft pastel winter jacket with fluffy trim, standing in the magical snowy landscape, holding up a heart-shaped kawaii-style sign that says 'I Love You' with cute decorative hearts around the text, warm loving smile, small cute hands gripping the sign, soft magical glow around character, gentle snowflakes falling, northern lights glowing softly behind them, 3D Pixar animation quality, heartwarming and sweet atmosphere\nCamera: Final animated close-up shot, smooth camera stop, focused on adorable character, soft bokeh background effect, warm intimate framing, Disney-movie quality animation\n\nExample 2 (Sky to Beach - Cute Animated):\n\nScene 1:\nDialogue: 'Somewhere under the rainbow...'\nDescription: Beautiful cartoon sky with fluffy pastel clouds, cute smiling sun peeking out, soft gradient from pink to blue, tiny animated birds flying, sparkles in the air, camera beginning descent through this whimsical sky, storybook illustration aesthetic, dreamy and colorful\nCamera: Wide animated establishing shot, smooth cartoon camera zoom beginning, Studio Ghibli inspired movement\n\nScene 2:\nDialogue: '...where the ocean meets the shore...'\nDescription: Zooming toward adorable animated tropical island, cartoon palm trees swaying, cute waves with soft foam, pastel turquoise water, golden sand with sparkles, tiny animated crabs and seashells, kawaii-style sunshine rays, magical beach paradise, camera approaching the shore\nCamera: Continuing smooth animated descent, aerial cartoon view transitioning to beach level, soft color grading\n\nScene 3:\nDialogue: '...a special friend is waiting'\nDescription: [CUTE ANIMATED CHARACTER from reference image] with big anime-style eyes, chibi proportions, wearing adorable beach outfit, standing on cartoon sand with cute toes visible, holding a kawaii message board decorated with shells and starfish, warm happy expression, ocean waves softly animated in background, soft golden hour lighting, heart sparkles floating around, 3D animated movie quality\nCamera: Final cute close-up, animated camera settles gently, warm framing on character, soft background blur, heartwarming shot\n\nMANDATORY RULES:\n- EVERY scene must specify animation/cartoon style\n- NO realistic descriptions allowed\n- Always include cute/adorable/kawaii descriptors\n- Use soft, pastel, or vibrant color descriptions\n- Add magical elements (sparkles, glows, soft lighting)\n- Characters must have exaggerated cute features\n- Scene 1 = Biggest animated scale\n- Scene 2 = Medium animated transition\n- Scene 3 = Close-up cute character\n- Single quotes ('') only\n- No hyphens or dashes\n- Follow exact JSON schema\n\nCUTE ELEMENTS TO INCLUDE:\n- Sparkles and twinkles\n- Soft glows\n- Pastel colors\n- Big expressive eyes\n- Rosy cheeks\n- Magical atmosphere\n- Whimsical details\n- Heart shapes\n- Gentle movements\n- Warm lighting\n\nRemember: Everything is ANIMATED and ADORABLE! Think Pixar meets Kawaii! 🎀✨"
         }
@@ -117,46 +120,10 @@
       "typeVersion": 2.2,
       "position": [
         32,
-        528
+        448
       ],
       "id": "b95af535-688d-414b-99f9-5f2c5144f733",
       "name": "AI Agent - Image Prompt"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "claude-opus-4-1-20250805",
-          "mode": "list",
-          "cachedResultName": "Claude Opus 4.1"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
-      "typeVersion": 1.3,
-      "position": [
-        656,
-        256
-      ],
-      "id": "9e4f3122-d65a-421c-a5c7-b2f97fe396e1",
-      "name": "Anthropic Chat Model",
-      "credentials": {
-        "anthropicApi": {
-          "id": "2OM63ZYd0RhhD339",
-          "name": "Anthropic account"
-        }
-      }
-    },
-    {
-      "parameters": {},
-      "type": "@n8n/n8n-nodes-langchain.toolThink",
-      "typeVersion": 1.1,
-      "position": [
-        1008,
-        256
-      ],
-      "id": "29f03d00-0708-4c01-a69b-13ca78d6742c",
-      "name": "Think"
     },
     {
       "parameters": {
@@ -173,14 +140,14 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"prompt\": \"{{ $json.output }}\",\n  \"image_urls\": [\n    \"https://api.telegram.org/file/bot{{ $('Edit Fields - Bot ID 1').item.json['bot id'] }}/{{ $('HTTP Request - Image Path').item.json.result.file_path }}\"\n  ]\n}",
+        "jsonBody": "={\n  \"prompt\": \"'Cute animated style anime girl with adorable chibi proportions, soft pastel pink hair in long curled twin tails, wearing a cozy oversized cream knit sweater and a matching cute beanie, she has big sparkling blue eyes and soft rosy cheeks, a gentle content smile gracing her lips, seated at a warm wooden table in a charming, softly lit café, holding a kawaii style coffee cup with intricate latte art and a wisp of gentle steam, the café background features warm golden hues and a magical bokeh effect with whimsical glowing lights and stylized large windows, creating a cozy and inviting atmosphere, 3D Pixar animation quality, dreamy cinematic lighting, heartwarming and sweet vibe'\",\n  \"image_urls\": [\n  \"{{ $node['Code in Python (Beta)4'].json.img_link }}\"\n]\n\n} ",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        336,
-        528
+        352,
+        448
       ],
       "id": "b0239e3a-3070-4dfd-a3e2-c8ad9391af7a",
       "name": "HTTP Request - Create Image 1"
@@ -192,8 +159,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        560,
-        528
+        544,
+        448
       ],
       "id": "e545a952-2312-44ba-9d81-71bcad0005f2",
       "name": "Wait - 30s",
@@ -216,8 +183,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        752,
-        528
+        768,
+        448
       ],
       "id": "3c4ffc2f-f478-41da-846c-a7cc4fa27fc5",
       "name": "HTTP Request - Get Image 1"
@@ -226,13 +193,13 @@
       "parameters": {
         "content": "## Image Creation",
         "height": 352,
-        "width": 1024,
+        "width": 1280,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -32,
-        432
+        -352,
+        352
       ],
       "typeVersion": 1,
       "id": "66760818-89de-46bc-923d-6914d3391fda",
@@ -241,7 +208,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Create video prompts.\n\nUser instructions:\n{{ $('Telegram Trigger').item.json.message.caption }}\n\nDescription of the reference image(s).\n{{ $('Analyze image').item.json.content }}",
+        "text": "=Create video prompts.\n\nUser instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image(s).\n{{ $('Analyze image1').item.json.content }}",
         "hasOutputParser": true,
         "options": {
           "systemMessage": "=You are an AI agent that generates CINEMATIC ZOOM video prompts in CUTE ANIMATED CARTOON STYLE.\n\nCRITICAL: Every scene must be ANIMATED/CARTOON style. This is NOT realistic footage. This is a cute animated story like a Pixar/Disney movie.\n\nYour output must be 3 scenes:\n\n{\n  \"scenes\": {\n    \"scene 1\": \"\",\n    \"scene 2\": \"\",\n    \"scene 3\": \"\"\n  }\n}\n\nANIMATED CINEMATIC ZOOM FRAMEWORK:\n\nScene 1 (WIDE/MACRO - Animated):\nStart from biggest scale IN CARTOON STYLE:\n- Cute cartoon city skyline or aerial view\n- Animated sunset/evening sky with soft colors\n- Dreamy animated establishing shot\n- Camera ZOOMING DOWN toward a specific location\n\nScene 2 (MEDIUM/TRANSITION - Animated):\nZoom closer IN CARTOON STYLE:\n- Animated location coming into view\n- Cute stylized environment (buildings, nature, indoor space)\n- Magical atmosphere building\n- Camera DESCENDING toward the character\n\nScene 3 (CLOSE - Animated Character):\nFinal cute character moment:\n- Adorable ANIMATED character from reference image\n- Big expressive anime eyes, kawaii style\n- Character doing their main action (singing, dancing, posing, etc)\n- Heartwarming animated expression\n- NO talking about links, products, or CTAs\n- Just being cute and doing their thing\n\nSCENE STRUCTURE:\n\nDialogue:\n- Sweet, simple narration about the story/moment\n- NO mentions of 'click link', 'follow', 'check out', 'get yours'\n- Focus on the emotion and magic of the moment\n- Use single quotes ('')\n- Keep it wholesome and story-like\n- Maximum 2 short sentences per scene\n\nDescription:\n- ALWAYS specify 'cute animated style', '3D Pixar animation', 'cartoon aesthetic', or 'Disney-inspired'\n- Describe cute/whimsical animated elements\n- Soft pastel colors and dreamy atmosphere\n- If character is singing: show mouth open with musical notes\n- If character is dancing: show movement with motion lines\n- If character is posing: show confident cute expression\n- Add sparkles, glows, magical lighting\n- Make it look like an animated movie/music video\n\nCamera:\n- 'Smooth animated camera zoom'\n- 'Disney-style cinematic animation'\n- 'Dreamy cartoon camera movement'\n- 'Storybook-style camera pan'\n- Never mention 'iPhone', 'phone footage', 'UGC', 'selfie', 'amateur'\n- Always animated/cinematic quality\n\nANIMATION KEYWORDS TO ALWAYS USE:\n✅ 'cute animated style'\n✅ '3D Pixar animation'\n✅ 'kawaii aesthetic'\n✅ 'Disney-inspired'\n✅ 'cartoon character'\n✅ 'animated movie quality'\n✅ 'soft pastel colors'\n✅ 'magical sparkles'\n✅ 'dreamy atmosphere'\n\nEXAMPLE (SINGING CHARACTER):\n\nScene 1:\nDialogue: 'On a magical evening in the city...'\nDescription: Beautiful cartoon city skyline at golden hour, soft pastel pink and orange animated sky, cute stylized buildings with twinkling windows, dreamy clouds floating by, 3D Pixar animation style, camera begins smooth animated zoom toward a charming rooftop terrace with fairy lights\nCamera: Smooth cinematic animated zoom from aerial view, Disney-quality 3D animation, descending gracefully\n\nScene 2:\nDialogue: '...a young woman discovers her voice...'\nDescription: Zooming closer to adorable animated rooftop terrace decorated with warm glowing string lights, cartoon city buildings in background, pastel sunset colors, kawaii-style sparkles in the air, 3D animated movie quality, camera continuing smooth descent\nCamera: Continuing animated zoom, storybook-style camera movement, soft focus effects\n\nScene 3:\nDialogue: '...and sings from her heart'\nDescription: Adorable animated young woman with big sparkling expressive anime eyes and long flowing wavy hair, wearing cute purple dress, standing on magical rooftop surrounded by glowing fairy lights, mouth open singing with musical notes floating around her, warm smile, one hand elegantly positioned, city lights twinkling behind her, soft golden glow on face, 3D Pixar animation quality, heartwarming atmosphere\nCamera: Final animated close-up, focused on adorable character, soft bokeh background, Disney movie quality\n\nMANDATORY RULES:\n- EVERY scene = ANIMATED/CARTOON only\n- NO realistic/UGC descriptions\n- NO product pitches or CTAs\n- NO 'click link', 'follow me', 'get yours' phrases\n- Character should be doing something cute (singing, dancing, posing, waving)\n- Always include cute/kawaii/adorable descriptors\n- Soft pastel or vibrant colors\n- Magical sparkles and glows\n- Scene 1 = Biggest animated scale (aerial/wide)\n- Scene 2 = Medium animated transition (zooming in)\n- Scene 3 = Close-up cute character (main action)\n- Single quotes ('') only\n- No hyphens or dashes\n- Follow exact JSON schema\n\nRemember: This is a CUTE ANIMATED STORY like a Disney/Pixar movie, NOT a product ad or vlog! 🎀✨"
@@ -250,26 +217,12 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        1232,
+        1296,
         -32
       ],
       "id": "bc81a8e0-0d13-4f08-8bd0-de86e958475b",
-      "name": "AI Agent - Video Prompter"
-    },
-    {
-      "parameters": {
-        "schemaType": "manual",
-        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"scenes\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"scene 1\": { \"type\": \"string\" },\n        \"scene 2\": { \"type\": \"string\" },\n        \"scene 3\": { \"type\": \"string\" }\n      },\n      \"required\": [\"scene 1\", \"scene 2\", \"scene 3\"]\n    }\n  },\n  \"required\": [\"scenes\"]\n}\n",
-        "autoFix": true
-      },
-      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-      "typeVersion": 1.3,
-      "position": [
-        1328,
-        256
-      ],
-      "id": "385f29f7-5edd-4f4e-926b-390d14638261",
-      "name": "Structured Output Parser"
+      "name": "AI Agent - Video Prompter",
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -279,7 +232,7 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        1552,
+        1616,
         -32
       ],
       "id": "71e53bf0-87d0-4a2a-b039-b20960662d06",
@@ -306,7 +259,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1744,
+        1808,
         -32
       ],
       "id": "54bbc3ce-fa66-444e-b861-72ad7ef516da",
@@ -338,7 +291,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2144,
+        2208,
         -32
       ],
       "id": "87f3eef4-a465-4048-9df9-f3a5eab33b31",
@@ -374,8 +327,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1232,
-        576
+        1264,
+        560
       ],
       "id": "22bcdeb7-c9d6-4153-8c44-192a26840b3a",
       "name": "Aggregate"
@@ -397,8 +350,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1856,
-        576
+        1888,
+        560
       ],
       "id": "b7b1b9b6-7ccc-45dd-b28e-a63ffed5b7a7",
       "name": "HTTP Request - Final Video"
@@ -413,8 +366,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2048,
-        576
+        2080,
+        560
       ],
       "id": "ed567274-34f6-45b9-91a1-cb0cf5de4c3b",
       "name": "Send a video",
@@ -429,13 +382,13 @@
     {
       "parameters": {
         "content": "## Combine Videos",
-        "height": 416,
-        "width": 1168
+        "height": 352,
+        "width": 1232
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         1184,
-        432
+        448
       ],
       "typeVersion": 1,
       "id": "02f4a7e5-324f-4af1-ab4c-a9485b6c9906",
@@ -448,8 +401,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1648,
-        576
+        1680,
+        560
       ],
       "id": "05d74bc8-b401-4450-870b-89028de009f4",
       "name": "Wait 30s",
@@ -462,7 +415,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1936,
+        2000,
         -32
       ],
       "id": "99461e97-7fdb-4456-8bb2-a234cdc90083",
@@ -490,8 +443,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1440,
-        576
+        1472,
+        560
       ],
       "id": "ddf03529-b599-429f-94e5-0cb04343b98a",
       "name": "HTTP Request - Combine"
@@ -516,8 +469,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        3584,
-        -128
+        3392,
+        -144
       ],
       "id": "5bd44b26-4fe7-4aa5-9063-393efdd1752c",
       "name": "Upload file",
@@ -536,8 +489,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2752,
-        -16
+        2576,
+        -48
       ],
       "id": "cfec57c1-dc86-4ad0-960d-2640067dc26c",
       "name": "HTTP Request"
@@ -558,8 +511,8 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        2912,
-        -16
+        2736,
+        -48
       ],
       "id": "9816b730-462b-4477-becd-9715d9bf8e04",
       "name": "Analyze video",
@@ -578,8 +531,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3088,
-        -16
+        2912,
+        -48
       ],
       "id": "34ea9471-f74e-4973-af1d-5c5e80c4747c",
       "name": "Code in Python (Beta)"
@@ -591,8 +544,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        3264,
-        -16
+        3088,
+        -48
       ],
       "id": "f0624f7a-bb8b-491b-84d3-61a62dc2b18a",
       "name": "AI Agent"
@@ -604,8 +557,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        3328,
-        144
+        3136,
+        112
       ],
       "id": "0105e54b-0ca2-426b-aaae-ac0a1c791872",
       "name": "Google Gemini Chat Model",
@@ -624,11 +577,114 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3584,
-        32
+        3392,
+        0
       ],
       "id": "cc4969f9-ffcd-4651-aaca-b55f42188716",
       "name": "Code in Python (Beta)1"
+    },
+    {
+      "parameters": {
+        "content": "## Analyze Video | Create Descriptions",
+        "height": 384,
+        "width": 1856,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2448,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "7e50f6db-0e55-4c12-bb57-9c6e22de56d0",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3616,
+        -16
+      ],
+      "id": "a8451e30-8c95-4381-8c8b-5b5560f2ef85",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        3808,
+        -16
+      ],
+      "id": "97f341c3-09ce-4a60-a3b0-9c6287ff191c",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Videos",
+        "height": 368,
+        "width": 1856,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2448,
+        400
+      ],
+      "typeVersion": 1,
+      "id": "87a8c59f-c7f9-46c0-8983-990959d1e59f",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Video Url Download'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2928,
+        528
+      ],
+      "id": "80fec2f3-ecc2-4e5a-a5f3-9a673209f13b",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $('Limit').item.json[\"YouTube Title\"] }}",
+        "regionCode": "PH",
+        "categoryId": "1",
+        "options": {
+          "defaultLanguage": "en",
+          "description": "={{ $('Limit').item.json[\"YouTube Description\"] }}",
+          "embeddable": true,
+          "notifySubscribers": true,
+          "privacyStatus": "public",
+          "selfDeclaredMadeForKids": false,
+          "tags": "cozy morning, cute character, shorts, relaxing animation, feel good video, comfort video"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        3312,
+        528
+      ],
+      "id": "8950efb2-49dc-43b8-8adb-394d5889de61",
+      "name": "Upload a video",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "Fnm7ZvrVLhKsF77T",
+          "name": "YouTube account"
+        }
+      }
     },
     {
       "parameters": {
@@ -651,7 +707,6 @@
           "mappingMode": "defineBelow",
           "value": {
             "Date": "={{ $json.data[1].Date }}",
-            "Time": "={{ $json.data[1].Time }}",
             "YouTube Title": "={{ $json.data[1].YouTubeTitle }}",
             "YouTube Description": "={{ $json.data[1].YouTubeDescription }}",
             "TikTok Description": "={{ $json.data[1].TikTokDescription }}",
@@ -659,7 +714,8 @@
             "Instagram Description": "={{ $json.data[1].InstagramDescription }}",
             "Additional Notes": "={{ $json.data[1].AdditionalNotes }}",
             "Video Url View": "={{ $('Upload file').item.json.webViewLink }}",
-            "Video Url Download": "={{ $('Upload file').item.json.webContentLink }}"
+            "Video Url Download": "={{ $('Upload file').item.json.webContentLink }}",
+            "Time ": "={{ $json.data[1].Time }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -673,13 +729,14 @@
               "canBeUsedToMatch": true
             },
             {
-              "id": "Time",
-              "displayName": "Time",
+              "id": "Time ",
+              "displayName": "Time ",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "YouTube Title",
@@ -764,8 +821,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        4192,
-        16
+        3984,
+        -16
       ],
       "id": "34ae6e96-f4f9-4d2e-ab5a-8024c5e17ab5",
       "name": "Append row in sheet",
@@ -778,44 +835,280 @@
     },
     {
       "parameters": {
-        "content": "## Create Video ",
-        "height": 496,
-        "width": 1856,
-        "color": 2
+        "documentId": {
+          "__rl": true,
+          "value": "1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4",
+          "mode": "list",
+          "cachedResultName": "Generated Videos to Post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit#gid=0"
+        },
+        "combineFilters": "OR",
+        "options": {}
       },
-      "type": "n8n-nodes-base.stickyNote",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
       "position": [
-        2720,
-        -144
+        2592,
+        528
       ],
+      "id": "a0e5b97a-c22d-425a-94c8-ea027c5458f0",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Q33u7QDdFT7kx3S6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
-      "id": "7e50f6db-0e55-4c12-bb57-9c6e22de56d0",
-      "name": "Sticky Note4"
+      "position": [
+        2752,
+        528
+      ],
+      "id": "a7e92ef8-4a18-41b0-8ff6-ad15c20d4d20",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3120,
+        528
+      ],
+      "id": "87d5c953-b0d5-458d-b843-18a68a16eee1",
+      "name": "Wait",
+      "webhookId": "0b66134d-ea9d-4839-b211-696af5cfe24f"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "text": "Determine if the image is a character or a product. It is only considered both if there are two completely separate images within the same image. If it is both, describe them separately. Describe the appearance details only.\n\nYour output should only include the description, nothing else.",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        816,
+        0
+      ],
+      "id": "0b223f5f-f0df-4b7b-9010-9ce913289abb",
+      "name": "Analyze image1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vwg2FlhVu2bY7dZ6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        -64
+      ],
+      "id": "953bc20f-5427-42b2-9e8e-deb95b0dd014",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import random\nfrom datetime import datetime\n\n# Your winning templates based on analytics\ntemplates = [\n    {\n        \"title_template\": \"I Turned {subject} Into A Pixar Character {location_emoji}✨\",\n        \"subjects\": [\"My Dog\", \"My Cat\", \"My Friend\", \"A Celebrity\", \"Myself\"],\n        \"locations\": [\"🏝️\", \"🌸\", \"🏙️\", \"🌲\", \"☁️\"],\n        \"image_prompt\": \"Pixar style 3D animated character, {subject}, at {location}, Disney movie quality, expressive eyes, detailed rendering, Pixar lighting, cinematic composition\"\n    },\n    {\n        \"title_template\": \"When Your AI {character} Gets {emotion} {emoji}\",\n        \"characters\": [\"Waifu\", \"Girlfriend\", \"Cat Girl\", \"Bunny Girl\", \"Angel\"],\n        \"emotions\": [\"Tsundere\", \"Jealous\", \"Excited\", \"Shy\", \"Happy\"],\n        \"emojis\": [\"😤🌸\", \"😊💕\", \"🥺✨\", \"😳💫\", \"😍🌟\"],\n        \"image_prompt\": \"Cute anime {character} character with {emotion} expression, expressive anime eyes, beautiful detailed face, soft lighting, vibrant colors, magical atmosphere\"\n    },\n    {\n        \"title_template\": \"{Character} In A {Aesthetic} {Location} {emoji}\",\n        \"characters\": [\"Cute Anime Girl\", \"Kawaii Character\", \"Disney Princess Style Girl\"],\n        \"aesthetics\": [\"Cozy\", \"Magical\", \"Dreamy\", \"Cherry Blossom\", \"Neon\"],\n        \"locations\": [\"Café\", \"Garden\", \"City\", \"Forest\", \"Beach\"],\n        \"emojis\": [\"☕✨\", \"🌸💫\", \"🌃✨\", \"🌲🦋\", \"🏖️🌺\"],\n        \"image_prompt\": \"{Character} in a {aesthetic} {location}, detailed background, soft lighting, anime style, beautiful composition, magical atmosphere\"\n    }\n]\n\n# Pick random template\ntemplate = random.choice(templates)\n\n# Generate content based on template\nif \"subjects\" in template:\n    subject = random.choice(template[\"subjects\"])\n    location_emoji = random.choice(template[\"locations\"])\n    title = template[\"title_template\"].format(subject=subject, location_emoji=location_emoji)\n    image_prompt = template[\"image_prompt\"].format(subject=subject, location=\"beautiful scenic location\")\n    text_prompt = f\"Create a heartwarming story about {subject} in an amazing location\"\n    \nelif \"characters\" in template and \"emotions\" in template:\n    character = random.choice(template[\"characters\"])\n    emotion = random.choice(template[\"emotions\"])\n    emoji = random.choice(template[\"emojis\"])\n    title = template[\"title_template\"].format(character=character, emotion=emotion, emoji=emoji)\n    image_prompt = template[\"image_prompt\"].format(character=character, emotion=emotion)\n    text_prompt = f\"Create a cute anime scene with {character} showing {emotion} emotion\"\n    \nelse:\n    character = random.choice(template[\"characters\"])\n    aesthetic = random.choice(template[\"aesthetics\"])\n    location = random.choice(template[\"locations\"])\n    emoji = random.choice(template[\"emojis\"])\n    title = template[\"title_template\"].format(Character=character, Aesthetic=aesthetic, Location=location, emoji=emoji)\n    image_prompt = template[\"image_prompt\"].format(Character=character, aesthetic=aesthetic, location=location)\n    text_prompt = f\"Create a {aesthetic} scene in a {location} with {character}\"\n\nprompt = f\"\"\"\nGenerate TWO things:\n\n1. A detailed IMAGE PROMPT for image generation (focus on visual details, art style, lighting, composition)\n2. A TEXT PROMPT that will be used as the user caption/instruction for the video workflow\n\nBase concept: {title}\n\nReturn ONLY valid JSON in this exact format:\n{{\n  \"ImagePrompt\": \"detailed visual prompt here\",\n  \"TextPrompt\": \"user instruction for video generation here\",\n  \"GeneratedTitle\": \"{title}\"\n}}\n\nMake the ImagePrompt extremely detailed with art style keywords like: anime style, Pixar 3D render, cute kawaii aesthetic, soft pastel colors, magical lighting, cinematic composition, etc.\n\nMake the TextPrompt describe the character and scene that should be animated.\n\"\"\"\n\nreturn {\n    \"chatInput\": prompt\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        -64
+      ],
+      "id": "e8c67567-59c9-4ba5-9a0e-3cb46b5078b4",
+      "name": "Code in Python (Beta)2"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.0-flash-exp-image-generation",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.0-flash-exp-image-generation"
+        },
+        "prompt": "={{ $json.imagePrompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        400,
+        -64
+      ],
+      "id": "85fb605f-ec28-4175-89bf-8c130aa73015",
+      "name": "Generate an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Qn2KmHKfcYN7JBvq",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\nimport re\n\nai_output = _input.first().json[\"output\"]\n\njson_match = re.search(r\"```json\\s*(.*?)\\s*```\", ai_output, re.DOTALL)\nif json_match:\n    json_str = json_match.group(1)\nelse:\n    json_match = re.search(r\"\\{.*\\}\", ai_output, re.DOTALL)\n    json_str = json_match.group(0) if json_match else ai_output\n\nparsed = json.loads(json_str)\n\nreturn [{\n    \"json\": {\n        \"imagePrompt\": parsed[\"ImagePrompt\"],\n        \"textPrompt\": parsed[\"TextPrompt\"],\n        \"generatedTitle\": parsed.get(\"GeneratedTitle\", \"Untitled\")\n    }\n}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        -64
+      ],
+      "id": "650244f6-70b8-46f0-97b6-0c1b154019fa",
+      "name": "Code in Python (Beta)3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -112,
+        -64
+      ],
+      "id": "b821c1d0-ae07-4c7d-8f11-4bac63d16b34",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Code in Python (Beta)3').item.json.generatedTitle }}.png",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "=https://drive.google.com/drive/folders/1we0g8UTGbPhtMv2v9WkuZUN7cVW4ey3j?usp=sharing",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        592,
+        -128
+      ],
+      "id": "77d4e5e2-c913-48c0-bb5a-490f241f4bf7",
+      "name": "Upload file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "2KupETq4QLi8d9l8",
+          "name": "Google Drive account"
+        }
+      }
     },
     {
       "parameters": {},
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        3808,
-        16
+        -320,
+        448
       ],
-      "id": "a8451e30-8c95-4381-8c8b-5b5560f2ef85",
-      "name": "Merge"
+      "id": "d2e099d2-c30d-46ed-87e8-2382e43ec7ed",
+      "name": "Merge1"
     },
     {
       "parameters": {
-        "aggregate": "aggregateAllItemData",
-        "options": {}
+        "keep": "lastItems"
       },
-      "type": "n8n-nodes-base.aggregate",
+      "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        4000,
-        16
+        -144,
+        448
       ],
-      "id": "97f341c3-09ce-4a60-a3b0-9c6287ff191c",
-      "name": "Aggregate1"
+      "id": "d18fc690-0e1d-41e8-a325-bda4c86b6af3",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"scenes\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"scene 1\": { \"type\": \"string\" },\n        \"scene 2\": { \"type\": \"string\" },\n        \"scene 3\": { \"type\": \"string\" }\n      },\n      \"required\": [\"scene 1\", \"scene 2\", \"scene 3\"]\n    }\n  },\n  \"required\": [\"scenes\"]\n}\n",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1504,
+        288
+      ],
+      "id": "385f29f7-5edd-4f4e-926b-390d14638261",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        352
+      ],
+      "id": "68d355ab-f7e4-4407-a2af-c1099b5e7710",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Qn2KmHKfcYN7JBvq",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "img_link = _input.first().json.webContentLink\n\nreturn {\n  \"img_link\": img_link\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        -128
+      ],
+      "id": "314f077a-6201-4bbf-9756-ddb1f533a157",
+      "name": "Code in Python (Beta)4"
     }
   ],
   "connections": {
@@ -854,13 +1147,7 @@
     },
     "Analyze image": {
       "main": [
-        [
-          {
-            "node": "AI Agent - Image Prompt",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "AI Agent - Image Prompt": {
@@ -869,43 +1156,6 @@
           {
             "node": "HTTP Request - Create Image 1",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Anthropic Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent - Image Prompt",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "AI Agent - Video Prompter",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "Structured Output Parser",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Think": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent - Image Prompt",
-            "type": "ai_tool",
-            "index": 0
-          },
-          {
-            "node": "AI Agent - Video Prompter",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -950,17 +1200,6 @@
           {
             "node": "Split Out",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Structured Output Parser": {
-      "ai_outputParser": [
-        [
-          {
-            "node": "AI Agent - Video Prompter",
-            "type": "ai_outputParser",
             "index": 0
           }
         ]
@@ -1163,6 +1402,213 @@
         [
           {
             "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Upload a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)3": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Image Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Image Prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)4": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
             "type": "main",
             "index": 0
           }
