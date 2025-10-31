@@ -2,98 +2,6 @@
   "nodes": [
     {
       "parameters": {
-        "updates": [
-          "message"
-        ],
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        48,
-        -464
-      ],
-      "id": "ee3815f8-6f83-4c9c-9d28-317f9c997cc0",
-      "name": "Telegram Trigger",
-      "webhookId": "5fc2b001-9a7c-4b01-9bb1-2dee51478ad9",
-      "credentials": {
-        "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
-          "name": "Telegram account"
-        }
-      },
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "9e02677a-b4c5-4e21-b97e-6536d336181b",
-              "name": "bot id",
-              "value": "8351768336:AAF9RLjBvcUpcYeO_bnIGDGodALvUFCPy3s",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        240,
-        -464
-      ],
-      "id": "594d7a92-93ad-427f-9fe6-ad270c3ccb1c",
-      "name": "Edit Fields - Bot ID 1",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "url": "=https://api.telegram.org/bot{{ $json['bot id'] }}/getFile?file_id={{ $('Telegram Trigger').item.json.message.photo[0].file_id }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        432,
-        -464
-      ],
-      "id": "03ffb725-9871-44ec-a191-da8551905511",
-      "name": "HTTP Request - Image Path",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "resource": "image",
-        "operation": "analyze",
-        "modelId": {
-          "__rl": true,
-          "value": "chatgpt-4o-latest",
-          "mode": "list",
-          "cachedResultName": "CHATGPT-4O-LATEST"
-        },
-        "text": "Determine if the image is a character or a product. It is only considered both if there are two completely separate images within the same image. If it is both, describe them separately. Describe the appearance details only.\n\nYour output should only include the description, nothing else.",
-        "imageUrls": "=https://api.telegram.org/file/bot{{ $('Edit Fields - Bot ID 1').item.json['bot id'] }}/{{ $json.result.file_path }}",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.8,
-      "position": [
-        608,
-        -464
-      ],
-      "id": "bbd4894a-2676-4264-a8a0-7d6f6c9815e9",
-      "name": "Analyze image",
-      "credentials": {
-        "openAiApi": {
-          "id": "Vwg2FlhVu2bY7dZ6",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "content": "## Content Idea",
         "height": 400,
         "width": 1776,
@@ -359,7 +267,7 @@
     {
       "parameters": {
         "operation": "sendVideo",
-        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "chatId": "6472037679",
         "file": "={{ $json.video.url }}",
         "additionalFields": {}
       },
@@ -1109,47 +1017,101 @@
       ],
       "id": "314f077a-6201-4bbf-9756-ddb1f533a157",
       "name": "Code in Python (Beta)4"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        48,
+        -464
+      ],
+      "id": "ee3815f8-6f83-4c9c-9d28-317f9c997cc0",
+      "name": "Telegram Trigger",
+      "webhookId": "5fc2b001-9a7c-4b01-9bb1-2dee51478ad9",
+      "credentials": {
+        "telegramApi": {
+          "id": "k7m8mevEdyBrdj98",
+          "name": "Telegram account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9e02677a-b4c5-4e21-b97e-6536d336181b",
+              "name": "bot id",
+              "value": "8351768336:AAF9RLjBvcUpcYeO_bnIGDGodALvUFCPy3s",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        -464
+      ],
+      "id": "594d7a92-93ad-427f-9fe6-ad270c3ccb1c",
+      "name": "Edit Fields - Bot ID 1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $json['bot id'] }}/getFile?file_id={{ $('Telegram Trigger').item.json.message.photo[0].file_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        432,
+        -464
+      ],
+      "id": "03ffb725-9871-44ec-a191-da8551905511",
+      "name": "HTTP Request - Image Path",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "text": "Determine if the image is a character or a product. It is only considered both if there are two completely separate images within the same image. If it is both, describe them separately. Describe the appearance details only.\n\nYour output should only include the description, nothing else.",
+        "imageUrls": "=https://api.telegram.org/file/bot{{ $('Edit Fields - Bot ID 1').item.json['bot id'] }}/{{ $json.result.file_path }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        608,
+        -464
+      ],
+      "id": "bbd4894a-2676-4264-a8a0-7d6f6c9815e9",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vwg2FlhVu2bY7dZ6",
+          "name": "OpenAi account"
+        }
+      }
     }
   ],
   "connections": {
-    "Telegram Trigger": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields - Bot ID 1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields - Bot ID 1": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request - Image Path",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request - Image Path": {
-      "main": [
-        [
-          {
-            "node": "Analyze image",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Analyze image": {
-      "main": [
-        []
-      ]
-    },
     "AI Agent - Image Prompt": {
       "main": [
         [
@@ -1609,6 +1571,39 @@
         [
           {
             "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields - Bot ID 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields - Bot ID 1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Image Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Image Path": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
             "type": "main",
             "index": 0
           }
