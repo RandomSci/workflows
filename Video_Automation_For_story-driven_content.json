@@ -413,7 +413,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2064,
+        2048,
         576
       ],
       "id": "ed567274-34f6-45b9-91a1-cb0cf5de4c3b",
@@ -434,8 +434,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1152,
-        448
+        1184,
+        432
       ],
       "typeVersion": 1,
       "id": "02f4a7e5-324f-4af1-ab4c-a9485b6c9906",
@@ -495,6 +495,327 @@
       ],
       "id": "ddf03529-b599-429f-94e5-0cb04343b98a",
       "name": "HTTP Request - Combine"
+    },
+    {
+      "parameters": {
+        "name": "={{ $now.plus({ hours: 8 }).format('MMM DD, YYYY_HH-mm-ss') }} UTC+8",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "https://drive.google.com/drive/u/0/folders/1Me5CXQY2k86PXbeZtYsZ5vGoBD8b6v_S",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        3584,
+        -128
+      ],
+      "id": "5bd44b26-4fe7-4aa5-9063-393efdd1752c",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "2KupETq4QLi8d9l8",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('HTTP Request - Final Video').item.json.video.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2752,
+        -16
+      ],
+      "id": "cfec57c1-dc86-4ad0-960d-2640067dc26c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        2912,
+        -16
+      ],
+      "id": "9816b730-462b-4477-becd-9715d9bf8e04",
+      "name": "Analyze video",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Qn2KmHKfcYN7JBvq",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "Prompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\n\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, with hooks and FOMO)\n- \"YouTubeDescription\" (engaging, includes call-to-action, watch till the end, or subscribe prompts)\n- \"TikTokDescription\" (short, punchy, hooks the viewer instantly)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, encourages engagement)\n- \"InstagramDescription\" (short, enticing, uses emojis, encourages interaction)\n- \"AdditionalNotes\" (any hashtags, trends, or tips for posting)\n\nThe output MUST be **valid JSON**, with all text properly escaped for JSON.  \nExample structure:\n{{\n  \"Date\": \"MM/DD/YYYY\",\n  \"Time\": \"HH:MM\",\n  \"YouTubeTitle\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\nMake the titles and descriptions irresistible, exciting, and make viewers feel they can’t miss it.\n\"\"\"\n\nreturn {\n    \"chatInput\": Prompt\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3088,
+        -16
+      ],
+      "id": "34ea9471-f74e-4973-af1d-5c5e80c4747c",
+      "name": "Code in Python (Beta)"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        3264,
+        -16
+      ],
+      "id": "f0624f7a-bb8b-491b-84d3-61a62dc2b18a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        3328,
+        144
+      ],
+      "id": "0105e54b-0ca2-426b-aaae-ac0a1c791872",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Qn2KmHKfcYN7JBvq",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\nimport re\n\n# Get the raw AI output\nmodel_output = _input.first().json[\"output\"]\n\n# Extract JSON inside ```json ... ``` or ``` blocks\njson_match = re.search(r\"```json\\s*(\\{.*\\})\\s*```\", model_output, re.DOTALL)\nif not json_match:\n    json_match = re.search(r\"```(.*?)```\", model_output, re.DOTALL)\n\nif not json_match:\n    raise ValueError(\"No JSON found in the AI output!\")\n\njson_str = json_match.group(1)\n\n# Parse the JSON string\nparsed_data = json.loads(json_str)\n\n# Return it for n8n\nreturn {\"json\": parsed_data}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3584,
+        32
+      ],
+      "id": "cc4969f9-ffcd-4651-aaca-b55f42188716",
+      "name": "Code in Python (Beta)1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4",
+          "mode": "list",
+          "cachedResultName": "Generated Videos to Post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.data[1].Date }}",
+            "Time": "={{ $json.data[1].Time }}",
+            "YouTube Title": "={{ $json.data[1].YouTubeTitle }}",
+            "YouTube Description": "={{ $json.data[1].YouTubeDescription }}",
+            "TikTok Description": "={{ $json.data[1].TikTokDescription }}",
+            "Facebook Reel Description": "={{ $json.data[1].FacebookReelDescription }}",
+            "Instagram Description": "={{ $json.data[1].InstagramDescription }}",
+            "Additional Notes": "={{ $json.data[1].AdditionalNotes }}",
+            "Video Url View": "={{ $('Upload file').item.json.webViewLink }}",
+            "Video Url Download": "={{ $('Upload file').item.json.webContentLink }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "YouTube Title",
+              "displayName": "YouTube Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "YouTube Description",
+              "displayName": "YouTube Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TikTok Description",
+              "displayName": "TikTok Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Facebook Reel Description",
+              "displayName": "Facebook Reel Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Instagram Description",
+              "displayName": "Instagram Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Additional Notes",
+              "displayName": "Additional Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Url View",
+              "displayName": "Video Url View",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Video Url Download",
+              "displayName": "Video Url Download",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4192,
+        16
+      ],
+      "id": "34ae6e96-f4f9-4d2e-ab5a-8024c5e17ab5",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Q33u7QDdFT7kx3S6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Create Video ",
+        "height": 496,
+        "width": 1856,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2720,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "7e50f6db-0e55-4c12-bb57-9c6e22de56d0",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3808,
+        16
+      ],
+      "id": "a8451e30-8c95-4381-8c8b-5b5560f2ef85",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        4000,
+        16
+      ],
+      "id": "97f341c3-09ce-4a60-a3b0-9c6287ff191c",
+      "name": "Aggregate1"
     }
   ],
   "connections": {
@@ -700,6 +1021,17 @@
         ]
       ]
     },
+    "Send a video": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Wait 30s": {
       "main": [
         [
@@ -727,6 +1059,110 @@
         [
           {
             "node": "Wait 30s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
             "type": "main",
             "index": 0
           }
