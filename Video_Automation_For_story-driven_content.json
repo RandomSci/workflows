@@ -161,7 +161,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ {\n  prompt: $json['output.scenes'],\n  model: 'veo3_fast',\n  aspectRatio: '9:16',\n  imageUrls: $('HTTP Request - Get Image 1').first().json.images[0].url\n} }}",
+        "jsonBody": "=={{ {\n  prompt: $json['output.scenes'],\n  model: 'veo3_fast',\n  aspectRatio: '9:16'\n} }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
