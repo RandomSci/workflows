@@ -3,14 +3,14 @@
     {
       "parameters": {
         "content": "## Content Idea",
-        "height": 400,
-        "width": 1520,
+        "height": 448,
+        "width": 1504,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -4016,
-        608
+        -4000,
+        560
       ],
       "typeVersion": 1,
       "id": "b3bfd891-6636-4aca-9fe7-8d9937bf2f1f",
@@ -19,9 +19,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Make one image prompt for a HIGH-QUALITY ANIME character.\n\nUser Instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image:\n{{ $json.content }}\n\nCRITICAL: Create a CINEMATIC ANIME style prompt, NOT cute/chibi/Pixar style. Think Demon Slayer, Makoto Shinkai films, Ufotable quality. Include specific lighting details and atmospheric effects.",
+        "text": "=Make one image prompt.\n\nEnsure you use the details of the reference image as accurately as possible for your final output.\n\nUser Instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image:\n{{ $json.content }}\n\n",
         "options": {
-          "systemMessage": "=Role: You create image prompts for HIGH-QUALITY ANIME-STYLE characters and scenes.\n\nMain objective: Transform the reference image into a beautifully detailed anime character with studio-quality rendering.\n\nArt Style Guidelines:\n- Studio-quality anime (Demon Slayer, Makoto Shinkai, Ufotable level)\n- Detailed expressive eyes with realistic shading and highlights\n- Realistic anime proportions (not chibi unless requested)\n- Rich color palettes with atmospheric depth\n- Cinematic lighting (golden hour, blue hour, neon, dramatic shadows)\n- 2D anime illustration OR semi-realistic anime rendering\n- Mature, sophisticated aesthetic\n- Atmospheric and moody color grading\n\nCharacter Design:\n- Detailed anime facial features with emotion\n- Realistic eye anatomy with multiple highlight layers\n- Hair with individual strand detail and physics\n- Fabric with realistic folds and texture\n- Subtle expression conveying personality\n- Cinematic character presence\n- Film-quality rendering\n\nScene Style:\n- Dramatic, atmospheric lighting\n- Cinematic composition\n- Detailed background art (Makoto Shinkai level)\n- Volumetric effects (god rays, fog, atmospheric perspective)\n- Rich environmental detail\n- Theatrical framing\n\nRULES:\n- Always use single quotes ('') never double quotes (\"\")\n- Output only the image prompt\n- No hyphens or dashes\n- ALWAYS specify \"anime style\", \"studio-quality animation\", or \"cinematic anime\"\n- Describe as if it's a frame from a high-budget anime film\n\nEXAMPLE OUTPUTS:\n\n✅ GOOD:\n\"Beautiful anime character with intensely detailed eyes showing contemplative emotion, realistic eye highlights and iris detail, long flowing dark hair with individual strands catching light, wearing an elegant traditional kimono with intricate floral patterns and realistic fabric folds, standing on a moonlit temple bridge over still water, cherry blossom petals floating with motion blur, soft volumetric fog, dramatic rim lighting from moon, rich blue hour color palette with warm accent lights from lanterns, Makoto Shinkai quality background art, cinematic anime composition, film-level rendering\"\n\n✅ GOOD:\n\"Stunning anime girl with detailed expressive eyes reflecting neon city lights, sleek black hair with wind physics and highlight strands, wearing modern streetwear with realistic fabric texture and wrinkles, standing on rain-soaked cyberpunk street at night, neon signs reflecting in puddles, volumetric fog with god rays, dramatic side lighting creating rim light effect, bokeh from blurred city lights, rich color grading with pink and blue neon tones, Demon Slayer quality character rendering, Ufotable-level cinematography\"\n\n❌ BAD:\n\"Cute anime girl with big eyes in a café\"\n\nSTYLE KEYWORDS TO USE:\n- \"Studio-quality anime rendering\"\n- \"Cinematic anime composition\"\n- \"Makoto Shinkai style background art\"\n- \"Demon Slayer quality animation\"\n- \"Ufotable-level detail\"\n- \"Film-quality anime\"\n- \"Dramatic atmospheric lighting\"\n- \"Volumetric effects and god rays\"\n- \"Detailed anime character art\"\n- \"Theatrical anime framing\"\n\nLIGHTING TYPES (ALWAYS SPECIFY):\n- \"Golden hour lighting\" (warm, nostalgic)\n- \"Blue hour atmosphere\" (melancholic, peaceful)\n- \"Neon-lit night scene\" (vibrant, mysterious)\n- \"Rain with dramatic lighting\" (emotional, cinematic)\n- \"Volumetric god rays\" (epic, spiritual)\n- \"Rim lighting from sunset\" (dramatic silhouette)\n- \"Soft overcast lighting\" (moody, introspective)\n\nRemember: This is CINEMATIC ANIME like theatrical films and high-budget series, NOT cute cartoons or chibi style! 🎬✨"
+          "systemMessage": "=Role: You create **image prompts for HIGH-QUALITY CUTE ANIMATED CARTOON characters and scenes**, Pixar/Disney-inspired.\n\nMain objective: Transform the reference image into a **detailed, expressive animated character** in a **studio-quality cartoon scene**, fully cinematic and visually captivating.\n\n### Art Style Guidelines:\n\n* Studio-quality animated cartoon (Pixar, Disney, DreamWorks-level detail)\n* Detailed expressive eyes with highlights and sparkle\n* Realistic cartoon proportions (not chibi unless requested)\n* Rich pastel or vibrant color palettes with magical depth\n* Cinematic lighting: golden hour, sunrise, sunset, soft glows, sparkles\n* 3D/2D animated frame look, whimsical yet polished\n* Magical, charming, or heartwarming aesthetic\n* Dreamy, storybook-style atmosphere\n\n---\n\n### Character Design:\n\n* Detailed animated facial expressions showing emotion\n* Hair with individual strand details and dynamic movement\n* Clothing with realistic folds, fabric physics, or stylized charm\n* Expressive body language (dancing, posing, waving, singing)\n* Magical sparkles, glows, or cute motifs enhancing personality\n* Cinematic cartoon presence: character **anchors the scene visually and emotionally**\n\n---\n\n### Scene Style:\n\n* Cinematic, whimsical, and magical composition\n* Detailed environments: parks, rooftops, beaches, city streets, fantasy lands\n* Soft, volumetric lighting (sunlight, fairy lights, sparkles)\n* Atmospheric effects: floating particles, fog, magical trails, or twinkling lights\n* Consistent color palette and motif for continuity if used in multiple frames/videos\n* Theatrical, storybook-style framing that guides the viewer’s eye\n\n---\n\n### Rules:\n\n* Always use **single quotes ('')**, never double quotes (\"\")\n* Output only the **image prompt text**\n* No hyphens or dashes\n* Always specify at least one of: `\"cute animated style\"`, `\"3D Pixar animation\"`, `\"Disney-inspired\"`, `\"animated movie quality\"`, `\"cartoon character\"`\n* Describe as if it’s a **frame from a high-budget animated film**\n* Make it cinematic, magical, and visually rich\n* Include **lighting, magical effects, and environment details**\n\n---\n\n### Example Outputs:\n\n✅ GOOD:\n'Beautiful animated girl with sparkling expressive eyes showing joy, long flowing wavy hair with motion physics, wearing a pastel pink dress with realistic folds, standing on a whimsical floating garden bridge surrounded by glowing fairy lights and twinkling magical particles, soft golden hour lighting casting warm shadows, cute animated style, 3D Pixar animation, dreamy pastel clouds in background, magical sparkles, animated movie quality, cinematic cartoon composition, storybook framing'\n\n✅ GOOD:\n'Adorable animated boy with big shiny eyes and playful smile, messy wind-blown hair, wearing casual clothes with soft folds, skipping across a candy-colored park with floating lanterns and twinkling magical lights, soft sunset glow reflecting on animated water puddles, Disney-inspired, cute animated style, 3D Pixar animation, cinematic cartoon quality, whimsical atmosphere, magical sparkles, storybook cinematic framing'\n\n❌ BAD:\n'Cute cartoon girl in a cafe'\n\n---\n\n### Style Keywords to Include:\n\n* 'Cute animated style'\n* '3D Pixar animation'\n* 'Disney-inspired'\n* 'Animated movie quality'\n* 'Magical sparkles and glows'\n* 'Dreamy atmosphere'\n* 'Cinematic cartoon composition'\n* 'Storybook-style framing'\n* 'Soft pastel colors or vibrant whimsical palette'\n\n\n### Lighting Options (Always Specify):\n\n* 'Golden hour lighting' (warm, magical)\n* 'Sunrise soft glow' (hopeful, dreamy)\n* 'Sunset warm radiance' (romantic, whimsical)\n* 'Fairy lights sparkle' (magical, charming)\n* 'Soft ambient glow' (dreamy, storybook)\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -54,7 +54,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -3216,
+        -3200,
         1264
       ],
       "id": "85359471-6910-450d-99bb-32a83c14452e",
@@ -67,7 +67,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -3024,
+        -2976,
         1264
       ],
       "id": "6877392e-2091-4dd6-b90e-54c23f74d76e",
@@ -91,7 +91,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2800,
+        -2736,
         1264
       ],
       "id": "1de02960-6120-49a2-b2f5-8c9b57328161",
@@ -100,13 +100,13 @@
     {
       "parameters": {
         "content": "## Image Creation",
-        "height": 368,
-        "width": 1520,
+        "height": 304,
+        "width": 1504,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -4016,
+        -3984,
         1136
       ],
       "typeVersion": 1,
@@ -119,14 +119,14 @@
         "text": "=Create video prompts.\n\nUser instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image(s).\n{{ $('Analyze image1').item.json.content }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=You are an AI agent that generates CINEMATIC ZOOM video prompts in HIGH-QUALITY ANIME STYLE.\n\nCRITICAL: Every scene must be ANIME style with studio-quality animation. Think Demon Slayer, Jujutsu Kaisen, Makoto Shinkai films, Gundam, or Ufotable-level quality. This is NOT realistic footage or cute chibi style - this is SERIOUS, BEAUTIFUL anime cinematography.\n\nYour output must be 3 scenes:\n\n{\n  \"scenes\": {\n    \"scene1\": \"\",\n    \"scene2\": \"\",\n    \"scene3\": \"\"\n  }\n}\n\n🎬 CRITICAL CONTINUITY RULES:\nThis is ONE CONTINUOUS CAMERA ZOOM - Each scene flows naturally into the next!\n\nThink of it like a movie opening sequence:\n- Scene 1 → Scene 2 → Scene 3 should feel like ONE smooth camera movement\n- Each scene should BUILD on the previous one (getting progressively closer)\n- The camera should NEVER reset or jump backwards\n- Create a natural progression from macro → medium → close\n\nYOU DECIDE: How much character to reveal in each scene based on what creates the most CINEMATIC flow!\n- Maybe the character appears as a tiny dot in Scene 2\n- Maybe they're completely hidden until Scene 3\n- Maybe we see their silhouette in Scene 1\n- YOU choose what creates the best storytelling!\n\nJust ensure: Scene 1 is WIDER than Scene 2, and Scene 2 is WIDER than Scene 3.\n\nANIME CINEMATIC ZOOM FRAMEWORK:\n\nScene 1 (MACRO/ESTABLISHING - Anime):\nSTART FROM THE BIGGEST SCALE - Set the stage:\n- Detailed anime-style Earth with realistic clouds and atmospheric glow OR\n- High above clouds with dramatic sky and godray lighting OR\n- Anime view of an entire city/region with incredible detail OR\n- Cinematic space scene with lens flares and particle effects\n- Camera BEGINNING its epic journey from space/very high altitude\n- Make it feel EPIC and cinematic like a movie opening\n- ZOOMING DOWN toward a specific part of the world\n- Use dramatic lighting and atmospheric perspective\n- Establish: Location, atmosphere, mood, time of day\n- This is the WIDEST shot - set up the world\n\nScene 2 (LOCATION/TRANSITION - Anime):\nCLOSER NOW - Arriving at the specific location:\n- The actual place where the scene takes place (café, street, rooftop, forest, train station, etc.)\n- Highly detailed anime environment with rich textures\n- Show the CONTEXT with impressive background art (Makoto Shinkai-level detail)\n- Atmospheric lighting - golden hour, blue hour, neon lights, rain, etc.\n- Camera CONTINUING its journey, getting closer\n- This should feel IMMERSIVE and cinematic\n- Bridge: Connect the cosmic scale of Scene 1 to the intimate moment of Scene 3\n- Camera is APPROACHING the final destination\n- The character MAY become visible here if it makes sense cinematically\n\nScene 3 (CLOSE/INTIMATE - Anime):\nARRIVED - The emotional payoff:\n- Beautiful anime character with detailed features\n- Detailed anime eyes with realistic shading and highlights\n- Character doing their action (standing, sitting, looking, dramatic pose, etc)\n- Cinematic expression with emotion\n- Dynamic lighting on face\n- Hair movement with physics\n- Clothing details and fabric physics\n- Studio-quality anime rendering\n- This is the CLOSEST shot - the moment we've been building toward\n- Make it emotionally impactful\n\nCRITICAL VARIETY RULES:\n🚨 DO NOT DEFAULT TO BEACH/OCEAN SCENES! \n🚨 VARY THE LOCATIONS DRASTICALLY!\n🚨 DO NOT ADD TEXTS IN VIDEOS\n\nUse diverse settings like:\n✅ Neon-lit cyberpunk city streets at night\n✅ Traditional Japanese temple at sunset\n✅ Modern Tokyo intersection in rain\n✅ Rooftop overlooking sprawling cityscape\n✅ Train platform during blue hour\n✅ Abandoned warehouse with dramatic lighting\n✅ Cherry blossom-lined river path\n✅ High-rise apartment balcony at twilight\n✅ Underground metro station\n✅ School rooftop with sunset sky\n✅ Forest shrine with mystical atmosphere\n✅ Rainy alleyway with neon reflections\n✅ Mountain peak at dawn\n✅ Busy shopping district at night\n✅ Modern café with floor-to-ceiling windows\n✅ Bridge over city river at dusk\n✅ Penthouse suite with city view\n✅ Parking garage with cinematic lighting\n\nSCENE STRUCTURE:\n\nDialogue:\n- Dramatic, poetic narration with emotional weight\n- NO mentions of 'click link', 'follow', 'check out', 'get yours'\n- Focus on the mood, atmosphere, and story\n- Use single quotes ('')\n- Keep it cinematic and atmospheric\n- Maximum 2 sentences per scene\n- Think anime opening narration style\n- Create NARRATIVE FLOW across all 3 dialogues (they should connect!)\n\nDescription:\n- ALWAYS specify 'anime style', 'studio-quality animation', 'Demon Slayer quality', 'Makoto Shinkai style', 'Ufotable-level animation'\n- Describe detailed anime elements and lighting\n- Rich color palettes - dramatic sunsets, neon colors, atmospheric fog\n- Mention specific lighting: rim lighting, volumetric lighting, god rays, lens flares\n- Include particle effects: dust motes, light particles, rain, cherry blossoms\n- Fabric and hair physics\n- Detailed backgrounds with depth\n- Cinematic composition and framing\n- Make it look like a high-budget anime film/series\n- ENSURE CONTINUITY: Each description should reference or build on the previous scene\n\nCamera:\n- 'Cinematic anime camera zoom'\n- 'Studio-quality animation cinematography'\n- 'Dramatic anime camera movement'\n- 'Theatrical anime composition'\n- 'Continuing smooth descent' (for Scene 2)\n- 'Final approach' or 'arrival at destination' (for Scene 3)\n- Never mention 'iPhone', 'phone footage', 'UGC', 'selfie', 'amateur'\n- Always film-quality anime cinematography\n- EMPHASIZE CONTINUITY: \"continuing the zoom\", \"camera still descending\", \"final arrival\"\n\nANIME STYLE KEYWORDS TO ALWAYS USE:\n✅ 'anime style'\n✅ 'studio-quality animation'\n✅ 'cinematic anime'\n✅ 'Demon Slayer quality'\n✅ 'Makoto Shinkai style'\n✅ 'Ufotable-level animation'\n✅ 'detailed anime rendering'\n✅ 'dramatic lighting'\n✅ 'volumetric effects'\n✅ 'film-quality anime'\n\nEXAMPLE 1 (CYBERPUNK CITY - CONTINUOUS FLOW):\n\nScene 1:\nDialogue: 'In a world where neon never sleeps...'\nDescription: Stunning anime-style Earth at night with glowing city lights visible from space, realistic cloud formations, deep blue atmospheric gradient, stars twinkling in the cosmos, lens flare from distant sun, studio-quality space animation, camera beginning epic cinematic zoom toward a massive sprawling megacity with countless lights, Makoto Shinkai-level cosmic detail, continuous smooth descent initiating\nCamera: Dramatic cinematic anime camera zoom from orbital view, film-quality animation, smooth descent through atmosphere with particle effects, beginning the journey\n\nScene 2:\nDialogue: '...one soul searches for meaning in the chaos'\nDescription: Continuing the descent into a vibrant neon-lit cyberpunk street at night, detailed anime background art with holographic advertisements, rain-slicked pavement reflecting pink and blue neon lights, steam rising from vents, crowds of people with umbrellas, futuristic vehicles passing by, volumetric fog, god rays cutting through the mist, a lone figure becoming visible among the crowd, Demon Slayer-quality environmental detail, camera still gliding smoothly through the bustling street toward the figure\nCamera: Continuing smooth anime camera descent, cinematic tracking shot through city, dramatic neon color grading, Ufotable-level cinematography, zoom still in progress\n\nScene 3:\nDialogue: '...and discovers strength in solitude'\nDescription: Beautiful anime character with detailed expressive eyes showing determination, realistic eye highlights and shadows, dark hair flowing in the wind with individual strand physics, wearing a sleek black jacket with fabric wrinkles and realistic texture, standing on rain-soaked street, neon lights reflecting in puddles around them, one hand in pocket, confident expression, rim lighting from neon signs, rain droplets catching light, bokeh from city lights in background, studio-quality character animation, film-level anime rendering, camera has completed its journey\nCamera: Final cinematic anime close-up, dramatic low-angle framing, shallow depth of field, theatrical composition, zoom complete\n\nEXAMPLE 2 (TEMPLE SCENE - CONTINUOUS FLOW):\n\nScene 1:\nDialogue: 'Where ancient spirits still whisper...'\nDescription: Epic anime-style view of Japan from high altitude, realistic mountain ranges and forests, golden sunset casting long shadows, clouds below with volumetric lighting, atmospheric perspective showing vast distance, traditional architecture visible as tiny details in the mountains, Makoto Shinkai-level landscape quality, camera beginning majestic zoom toward a mountain temple region, descent through atmosphere starting\nCamera: Sweeping cinematic anime camera zoom from stratosphere, film-quality atmospheric effects, graceful descent through clouds initiating, journey beginning\n\nScene 2:\nDialogue: '...tradition meets the modern soul'\nDescription: Continuing closer to a breathtaking traditional Japanese temple courtyard, detailed anime background art with ancient wooden architecture, stone lanterns lining a path, cherry blossom petals gently falling with realistic physics, golden hour lighting creating long dramatic shadows, incense smoke rising in visible shafts of light, mountains visible in distant background, a figure visible walking toward the temple steps, rich color palette with warm oranges and cool blues, Demon Slayer-quality environmental rendering, camera descending stone steps continuing the approach\nCamera: Smooth anime camera movement through temple entrance, cinematic composition with depth, Ufotable-level background detail, continuing the continuous zoom\n\nScene 3:\nDialogue: '...seeking answers in the fading light'\nDescription: Stunning anime character with detailed expressive eyes reflecting sunset colors, long flowing hair with individual highlight strands and wind physics, wearing a traditional kimono with intricate pattern details and fabric folds, standing before temple steps, holding a paper charm, contemplative expression with subtle emotion, golden rim lighting from setting sun, cherry blossom petals floating around with motion blur, temple architecture framed in background, volumetric god rays, studio-quality character animation with film-level lighting, camera has reached its destination\nCamera: Final cinematic anime close-up, dramatic side lighting, shallow focus on character, theatrical composition with rule of thirds, arrival complete\n\nEXAMPLE 3 (RAINY CITY - CONTINUOUS FLOW):\n\nScene 1:\nDialogue: 'In a city drowning in rain...'\nDescription: Cinematic anime-style Earth with storm systems visible from space, realistic cloud formations with depth and volume, dramatic lighting from moon breaking through clouds, atmospheric glow around planet edges, lens flares and light particles, studio-quality space rendering, camera beginning dramatic zoom toward a rain-covered metropolis below, Makoto Shinkai cosmic cinematography, journey starting through storm clouds\nCamera: Epic anime camera zoom from orbit, film-quality animation with dynamic camera movement, descending through storm clouds, zoom initiating\n\nScene 2:\nDialogue: '...every street tells a story'\nDescription: Continuing down into a rain-soaked anime city street at twilight, detailed background art showing reflective wet pavement, streetlights creating bokeh in rain, umbrellas of various colors moving through scene, neon signs reflecting in puddles with realistic distortion, rain streaks with motion blur, atmospheric fog, parked cars with rain beading on surfaces, someone visible standing under an awning in the distance, rich blue hour color palette, Demon Slayer-quality rain effects and environmental detail, camera gliding down the street still approaching\nCamera: Smooth cinematic anime camera tracking shot, dramatic rain cinematography, Ufotable-level weather effects and lighting, continuing smooth descent\n\nScene 3:\nDialogue: '...written in tears and neon light'\nDescription: Beautiful anime character with intensely detailed eyes showing melancholy emotion, realistic tear forming in one eye with light refraction, dark wet hair clinging to face with individual strands, wearing a soaked jacket with realistic fabric physics and water droplets, standing under a broken umbrella, rain streaming down around them with motion blur, neon lights creating colorful rim lighting, bokeh from blurred city lights, hand clutching umbrella handle with detailed finger anatomy, studio-quality character animation with film-level rain effects and dramatic lighting, camera has arrived at final destination\nCamera: Final intimate anime close-up, cinematic rain cinematography, shallow depth of field, theatrical framing with negative space, zoom journey complete\n\nMANDATORY RULES:\n- EVERY scene = HIGH-QUALITY ANIME only\n- NO realistic/live-action descriptions\n- NO cute chibi/cartoon style unless specifically requested\n- NO product pitches or CTAs\n- Character should have PURPOSE and EMOTION in their action\n- Always include dramatic/cinematic descriptors\n- Rich, atmospheric color palettes\n- Volumetric lighting and particle effects\n- Scene 1 = WIDEST shot (cosmic/establishing)\n- Scene 2 = MEDIUM shot (location/transition) - MUST connect to Scene 1\n- Scene 3 = CLOSEST shot (character/intimate) - MUST connect to Scene 2\n- Single quotes ('') only\n- No hyphens or dashes\n- Follow exact JSON schema with \"scene1\", \"scene2\", \"scene3\"\n- CONTINUITY IS CRITICAL: Each scene builds on the last!\n\n🎯 VARIETY MANDATE:\nAnalyze the user's description and choose a UNIQUE, ATMOSPHERIC location that matches the character's mood and theme. Think about LIGHTING (golden hour, blue hour, night, rain, etc.) and ATMOSPHERE. Urban? Nature? Traditional? Modern? BE CINEMATIC AND SPECIFIC!\n\nLIGHTING IS EVERYTHING:\n- Golden hour (warm, nostalgic)\n- Blue hour (melancholic, peaceful)\n- Night/neon (vibrant, mysterious)\n- Rain (dramatic, emotional)\n- Sunrise (hopeful, new beginning)\n- Overcast (moody, introspective)\n\n🎬 CONTINUITY CHECKLIST:\n✅ Does Scene 2 continue from where Scene 1 left off?\n✅ Does Scene 3 continue from where Scene 2 left off?\n✅ Does the camera movement feel like ONE continuous zoom?\n✅ Does the narrative dialogue flow naturally across all 3 scenes?\n✅ Is there a clear progression: Wide → Medium → Close?\n\nRemember: This is HIGH-QUALITY ANIME CINEMATOGRAPHY like Demon Slayer, Makoto Shinkai films, or Ufotable productions - NOT cute cartoons or live footage! Create ONE CONTINUOUS CINEMATIC EXPERIENCE! 🎬✨"
+          "systemMessage": "=You are an AI agent that generates CINEMATIC ZOOM video prompts in CUTE ANIMATED CARTOON STYLE.\n\nCRITICAL: Every scene must be ANIMATED/CARTOON style. This is NOT realistic footage. This is a cute animated story like a Pixar/Disney movie.\n\nYour output must be 3 scenes:\n\n{\n  \"scenes\": {\n    \"scene 1\": \"\",\n    \"scene 2\": \"\",\n    \"scene 3\": \"\"\n  }\n}\n\nANIMATED CINEMATIC ZOOM FRAMEWORK:\n\nScene 1 (WIDE/MACRO - Animated):\nStart from biggest scale IN CARTOON STYLE:\n- Cute cartoon city skyline or aerial view\n- Animated sunset/evening sky with soft colors\n- Dreamy animated establishing shot\n- Camera ZOOMING DOWN toward a specific location\n\nScene 2 (MEDIUM/TRANSITION - Animated):\nZoom closer IN CARTOON STYLE:\n- Animated location coming into view\n- Cute stylized environment (buildings, nature, indoor space)\n- Magical atmosphere building\n- Camera DESCENDING toward the character\n\nScene 3 (CLOSE - Animated Character):\nFinal cute character moment:\n- Adorable ANIMATED character from reference image\n- Big expressive anime eyes, kawaii style\n- Character doing their main action (singing, dancing, posing, etc)\n- Heartwarming animated expression\n- NO talking about links, products, or CTAs\n- Just being cute and doing their thing\n\nSCENE STRUCTURE:\n\nDialogue:\n- Sweet, simple narration about the story/moment\n- NO mentions of 'click link', 'follow', 'check out', 'get yours'\n- Focus on the emotion and magic of the moment\n- Use single quotes ('')\n- Keep it wholesome and story-like\n- Maximum 2 short sentences per scene\n\nDescription:\n- ALWAYS specify 'cute animated style', '3D Pixar animation', 'cartoon aesthetic', or 'Disney-inspired'\n- Describe cute/whimsical animated elements\n- Soft pastel colors and dreamy atmosphere\n- If character is singing: show mouth open with musical notes\n- If character is dancing: show movement with motion lines\n- If character is posing: show confident cute expression\n- Add sparkles, glows, magical lighting\n- Make it look like an animated movie/music video\n\nCamera:\n- 'Smooth animated camera zoom'\n- 'Disney-style cinematic animation'\n- 'Dreamy cartoon camera movement'\n- 'Storybook-style camera pan'\n- Never mention 'iPhone', 'phone footage', 'UGC', 'selfie', 'amateur'\n- Always animated/cinematic quality\n\nANIMATION KEYWORDS TO ALWAYS USE:\n✅ 'cute animated style'\n✅ '3D Pixar animation'\n✅ 'kawaii aesthetic'\n✅ 'Disney-inspired'\n✅ 'cartoon character'\n✅ 'animated movie quality'\n✅ 'soft pastel colors'\n✅ 'magical sparkles'\n✅ 'dreamy atmosphere'\n\nMANDATORY RULES:\n- NO texts, lyrics, or any valid texts in videos allowed\n- EVERY scene = ANIMATED/CARTOON only\n- NO realistic/UGC descriptions\n- NO product pitches or CTAs\n- NO 'click link', 'follow me', 'get yours' phrases\n- Character should be doing something cute (singing, dancing, posing, waving)\n- Always include cute/kawaii/adorable descriptors\n- Soft pastel or vibrant colors\n- Magical sparkles and glows\n- Scene 1 = Biggest animated scale (aerial/wide)\n- Scene 2 = Medium animated transition (zooming in)\n- Scene 3 = Close-up cute character (main action)\n- Single quotes ('') only\n- NO hyphens or dashes\n- **Each scene duration must be 5-6 seconds**\n- Follow exact JSON schema\n\nRemember: This is a CUTE ANIMATED STORY like a Disney/Pixar movie, NOT a product ad or vlog 🎀✨"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -2128,
-        704
+        -2176,
+        688
       ],
       "id": "0840064b-29a6-4c4a-9351-d94e82c9d808",
       "name": "AI Agent - Video Prompter",
@@ -134,61 +134,15 @@
     },
     {
       "parameters": {
-        "fieldToSplitOut": "output.scenes",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitOut",
-      "typeVersion": 1,
-      "position": [
-        -1808,
-        704
-      ],
-      "id": "35f9ecb6-f1f4-44ca-b30b-c67d06f61d65",
-      "name": "Split Out"
-    },
-    {
-      "parameters": {
-        "url": "https://api.kie.ai/api/v1/veo/record-info",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "taskId",
-              "value": "={{ $json.data.taskId }}"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Authorization",
-              "value": "Bearer 9db206739109671db64f1a06c8eb8b03"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -1216,
-        704
-      ],
-      "id": "0574fdd8-2972-47d6-86dd-108e3d02646a",
-      "name": "HTTP Request - Get Video"
-    },
-    {
-      "parameters": {
         "content": "## Create Video ",
-        "height": 304,
-        "width": 1248,
+        "height": 384,
+        "width": 1328,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -2256,
-        608
+        -2272,
+        576
       ],
       "typeVersion": 1,
       "id": "1292a64f-4784-42a1-bcb9-5631ae36cd97",
@@ -208,8 +162,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -2160,
-        1264
+        -2080,
+        1200
       ],
       "id": "88a41d0f-10f6-436b-aed1-64d31ad0f1df",
       "name": "Aggregate"
@@ -231,8 +185,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1536,
-        1264
+        -1456,
+        1200
       ],
       "id": "7364f42c-278a-4620-803c-04c4a8555d4a",
       "name": "HTTP Request - Final Video"
@@ -247,8 +201,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -1344,
-        1264
+        -1248,
+        1200
       ],
       "id": "6f0900b5-c5da-4fa7-aa3f-c7d3f2a0b19e",
       "name": "Send a video",
@@ -262,46 +216,17 @@
     },
     {
       "parameters": {
-        "content": "## Combine Videos",
-        "height": 352,
-        "width": 1248
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -2256,
-        1152
-      ],
-      "typeVersion": 1,
-      "id": "c0660e56-7051-4a03-9b32-7bf830b035e4",
-      "name": "Sticky Note3"
-    },
-    {
-      "parameters": {
         "amount": 60
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -1744,
-        1264
+        -1664,
+        1200
       ],
       "id": "20ebf2ac-a9fc-4e69-bc8d-2f686195ac0a",
       "name": "Wait 30s",
       "webhookId": "95ef2154-8111-46ff-9525-0f25ac8615ad"
-    },
-    {
-      "parameters": {
-        "amount": 240
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        -1424,
-        704
-      ],
-      "id": "d5417ee2-1a7f-494e-97fa-9f43b3826b88",
-      "name": "Wait 4m",
-      "webhookId": "7feaead4-5997-4d66-a596-78729fcf0ae5"
     },
     {
       "parameters": {
@@ -324,8 +249,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1952,
-        1264
+        -1872,
+        1200
       ],
       "id": "9c13c2a7-3c58-4feb-8ebe-c4952c1d84ed",
       "name": "HTTP Request - Combine"
@@ -350,8 +275,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        192,
-        608
+        336,
+        592
       ],
       "id": "73f0334e-bbf3-4ac1-95f8-c95bca4b20f4",
       "name": "Upload file",
@@ -370,8 +295,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -640,
-        704
+        -496,
+        688
       ],
       "id": "26f078e3-7bb5-4e8d-90d8-9531dca33cbe",
       "name": "HTTP Request"
@@ -392,8 +317,8 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        -480,
-        704
+        -336,
+        688
       ],
       "id": "80015913-957a-4d00-a58c-8d18acc2e3a6",
       "name": "Analyze video",
@@ -407,13 +332,13 @@
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "from datetime import datetime\n\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\n\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, FOMO-style, MUST be under 90 characters)\n- \"YouTubeDescription\" (engaging, includes CTA like 'watch till the end' or 'subscribe for more')\n- \"TikTokDescription\" (short, punchy, instant hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, engaging)\n- \"InstagramDescription\" (short, emoji-rich, interaction-focused)\n- \"AdditionalNotes\" (hashtags, trends, posting tips)\n\nSTRICT RULES:\n1. The \"YouTubeTitle\" MUST NOT exceed 90 characters.\n2. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n3. The output MUST be valid JSON, properly escaped.\n\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\n\nGenerate irresistible, high-CTR titles and descriptions that make viewers feel they CAN’T miss the video.\n\"\"\"\n\nreturn {\n    \"chatInput\": Prompt\n}\n"
+        "pythonCode": "from datetime import datetime\nimport random\n\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\n# Define some dynamic hooks and actions\nhook_phrases = [\n    \"When {character} {action}!\",\n    \"You won’t believe what {character} does!\",\n    \"Watch {character} {action} in pastel magic!\",\n    \"I can’t believe {character} just {action}!\",\n    \"{character} {action} and it’s adorable!\"\n]\n\nactions = [\n    \"dances in the candy clouds\",\n    \"discovers a rainbow waterfall\",\n    \"giggles while floating on lanterns\",\n    \"throws a sparkly magic spell\",\n    \"plays hide-and-seek in the pastel garden\",\n    \"slides down a fluffy cloud slide\",\n    \"spins under the twinkling stars\",\n    \"sings with magical sparkles around\",\n    \"jumps between floating petals\"\n]\n\n# Example character (you can replace with your generated character)\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\n\naction = random.choice(actions)\ntitle = random.choice(hook_phrases).format(character=character, action=action)\n\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\n\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, FOMO-style, MUST be under 90 characters)\n- \"YouTubeDescription\" (engaging, includes CTA like 'watch till the end' or 'subscribe for more')\n- \"TikTokDescription\" (short, punchy, instant hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, engaging)\n- \"InstagramDescription\" (short, emoji-rich, interaction-focused)\n- \"AdditionalNotes\" (hashtags, trends, posting tips)\n\nSTRICT RULES:\n1. The \"YouTubeTitle\" MUST NOT exceed 90 characters.\n2. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n3. The output MUST be valid JSON, properly escaped.\n\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeDescription\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\n\nGenerate irresistible, high-CTR titles and descriptions that make viewers feel they CAN’T miss the video.\n\"\"\"\n\nreturn {\n    \"chatInput\": Prompt\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -304,
-        704
+        -160,
+        688
       ],
       "id": "9219a94a-7237-455a-81c5-a262797032a3",
       "name": "Code in Python (Beta)"
@@ -425,8 +350,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -128,
-        704
+        16,
+        688
       ],
       "id": "62031a2c-9400-412c-8b88-03f7164b1a11",
       "name": "AI Agent"
@@ -438,8 +363,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -80,
-        864
+        64,
+        848
       ],
       "id": "3b661834-90de-495b-a779-32ce55c1f773",
       "name": "Google Gemini Chat Model",
@@ -458,8 +383,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        192,
-        752
+        336,
+        736
       ],
       "id": "2a642a78-7dff-49be-b536-c269e2fbc4ec",
       "name": "Code in Python (Beta)1"
@@ -467,14 +392,14 @@
     {
       "parameters": {
         "content": "## Analyze Video | Create Descriptions",
-        "height": 352,
+        "height": 416,
         "width": 1728,
         "color": 2
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -768,
-        592
+        -640,
+        576
       ],
       "typeVersion": 1,
       "id": "8aa46c61-ead3-4738-ad7a-823a4e70949f",
@@ -485,8 +410,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        416,
-        736
+        560,
+        720
       ],
       "id": "81b5c8a5-f2f4-4056-8d37-9ebc8f6e756c",
       "name": "Merge"
@@ -499,8 +424,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        608,
-        736
+        752,
+        720
       ],
       "id": "c707c35d-c396-41d4-b063-3523f0db79fc",
       "name": "Aggregate1"
@@ -508,14 +433,14 @@
     {
       "parameters": {
         "content": "## Upload Videos",
-        "height": 352,
-        "width": 1728,
+        "height": 304,
+        "width": 1664,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -768,
-        1168
+        -640,
+        1120
       ],
       "typeVersion": 1,
       "id": "1b09fac0-e299-47be-9c03-fe0073321548",
@@ -529,8 +454,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -288,
-        1248
+        -176,
+        1232
       ],
       "id": "61bbc758-c809-489c-a4b9-d6b46e553d7b",
       "name": "HTTP Request1"
@@ -555,8 +480,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        112,
-        1248
+        224,
+        1232
       ],
       "id": "e6f7c428-fea1-4fc4-8516-b1105a26610d",
       "name": "Upload a video",
@@ -702,8 +627,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        784,
-        736
+        928,
+        720
       ],
       "id": "02d95689-e416-4357-be98-b86d8271b110",
       "name": "Append row in sheet",
@@ -736,8 +661,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -624,
-        1248
+        -512,
+        1232
       ],
       "id": "58a1d70a-7017-4d0c-b630-7b783066b10a",
       "name": "Get row(s) in sheet",
@@ -755,8 +680,8 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        -464,
-        1248
+        -352,
+        1232
       ],
       "id": "9e474a19-4d97-48e4-9b94-012f729b7f44",
       "name": "Limit"
@@ -768,8 +693,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -96,
-        1248
+        16,
+        1232
       ],
       "id": "f8a7dec5-535b-4928-a31b-b84241eae9ff",
       "name": "Wait",
@@ -792,8 +717,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -2672,
-        784
+        -2784,
+        800
       ],
       "id": "4a4c34c3-0d10-4330-be5e-907db74cbdb9",
       "name": "Analyze image1",
@@ -809,8 +734,8 @@
         "rule": {
           "interval": [
             {
-              "field": "hours",
-              "hoursInterval": 3
+              "field": "cronExpression",
+              "expression": "0 7,9,11,13,15,17,19,21 * * *"
             }
           ]
         }
@@ -827,7 +752,7 @@
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "import random\nfrom datetime import datetime\n\n# --- Determine current date, season, and holiday context ---\nnow = datetime.now()\nmonth = now.month\n\n# Seasonal / holiday context with anime-appropriate themes\nif month in [12, 1]:\n    season = \"Winter ❄️\"\n    theme = random.choice([\"Winter Solstice\", \"New Year\", \"Snowfall\"])\n    lighting = random.choice([\"snowy twilight\", \"winter blue hour\", \"soft snowfall lighting\"])\nelif month in [2, 3]:\n    season = \"Spring 🌸\"\n    theme = random.choice([\"Cherry Blossom\", \"Spring Rain\", \"Renewal\"])\n    lighting = random.choice([\"cherry blossom golden hour\", \"spring morning light\", \"soft pink sunset\"])\nelif month in [4, 5, 6]:\n    season = \"Summer ☀️\"\n    theme = random.choice([\"Rainy Season\", \"Fireworks\", \"Twilight\"])\n    lighting = random.choice([\"summer golden hour\", \"sunset glow\", \"vibrant daylight\"])\nelif month in [7, 8, 9]:\n    season = \"Autumn 🍂\"\n    theme = random.choice([\"Harvest Moon\", \"Autumn Leaves\", \"Evening Breeze\"])\n    lighting = random.choice([\"autumn golden hour\", \"orange sunset\", \"warm afternoon light\"])\nelse:\n    season = \"Late Autumn 🍂\"\n    theme = random.choice([\"Mystic Night\", \"Full Moon\", \"Twilight\"])\n    lighting = random.choice([\"moonlit night\", \"twilight blue\", \"mysterious dusk\"])\n\n# --- Anime-style templates ---\ntemplates = [\n    {\n        \"title_template\": \"{Character} in {Location} | {Mood} Anime Aesthetic {emoji}\",\n        \"characters\": [\"Mysterious Girl\", \"Confident Woman\", \"Melancholic Character\", \"Determined Hero\", \"Lone Wanderer\"],\n        \"locations\": [\"Neon City Streets\", \"Temple Grounds\", \"Rainy Rooftop\", \"Train Platform\", \"Cherry Blossom Path\"],\n        \"moods\": [\"Cinematic\", \"Dramatic\", \"Atmospheric\", \"Melancholic\", \"Epic\"],\n        \"emojis\": [\"🌃\", \"⛩️\", \"🌧️\", \"🚃\", \"🌸\"],\n        \"image_prompt\": \"High-quality anime style, {character} in {location}, {lighting}, studio-quality animation, Demon Slayer level detail, cinematic composition, dramatic atmosphere, detailed anime rendering\"\n    },\n    {\n        \"title_template\": \"{Emotion} Moment | {Setting} Anime Scene {emoji}\",\n        \"emotions\": [\"Contemplative\", \"Defiant\", \"Hopeful\", \"Sorrowful\", \"Determined\"],\n        \"settings\": [\"Urban Night\", \"Mountain Shrine\", \"Rainy Street\", \"Sunset Rooftop\", \"Cyberpunk District\"],\n        \"emojis\": [\"✨\", \"🌅\", \"💫\", \"🌙\", \"⚡\"],\n        \"image_prompt\": \"Cinematic anime style, {emotion} character moment in {setting}, {lighting}, Makoto Shinkai quality, volumetric lighting, detailed background art, film-quality anime\"\n    },\n    {\n        \"title_template\": \"When the {Time} Calls | {Location} Anime {emoji}\",\n        \"times\": [\"Evening Light\", \"Morning Mist\", \"Midnight Hour\", \"Twilight\", \"Dawn\"],\n        \"locations\": [\"City Streets\", \"Forest Path\", \"Rooftop View\", \"River Bridge\", \"Mountain Peak\"],\n        \"emojis\": [\"🌆\", \"🌲\", \"🏙️\", \"🌉\", \"⛰️\"],\n        \"image_prompt\": \"Studio-quality anime, character during {time} at {location}, {lighting}, Ufotable-level animation, atmospheric effects, dramatic cinematography, detailed anime art\"\n    }\n]\n\n# --- Randomize template selection ---\ntemplate = random.choice(templates)\n\n# --- Generate content based on template ---\nif \"characters\" in template and \"locations\" in template:\n    character = random.choice(template[\"characters\"])\n    location = random.choice(template[\"locations\"])\n    mood = random.choice(template[\"moods\"])\n    emoji = random.choice(template[\"emojis\"])\n    title = template[\"title_template\"].format(Character=character, Location=location, Mood=mood, emoji=emoji)\n    title = f\"{title} | {theme} {season}\"\n    image_prompt = template[\"image_prompt\"].format(character=character, location=location, lighting=lighting)\n    text_prompt = f\"Create a {mood.lower()} {theme.lower()}-themed anime scene with {character} in {location} during {lighting}.\"\n\nelif \"emotions\" in template and \"settings\" in template:\n    emotion = random.choice(template[\"emotions\"])\n    setting = random.choice(template[\"settings\"])\n    emoji = random.choice(template[\"emojis\"])\n    title = template[\"title_template\"].format(Emotion=emotion, Setting=setting, emoji=emoji)\n    title = f\"{title} | {theme} {season}\"\n    image_prompt = template[\"image_prompt\"].format(emotion=emotion, setting=setting, lighting=lighting)\n    text_prompt = f\"Create a {theme.lower()}-inspired anime scene showing {emotion.lower()} emotion in {setting} with {lighting}.\"\n\nelse:\n    time = random.choice(template[\"times\"])\n    location = random.choice(template[\"locations\"])\n    emoji = random.choice(template[\"emojis\"])\n    title = template[\"title_template\"].format(Time=time, Location=location, emoji=emoji)\n    title = f\"{title} | {theme} {season}\"\n    image_prompt = template[\"image_prompt\"].format(time=time, location=location, lighting=lighting)\n    text_prompt = f\"Create a {theme.lower()}-themed anime scene during {time} at {location} with {lighting}.\"\n\n# --- Final structured output ---\nprompt = f\"\"\"\nGenerate TWO things:\n\n1. A detailed IMAGE PROMPT for HIGH-QUALITY ANIME image generation (focus on cinematic details, studio-quality animation style, dramatic lighting, atmospheric composition)\n2. A TEXT PROMPT that will be used as the user caption/instruction for the video workflow\n\nBase concept: {title}\n\nReturn ONLY valid JSON in this exact format:\n{{\n  \"ImagePrompt\": \"detailed visual prompt here\",\n  \"TextPrompt\": \"user instruction for video generation here\",\n  \"GeneratedTitle\": \"{title}\"\n}}\n\nMake the ImagePrompt extremely detailed with ANIME style keywords like: \n- Studio-quality animation (Demon Slayer, Makoto Shinkai, Ufotable level)\n- Cinematic anime composition\n- Dramatic lighting: {lighting}\n- Volumetric effects, god rays, lens flares\n- Detailed anime rendering with realistic shading\n- Atmospheric depth and rich colors\n- Film-quality anime cinematography\n\nMake the TextPrompt describe the character's mood, setting, and atmospheric details that should be animated in high-quality anime style.\n\nCRITICAL: This should be CINEMATIC ANIME quality, NOT cute chibi or Pixar style. Think theatrical anime films and high-budget series.\n\"\"\"\n\nreturn {\n    \"chatInput\": prompt\n}"
+        "pythonCode": "import random\nfrom datetime import datetime\n\n# --- Helper to escape quotes for JSON ---\ndef escape_quotes(s):\n    return s.replace('\"', '\\\\\"')\n\n# --- Current date/time ---\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\n# --- Options ---\ncharacters = [\n    \"Cheerful Girl in Pink\", \"Magical Fairy Girl\", \"Tiny Mermaid Girl\",\n    \"Adorable Elf Girl\", \"Joyful Princess\", \"Cute Wizard Girl\",\n    \"Playful School Girl\", \"Pastel Magical Girl\", \"Bubbly Flower Girl\",\n    \"Giggly Garden Fairy\", \"Twilight Star Girl\", \"Candyland Adventurer\",\n    \"Rainbow Fairy\", \"Star Princess\", \"Moonlight Elf\", \"Cotton Candy Girl\",\n    \"Sky Dance Girl\", \"Magical Librarian Girl\", \"Pastel Explorer\", \"Sparkling Artist Girl\",\n    \"Tea Party Girl\", \"Soft Glow Fairy\", \"Twinkle Star Girl\", \"Floating Cloud Fairy\",\n    \"Candy Castle Princess\", \"Flower Crown Girl\", \"Pastel Music Girl\", \"Magic Potion Girl\",\n    \"Sweet Bakery Girl\", \"Charming Sorceress\", \"Rainbow Ribbon Girl\", \"Lavender Garden Girl\",\n    \"Bubblegum Fairy\", \"Magical Forest Girl\", \"Joyful Picnic Girl\", \"Cute Potion Maker\",\n    \"Twinkling Garden Elf\", \"Moonlit Tea Girl\", \"Pastel Snow Girl\", \"Cherry Blossom Fairy\",\n    \"Sparkling Ice Princess\", \"Fairy Tale Princess\", \"Starlight Girl\", \"Enchanted Forest Girl\",\n    \"Magical Playdate Girl\", \"Dreamy Storybook Girl\", \"Rainbow Dance Fairy\", \"Pastel Carnival Girl\",\n    \"Whimsical Balloon Girl\"\n]\n\nlocations = [\n    \"Candy Land\", \"Floating Cloud Playground\", \"Sunny Pastel Garden\", \"Rainbow Street\",\n    \"Cozy Pink Café\", \"Twinkling Forest Path\", \"Pastel Castle Tower\", \"Magical Library\",\n    \"Toy Room\", \"Floating Castle Balcony\", \"Cherry Blossom Meadow\", \"Pastel Tea Garden\",\n    \"Rainbow Waterfall\", \"Starry Night Meadow\", \"Bubblegum Village\", \"Cotton Candy Fields\",\n    \"Twilight Flower Meadow\", \"Magic Fountain\", \"Starlight Riverbank\", \"Sparkling Ice Palace\",\n    \"Gingerbread Village\", \"Cozy Treehouse\", \"Pastel Market Square\", \"Dreamy Cloud Bridge\",\n    \"Floating Lantern Festival\", \"Magical Garden Courtyard\", \"Rainbow Carousel\", \"Whimsical Swing Park\",\n    \"Moonlight Picnic Hill\"\n]\n\nmoods = [\n    \"Joyful\", \"Playful\", \"Whimsical\", \"Dreamy\", \"Heartwarming\", \"Excited\",\n    \"Cheerful\", \"Giggly\", \"Bubbly\", \"Delighted\", \"Curious\", \"Sparkling\",\n    \"Enchanted\", \"Cozy\", \"Lighthearted\", \"Carefree\", \"Magical\", \"Radiant\",\n    \"Adorable\", \"Blissful\"\n]\n\nlighting = [\n    \"soft snowy glow\", \"twinkling snowflake sparkle\", \"warm cozy fireplace light\", \n    \"frosty pastel morning\", \"snowy twilight with pink hues\", \"winter magic shimmer\",\n    \"soft pink morning light\", \"cherry blossom golden hour\", \"pastel rainbow sunlight\",\n    \"gentle spring glow\", \"magical flower shimmer\", \"twinkling dew sparkle\",\n    \"bright sunny pastel light\", \"soft sunset glow\", \"golden hour sparkle\",\n    \"twilight pink shimmer\", \"warm playful sunlight\", \"magical summer haze\",\n    \"soft autumn sunset\", \"gentle moonlight pastel\"\n]\n\nemojis = [\"🌸\",\"✨\",\"🎀\",\"🌈\",\"🍭\",\"💖\",\"☀️\",\"🎉\",\"💫\"]\n\nseasons = [\n    \"Winter ❄️\", \"Spring 🌸\", \"Summer ☀️\", \"Autumn 🍂\", \"Late Autumn 🍂\"\n]\n\nthemes = [\n    \"Cozy Snow Adventure\", \"Winter Festival Fun\", \"Snowball Play\", \"Magical Snowland\",\n    \"Gingerbread Village\", \"Sparkling Ice Skating\", \"Cherry Blossom Picnic\",\n    \"Magical Flower Meadow\", \"Butterfly Playtime\", \"Pastel Garden Adventure\",\n    \"Kawaii Easter Morning\", \"Beach Playtime\", \"Ice Cream Adventure\",\n    \"Magical Summer Festival\", \"Sunny Picnic Fun\", \"Rainbow Playground\",\n    \"Bubbly Soda Party\", \"Twilight Fireflies\", \"Pumpkin Patch Fun\", \"Cute Café Afternoon\",\n    \"Leaf Pile Jumping\", \"Autumn Fair Adventure\", \"Magical Forest Stroll\",\n    \"Pastel Harvest Festival\", \"Starry Night Fun\", \"Cute Magical Moonlight\",\n    \"Pastel Twilight Adventure\", \"Whimsical Night Picnic\", \"Floating Lantern Festival\",\n    \"Sparkling Countryside\"\n]\n\n# --- Pick random elements ---\ncharacter = random.choice(characters)\nlocation = random.choice(locations)\nmood = random.choice(moods)\nlight = random.choice(lighting)\nemoji = random.choice(emojis)\nseason = random.choice(seasons)\ntheme = random.choice(themes)\n\n# --- Build prompts ---\ngenerated_title = f\"{character} in {location} | {mood} Cartoon Aesthetic {emoji} | {theme} {season}\"\ntext_prompt = (\n    f\"Create a cute animated pastel-themed scene with {character} in {location} during {light}. \"\n    \"She should interact, dance, talk, or play expressively. Include magical sparkles, glows, \"\n    \"and floating objects. Avoid narration, text, mushrooms, boys, dark characters, robots, and animals alone. \"\n    \"Pastel-colored, heartwarming, magical, whimsical.\"\n)\nimage_prompt = (\n    f\"High-quality 3D animation, Pixar/Disney inspired. {character} in {location} during {light}. \"\n    \"Whimsical environment, pastel colors, magical sparkles, soft dreamy style. Studio-quality.\"\n)\n\n# --- Escape quotes for JSON safety ---\ngenerated_title_escaped = escape_quotes(generated_title)\ntext_prompt_escaped = escape_quotes(text_prompt)\nimage_prompt_escaped = escape_quotes(image_prompt)\n\n# --- Return exactly what AI node expects ---\nreturn {\"chatInput\": f\"\"\"\nEnsure to return the output in this EXACT FORMAT:\n{{\n'imagePrompt':'{image_prompt_escaped}',\n'textPrompt':'{text_prompt_escaped}',\n'generatedTitle':'{generated_title_escaped}'\n}}\n\"\"\"}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -868,7 +793,7 @@
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "import json\nimport re\n\nai_output = _input.first().json[\"output\"]\n\njson_match = re.search(r\"```json\\s*(.*?)\\s*```\", ai_output, re.DOTALL)\nif json_match:\n    json_str = json_match.group(1)\nelse:\n    json_match = re.search(r\"\\{.*\\}\", ai_output, re.DOTALL)\n    json_str = json_match.group(0) if json_match else ai_output\n\nparsed = json.loads(json_str)\n\nreturn [{\n    \"json\": {\n        \"imagePrompt\": parsed[\"ImagePrompt\"],\n        \"textPrompt\": parsed[\"TextPrompt\"],\n        \"generatedTitle\": parsed.get(\"GeneratedTitle\", \"Untitled\")\n    }\n}]"
+        "pythonCode": "import json\nimport re\n\n# Get AI output string\nai_output = _input.first().json.get(\"output\", \"\")\n\n# Extract JSON-like block\njson_match = re.search(r\"\\{.*\\}\", ai_output, re.DOTALL)\nif not json_match:\n    raise ValueError(\"No JSON found in AI output.\")\njson_str = json_match.group(0)\n\n# Fix single quotes to double quotes for JSON compliance\n# Handles property names and string values\njson_str = re.sub(r\"(?<!\\\\)'\", '\"', json_str)  # Replace unescaped single quotes with double quotes\n\n# Optional: remove trailing commas (common AI formatting issue)\njson_str = re.sub(r\",(\\s*})\", r\"\\1\", json_str)\njson_str = re.sub(r\",(\\s*\\])\", r\"\\1\", json_str)\n\n# Parse safely\ntry:\n    parsed = json.loads(json_str)\nexcept json.JSONDecodeError as e:\n    raise ValueError(f\"Failed to parse JSON: {e}\\nContent: {json_str}\")\n\n# Return in expected format\nreturn [{\n    \"json\": {\n        \"imagePrompt\": parsed.get(\"imagePrompt\", \"\"),\n        \"textPrompt\": parsed.get(\"textPrompt\", \"\"),\n        \"generatedTitle\": parsed.get(\"generatedTitle\", \"Untitled\")\n    }\n}]"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -886,7 +811,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -3600,
+        -3616,
         720
       ],
       "id": "d57d5b05-7a96-4a84-980e-9303788ec784",
@@ -911,7 +836,7 @@
       "typeVersion": 3,
       "position": [
         -2896,
-        656
+        672
       ],
       "id": "11895223-967e-4739-a65f-7cc338c11975",
       "name": "Upload file1",
@@ -955,30 +880,11 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -2000,
+        -2048,
         960
       ],
       "id": "91aaaff4-ed6f-4ccb-be5d-07e32817edc7",
       "name": "Structured Output Parser"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        -2432,
-        1008
-      ],
-      "id": "b5da1e60-1c9b-41b5-9946-118047561b27",
-      "name": "Google Gemini Chat Model2",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "Qn2KmHKfcYN7JBvq",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
     },
     {
       "parameters": {
@@ -989,7 +895,7 @@
       "typeVersion": 2,
       "position": [
         -2672,
-        656
+        672
       ],
       "id": "8d6bf6b4-10ff-42fd-bbc8-796b98bf3920",
       "name": "Code in Python (Beta)4"
@@ -1088,6 +994,52 @@
     },
     {
       "parameters": {
+        "fieldToSplitOut": "output.scenes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1792,
+        688
+      ],
+      "id": "43a14e27-0963-4189-99d0-36fee9719622",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/veo/record-info",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 9db206739109671db64f1a06c8eb8b03"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1200,
+        688
+      ],
+      "id": "ece3e7ea-4186-491e-9a75-0cd0ca29c6a3",
+      "name": "HTTP Request - Get Video"
+    },
+    {
+      "parameters": {
         "method": "POST",
         "url": "https://api.kie.ai/api/v1/veo/generate",
         "sendHeaders": true,
@@ -1111,11 +1063,79 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1600,
-        704
+        -1584,
+        688
       ],
-      "id": "b3ee04dd-9462-46bf-909f-727578397168",
+      "id": "1ce0f53e-d575-464e-8b98-b7f346f977d9",
       "name": "HTTP Request - Make Video1"
+    },
+    {
+      "parameters": {
+        "amount": 4,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1408,
+        688
+      ],
+      "id": "e4ad85f9-5b67-4724-8893-797331967abd",
+      "name": "Wait 4m",
+      "webhookId": "7feaead4-5997-4d66-a596-78729fcf0ae5"
+    },
+    {
+      "parameters": {
+        "content": "## Image Creation",
+        "height": 304,
+        "width": 1392
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2288,
+        1120
+      ],
+      "typeVersion": 1,
+      "id": "dc462a1f-53c2-4ea7-8c08-5db52c8977f2",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2704,
+        1040
+      ],
+      "id": "d0448ae1-7664-459a-98cf-464c4a8b36ac",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Qn2KmHKfcYN7JBvq",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2224,
+        848
+      ],
+      "id": "834d4562-7a34-4638-b26b-ec7264e25d62",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "LuvQlz3qmejdhs7S",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
     }
   ],
   "connections": {
@@ -1174,28 +1194,6 @@
         ]
       ]
     },
-    "Split Out": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request - Make Video1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request - Get Video": {
-      "main": [
-        [
-          {
-            "node": "Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Aggregate": {
       "main": [
         [
@@ -1234,17 +1232,6 @@
         [
           {
             "node": "HTTP Request - Final Video",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait 4m": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request - Get Video",
             "type": "main",
             "index": 0
           }
@@ -1536,32 +1523,6 @@
         ]
       ]
     },
-    "Google Gemini Chat Model2": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent - Image Prompt",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "Structured Output Parser",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "AI Agent - Video Prompter",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "AI Agent1",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Code in Python (Beta)4": {
       "main": [
         [
@@ -1606,12 +1567,77 @@
         ]
       ]
     },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Make Video1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Get Video": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "HTTP Request - Make Video1": {
       "main": [
         [
           {
             "node": "Wait 4m",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 4m": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Image Prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]
