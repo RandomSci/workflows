@@ -1136,6 +1136,35 @@
           "name": "Google Gemini(PaLM) Api account 2"
         }
       }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        208,
+        1504
+      ],
+      "id": "81c4bfeb-e0e5-4638-879a-88cd9612b31c",
+      "name": "HTTP Request2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## For Tiktok Upload\n\nhttps://developers.tiktok.com/app/7568099330684225548/pending\n\nClient key\nawueea9a9ibxpnd3\n\nClient secret\nPtNO3aWgbHkCPFClAoSg7ZoEUXH5wE41",
+        "height": 288,
+        "width": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        176,
+        1408
+      ],
+      "typeVersion": 1,
+      "id": "6538d6fc-1c8f-478d-9193-dcdb3365a90a",
+      "name": "Sticky Note7"
     }
   ],
   "connections": {
@@ -1402,6 +1431,11 @@
         [
           {
             "node": "Upload a video",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request2",
             "type": "main",
             "index": 0
           }
