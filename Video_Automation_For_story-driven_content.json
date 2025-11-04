@@ -1213,43 +1213,7 @@
     },
     {
       "parameters": {
-        "httpRequestMethod": "POST",
-        "graphApiVersion": "v23.0",
-        "node": "=61582619558041",
-        "edge": "videos",
-        "sendBinaryData": true,
-        "binaryPropertyName": "data",
-        "options": {
-          "queryParameters": {
-            "parameter": [
-              {
-                "name": "message",
-                "value": "={{ $json[\"Facebook Post\"] }}"
-              }
-            ]
-          }
-        }
-      },
-      "type": "n8n-nodes-base.facebookGraphApi",
-      "typeVersion": 1,
-      "position": [
-        880,
-        1184
-      ],
-      "id": "b1da6789-4054-49cb-83a2-2b9b203574da",
-      "name": "Facebook Graph API1",
-      "credentials": {
-        "facebookGraphApi": {
-          "id": "KMspAwgUmqwyOsNp",
-          "name": "Facebook Graph account"
-        }
-      },
-      "disabled": true,
-      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
-    },
-    {
-      "parameters": {
-        "content": "Credentials for fb graph API expires ever 1-2 hrs",
+        "content": "Facebook Post",
         "height": 240,
         "width": 246,
         "color": 5
@@ -1297,6 +1261,22 @@
     },
     {
       "parameters": {
+        "content": "Instagram Post",
+        "height": 224,
+        "width": 246,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1104,
+        1120
+      ],
+      "typeVersion": 1,
+      "id": "40983990-abc7-4f95-b51d-3396e1245f59",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
         "httpRequestMethod": "POST",
         "graphApiVersion": "v23.0",
         "node": "=61582619558041",
@@ -1321,7 +1301,7 @@
         1184
       ],
       "id": "a2c3482c-677b-419e-be81-2ecacaf1a668",
-      "name": "Facebook Graph API",
+      "name": "Instagram Post",
       "credentials": {
         "facebookGraphApi": {
           "id": "KMspAwgUmqwyOsNp",
@@ -1333,19 +1313,39 @@
     },
     {
       "parameters": {
-        "content": "Credentials for fb graph API expires ever 1-2 hrs",
-        "height": 224,
-        "width": 246,
-        "color": 5
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=61582619558041",
+        "edge": "videos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Facebook Post\"] }}"
+              }
+            ]
+          }
+        }
       },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1104,
-        1120
-      ],
+      "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
-      "id": "40983990-abc7-4f95-b51d-3396e1245f59",
-      "name": "Sticky Note11"
+      "position": [
+        880,
+        1184
+      ],
+      "id": "b1da6789-4054-49cb-83a2-2b9b203574da",
+      "name": "Facebook Post",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "KMspAwgUmqwyOsNp",
+          "name": "Facebook Graph account"
+        }
+      },
+      "disabled": true,
+      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
     }
   ],
   "connections": {
@@ -1632,12 +1632,12 @@
             "index": 0
           },
           {
-            "node": "Facebook Graph API1",
+            "node": "Facebook Post",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Facebook Graph API",
+            "node": "Instagram Post",
             "type": "main",
             "index": 0
           }
@@ -1880,6 +1880,11 @@
       ]
     },
     "Add a playlist item": {
+      "main": [
+        []
+      ]
+    },
+    "Instagram Post": {
       "main": [
         []
       ]
