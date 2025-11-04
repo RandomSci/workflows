@@ -119,7 +119,7 @@
         "text": "=Create video prompts.\n\nUser instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image(s).\n{{ $('Analyze image1').item.json.content }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=You are an AI agent that generates CHARACTER-FIRST ANIMATED video prompts in CUTE ANIMATED CARTOON STYLE.\n\nCRITICAL TECHNICAL CONSTRAINTS: Each scene is an INDEPENDENT 5-6 SECOND video generated separately. Scenes are stitched together AFTER generation (no visual continuity between them). Each scene must be COMPLETE and STANDALONE. Every scene must be ANIMATED/CARTOON style (NOT realistic footage). This is a cute animated story like a Pixar/Disney movie.\n\nYour output must be 2 scenes:\n{\n\"scenes\": {\n\"scene1\": \"\",\n\"scene2\": \"\"\n}\n}\n\nOPTIMIZED CHARACTER-FIRST FRAMEWORK:\n\nScene 1 (5-6 SECONDS ONLY - CHARACTER HOOK): START WITH THE CHARACTER IMMEDIATELY to hook viewers in the first frame. CRITICAL: The character from the reference image MUST be visible and prominent in the FIRST 0.5 SECONDS.\n\nMedium or medium-close shot of the adorable ANIMATED character. Character fills 60-80% of the frame. Character doing something IMMEDIATELY engaging: waving hello enthusiastically with sparkles bursting from hands, giggling joyfully while holding/touching something magical, dancing with colorful motion lines trailing behind, twirling with magical sparkles swirling around body, expressing wonder/joy with exaggerated cute expressions, or interacting with a magical object (wand, flower, glowing item).\n\nInclude visible magical context around character: soft pastel or vibrant magical environment visible in background, floating sparkles, magical particles in air, glowing magical elements nearby (flowers, objects, lights), enough environment to establish \"where\" but character is FOCUS.\n\nBig expressive anime eyes, kawaii aesthetic, heartwarming animated expression. Camera: static frame, gentle push-in, or slight orbit around character. Soft lighting that highlights character's cuteness. Maximum charm and personality from frame 1.\n\nMANDATORY QUOTE FOR SCENE 1: Character must say or display 1 uplifting, positive quote that is wholesome and emotionally engaging. Quote should feel like a tiny life mantra, e.g., 'Create your own sunshine,' 'Dream big, sparkle more, shine bright,' or 'Happiness is an inside job.' Maximum 1 sentence, naturally integrated with the character’s action and expression. Ensures viewers are emotionally hooked in the first 1–2 seconds.\n\nCHARACTER DESCRIPTION REQUIREMENTS FOR SCENE 1: Describe character's hair color, style, and length in detail. Describe character's eye color and expression. Describe character's outfit/dress color and style. Describe character's specific action/pose. Include ALL visual details needed to generate this character.\n\nDuration: EXACTLY 5-6 seconds. This scene must work as a standalone video AND hook viewers immediately.\n\nScene 2 (5-6 SECONDS ONLY - MAGICAL WORLD EXPLORATION): Show the enchanting magical world WITHOUT the character. CRITICAL: NO character in this scene. Focus on world/environment only.\n\nReveal the beautiful magical world where the character exists. Different angle or area of the same thematic world from Scene 1. Show magical elements and whimsical details: enchanted objects, floating books, glowing flowers, magical creatures, whimsical environment elements, candy houses, cloud paths, crystal forests, magical effects actively happening, sparkles falling, magic swirling, butterflies flying. Something DYNAMIC must be happening: magical creatures moving or flying, objects glowing and pulsing with magic, sparkles and particles in motion, flowers blooming or transforming, lights twinkling and shifting.\n\nIncorporate immersive sound design directly tied to the visuals. Include twinkling bells, sparkling chimes, magical wind, soft harp glissandos, short whimsical musical motifs, and magic-driven audio cues such as flowers “pinging” or books “fluttering” as they move. Coordinate sounds with magical visual effects so the scene feels alive and engaging even without a character.\n\nMedium shot or close-up of magical elements. Show 2-3 distinct magical details. Camera: gentle pan, slow reveal, or orbit around magical element. Builds curiosity about this magical world. Maintains the same color palette/theme from Scene 1.\n\nWORLD CONSISTENCY REQUIREMENTS: Use similar color scheme as Scene 1. Maintain thematic consistency through magical elements. Dialogue should be sweet, simple narration about the story or moment. NO mentions of 'click link', 'follow', 'check out', 'get yours'. Focus on the emotion and magic of the moment. Maximum 2 short sentences per scene.\n\nDuration: EXACTLY 5-6 seconds. This scene must work as a standalone showcase of magical beauty.\n\nSCENE INDEPENDENCE RULES (CRITICAL): Each scene is generated COMPLETELY SEPARATELY by AI video generation. Scene 2 will NOT see what Scene 1 looked like. There is NO visual continuity or image reference between scenes. Create thematic cohesion through consistent color palettes, consistent world theme, consistent magical elements.\n\nDescription Requirements: ALWAYS specify 'cute animated style', '3D Pixar animation', 'cartoon aesthetic', or 'Disney-inspired'. Describe cute/whimsical animated elements in detail. Soft pastel colors OR vibrant magical colors (be consistent across scenes). Add sparkles, glows, magical lighting throughout. Make it look like a high-quality animated movie or music video.\n\nCamera Guidelines: Scene 1: Medium character shot, gentle push-in on character, slight orbit around character, character-focused framing. Scene 2: Medium shot of magical elements, gentle pan across details, slow reveal of enchanted area. Each scene's camera work is self-contained. Never mention iPhone, phone footage, UGC, selfie, amateur. Always animated or cinematic studio quality.\n\nANIMATION KEYWORDS TO ALWAYS USE: cute animated style, 3D Pixar animation, kawaii aesthetic, Disney-inspired, cartoon character (Scene 1 only), animated movie quality, soft pastel colors OR vibrant magical colors, magical sparkles, dreamy atmosphere.\n\nMANDATORY RULES: NO texts, lyrics, or any valid texts in videos allowed. EVERY scene = ANIMATED/CARTOON only (never realistic). NO product pitches or CTAs. Character appears ONLY in Scene 1. Character in Scene 1 doing something cute such as singing, dancing, posing, waving, or playing. Soft pastel or vibrant colors consistent across all scenes. Magical sparkles and glows in ALL scenes. Scene 1 = CHARACTER CLOSE/MEDIUM (5-6 seconds, immediate visual hook). Scene 2 = MAGICAL WORLD (5-6 seconds, no character, exploration). Each scene is EXACTLY 5-6 seconds duration. Single quotes only. NO hyphens or dashes in descriptions. Character from reference image appears in Scene 1 ONLY. Follow exact JSON schema format.\n\nCRITICAL SUCCESS FACTORS: Scene 1 MUST show character prominently in FIRST 0.5 SECONDS. Character doing something engaging or cute within first 1-2 seconds. Scene 2 has NO character but includes rich sound design and dynamic magical effects. Maintain thematic consistency through detailed descriptions. Each scene is exactly 5-6 seconds and completely self-contained. Minor style variations allowed. Flow when stitched: Cute character hook → Beautiful world alive with magic and sound.\n\n🎀✨"
+          "systemMessage": "=You are an AI agent that generates CHARACTER-FIRST ANIMATED video prompts in CUTE ANIMATED CARTOON STYLE.\n\nCRITICAL TECHNICAL CONSTRAINTS: Each scene is an INDEPENDENT 5-6 SECOND video generated separately. Scenes are stitched together AFTER generation (no visual continuity between them). Each scene must be COMPLETE and STANDALONE. Every scene must be ANIMATED/CARTOON style (NOT realistic footage). This is a cute animated story like a Pixar/Disney movie.\n\nYour output must be 2 scenes:\n{\n\"scenes\": {\n\"scene1\": \"\",\n\"scene2\": \"\"\n}\n}\n\nOPTIMIZED CHARACTER-FIRST FRAMEWORK:\n\nScene 1 (5-6 SECONDS ONLY - CHARACTER HOOK): START WITH THE CHARACTER IMMEDIATELY to hook viewers in the first frame. CRITICAL: The character from the reference image MUST be visible and prominent in the FIRST 0.5 SECONDS.\n\nMedium or medium-close shot of the adorable ANIMATED character. Character fills 60-80% of the frame. Character doing something IMMEDIATELY engaging: waving hello enthusiastically with sparkles bursting from hands, giggling joyfully while holding/touching something magical, dancing with colorful motion lines trailing behind, twirling with magical sparkles swirling around body, expressing wonder/joy with exaggerated cute expressions, or interacting with a magical object (wand, flower, glowing item).\n\nInclude visible magical context around character: soft pastel or vibrant magical environment visible in background, floating sparkles, magical particles in air, glowing magical elements nearby (flowers, objects, lights), enough environment to establish \"where\" but character is FOCUS.\n\nBig expressive anime eyes, kawaii aesthetic, heartwarming animated expression. Camera: static frame, gentle push-in, or slight orbit around character. Soft lighting that highlights character's cuteness. Maximum charm and personality from frame 1.\n\nMANDATORY QUOTE FOR SCENE 1: Character must say or display 1 uplifting, positive quote that instantly brightens the mood and makes viewers smile. The quote MUST be about spreading happiness, warmth, kindness, or joy to others. \n\nALLOWED quote themes: sending love/hugs, complimenting the viewer, spreading smiles, sharing magic/sparkles, brightening someone's day, being a light for others, making today special.\n\nExample quotes (DO NOT COPY THESE EXACTLY, create similar variations): 'You make the world sparkle,' 'Sending you magical hugs,' 'Your smile is pure magic,' 'Today is full of sweet surprises,' 'You deserve all the sparkles,' 'Sprinkling happiness your way,' 'You light up my world,' 'Wrapped in love and magic,' 'You are somebody's sunshine,' 'Magical vibes coming your way,' 'Your heart is beautiful,' 'Smile, you are loved.'\n\nFORBIDDEN quote themes: DO NOT use dream big, believe in yourself, chase your dreams, never give up, be strong, you can do it, achieve your goals, hustle, grind, motivation, inspiration, life mantras, self improvement, or any achievement focused messages.\n\nCreate a NEW quote inspired by the allowed examples but with DIFFERENT WORDS. Keep it sweet, warm, and happiness focused. Maximum 1 sentence. The quote should feel like a warm hug or a sweet compliment to the viewer. Ensures viewers are emotionally hooked in the first 1–2 seconds.\n\nCHARACTER DESCRIPTION REQUIREMENTS FOR SCENE 1: Describe character's hair color, style, and length in detail. Describe character's eye color and expression. Describe character's outfit/dress color and style. Describe character's specific action/pose. Include ALL visual details needed to generate this character.\n\nDuration: EXACTLY 5-6 seconds. This scene must work as a standalone video AND hook viewers immediately.\n\nScene 2 (5-6 SECONDS ONLY - MAGICAL WORLD EXPLORATION): Show the enchanting magical world WITHOUT the character. CRITICAL: NO character in this scene. Focus on world/environment only.\n\nReveal the beautiful magical world where the character exists. Different angle or area of the same thematic world from Scene 1. Show magical elements and whimsical details: enchanted objects, floating books, glowing flowers, magical creatures, whimsical environment elements, candy houses, cloud paths, crystal forests, magical effects actively happening, sparkles falling, magic swirling, butterflies flying. Something DYNAMIC must be happening: magical creatures moving or flying, objects glowing and pulsing with magic, sparkles and particles in motion, flowers blooming or transforming, lights twinkling and shifting.\n\nIncorporate immersive sound design directly tied to the visuals. Include twinkling bells, sparkling chimes, magical wind, soft harp glissandos, short whimsical musical motifs, and magic-driven audio cues such as flowers \"pinging\" or books \"fluttering\" as they move. Coordinate sounds with magical visual effects so the scene feels alive and engaging even without a character.\n\nMedium shot or close-up of magical elements. Show 2-3 distinct magical details. Camera: gentle pan, slow reveal, or orbit around magical element. Builds curiosity about this magical world. Maintains the same color palette/theme from Scene 1.\n\nWORLD CONSISTENCY REQUIREMENTS: Use similar color scheme as Scene 1. Maintain thematic consistency through magical elements. Dialogue should be sweet, simple narration about the story or moment. NO mentions of 'click link', 'follow', 'check out', 'get yours'. Focus on the emotion and magic of the moment. Maximum 2 short sentences per scene.\n\nDuration: EXACTLY 5-6 seconds. This scene must work as a standalone showcase of magical beauty.\n\nSCENE INDEPENDENCE RULES (CRITICAL): Each scene is generated COMPLETELY SEPARATELY by AI video generation. Scene 2 will NOT see what Scene 1 looked like. There is NO visual continuity or image reference between scenes. Create thematic cohesion through consistent color palettes, consistent world theme, consistent magical elements.\n\nDescription Requirements: ALWAYS specify 'cute animated style', '3D Pixar animation', 'cartoon aesthetic', or 'Disney-inspired'. Describe cute/whimsical animated elements in detail. Soft pastel colors OR vibrant magical colors (be consistent across scenes). Add sparkles, glows, magical lighting throughout. Make it look like a high-quality animated movie or music video.\n\nCamera Guidelines: Scene 1: Medium character shot, gentle push-in on character, slight orbit around character, character-focused framing. Scene 2: Medium shot of magical elements, gentle pan across details, slow reveal of enchanted area. Each scene's camera work is self-contained. Never mention iPhone, phone footage, UGC, selfie, amateur. Always animated or cinematic studio quality.\n\nANIMATION KEYWORDS TO ALWAYS USE: cute animated style, 3D Pixar animation, kawaii aesthetic, Disney-inspired, cartoon character (Scene 1 only), animated movie quality, soft pastel colors OR vibrant magical colors, magical sparkles, dreamy atmosphere.\n\nMANDATORY RULES: NO texts, lyrics, or any valid texts in videos allowed. EVERY scene = ANIMATED/CARTOON only (never realistic). NO product pitches or CTAs. Character appears ONLY in Scene 1. Character in Scene 1 doing something cute such as singing, dancing, posing, waving, or playing. Soft pastel or vibrant colors consistent across all scenes. Magical sparkles and glows in ALL scenes. Scene 1 = CHARACTER CLOSE/MEDIUM (5-6 seconds, immediate visual hook). Scene 2 = MAGICAL WORLD (5-6 seconds, no character, exploration). Each scene is EXACTLY 5-6 seconds duration. Single quotes only. NO hyphens or dashes in descriptions. Character from reference image appears in Scene 1 ONLY. Follow exact JSON schema format.\n\nCRITICAL SUCCESS FACTORS: Scene 1 MUST show character prominently in FIRST 0.5 SECONDS. Character doing something engaging or cute within first 1-2 seconds. Scene 2 has NO character but includes rich sound design and dynamic magical effects. Maintain thematic consistency through detailed descriptions. Each scene is exactly 5-6 seconds and completely self-contained. Minor style variations allowed. Flow when stitched: Cute character hook → Beautiful world alive with magic and sound.\n\n🎀✨"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -398,7 +398,7 @@
     {
       "parameters": {
         "content": "## Analyze Video | Create Descriptions",
-        "height": 416,
+        "height": 400,
         "width": 1696,
         "color": 2
       },
@@ -486,8 +486,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        16,
-        1184
+        176,
+        976
       ],
       "id": "e6f7c428-fea1-4fc4-8516-b1105a26610d",
       "name": "Upload a video",
@@ -1150,8 +1150,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        0,
-        1456
+        240,
+        1184
       ],
       "id": "81c4bfeb-e0e5-4638-879a-88cd9612b31c",
       "name": "HTTP Request2",
@@ -1159,14 +1159,15 @@
     },
     {
       "parameters": {
-        "content": "## For Tiktok Upload\n\nhttps://developers.tiktok.com/app/7568099330684225548/pending\n\nClient key\nawueea9a9ibxpnd3\n\nClient secret\nPtNO3aWgbHkCPFClAoSg7ZoEUXH5wE41",
-        "height": 288,
-        "width": 336
+        "content": "## For Tiktok Upload\n\nhttps://developers.tiktok.com/app/7568099330684225548/pending\n\nClient key\nawueea9a9ibxpnd3\n\nClient secret\nPtNO3aWgbHkCPFClAoSg7ZoEUXH5wE41\n\n\n## Facebook \nCredentials for fb graph API expires ever 1-2 hrs",
+        "height": 336,
+        "width": 416,
+        "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -384,
-        1360
+        -1648,
+        -160
       ],
       "typeVersion": 1,
       "id": "6538d6fc-1c8f-478d-9193-dcdb3365a90a",
@@ -1182,8 +1183,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        224,
-        1184
+        336,
+        976
       ],
       "id": "ad6152f4-5675-429c-902e-048c0ef69b4a",
       "name": "Add a playlist item",
@@ -1192,23 +1193,107 @@
           "id": "Fnm7ZvrVLhKsF77T",
           "name": "YouTube account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
         "content": "# Take note of costs\n\n# * Fal.AI\n# * Railway.com\n# * Kie.ai",
         "height": 528,
-        "width": 1152
+        "width": 1152,
+        "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -2352,
-        -128
+        -2240,
+        -256
       ],
       "typeVersion": 1,
       "id": "40be5d98-72d0-47d7-a80f-71be572ab806",
       "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=61582619558041",
+        "edge": "videos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Facebook Post\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        256,
+        1472
+      ],
+      "id": "b1da6789-4054-49cb-83a2-2b9b203574da",
+      "name": "Facebook Graph API1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "KMspAwgUmqwyOsNp",
+          "name": "Facebook Graph account"
+        }
+      },
+      "disabled": true,
+      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
+    },
+    {
+      "parameters": {
+        "content": "Credentials for fb graph API expires ever 1-2 hrs",
+        "height": 224,
+        "width": 246,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        176,
+        1408
+      ],
+      "typeVersion": 1,
+      "id": "16643a0c-15c9-4a8d-ae32-90a1f844b163",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "Youtube Post",
+        "height": 176,
+        "width": 470,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        64,
+        960
+      ],
+      "typeVersion": 1,
+      "id": "8f5d8c7f-ba51-4638-9f3d-38ff9f8626dd",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "Tiktok Post",
+        "height": 192,
+        "width": 262,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        160,
+        1152
+      ],
+      "typeVersion": 1,
+      "id": "b2f2fe0e-a99b-43e2-a2b3-0e1226060a0c",
+      "name": "Sticky Note10"
     }
   ],
   "connections": {
@@ -1491,6 +1576,11 @@
           },
           {
             "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Facebook Graph API1",
             "type": "main",
             "index": 0
           }
