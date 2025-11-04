@@ -1112,8 +1112,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -2656,
-        1056
+        -2624,
+        1072
       ],
       "id": "d0448ae1-7664-459a-98cf-464c4a8b36ac",
       "name": "Google Gemini Chat Model1",
@@ -1142,20 +1142,6 @@
           "name": "Google Gemini(PaLM) Api account 2"
         }
       }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        592,
-        1184
-      ],
-      "id": "81c4bfeb-e0e5-4638-879a-88cd9612b31c",
-      "name": "HTTP Request2",
-      "disabled": true
     },
     {
       "parameters": {
@@ -1263,8 +1249,7 @@
       "parameters": {
         "content": "Instagram Post",
         "height": 224,
-        "width": 246,
-        "color": 5
+        "width": 246
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1346,6 +1331,21 @@
       },
       "disabled": true,
       "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
+    },
+    {
+      "parameters": {
+        "url": "https://example.com",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        592,
+        1184
+      ],
+      "id": "81c4bfeb-e0e5-4638-879a-88cd9612b31c",
+      "name": "Tiktok Post",
+      "disabled": true
     }
   ],
   "connections": {
@@ -1627,7 +1627,7 @@
             "index": 0
           },
           {
-            "node": "HTTP Request2",
+            "node": "Tiktok Post",
             "type": "main",
             "index": 0
           },
