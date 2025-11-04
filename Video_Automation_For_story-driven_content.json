@@ -440,7 +440,7 @@
       "parameters": {
         "content": "## Upload Videos",
         "height": 304,
-        "width": 1712,
+        "width": 2272,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -486,8 +486,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        176,
-        976
+        112,
+        1184
       ],
       "id": "e6f7c428-fea1-4fc4-8516-b1105a26610d",
       "name": "Upload a video",
@@ -1150,7 +1150,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        240,
+        592,
         1184
       ],
       "id": "81c4bfeb-e0e5-4638-879a-88cd9612b31c",
@@ -1183,8 +1183,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        336,
-        976
+        272,
+        1184
       ],
       "id": "ad6152f4-5675-429c-902e-048c0ef69b4a",
       "name": "Add a playlist item",
@@ -1233,11 +1233,95 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        256,
-        1472
+        880,
+        1184
       ],
       "id": "b1da6789-4054-49cb-83a2-2b9b203574da",
       "name": "Facebook Graph API1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "KMspAwgUmqwyOsNp",
+          "name": "Facebook Graph account"
+        }
+      },
+      "disabled": true,
+      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
+    },
+    {
+      "parameters": {
+        "content": "Credentials for fb graph API expires ever 1-2 hrs",
+        "height": 240,
+        "width": 246,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        800,
+        1120
+      ],
+      "typeVersion": 1,
+      "id": "16643a0c-15c9-4a8d-ae32-90a1f844b163",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "Youtube Post",
+        "height": 240,
+        "width": 470,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        1120
+      ],
+      "typeVersion": 1,
+      "id": "8f5d8c7f-ba51-4638-9f3d-38ff9f8626dd",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "Tiktok Post",
+        "height": 240,
+        "width": 262,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        512,
+        1120
+      ],
+      "typeVersion": 1,
+      "id": "b2f2fe0e-a99b-43e2-a2b3-0e1226060a0c",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=61582619558041",
+        "edge": "videos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Facebook Post\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        1184
+      ],
+      "id": "a2c3482c-677b-419e-be81-2ecacaf1a668",
+      "name": "Facebook Graph API",
       "credentials": {
         "facebookGraphApi": {
           "id": "KMspAwgUmqwyOsNp",
@@ -1256,44 +1340,12 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        176,
-        1408
+        1104,
+        1120
       ],
       "typeVersion": 1,
-      "id": "16643a0c-15c9-4a8d-ae32-90a1f844b163",
-      "name": "Sticky Note8"
-    },
-    {
-      "parameters": {
-        "content": "Youtube Post",
-        "height": 176,
-        "width": 470,
-        "color": 3
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        64,
-        960
-      ],
-      "typeVersion": 1,
-      "id": "8f5d8c7f-ba51-4638-9f3d-38ff9f8626dd",
-      "name": "Sticky Note9"
-    },
-    {
-      "parameters": {
-        "content": "Tiktok Post",
-        "height": 192,
-        "width": 262,
-        "color": 7
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        160,
-        1152
-      ],
-      "typeVersion": 1,
-      "id": "b2f2fe0e-a99b-43e2-a2b3-0e1226060a0c",
-      "name": "Sticky Note10"
+      "id": "40983990-abc7-4f95-b51d-3396e1245f59",
+      "name": "Sticky Note11"
     }
   ],
   "connections": {
@@ -1581,6 +1633,11 @@
           },
           {
             "node": "Facebook Graph API1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Facebook Graph API",
             "type": "main",
             "index": 0
           }
