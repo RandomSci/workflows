@@ -5,8 +5,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -1840,
-        1008
+        -1584,
+        1200
       ],
       "id": "63d86550-4986-41e4-9b25-88c2420f9f82",
       "name": "When clicking 'Execute workflow'"
@@ -14,15 +14,15 @@
     {
       "parameters": {
         "resource": "video",
-        "limit": 10,
+        "limit": 3,
         "filters": {},
         "options": {}
       },
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -1616,
-        1008
+        -1360,
+        1200
       ],
       "id": "523be390-624e-4ebd-bf4d-d2690497f2b4",
       "name": "Get many videos",
@@ -36,13 +36,13 @@
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "import json\n\n# Get all input items\nitems_list = []\n\n# When \"Run Once for All Items\" is enabled, access .json property\nfor item in items:\n    youtube_title = item.json[\"snippet\"][\"title\"]\n    youtube_description = item.json[\"snippet\"][\"description\"]\n    \n    youtube_description_clean = youtube_description.replace(\"\\n\", \" \").replace('\"', '\\\\\"')\n    \n    prompt = f\"\"\"You are a YouTube description optimizer that **adds affiliate links in the cutest, most engaging way possible**.\n\nTASK:\n1. Access the datatable tool to get all available affiliate links.\n2. If the current description already contains any links, do NOT duplicate them.\n3. If no links exist, add them in a **beautifully formatted, super cute section** at the end of the description.\n4. Make the description **fun, whimsical, and engaging** using emojis ✨🌸💖.\n5. Keep all original description content intact.\n6. Add proper spacing and line breaks to make it **easy to read, visually cute, and scannable**.\n7. Spark curiosity before each link—make viewers want to click!\n8. Ensure total description length does not exceed YouTube limits (~5,000 characters).\n\nCURRENT VIDEO:\nTitle: {youtube_title}\nDescription: {youtube_description_clean}\n\nCRITICAL OUTPUT FORMAT:\nReturn ONLY valid JSON, in this EXACT structure:\n\n{{\n  \"Title\": \"{youtube_title}\",\n  \"New_Description\": \"enhanced description here with links\",\n  \"What_Changed\": \"brief explanation of changes made\"\n}}\n\nRULES:\n- Use double quotes for JSON keys and string values.\n- Escape any quotes inside the description text.\n- Do NOT use markdown code blocks.\n- Return ONLY the JSON object, nothing else.\n\nLINKS SECTION FORMAT (add at the end of the description):\n═══════════════════════\n✨ RESOURCES & LINKS ✨\n═══════════════════════\n\n[Insert all links from datatable here. Each link should have a cute emoji and a curiosity hook.]\n\n═══════════════════════\n\"\"\"\n    \n    items_list.append({\n        \"json\": {\n            \"chatInput\": prompt,\n            \"videoId\": item.json[\"id\"][\"videoId\"],\n            \"snippet\": item.json[\"snippet\"]\n        }\n    })\n\nreturn items_list"
+        "pythonCode": "import json\n\n# Get all input items\nitems_list = []\n# When \"Run Once for All Items\" is enabled, access .json property\nfor item in items:\n    youtube_title = item.json[\"snippet\"][\"title\"]\n    youtube_description = item.json[\"snippet\"][\"description\"]\n    \n    # Clean the description for JSON formatting\n    youtube_description_clean = youtube_description.replace(\"\\n\", \" \").replace('\"', '\\\\\"')\n    \n    prompt = f\"\"\"You are a YouTube description optimizer for Algonova Labs - creating magical content that makes people feel ALIVE! ✨\n\nYOUR MISSION:\n1. FIRST: Use the datatable tool to get ALL available links\n2. Read what types of links exist (support? tools? resources? community?)\n3. Create a UNIQUE header that matches the vibe of the links\n4. Write engaging copy for EACH link based on its actual purpose\n5. Add a SHORT, warm closing (2-3 sentences MAX!)\n6. Use \\\\n for line breaks!\n\nTitle: {youtube_title}\nDescription: {youtube_description_clean}\n\nCRITICAL INSTRUCTIONS:\n- Call datatable tool FIRST\n- Use EVERY link from datatable (use exact URLs, never make up links)\n- Create FRESH, ORIGINAL content every time - NO repetition across videos!\n- Read each link's purpose and write compelling copy for it\n- END with a BRIEF, heartfelt closing (keep it SHORT!)\n\nOUTPUT FORMAT:\n{{\n  \"Title\": \"{youtube_title}\",\n  \"New_Description\": \"enhanced description with ALL real links AND warm closing\",\n  \"What_Changed\": \"summary\"\n}}\n\nLINKS SECTION - HEADER CREATION:\nRead the links first, then CREATE YOUR OWN unique header. Don't copy these - use them as inspiration:\n\nStyle inspiration (create your own versions):\n- Community vibe: Connection, family, journey together\n- Tools/Resources vibe: Discovery, helpful stuff, what powers the magic\n- Mixed vibe: Blend warmth with utility\n- Support vibe: Gratitude and reciprocity\n\nUse varied emojis, varied phrasing, varied energy. Never repeat headers!\n\nLINKS WRITING:\n[Your creative header]\n\n[For each link, write SHORT engaging copy - 1 sentence max per link]\n[Brief hook] [emoji]\n[ACTUAL URL from datatable]\n\n[Next link - keep it snappy!]\n\nCLOSING SECTION - KEEP IT SHORT & SWEET:\n⚠️ MAXIMUM 2-3 SENTENCES! ⚠️\n\nAfter all links, write a BRIEF closing that:\n- Thanks them quickly OR invites engagement\n- Mentions like/subscribe naturally (don't overdo it)\n- Signs off warmly\n- Matches the video's vibe\n\nGOOD CLOSING EXAMPLES (short & punchy):\n✅ \"Thanks for watching! 💖 Drop a like if you enjoyed this, and subscribe for more magic! What's your favorite part? ✨\"\n\n✅ \"Hope this made you smile! If it did, show some love and hit subscribe! See you next time! 💫\"\n\n✅ \"You're amazing for watching till the end! 🌟 Like, subscribe, and let us know your thoughts below! Stay magical! ✨\"\n\n✅ \"Thanks for being here! 💕 If you loved this, subscribe for more enchantment! What should we create next? ✨\"\n\nBAD CLOSING EXAMPLES (too long, too wordy):\n❌ \"Wow, what an incredible journey into the heart of magic! 💖 Thank you so much for joining us and letting your own light shine with our princess. If this enchantment sparked joy in you, please give us a radiant like and subscribe to our channel for more magical adventures! We'd absolutely love to hear what magic you believe in – tell us your thoughts in the comments below! ✨ Until our next wondrous tale, keep believing in the extraordinary within you!\"\n\n❌ Any closing over 3 sentences\n❌ Using flowery language that takes forever to say simple things\n❌ Multiple CTAs crammed together\n\nCLOSING FORMULA:\n[Quick thank you OR hope statement] + [Brief CTA] + [Short sign-off]\nThat's it! Keep it tight!\n\nTONE GUIDELINES:\n- Be CONVERSATIONAL and AUTHENTIC\n- Match the video's energy (read the title!)\n- Keep link descriptions to ONE sentence each\n- Keep closing to 2-3 sentences MAX\n- Sound like a friend, not a corporate script\n- Punchy, not preachy!\n\nFORMAT RULES:\n- Use \\\\n for line breaks\n- Pattern: brief_text\\\\nURL\\\\n\\\\n (double break between links)\n- Include ALL links from datatable\n- End with SHORT closing (2-3 sentences!)\n\nCREATIVITY MANDATE:\n🚨 Never repeat yourself across videos! 🚨\n- Every header should be ORIGINAL\n- Every closing should be UNIQUE but BRIEF\n- Let the video title inspire your tone\n- Make each description feel handcrafted, not templated\n- Be creative but CONCISE\n\"\"\"\n    \n    items_list.append({\n        \"json\": {\n            \"chatInput\": prompt,\n            \"videoId\": item.json[\"id\"][\"videoId\"],\n            \"snippet\": item.json[\"snippet\"]\n        }\n    })\n\nreturn items_list"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1392,
-        1008
+        -1168,
+        1200
       ],
       "id": "815198d0-427d-4036-9a76-894d744c878f",
       "name": "Code in Python (Beta)",
@@ -55,8 +55,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -1168,
-        1008
+        -944,
+        1200
       ],
       "id": "6a3fcfb7-8499-4f39-8474-ce4657dc9435",
       "name": "Loop Over Items"
@@ -64,13 +64,13 @@
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "import os\n\n# List of AI nodes\nAI_nodes = ['AI Agent - Video Prompter', 'AI Agent - Video Prompter2', 'AI Agent - Video Prompter3']\n\n# File to store counter\ncounter_file = '/tmp/n8n_ai_counter.txt'\n\n# Read or initialize counter\nif os.path.exists(counter_file):\n    with open(counter_file, 'r') as f:\n        current_index = int(f.read().strip())\nelse:\n    current_index = 0\n\n# Assign AI agent\nassigned_ai = AI_nodes[current_index % len(AI_nodes)]\n\n# Increment and save counter for next iteration\nnext_index = (current_index + 1) % len(AI_nodes)\nwith open(counter_file, 'w') as f:\n    f.write(str(next_index))\n\nprint(f\"Iteration: {current_index + 1}, Assigned: {assigned_ai}\")\n\nreturn {\n    'assignedAI': assigned_ai,\n    'chatInput': _json['chatInput'],\n    'videoId': _json['videoId'],\n    'title': _json['snippet']['title'],\n    'description': _json['snippet']['description']\n}"
+        "pythonCode": "import os\n\nAI_nodes = ['AI Agent - Video Prompter', 'AI Agent - Video Prompter2', 'AI Agent - Video Prompter3']\n\ncounter_file = '/tmp/n8n_ai_counter.txt'\n\nif os.path.exists(counter_file):\n    with open(counter_file, 'r') as f:\n        current_index = int(f.read().strip())\nelse:\n    current_index = 0\n\nassigned_ai = AI_nodes[current_index % len(AI_nodes)]\n\nnext_index = (current_index + 1) % len(AI_nodes)\nwith open(counter_file, 'w') as f:\n    f.write(str(next_index))\n\nprint(f\"Iteration: {current_index + 1}, Assigned: {assigned_ai}\")\n\nreturn {\n    'assignedAI': assigned_ai,\n    'chatInput': _json['chatInput'],\n    'videoId': _json['videoId'],\n    'title': _json['snippet']['title'],\n    'description': _json['snippet']['description']\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -944,
-        1008
+        -720,
+        1200
       ],
       "id": "a8688b02-9121-4793-bd12-fee1f34b7bc9",
       "name": "Assign AI Agent"
@@ -155,8 +155,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        -720,
-        992
+        -496,
+        1184
       ],
       "id": "fd5f9947-c2c0-496c-957b-47d694512200",
       "name": "Switch"
@@ -173,8 +173,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -496,
-        896
+        -272,
+        1088
       ],
       "id": "2549ee9d-2a8f-4b89-aad4-1f3e1c35bc54",
       "name": "AI Agent - Video Prompter",
@@ -192,8 +192,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -496,
-        288
+        -272,
+        480
       ],
       "id": "07989ab5-fa93-4196-9f0d-2682714711fc",
       "name": "AI Agent - Video Prompter2",
@@ -211,8 +211,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -496,
-        1712
+        -272,
+        1904
       ],
       "id": "98f127de-2df1-4a69-bace-e8febe2e908c",
       "name": "AI Agent - Video Prompter3",
@@ -227,8 +227,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -296,
-        512
+        -80,
+        704
       ],
       "id": "0d613a54-86ce-4497-af07-1edbe4087f75",
       "name": "Structured Output Parser"
@@ -240,8 +240,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -364,
-        2144
+        -144,
+        2336
       ],
       "id": "1b99ff19-769c-49bd-ad5a-8eb65206e53f",
       "name": "Google Gemini Chat Model2",
@@ -267,21 +267,21 @@
       "type": "n8n-nodes-base.dataTableTool",
       "typeVersion": 1,
       "position": [
-        -424,
-        512
+        -208,
+        704
       ],
       "id": "329bf7ea-895d-4f68-ae5f-f5333aea5aae",
       "name": "Get row(s) in Data table"
     },
     {
       "parameters": {
-        "jsCode": "let x = $input.first().json.output;\n\nx.New_Description = x.New_Description.replace(/\\n+/g, ' ').trim();\nx.What_Changed = x.What_Changed.replace(/\\n+/g, ' ').trim();\n\nreturn x;\n"
+        "jsCode": "let x = $input.first().json.output;\n\nx.New_Description = x.New_Description\n  .replace(/\\n{3,}/g, '\\n\\n')\n  .trim();\n\nx.What_Changed = x.What_Changed.replace(/\\n+/g, ' ').trim();\n\nreturn x;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        72,
-        1104
+        304,
+        1296
       ],
       "id": "2d5a8250-ba9b-4bc7-b6cf-904862ad65d6",
       "name": "Code in JavaScript",
@@ -290,14 +290,14 @@
     },
     {
       "parameters": {
-        "content": "# API Keys\n\njaymeselwyn@gmail.com - YouTube Automation Related [API_KEY](AIzaSyBdiMWDS_hWgmSXSvteOngPoXpYbVFmsWA)\nalgonovalabs@gmail.com - YOUTUBE AUTOMATION RELATED [API_KEY](AIzaSyBz2QIu6HgrZPXtyG123q8hsgsogqZds70)",
+        "content": "# API Keys\n\njaymeselwyn@gmail.com - YouTube Automation Related [API_KEY](AIzaSyBdiMWDS_hWgmSXSvteOngPoXpYbVFmsWA)\nalgonovalabs@gmail.com - YOUTUBE AUTOMATION RELATED [API_KEY](AIzaSyBz2QIu6HgrZPXtyG123q8hsgsogqZds70)\n\n## [Spreadsheet Here](https://docs.google.com/spreadsheets/d/12-pAQisSOVLPXx6TL0914T4hUzDHxa3BJ9pKxuVuxxA/edit?usp=sharing)",
         "height": 320,
         "width": 688
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        32,
-        512
+        192,
+        416
       ],
       "typeVersion": 1,
       "id": "ed052612-e34a-4aec-bb4e-9a2ebb6edf6a",
@@ -312,8 +312,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -296,
-        1120
+        -80,
+        1312
       ],
       "id": "989ea0fc-7a09-4125-b0ba-84af09234f6b",
       "name": "Structured Output Parser1"
@@ -333,8 +333,8 @@
       "type": "n8n-nodes-base.dataTableTool",
       "typeVersion": 1,
       "position": [
-        -424,
-        1120
+        -208,
+        1312
       ],
       "id": "a1feb827-b0de-49f9-92c6-1efc91e11dc7",
       "name": "Get row(s) in Data table1"
@@ -348,8 +348,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -296,
-        1936
+        -80,
+        2128
       ],
       "id": "23282ec5-31cb-46d5-b42f-b13412b39f2f",
       "name": "Structured Output Parser2"
@@ -369,8 +369,8 @@
       "type": "n8n-nodes-base.dataTableTool",
       "typeVersion": 1,
       "position": [
-        -424,
-        1936
+        -208,
+        2128
       ],
       "id": "0b598e03-a7d6-448a-84ee-769c4ea227ce",
       "name": "Get row(s) in Data table2"
@@ -382,8 +382,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -364,
-        720
+        -144,
+        912
       ],
       "id": "9144ed37-1a22-4f39-b37e-0cacef5a498d",
       "name": "Google Gemini Chat Model",
@@ -401,8 +401,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -364,
-        1328
+        -144,
+        1520
       ],
       "id": "95af1429-f1d0-4a02-b172-d2c0911b15df",
       "name": "Google Gemini Chat Model3",
@@ -436,13 +436,24 @@
             "Old_Description": "={{ $('Get many videos').item.json.snippet.description }}",
             "Title": "={{ $json.Title }}",
             "New_Description": "={{ $json.New_Description }}",
-            "What_Changed": "={{ $json.What_Changed }}"
+            "What_Changed": "={{ $json.What_Changed }}",
+            "Youtube Link": "=https://www.youtube.com/shorts/{{ $('Get many videos').item.json.id.videoId }}"
           },
           "matchingColumns": [],
           "schema": [
             {
               "id": "Title",
               "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Youtube Link",
+              "displayName": "Youtube Link",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -489,8 +500,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        296,
-        1584
+        528,
+        1296
       ],
       "id": "977f0868-3033-4727-8a11-5fc8fc5e7406",
       "name": "Append row in sheet",
@@ -506,11 +517,38 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -944,
-        816
+        -720,
+        1008
       ],
       "id": "40c491f1-a623-45b8-966d-0e209c21989f",
       "name": "Done"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "update",
+        "videoId": "={{ $('Get many videos').item.json.id.videoId }}",
+        "title": "={{ $('Get many videos').item.json.snippet.title }}",
+        "regionCode": "PH",
+        "categoryId": "1",
+        "updateFields": {
+          "description": "={{ $('Code in JavaScript').item.json.New_Description.split('\\\\n').join('\\n') }}"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        752,
+        1776
+      ],
+      "id": "3038ee3b-ff48-4b35-ad0b-27bc602d2bd4",
+      "name": "Update a video",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "Fnm7ZvrVLhKsF77T",
+          "name": "YouTube account"
+        }
+      }
     }
   ],
   "connections": {
@@ -760,6 +798,17 @@
       ]
     },
     "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Update a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a video": {
       "main": [
         [
           {
