@@ -323,6 +323,8 @@
       ],
       "id": "7b6cd518-5893-435c-aa2f-beefb6638623",
       "name": "HTTP Request1",
+      "retryOnFail": true,
+      "maxTries": 5,
       "credentials": {
         "youTubeOAuth2Api": {
           "id": "Fnm7ZvrVLhKsF77T",
