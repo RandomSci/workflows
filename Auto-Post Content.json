@@ -2,51 +2,15 @@
   "nodes": [
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "youTubeOAuth2Api",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "snippet.videoId",
-              "value": "={{ $('Loop Over Items').item.json.id.videoId }}"
-            },
-            {
-              "name": "snippet.topLevelComment.snippet.textOriginal",
-              "value": "={{ $('Code in Python (Beta)4').item.json[\"Youtube Comment\"] }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1904,
-        1824
-      ],
-      "id": "3008b6be-d0aa-42ad-b069-38a20a4a9584",
-      "name": "YouTube Comment Post",
-      "credentials": {
-        "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -816,
-        1952
+        -4160,
+        272
       ],
-      "id": "ef739e0f-1dce-4a51-8dd5-2e262a7a39f7",
+      "id": "818fb027-1a27-42a8-b8af-474c1523704d",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -62,10 +26,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -816,
-        1728
+        -4176,
+        48
       ],
-      "id": "a216fa09-cdef-461f-ace1-9c2a752df373",
+      "id": "6dfe3347-2f3c-4b05-ac70-f4be01cc0e06",
       "name": "AI Agent",
       "retryOnFail": true
     },
@@ -83,10 +47,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -1936,
-        1728
+        -5296,
+        48
       ],
-      "id": "cca36bf1-4e19-4d53-9214-e20a2aaf31ab",
+      "id": "b4940525-a598-4b0e-a82c-20d1a43aeff0",
       "name": "Schedule Trigger"
     },
     {
@@ -97,11 +61,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        128,
-        1232
+        -3232,
+        -448
       ],
       "typeVersion": 1,
-      "id": "0611fdce-1504-4484-947a-26d9e20c96de",
+      "id": "a693b90f-61b5-4151-b4ce-a3021e7d6b5f",
       "name": "Sticky Note"
     },
     {
@@ -112,10 +76,10 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -1712,
-        1728
+        -5072,
+        48
       ],
-      "id": "c8ba4d84-d6fb-40cc-8044-a4ab9be229a5",
+      "id": "d5f89fa6-37d0-4796-bb70-2d01d378f48c",
       "name": "Get a channel",
       "credentials": {
         "youTubeOAuth2Api": {
@@ -134,10 +98,10 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -1488,
-        1728
+        -4848,
+        48
       ],
-      "id": "1dbc2d70-b86e-44d3-ae55-2065a8a53673",
+      "id": "8b5ed583-00db-41eb-a395-6757fd51299b",
       "name": "Get many videos",
       "credentials": {
         "youTubeOAuth2Api": {
@@ -153,10 +117,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -1264,
-        1728
+        -4624,
+        48
       ],
-      "id": "2d3e34a3-6206-4f92-b195-95d890483c96",
+      "id": "4a138f8e-4ddb-4110-aec6-772970e005cd",
       "name": "Loop Over Items"
     },
     {
@@ -164,10 +128,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -1040,
-        1536
+        -4400,
+        -144
       ],
-      "id": "c4131276-261a-4655-8fcf-a2fd0591cd40",
+      "id": "8c78b996-941a-4167-86a2-3a5c9b77cfdb",
       "name": "No Operation, do nothing"
     },
     {
@@ -178,10 +142,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1040,
-        1728
+        -4400,
+        48
       ],
-      "id": "79bbe553-23ca-4cc2-9052-27d6e7138f66",
+      "id": "7d3dcd9c-84d0-4244-ba85-1089ae4c7f8f",
       "name": "Code in Python (Beta)"
     },
     {
@@ -213,10 +177,10 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        -688,
-        1952
+        -4032,
+        272
       ],
-      "id": "7622dbf1-32b3-4014-8b15-c8cb54b5fbf9",
+      "id": "c491d97a-8819-4955-9856-6d5f87cb0d87",
       "name": "Get row(s) in sheet in Google Sheets",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -228,15 +192,15 @@
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "from datetime import datetime\nimport random\n\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\n\nYoutube_Channel_Url = \"https://youtube.com/@algonovalabs?si=p6UJAPdolW5Mfdq5\"\nYoutube_Channel_name = \"AlgoNova Labs\"\nImage_URL = _input.first().json.webViewLink\nYoutube_Video_Url = f\"https://www.youtube.com/shorts/{_('Get many videos').first().json.id.videoId}\"\n\nprompt = f\"\"\"\nIMPORTANT:\nYou MUST use the exact YouTube video URL and channel URL provided below.\nDo NOT modify them, do NOT guess them, do NOT generate new ones.\n\nVideo URL (use EXACTLY this):\n{Youtube_Video_Url}\n\nChannel URL (use EXACTLY this):\n{Youtube_Channel_Url}\n\nCreate highly engaging posts for:\n• Facebook\n• Instagram\n• X (Twitter) — max 280 characters, no images\n• YouTube Community — must include both video + channel links\n\nTheme: whimsical, magical, pastel, FOMO-driven like {Youtube_Channel_name}.  \nPromote the new video magically.\n\nProvide 5 creative variations per platform.\nEach variation must:\n1. Be short, magical, whimsical, and FOMO-driven.\n2. Use emojis and interaction hooks.\n3. Include BOTH the Video URL and Channel URL EXACTLY as given.\n4. Be unique for every variation and platform.\n5. X post must stay under 280 chars and NOT reference images.\n\nOUTPUT FORMAT (MANDATORY):\nReturn ONLY valid JSON in this structure.\nUse the FIRST variation of each platform as default:\n\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"Facebook Post\": \"FIRST CREATIVE VARIATION HERE\",\n  \"Instagram Post\": \"FIRST CREATIVE VARIATION HERE\",\n  \"X Post\": \"FIRST CREATIVE VARIATION HERE (must include both links, <280 chars)\",\n  \"Youtube Post\": \"FIRST CREATIVE VARIATION HERE. Watch till the end! {Youtube_Channel_name}: {Youtube_Channel_Url}\",\n  \"Image URL\": \"{Image_URL}\",\n  \"Status\": \"Ready to Post\",\n  \"Category\": \"Community Engagement\",\n  \"Notes\": \"Include 5+ creative variations per platform. Use hashtags #AlgoNovaMagic #PastelWorld #WhimsicalVibes.\"\n}}\n\nRULES:\n- DO NOT change or create any YouTube links.\n- Do NOT invent URLs.\n- ONLY use the provided Video URL and Channel URL EXACTLY as given.\n- Do NOT use asterisks (**), dashes (-), or Markdown-style symbols in any post.\n- Output must be valid JSON without formatting symbols or markdown.\n\"\"\"\n\nreturn {'chatInput': prompt}\n"
+        "pythonCode": "from datetime import datetime\nimport random\n\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\",\n    \"Tiny Mermaid Girl\",\n    \"Adorable Elf Girl\",\n    \"Joyful Princess\",\n    \"Cute Wizard Girl\",\n    \"Playful School Girl\"\n])\n\nYoutube_Channel_Url = \"https://youtube.com/@algonovalabs?si=p6UJAPdolW5Mfdq5\"\nYoutube_Channel_name = \"AlgoNova Labs\"\nImage_URL = _input.first().json.webViewLink\nYoutube_Video_Url = f\"https://www.youtube.com/shorts/{_('Get many videos').first().json.id.videoId}\"\n\nprompt = f\"\"\"\nIMPORTANT:\nUse the exact YouTube video and channel URLs below for posts,\nbut NOT for YouTube comments (those are posted directly on that same video).\n\nVideo URL:\n{Youtube_Video_Url}\n\nChannel URL:\n{Youtube_Channel_Url}\n\nTASK:\nGenerate 5 creative variations for each of these platforms:\n• Facebook  \n• Instagram  \n• X (Twitter) — under 280 characters, no images  \n• YouTube Community — must include both the video + channel links  \n• YouTube Comment — should feel like the AlgoNova world calling the viewer to *enter*.\n\nTONE:\n- Whimsical ✨ Dreamlike 🌙 Playfully Mysterious 🍭  \n- Sound like a living fairytale inviting people in — “step through,” “come closer,” “follow the light,” etc.  \n- Encourage interaction (“What would you bring if you visited?” / “Which door would you open first?”).  \n- Lightly FOMO-driven: tease the beauty or emotion inside the short without spoiling it.  \n- Feel personal, curious, alive — *not corporate*.\n\nRULES:\n1. Include BOTH URLs exactly as provided (except YouTube comments).\n2. YouTube Comment: NO URLs, NO hashtags — just pure engagement.\n3. Posts must sound like a magical world speaking directly to the audience.\n4. Use emojis and vivid, sensory language.\n5. Output ONLY valid JSON.\n\nOUTPUT FORMAT (STRICT):\nReturn ONLY valid JSON using this structure (use the FIRST variation per platform as default):\n\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"Facebook Post\": \"FIRST CREATIVE VARIATION HERE\",\n  \"Instagram Post\": \"FIRST CREATIVE VARIATION HERE\",\n  \"X Post\": \"FIRST CREATIVE VARIATION HERE (must include both links, <280 chars)\",\n  \"Youtube Post\": \"FIRST CREATIVE VARIATION HERE. Watch till the end! {Youtube_Channel_name}: {Youtube_Channel_Url}\",\n  \"Youtube Comment\": \"Magical, teasing line that draws the viewer in — no links, only emotion and curiosity.\",\n  \"Image URL\": \"{Image_URL}\",\n  \"Status\": \"Ready to Post\",\n  \"Category\": \"Community Engagement\",\n  \"Notes\": \"Encourage curiosity, emotion, and participation — make viewers feel personally invited into the AlgoNova world. Use vivid metaphors, gentle humor, or playful mystery.\"\n}}\n\"\"\"\n\nreturn {'chatInput': prompt}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        880,
-        1728
+        -2480,
+        48
       ],
-      "id": "ab042449-7a57-4dd0-b6f6-1b125ffd9f99",
+      "id": "cd472346-ecad-459e-88f7-f1a1e7a78c66",
       "name": "Code in Python (Beta)1"
     },
     {
@@ -246,10 +210,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -464,
-        1728
+        -3824,
+        48
       ],
-      "id": "134bd641-2fea-493a-945d-f951d0626789",
+      "id": "741daa57-5bbe-4b1a-875c-cd38fe0e0b1b",
       "name": "Spreadsheet Data"
     },
     {
@@ -259,10 +223,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        1104,
-        1728
+        -2256,
+        48
       ],
-      "id": "cb7e1a1b-ec05-400d-8c0a-e143daec847f",
+      "id": "25888315-ac6c-4bc1-8640-3e5bdfe57656",
       "name": "AI Agent1"
     },
     {
@@ -272,10 +236,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1184,
-        1952
+        -2176,
+        272
       ],
-      "id": "68e0ce32-73e1-4114-8e89-6cfd339674e3",
+      "id": "a26b4f6c-a2dd-46ea-9b76-a88836da3bc4",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -297,10 +261,10 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -240,
-        1728
+        -3600,
+        48
       ],
-      "id": "0f5e9a1b-2736-4723-8fe1-3b2a6c17f177",
+      "id": "88f9af36-4919-4bba-825d-b61283c61010",
       "name": "Download file",
       "credentials": {
         "googleDriveOAuth2Api": {
@@ -325,10 +289,10 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        -16,
-        1728
+        -3376,
+        48
       ],
-      "id": "b232847f-215a-4e0d-b91d-1ba004ff53f3",
+      "id": "dc51bc78-854b-4773-8775-102092fa82eb",
       "name": "Analyze video",
       "credentials": {
         "googlePalmApi": {
@@ -352,10 +316,10 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        432,
-        1728
+        -2928,
+        48
       ],
-      "id": "9a32fe17-ad9a-4c68-b1e4-254face47a59",
+      "id": "a81f0e26-54e6-49b5-9d14-2ea6e3fbba33",
       "name": "Generate an image",
       "credentials": {
         "googlePalmApi": {
@@ -372,10 +336,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        208,
-        1728
+        -3152,
+        48
       ],
-      "id": "9e5c58d1-4231-4408-ab5a-d21b352bedb8",
+      "id": "890eac92-4284-4445-8b50-fba448e052c2",
       "name": "Code in Python (Beta)3"
     },
     {
@@ -396,10 +360,10 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        656,
-        1728
+        -2704,
+        48
       ],
-      "id": "b46936e5-e36a-496f-bb64-9a4c4e4b1e75",
+      "id": "1fff1ce7-3224-4a8a-9712-522cc6c1741c",
       "name": "Upload file",
       "credentials": {
         "googleDriveOAuth2Api": {
@@ -416,10 +380,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1456,
-        1728
+        -1904,
+        48
       ],
-      "id": "a760d3cd-0c25-4f6f-aaf0-cef7a6dc0531",
+      "id": "debaa6b8-24b1-402a-a11d-17423675ead3",
       "name": "Code in Python (Beta)4"
     },
     {
@@ -544,6 +508,15 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true
+            },
+            {
+              "id": "Season",
+              "displayName": "Season",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -554,10 +527,10 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1680,
-        1728
+        -1680,
+        48
       ],
-      "id": "b7d60c0e-7ab2-4c69-b06d-016faae294ad",
+      "id": "d93e7331-4a27-4a12-bc1d-e6aaa75d2545",
       "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -588,11 +561,13 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        1904,
-        1632
+        -1456,
+        -48
       ],
-      "id": "05b94102-9425-4fe4-9426-007900324501",
+      "id": "8b2ce724-043a-4de8-b4cd-344cb377eae4",
       "name": "Facebook Graph API1",
+      "executeOnce": false,
+      "retryOnFail": true,
       "credentials": {
         "facebookGraphApi": {
           "id": "KMspAwgUmqwyOsNp",
@@ -600,6 +575,7 @@
         }
       },
       "disabled": true,
+      "onError": "continueRegularOutput",
       "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
     },
     {
@@ -610,11 +586,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1840,
-        1568
+        -1520,
+        -112
       ],
       "typeVersion": 1,
-      "id": "8787c821-c0fe-4bc7-ae22-5a0fd25c4e74",
+      "id": "3897bf2c-f8eb-490d-a4c2-e1dbed322f11",
       "name": "Sticky Note3"
     },
     {
@@ -625,18 +601,21 @@
       "type": "n8n-nodes-base.twitter",
       "typeVersion": 2,
       "position": [
-        1904,
-        1440
+        -1456,
+        -240
       ],
-      "id": "6a09012d-a7ad-46c3-a932-c218fa51ec98",
+      "id": "cf90ed69-b154-4882-a25d-f4332afa629b",
       "name": "Create Tweet",
+      "executeOnce": false,
+      "retryOnFail": true,
       "credentials": {
         "twitterOAuth2Api": {
           "id": "5D5HJ8WIowbKcvzG",
           "name": "X account"
         }
       },
-      "disabled": true
+      "disabled": true,
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -645,10 +624,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        2128,
-        1840
+        -1232,
+        160
       ],
-      "id": "44b95206-a6cc-4fa1-931b-596354a2dbd3",
+      "id": "25f21ea4-9aff-45a7-a764-300a2406d911",
       "name": "Merge"
     },
     {
@@ -659,26 +638,51 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1904,
-        2016
+        -1456,
+        336
       ],
-      "id": "84ca6415-ee1f-4cfb-bd90-46f80e052c76",
+      "id": "f2352285-682a-43a6-b6e1-83c42891f32c",
       "name": "Instagram Post",
       "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "youTubeOAuth2Api",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "snippet.videoId",
+              "value": "={{ $('Loop Over Items').item.json.id.videoId }}"
+            },
+            {
+              "name": "snippet.topLevelComment.snippet.textOriginal",
+              "value": "={{ $('Code in Python (Beta)4').item.json[\"Youtube Comment\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1456,
+        144
+      ],
+      "id": "40764d68-cd2a-43b4-b5c0-6b48eebbde92",
+      "name": "YouTube Comment Post",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "Fnm7ZvrVLhKsF77T",
+          "name": "YouTube account"
+        }
+      }
     }
   ],
   "connections": {
-    "YouTube Comment Post": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 2
-          }
-        ]
-      ]
-    },
     "Google Gemini Chat Model": {
       "ai_languageModel": [
         [
@@ -953,71 +957,20 @@
           }
         ]
       ]
+    },
+    "YouTube Comment Post": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
     }
   },
   "pinData": {
-    "Get a channel": [
-      {
-        "kind": "youtube#channel",
-        "etag": "GxutjTVRl4qPmDJ7y35WSn5oLxo",
-        "id": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
-        "snippet": {
-          "title": "algonovalabs",
-          "description": "AlgoNova Labs is a portal to a world of enchantment! ✨ Immerse yourself in magical animated journeys where princesses, witches, fairies, and other delightful characters come to life. From crystal gardens to whimsical forests, every animation is a burst of wonder, sparkling with color and joy. 🌟\n\nStep into a realm of glowing castles, candy-filled landscapes, and mystical adventures, where every moment is filled with magic and heart. 💖\n\nSubscribe to experience the magic, where dreams are brought to life, one animation at a time! ✨\n",
-          "customUrl": "@algonovalabs",
-          "publishedAt": "2025-10-28T09:08:41.169621Z",
-          "thumbnails": {
-            "default": {
-              "url": "https://yt3.ggpht.com/MZ8zP7r3VjvA-domCVVj7A1y33pgxj9FIvlorV_rtrq4QgBB22N5DV0rTe1e9iZYXvPRSv_DVg=s88-c-k-c0x00ffffff-no-rj",
-              "width": 88,
-              "height": 88
-            },
-            "medium": {
-              "url": "https://yt3.ggpht.com/MZ8zP7r3VjvA-domCVVj7A1y33pgxj9FIvlorV_rtrq4QgBB22N5DV0rTe1e9iZYXvPRSv_DVg=s240-c-k-c0x00ffffff-no-rj",
-              "width": 240,
-              "height": 240
-            },
-            "high": {
-              "url": "https://yt3.ggpht.com/MZ8zP7r3VjvA-domCVVj7A1y33pgxj9FIvlorV_rtrq4QgBB22N5DV0rTe1e9iZYXvPRSv_DVg=s800-c-k-c0x00ffffff-no-rj",
-              "width": 800,
-              "height": 800
-            }
-          },
-          "localized": {
-            "title": "algonovalabs",
-            "description": "AlgoNova Labs is a portal to a world of enchantment! ✨ Immerse yourself in magical animated journeys where princesses, witches, fairies, and other delightful characters come to life. From crystal gardens to whimsical forests, every animation is a burst of wonder, sparkling with color and joy. 🌟\n\nStep into a realm of glowing castles, candy-filled landscapes, and mystical adventures, where every moment is filled with magic and heart. 💖\n\nSubscribe to experience the magic, where dreams are brought to life, one animation at a time! ✨\n"
-          }
-        },
-        "contentDetails": {
-          "relatedPlaylists": {
-            "likes": "LL",
-            "uploads": "UUr2Q0TirO6tHV-ZTEFNzfGQ"
-          }
-        },
-        "statistics": {
-          "viewCount": "21395",
-          "subscriberCount": "28",
-          "hiddenSubscriberCount": false,
-          "videoCount": "47"
-        },
-        "status": {
-          "privacyStatus": "public",
-          "isLinked": true,
-          "longUploadsStatus": "eligible",
-          "madeForKids": false,
-          "selfDeclaredMadeForKids": false,
-          "isChannelMonetizationEnabled": false
-        },
-        "brandingSettings": {
-          "channel": {
-            "title": "algonovalabs",
-            "description": "AlgoNova Labs is a portal to a world of enchantment! ✨ Immerse yourself in magical animated journeys where princesses, witches, fairies, and other delightful characters come to life. From crystal gardens to whimsical forests, every animation is a burst of wonder, sparkling with color and joy. 🌟\n\nStep into a realm of glowing castles, candy-filled landscapes, and mystical adventures, where every moment is filled with magic and heart. 💖\n\nSubscribe to experience the magic, where dreams are brought to life, one animation at a time! ✨\n",
-            "unsubscribedTrailer": "mg0dor2tG3A"
-          }
-        },
-        "contentOwnerDetails": {}
-      }
-    ],
     "Get many videos": [
       {
         "kind": "youtube#searchResult",
