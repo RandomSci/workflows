@@ -1,0 +1,947 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        832,
+        432
+      ],
+      "id": "06abd0b9-caec-4672-9141-d46b5db1b6a1",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "LuvQlz3qmejdhs7S",
+          "name": "selwyngwapo90_Youtube Automation Related"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        816,
+        208
+      ],
+      "id": "e57ecfb0-029c-4c3f-b83c-7210c94db7fb",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 5
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -304,
+        208
+      ],
+      "id": "eb86d257-707b-4414-97f9-5c9a542f788f",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "content": "### SCRAPE VIDEO IN YOUTUBE - ANALYZE VIDEO - GET THE IMAGE - MAKE POST (IMAGE + TEXT WITH THE LINK OF THE CHANNEL) - POST TO YOUTUBE, INSTAGRAM, FACEBOOK PAGE\n\n\n# [Spreadsheet](https://docs.google.com/spreadsheets/d/1KuxCw3LPw-qtgEe3oqIq0iuwy79YIiru3uku2WbzHus/edit?usp=sharing)",
+        "height": 240,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1760,
+        -288
+      ],
+      "typeVersion": 1,
+      "id": "6f998c43-6bca-4af4-bb99-da31d971527c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ"
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        208
+      ],
+      "id": "a9d71d80-cc70-497a-a269-f2549bc4ada0",
+      "name": "Get a channel",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "Fnm7ZvrVLhKsF77T",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "limit": 3,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        144,
+        208
+      ],
+      "id": "8af8b61f-6c6b-4da4-8623-a0fb9a9583ab",
+      "name": "Get many videos",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "Fnm7ZvrVLhKsF77T",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        368,
+        208
+      ],
+      "id": "10e6e9c7-7584-4a08-b61f-2e5c2be46368",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        592,
+        16
+      ],
+      "id": "545a1287-c23d-4b85-b1b2-5920d138eef9",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "Youtube_Title = _input.first().json.snippet.title\n\nprompt = f\"\"\"\nYou are connected to a spreadsheet tool. Retrieve all the data related to this YouTube video:\nTitle: {Youtube_Title}\n\nOutput format MUST be exact JSON like this:\n\n{{\n  \"Data\": [\n    {{\n      \"row_number\": 1,\n      \"Date\": \"MM/DD/YYYY\",\n      \"Time\": \"HH:MM\",\n      \"YouTube Title\": \"...\",\n      \"YouTube Description\": \"...\",\n      \"TikTok Description\": \"...\",\n      \"Facebook Reel Description\": \"...\",\n      \"Instagram Description\": \"...\",\n      \"Additional Notes\": {{\n        \"Hashtags\": [...],\n        \"Trends\": [...],\n        \"PostingTips\": [...]\n      }},\n      \"Video Url View\": \"...\",\n      \"Video Url Download\": \"...\",\n      \"col_11\": \"...\"\n    }}\n  ]\n}}\n\nNo extra words, no explanations, no quotes around the outer JSON. Return only valid JSON.\n\"\"\"\n\nreturn {\"chatInput\": prompt}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        208
+      ],
+      "id": "2a94ab66-820a-4661-b08d-42b5ebd65bb0",
+      "name": "Code in Python (Beta)"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4",
+          "mode": "list",
+          "cachedResultName": "Generated Videos to Post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "YouTube Title",
+              "lookupValue": "={{ $('Loop Over Items').item.json.snippet.title }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        960,
+        432
+      ],
+      "id": "5a5a2886-37c5-46cd-9608-bc8482acafc1",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Q33u7QDdFT7kx3S6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from datetime import datetime\nimport random\n\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\n\nYoutube_Channel_Url = \"https://youtube.com/@algonovalabs?si=p6UJAPdolW5Mfdq5\"\nYoutube_Channel_name = \"AlgoNova Labs\"\nImage_URL = _input.first().json.webViewLink\nYoutube_Video_Url = f\"https://www.youtube.com/shorts/{_('Get many videos').first().json.id.videoId}\"\n\nprompt = f\"\"\"\nIMPORTANT:\nYou MUST use the exact YouTube video URL and channel URL provided below.\nDo NOT modify them, do NOT guess them, do NOT generate new ones.\n\nVideo URL (use EXACTLY this):\n{Youtube_Video_Url}\n\nChannel URL (use EXACTLY this):\n{Youtube_Channel_Url}\n\nCreate highly engaging posts for:\n• Facebook\n• Instagram\n• X (Twitter) — max 280 characters, no images\n• YouTube Community — must include both video + channel links\n\nTheme: whimsical, magical, pastel, FOMO-driven like {Youtube_Channel_name}.  \nPromote the new video magically.\n\nProvide 5 creative variations per platform.\nEach variation must:\n1. Be short, magical, whimsical, and FOMO-driven.\n2. Use emojis and interaction hooks.\n3. Include BOTH the Video URL and Channel URL EXACTLY as given.\n4. Be unique for every variation and platform.\n5. X post must stay under 280 chars and NOT reference images.\n\nOUTPUT FORMAT (MANDATORY):\nReturn ONLY valid JSON in this structure.\nUse the FIRST variation of each platform as default:\n\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"Facebook Post\": \"FIRST CREATIVE VARIATION HERE\",\n  \"Instagram Post\": \"FIRST CREATIVE VARIATION HERE\",\n  \"X Post\": \"FIRST CREATIVE VARIATION HERE (must include both links, <280 chars)\",\n  \"Youtube Post\": \"FIRST CREATIVE VARIATION HERE. Watch till the end! {Youtube_Channel_name}: {Youtube_Channel_Url}\",\n  \"Image URL\": \"{Image_URL}\",\n  \"Status\": \"Ready to Post\",\n  \"Category\": \"Community Engagement\",\n  \"Notes\": \"Include 5+ creative variations per platform. Use hashtags #AlgoNovaMagic #PastelWorld #WhimsicalVibes.\"\n}}\n\nRULES:\n- DO NOT change or create any YouTube links.\n- Do NOT invent URLs.\n- ONLY use the provided Video URL and Channel URL EXACTLY as given.\n- Do NOT use asterisks (**), dashes (-), or Markdown-style symbols in any post.\n- Output must be valid JSON without formatting symbols or markdown.\n\"\"\"\n\nreturn {'chatInput': prompt}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2512,
+        208
+      ],
+      "id": "79ba3593-b18f-4a51-9021-48b989f9c283",
+      "name": "Code in Python (Beta)1"
+    },
+    {
+      "parameters": {
+        "jsCode": "let aiOutput = $json[\"output\"];\n\naiOutput = aiOutput.replace(/^```json\\s*|\\s*```$/g, '');\n\nconst parsedOutput = JSON.parse(aiOutput);\n\nconst dataArray = parsedOutput.Data;\n\nconst finalArray = typeof dataArray === 'string' ? JSON.parse(dataArray) : dataArray;\n\nreturn finalArray.map(item => ({ json: item }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1168,
+        208
+      ],
+      "id": "cbf5d138-6578-4768-84be-6e379bffd690",
+      "name": "Spreadsheet Data"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2736,
+        208
+      ],
+      "id": "edc383a6-58e4-44d5-bb9c-51c2f0d03600",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2816,
+        432
+      ],
+      "id": "db88cea0-af8a-4b16-8455-7c67eff94d3f",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "LuvQlz3qmejdhs7S",
+          "name": "selwyngwapo90_Youtube Automation Related"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json[\"Video Url View\"] }}",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1392,
+        208
+      ],
+      "id": "62db3256-01e5-48c3-9ba4-59b23e6933e1",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "2KupETq4QLi8d9l8",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1616,
+        208
+      ],
+      "id": "493a90a5-015c-4031-a279-4502eca3a90f",
+      "name": "Analyze video",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "LuvQlz3qmejdhs7S",
+          "name": "selwyngwapo90_Youtube Automation Related"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.0-flash-exp-image-generation",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.0-flash-exp-image-generation"
+        },
+        "prompt": "={{ $json.prompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        2064,
+        208
+      ],
+      "id": "d6de4478-2d38-4a85-b6f8-ce951586ca9f",
+      "name": "Generate an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "LuvQlz3qmejdhs7S",
+          "name": "selwyngwapo90_Youtube Automation Related"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "Video_Details = _input.first().json.content.parts[0].text\n\nprompt = f\"\"\"\nThis is the Video Details: {Video_Details}\n\nCreate a cinematic pastel 3D render inspired by the video's magical theme. \nIt must look professional, clean, and emotionally uplifting — with the same whimsical mood as:\n\n\"A cinematic 3D pastel render of a floating magical light above an enchanted meadow, surrounded by gentle sparkles and pastel petals. Soft glow, balanced composition, no faces, no text, no characters.\"\n\nNow, come up with a **unique, creative variation** of that scene idea.\nYou may change:\n- The main magical focus (e.g., glowing portal, floating island, crystal heart, enchanted flower, soft light waves, celestial pond)\n- The setting (e.g., pastel clouds, garden, seaside, sky, forest, dream realm)\n- The color palette (keep pastel but vary tone: mint, pink, lavender, baby blue, gold)\n- The lighting mood (morning glow, twilight sparkle, gentle sunrise)\n\nRULES:\n- Always keep the pastel, cinematic, whimsical aesthetic.\n- Keep the composition balanced and minimal.\n- Include NO text, NO faces, NO characters.\n- Avoid darkness, clutter, and harsh contrast.\n- Output must feel visually premium, magical, and uniquely creative.\n\nGoal: Each result should feel like a new chapter of the same whimsical world — different scene, same dreamlike energy.\n\"\"\"\n\nreturn {'prompt': prompt}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1840,
+        208
+      ],
+      "id": "0bfbaec7-d18c-4706-a4e4-4e20a0e9be85",
+      "name": "Code in Python (Beta)3"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Loop Over Items').item.json.snippet.title }}.png",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "=https://drive.google.com/drive/folders/1we0g8UTGbPhtMv2v9WkuZUN7cVW4ey3j?usp=sharing",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2288,
+        208
+      ],
+      "id": "44812a2f-f8cc-40f4-b3d2-466ba0fac270",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "2KupETq4QLi8d9l8",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\nimport re\n\nai_output = items[0]['json']['output']\n\nmatch = re.search(r'```json\\s*(\\{.*?\\})\\s*```', ai_output, re.DOTALL)\n\nif match:\n    json_str = match.group(1).strip()\nelse:\n    match = re.search(r'(\\{.*?\\})', ai_output, re.DOTALL)\n    if not match:\n        raise ValueError(\"No JSON object found in AI output\")\n    json_str = match.group(1).strip()\n\nparsed = json.loads(json_str)\n\nreturn [{\"json\": parsed}]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3088,
+        208
+      ],
+      "id": "b3034090-9e59-4a39-a0e3-90cf59c901aa",
+      "name": "Code in Python (Beta)4"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1KuxCw3LPw-qtgEe3oqIq0iuwy79YIiru3uku2WbzHus",
+          "mode": "list",
+          "cachedResultName": "Scheduled Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KuxCw3LPw-qtgEe3oqIq0iuwy79YIiru3uku2WbzHus/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KuxCw3LPw-qtgEe3oqIq0iuwy79YIiru3uku2WbzHus/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.Date }}",
+            "Time": "={{ $json.Time }}",
+            "Facebook Post": "={{ $json[\"Facebook Post\"] }}",
+            "Instagram Post": "={{ $json[\"Instagram Post\"] }}",
+            "X Post": "={{ $json[\"X Post\"] }}",
+            "Youtube Post": "={{ $json[\"Youtube Post\"] }}",
+            "Image URL": "={{ $json[\"Image URL\"] }}",
+            "Status": "={{ $json.Status }}",
+            "Category": "={{ $json.Category }}",
+            "Notes": "={{ $json.Notes }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Facebook Post",
+              "displayName": "Facebook Post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Instagram Post",
+              "displayName": "Instagram Post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "X Post",
+              "displayName": "X Post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Youtube Post",
+              "displayName": "Youtube Post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Image URL",
+              "displayName": "Image URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Season",
+              "displayName": "Season",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3312,
+        208
+      ],
+      "id": "91cec33c-79b0-4f3d-8f32-6a02b62d16fa",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Q33u7QDdFT7kx3S6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=61582619558041",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Facebook Post\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        3536,
+        112
+      ],
+      "id": "e5e39c7b-2942-492e-af4a-28376f66af50",
+      "name": "Facebook Graph API1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "KMspAwgUmqwyOsNp",
+          "name": "Facebook Graph account"
+        }
+      },
+      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
+    },
+    {
+      "parameters": {
+        "content": "Credentials for fb graph API expires ever 1-2 hrs",
+        "height": 224,
+        "width": 246
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3472,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "c46f9a3b-e7ab-4031-af4b-400d15a5fa52",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json[\"X Post\"] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        3536,
+        -80
+      ],
+      "id": "5fd2ac20-5fc0-461b-ba20-9b4c0ad38a95",
+      "name": "Create Tweet",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "5D5HJ8WIowbKcvzG",
+          "name": "X account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3760,
+        320
+      ],
+      "id": "342b39d6-feb1-41a5-99be-e475e2ce1369",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "url": "https://youtube.com/post/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3536,
+        304
+      ],
+      "id": "37c78960-b03d-4640-b5aa-d324f2cac4d3",
+      "name": "Youtube Post"
+    },
+    {
+      "parameters": {
+        "url": "https://youtube.com/post/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3536,
+        496
+      ],
+      "id": "2b50ddf7-1d21-4174-9200-8edb9ec68c96",
+      "name": "Instagram Post"
+    }
+  ],
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Spreadsheet Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a channel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a channel": {
+      "main": [
+        [
+          {
+            "node": "Get many videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many videos": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spreadsheet Data": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Analyze video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)3": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)4": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Create Tweet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Facebook Graph API1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Youtube Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Instagram Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook Graph API1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Create Tweet": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Youtube Post": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Instagram Post": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+  }
+}
