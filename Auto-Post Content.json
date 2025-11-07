@@ -2,15 +2,51 @@
   "nodes": [
     {
       "parameters": {
+        "method": "POST",
+        "url": "https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "youTubeOAuth2Api",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "snippet.videoId",
+              "value": "={{ $('Loop Over Items').item.json.id.videoId }}"
+            },
+            {
+              "name": "snippet.topLevelComment.snippet.textOriginal",
+              "value": "={{ $('Code in Python (Beta)4').item.json[\"Youtube Comment\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1904,
+        1824
+      ],
+      "id": "3008b6be-d0aa-42ad-b069-38a20a4a9584",
+      "name": "YouTube Comment Post",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "Fnm7ZvrVLhKsF77T",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        832,
-        432
+        -816,
+        1952
       ],
-      "id": "06abd0b9-caec-4672-9141-d46b5db1b6a1",
+      "id": "ef739e0f-1dce-4a51-8dd5-2e262a7a39f7",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -26,10 +62,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        816,
-        208
+        -816,
+        1728
       ],
-      "id": "e57ecfb0-029c-4c3f-b83c-7210c94db7fb",
+      "id": "a216fa09-cdef-461f-ace1-9c2a752df373",
       "name": "AI Agent",
       "retryOnFail": true
     },
@@ -47,10 +83,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -304,
-        208
+        -1936,
+        1728
       ],
-      "id": "eb86d257-707b-4414-97f9-5c9a542f788f",
+      "id": "cca36bf1-4e19-4d53-9214-e20a2aaf31ab",
       "name": "Schedule Trigger"
     },
     {
@@ -61,11 +97,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1760,
-        -288
+        128,
+        1232
       ],
       "typeVersion": 1,
-      "id": "6f998c43-6bca-4af4-bb99-da31d971527c",
+      "id": "0611fdce-1504-4484-947a-26d9e20c96de",
       "name": "Sticky Note"
     },
     {
@@ -76,10 +112,10 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -80,
-        208
+        -1712,
+        1728
       ],
-      "id": "a9d71d80-cc70-497a-a269-f2549bc4ada0",
+      "id": "c8ba4d84-d6fb-40cc-8044-a4ab9be229a5",
       "name": "Get a channel",
       "credentials": {
         "youTubeOAuth2Api": {
@@ -91,17 +127,17 @@
     {
       "parameters": {
         "resource": "video",
-        "limit": 3,
+        "returnAll": true,
         "filters": {},
         "options": {}
       },
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        144,
-        208
+        -1488,
+        1728
       ],
-      "id": "8af8b61f-6c6b-4da4-8623-a0fb9a9583ab",
+      "id": "1dbc2d70-b86e-44d3-ae55-2065a8a53673",
       "name": "Get many videos",
       "credentials": {
         "youTubeOAuth2Api": {
@@ -117,10 +153,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        368,
-        208
+        -1264,
+        1728
       ],
-      "id": "10e6e9c7-7584-4a08-b61f-2e5c2be46368",
+      "id": "2d3e34a3-6206-4f92-b195-95d890483c96",
       "name": "Loop Over Items"
     },
     {
@@ -128,10 +164,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        592,
-        16
+        -1040,
+        1536
       ],
-      "id": "545a1287-c23d-4b85-b1b2-5920d138eef9",
+      "id": "c4131276-261a-4655-8fcf-a2fd0591cd40",
       "name": "No Operation, do nothing"
     },
     {
@@ -142,10 +178,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        592,
-        208
+        -1040,
+        1728
       ],
-      "id": "2a94ab66-820a-4661-b08d-42b5ebd65bb0",
+      "id": "79bbe553-23ca-4cc2-9052-27d6e7138f66",
       "name": "Code in Python (Beta)"
     },
     {
@@ -177,10 +213,10 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        960,
-        432
+        -688,
+        1952
       ],
-      "id": "5a5a2886-37c5-46cd-9608-bc8482acafc1",
+      "id": "7622dbf1-32b3-4014-8b15-c8cb54b5fbf9",
       "name": "Get row(s) in sheet in Google Sheets",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -197,10 +233,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2512,
-        208
+        880,
+        1728
       ],
-      "id": "79ba3593-b18f-4a51-9021-48b989f9c283",
+      "id": "ab042449-7a57-4dd0-b6f6-1b125ffd9f99",
       "name": "Code in Python (Beta)1"
     },
     {
@@ -210,10 +246,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1168,
-        208
+        -464,
+        1728
       ],
-      "id": "cbf5d138-6578-4768-84be-6e379bffd690",
+      "id": "134bd641-2fea-493a-945d-f951d0626789",
       "name": "Spreadsheet Data"
     },
     {
@@ -223,10 +259,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        2736,
-        208
+        1104,
+        1728
       ],
-      "id": "edc383a6-58e4-44d5-bb9c-51c2f0d03600",
+      "id": "cb7e1a1b-ec05-400d-8c0a-e143daec847f",
       "name": "AI Agent1"
     },
     {
@@ -236,10 +272,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        2816,
-        432
+        1184,
+        1952
       ],
-      "id": "db88cea0-af8a-4b16-8455-7c67eff94d3f",
+      "id": "68e0ce32-73e1-4114-8e89-6cfd339674e3",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -261,10 +297,10 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        1392,
-        208
+        -240,
+        1728
       ],
-      "id": "62db3256-01e5-48c3-9ba4-59b23e6933e1",
+      "id": "0f5e9a1b-2736-4723-8fe1-3b2a6c17f177",
       "name": "Download file",
       "credentials": {
         "googleDriveOAuth2Api": {
@@ -289,10 +325,10 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        1616,
-        208
+        -16,
+        1728
       ],
-      "id": "493a90a5-015c-4031-a279-4502eca3a90f",
+      "id": "b232847f-215a-4e0d-b91d-1ba004ff53f3",
       "name": "Analyze video",
       "credentials": {
         "googlePalmApi": {
@@ -316,10 +352,10 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        2064,
-        208
+        432,
+        1728
       ],
-      "id": "d6de4478-2d38-4a85-b6f8-ce951586ca9f",
+      "id": "9a32fe17-ad9a-4c68-b1e4-254face47a59",
       "name": "Generate an image",
       "credentials": {
         "googlePalmApi": {
@@ -336,10 +372,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1840,
-        208
+        208,
+        1728
       ],
-      "id": "0bfbaec7-d18c-4706-a4e4-4e20a0e9be85",
+      "id": "9e5c58d1-4231-4408-ab5a-d21b352bedb8",
       "name": "Code in Python (Beta)3"
     },
     {
@@ -360,10 +396,10 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        2288,
-        208
+        656,
+        1728
       ],
-      "id": "44812a2f-f8cc-40f4-b3d2-466ba0fac270",
+      "id": "b46936e5-e36a-496f-bb64-9a4c4e4b1e75",
       "name": "Upload file",
       "credentials": {
         "googleDriveOAuth2Api": {
@@ -380,10 +416,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3088,
-        208
+        1456,
+        1728
       ],
-      "id": "b3034090-9e59-4a39-a0e3-90cf59c901aa",
+      "id": "a760d3cd-0c25-4f6f-aaf0-cef7a6dc0531",
       "name": "Code in Python (Beta)4"
     },
     {
@@ -508,15 +544,6 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true
-            },
-            {
-              "id": "Season",
-              "displayName": "Season",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -527,10 +554,10 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3312,
-        208
+        1680,
+        1728
       ],
-      "id": "91cec33c-79b0-4f3d-8f32-6a02b62d16fa",
+      "id": "b7d60c0e-7ab2-4c69-b06d-016faae294ad",
       "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -561,10 +588,10 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        3536,
-        112
+        1904,
+        1632
       ],
-      "id": "e5e39c7b-2942-492e-af4a-28376f66af50",
+      "id": "05b94102-9425-4fe4-9426-007900324501",
       "name": "Facebook Graph API1",
       "credentials": {
         "facebookGraphApi": {
@@ -572,6 +599,7 @@
           "name": "Facebook Graph account"
         }
       },
+      "disabled": true,
       "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
     },
     {
@@ -582,11 +610,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        3472,
-        48
+        1840,
+        1568
       ],
       "typeVersion": 1,
-      "id": "c46f9a3b-e7ab-4031-af4b-400d15a5fa52",
+      "id": "8787c821-c0fe-4bc7-ae22-5a0fd25c4e74",
       "name": "Sticky Note3"
     },
     {
@@ -597,17 +625,18 @@
       "type": "n8n-nodes-base.twitter",
       "typeVersion": 2,
       "position": [
-        3536,
-        -80
+        1904,
+        1440
       ],
-      "id": "5fd2ac20-5fc0-461b-ba20-9b4c0ad38a95",
+      "id": "6a09012d-a7ad-46c3-a932-c218fa51ec98",
       "name": "Create Tweet",
       "credentials": {
         "twitterOAuth2Api": {
           "id": "5D5HJ8WIowbKcvzG",
           "name": "X account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -616,10 +645,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        3760,
-        320
+        2128,
+        1840
       ],
-      "id": "342b39d6-feb1-41a5-99be-e475e2ce1369",
+      "id": "44b95206-a6cc-4fa1-931b-596354a2dbd3",
       "name": "Merge"
     },
     {
@@ -630,28 +659,26 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        3536,
-        304
+        1904,
+        2016
       ],
-      "id": "37c78960-b03d-4640-b5aa-d324f2cac4d3",
-      "name": "Youtube Post"
-    },
-    {
-      "parameters": {
-        "url": "https://youtube.com/post/",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        3536,
-        496
-      ],
-      "id": "2b50ddf7-1d21-4174-9200-8edb9ec68c96",
-      "name": "Instagram Post"
+      "id": "84ca6415-ee1f-4cfb-bd90-46f80e052c76",
+      "name": "Instagram Post",
+      "disabled": true
     }
   ],
   "connections": {
+    "YouTube Comment Post": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
     "Google Gemini Chat Model": {
       "ai_languageModel": [
         [
@@ -871,12 +898,12 @@
             "index": 0
           },
           {
-            "node": "Youtube Post",
+            "node": "Instagram Post",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Instagram Post",
+            "node": "YouTube Comment Post",
             "type": "main",
             "index": 0
           }
@@ -916,17 +943,6 @@
         ]
       ]
     },
-    "Youtube Post": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 2
-          }
-        ]
-      ]
-    },
     "Instagram Post": {
       "main": [
         [
@@ -939,7 +955,2140 @@
       ]
     }
   },
-  "pinData": {},
+  "pinData": {
+    "Get a channel": [
+      {
+        "kind": "youtube#channel",
+        "etag": "GxutjTVRl4qPmDJ7y35WSn5oLxo",
+        "id": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+        "snippet": {
+          "title": "algonovalabs",
+          "description": "AlgoNova Labs is a portal to a world of enchantment! ✨ Immerse yourself in magical animated journeys where princesses, witches, fairies, and other delightful characters come to life. From crystal gardens to whimsical forests, every animation is a burst of wonder, sparkling with color and joy. 🌟\n\nStep into a realm of glowing castles, candy-filled landscapes, and mystical adventures, where every moment is filled with magic and heart. 💖\n\nSubscribe to experience the magic, where dreams are brought to life, one animation at a time! ✨\n",
+          "customUrl": "@algonovalabs",
+          "publishedAt": "2025-10-28T09:08:41.169621Z",
+          "thumbnails": {
+            "default": {
+              "url": "https://yt3.ggpht.com/MZ8zP7r3VjvA-domCVVj7A1y33pgxj9FIvlorV_rtrq4QgBB22N5DV0rTe1e9iZYXvPRSv_DVg=s88-c-k-c0x00ffffff-no-rj",
+              "width": 88,
+              "height": 88
+            },
+            "medium": {
+              "url": "https://yt3.ggpht.com/MZ8zP7r3VjvA-domCVVj7A1y33pgxj9FIvlorV_rtrq4QgBB22N5DV0rTe1e9iZYXvPRSv_DVg=s240-c-k-c0x00ffffff-no-rj",
+              "width": 240,
+              "height": 240
+            },
+            "high": {
+              "url": "https://yt3.ggpht.com/MZ8zP7r3VjvA-domCVVj7A1y33pgxj9FIvlorV_rtrq4QgBB22N5DV0rTe1e9iZYXvPRSv_DVg=s800-c-k-c0x00ffffff-no-rj",
+              "width": 800,
+              "height": 800
+            }
+          },
+          "localized": {
+            "title": "algonovalabs",
+            "description": "AlgoNova Labs is a portal to a world of enchantment! ✨ Immerse yourself in magical animated journeys where princesses, witches, fairies, and other delightful characters come to life. From crystal gardens to whimsical forests, every animation is a burst of wonder, sparkling with color and joy. 🌟\n\nStep into a realm of glowing castles, candy-filled landscapes, and mystical adventures, where every moment is filled with magic and heart. 💖\n\nSubscribe to experience the magic, where dreams are brought to life, one animation at a time! ✨\n"
+          }
+        },
+        "contentDetails": {
+          "relatedPlaylists": {
+            "likes": "LL",
+            "uploads": "UUr2Q0TirO6tHV-ZTEFNzfGQ"
+          }
+        },
+        "statistics": {
+          "viewCount": "21395",
+          "subscriberCount": "28",
+          "hiddenSubscriberCount": false,
+          "videoCount": "47"
+        },
+        "status": {
+          "privacyStatus": "public",
+          "isLinked": true,
+          "longUploadsStatus": "eligible",
+          "madeForKids": false,
+          "selfDeclaredMadeForKids": false,
+          "isChannelMonetizationEnabled": false
+        },
+        "brandingSettings": {
+          "channel": {
+            "title": "algonovalabs",
+            "description": "AlgoNova Labs is a portal to a world of enchantment! ✨ Immerse yourself in magical animated journeys where princesses, witches, fairies, and other delightful characters come to life. From crystal gardens to whimsical forests, every animation is a burst of wonder, sparkling with color and joy. 🌟\n\nStep into a realm of glowing castles, candy-filled landscapes, and mystical adventures, where every moment is filled with magic and heart. 💖\n\nSubscribe to experience the magic, where dreams are brought to life, one animation at a time! ✨\n",
+            "unsubscribedTrailer": "mg0dor2tG3A"
+          }
+        },
+        "contentOwnerDetails": {}
+      }
+    ],
+    "Get many videos": [
+      {
+        "kind": "youtube#searchResult",
+        "etag": "3OakKus2JzczVBP3Ke-PKjX3PpU",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "6w0VYbRrJFI"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-07T01:07:08Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Secret Fairy Garden REVEALED! Her Magical Message Will Change Your Mood! ✨",
+          "description": "Step into an enchanting world with our whimsical fairy! ✨ Watch as she unleashes shimmering magic and shares a heartfelt message: \"Sending a sprinkle of magic to brighten your beautiful heart.\" 💖 Follow her into a breathtaking secret garden, filled with glowing flowers, rainbow fountains, and golden butterflies. 🦋 This serene and colorful journey is pure joy for your soul. Don't miss the full transformation! Watch till the very end to soak up all the magic. Subscribe for more enchanting adventures! #FairyMagic #EnchantedGarden #WhimsicalWorld #MagicMoment #GoodVibes",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/6w0VYbRrJFI/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/6w0VYbRrJFI/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/6w0VYbRrJFI/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/6w0VYbRrJFI/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/6w0VYbRrJFI/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-07T01:07:08Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "7h4_-0jOxHc-VS17rNvigp0Nb34",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "LHH9h4eQmDs"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-06T23:07:31Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You Won't Believe What She Eats on Ice! 🤯 Magical Feast Revealed!",
+          "description": "Step into a breathtaking fantasy world where a captivating blue-haired girl in a green dress defies expectations! Watch as she stands on a shimmering ice landscape under a stunning purple-pink sky, surrounded by majestic ice archways. But what happens next will truly surprise you! As autumn leaves gently fall, a magical feast of fluffy pancakes and fresh fruit appears right before your eyes. You absolutely won't want to miss this unique blend of winter wonder and autumnal delight! Watch till the end to see the full magical transformation! ✨ Subscribe for more enchanting fantasy adventures and unexpected reveals!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/LHH9h4eQmDs/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/LHH9h4eQmDs/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/LHH9h4eQmDs/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/LHH9h4eQmDs/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/LHH9h4eQmDs/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-06T23:07:31Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "HVyAvkgyjNRNqlu4nqqXCDfKRvo",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "QT9EAHapsiM"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-06T10:23:49Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You WON'T BELIEVE what this pink doll found in her dream castle! ✨",
+          "description": "Step into a world of pure enchantment with our magical pink-haired doll! ✨ Watch as she stands in a fantastical setting, surrounded by dazzling sparkles and glowing stars. Prepare to be amazed by the incredible pink castle, designed like a delicious dessert with purple turrets and white icing, floating serenely on white clouds. With multiple vibrant rainbows arching across the background and whimsical bubbles drifting all around, this video is a feast for the eyes.  Don't miss a single magical moment – watch till the very end to soak in every detail of this dreamy wonderland! If you love fantasy, sparkle, and breathtaking visuals, hit that LIKE button and SUBSCRIBE for more enchanting adventures and captivating content like this! 💖  #MagicalDoll #FantasyCastle #PinkDoll #DreamWorld #SparkleAndShine #Rainbows #Enchanted",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/QT9EAHapsiM/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/QT9EAHapsiM/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/QT9EAHapsiM/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/QT9EAHapsiM/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/QT9EAHapsiM/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-06T10:23:49Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "q3REZEZ0q4jRKy_PATTvZUfo3OM",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "kYgQqn_5qMQ"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-06T08:55:30Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "✨ FOMO Alert! Cutest Cartoon Girl Dance in a Glittering Night Sky! ✨",
+          "description": "Prepare to be absolutely mesmerized! ✨ Our adorable cartoon girl twirls and dances through a truly magical sky! Watch as the scene transforms from twinkling stars and vibrant lanterns to a breathtaking night filled with elaborate lanterns shaped like moons, stars, and hearts, all sparkling with enchanting glitter. You absolutely have to watch till the end to see every magical detail and feel the wonder! If you loved this enchanting animation, make sure to subscribe for more amazing content and hit the notification bell so you never miss out on the magic! What was your favorite part? Let us know in the comments! 👇 #MagicalDance #CartoonGirl #GlitterSky #Animation #FantasyWorld\n\nKeep the Magic Going! ✨\n\nCan't get enough of the dance magic? Discover another mesmerizing performance here! 💖\nhttps://www.youtube.com/watch?v=uIlPpkkFADE&list=RDuIlPpkkFADE&start_radio=1\n\nLooking for more adorable moments? Catch a quick dose of cute here! 💫\nhttps://www.youtube.com/shorts/IexEKclfDYs\n\nWant to bring a piece of the magic home? Explore our creations and support our lab! 🌟\nhttps://zkllmt.gumroad.com/\n\nThanks for twirling with us! 💖 If this video brightened your day, hit that like button and subscribe for endless enchantment. Until next time, stay sparkly! ✨",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/kYgQqn_5qMQ/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/kYgQqn_5qMQ/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/kYgQqn_5qMQ/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/kYgQqn_5qMQ/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/kYgQqn_5qMQ/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-06T08:55:30Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "D_WIbWPurnM296NUrrPzTa6HZ2g",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "tOOyshiX5zI"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-06T08:29:19Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "🤯 SECRET Winter Wonderland Castle Unlocked! You WON'T BELIEVE IT!",
+          "description": "Step into an *unbelievable* magical winter wonderland! ✨ Follow our cheerful animated girl with her rainbow light powers as she explores a fantastical, snow-covered pink and blue castle. Watch as glowing crystals magically grow and ornate details come to life with golden vines and delicate pink flowers, all sparkling under fresh snow. This isn't just a video, it's an escape to pure joy and serene enchantment! Don't miss a single magical second – watch till the very end! 👇 What's your favorite magical detail? Tell us in the comments! 👇 Subscribe for more breathtaking fantasy adventures! #MagicalWinter #EnchantedCastle #WinterWonderland #FantasyAnimation\n\nBeyond the Castle Walls... Discover More Magic! 🗝️\n\nDive into another whimsical world with this delightful dance! 💃\nhttps://www.youtube.com/watch?v=uIlPpkkFADE&list=RDuIlPpkkFADE&start_radio=1\n\nNeed more sparkle in your day? This cute short is pure joy! 🥰\nhttps://www.youtube.com/shorts/IexEKclfDYs\n\nSupport our magic and discover unique creations on our Gumroad store! 💖\nhttps://zkllmt.gumroad.com/\n\nThanks for venturing into our winter wonderland! ❄️ If you loved this magical escape, please like and subscribe for more enchantment! What magical place should we explore next? ✨",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/tOOyshiX5zI/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/tOOyshiX5zI/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/tOOyshiX5zI/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/tOOyshiX5zI/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/tOOyshiX5zI/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-06T08:29:19Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "WjprojJzRJE8fpbReV1TN1D4oPs",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "OU3hBRNqwEQ"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-05T19:07:02Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You WON'T Believe Her Secret Magic! ✨ This Princess Will Amaze You!",
+          "description": "Step into a world of pure enchantment with our dazzling cartoon princess! ✨ Watch in awe as she brings a fantastical crystal garden to life with her magical gestures, making glittering particles dance and lights glow. Her sparkling purple dress and tiara shine as bright as her heart! This whimsical scene is packed with beauty and wonder. You absolutely HAVE to watch till the end to see the full magic unfold! Don't miss the inspiring message: 'Your heart shines brighter than any star.' Subscribe for more breathtaking magical adventures and hit the notification bell so you never miss out!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/OU3hBRNqwEQ/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/OU3hBRNqwEQ/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/OU3hBRNqwEQ/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/OU3hBRNqwEQ/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/OU3hBRNqwEQ/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-05T19:07:02Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "C0206nX7v_MyyTg74VRJai7OhXM",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "IexEKclfDYs"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-05T16:28:07Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Miss This, Miss EVERYTHING! Pure Magic, Pure Joy Awaits!",
+          "description": "Dive into a breathtaking animated world where every frame radiates pure joy and magic! ✨ Watch a cute pink-haired girl dance among whimsical pink trees, petals falling like wishes. Then, get ready for an ethereal landscape of glowing cherry blossoms and magical flowers, alive with shimmering butterflies. This video is designed to lift your spirits and immerse you in a serene, enchanting experience. You won't want to miss a single second! Watch till the end for the full magical journey. Like, share, and subscribe for more heartwarming animations! ✨",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/IexEKclfDYs/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/IexEKclfDYs/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/IexEKclfDYs/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/IexEKclfDYs/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/IexEKclfDYs/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-05T16:28:07Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "X7Dh6FRPjISxuoRG6YgQI5bH_w0",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "1lYgwfkv800"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-05T13:52:51Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Sweet Magic ALERT! ✨ This Tiny Witch's Potions Will Make Your Day!",
+          "description": "Step into a world of pure enchantment! ✨ Watch as our charming little witch, with her long dark hair and sparkling green eyes, unveils her magical secret. Holding shimmering pink and green potion bottles, she whispers a spell to fill your day with 'sweet magic and happy smiles.' 🌸 Then, journey with her into a vibrant, mystical garden overflowing with pastel flowers, glowing butterflies, and floating star-shaped potions. Golden dust rains down, creating an atmosphere you won't want to leave! Will her magic work its charm on you? Watch till the end to immerse yourself in this delightful animated escape! Don't forget to like, comment, and subscribe for more magical adventures! 🧙‍♀️💖",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/1lYgwfkv800/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/1lYgwfkv800/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/1lYgwfkv800/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/1lYgwfkv800/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/1lYgwfkv800/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-05T13:52:51Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "VnCE8dZTcD-hIRTBkJce94XvrY0",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "nKnNX0Mgo5g"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-05T08:18:54Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Her Magical Wings Sparkle & an Enchanted Forest Awaits! ✨ Don't Miss It!",
+          "description": "Step into a realm where dreams come alive! ✨ Witness the stunning transformation of a blonde-haired girl in a beautiful pink gown as shimmering, magical wings appear on her back, surrounded by cascades of sparkles, against an ornate castle backdrop. Her bright blue eyes and the text 'Your beautiful heart makes the world shine!' truly capture the magic.\n\nThen, journey deep into an enchanted forest, where glowing lotus-like flowers bloom in vibrant shades, delicate white butterflies flutter, and floating orbs of light dot the scene. Follow a winding path towards a luminous full moon in a soft blue-purple forest, as the narrator whispers, 'A world where magic whispers in every breeze and every corner holds a wonder.' This ethereal landscape will utterly captivate your imagination.\n\nDon't miss a single magical moment – watch till the very end to experience both breathtaking scenes!\nSubscribe for more enchanting journeys and fantasy adventures! \n#FantasyWorld #MagicalGirl #EnchantedForest #Wings #Sparkle #Dreamscape #Fairytale",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/nKnNX0Mgo5g/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/nKnNX0Mgo5g/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/nKnNX0Mgo5g/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/nKnNX0Mgo5g/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/nKnNX0Mgo5g/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-05T08:18:54Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "AfdZYYa5NigUXfJ--jUXZSlrfvU",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "gXXSeLD0YAg"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-04T19:14:05Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "CUTE Fairy's Crystal Magic Unlocks a SECRET World! Don't Miss This!",
+          "description": "Prepare for enchantment! ✨ Join our adorable white-haired fairy with shimmering butterfly wings as she reveals incredible magic. Watch her blow on a glowing crystal, unleashing a cascade of sparkling magic that transforms the scene into a whimsical wonderland! You'll discover a charming light blue rocking horse, surrounded by a room bursting with toys. But the real surprise? An old storybook magically opens, flipping through vibrant, colorful illustrations before your very eyes. You absolutely CANNOT miss this magical journey! Watch till the end for the full enchanting reveal and subscribe for more magical videos!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/gXXSeLD0YAg/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/gXXSeLD0YAg/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/gXXSeLD0YAg/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/gXXSeLD0YAg/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/gXXSeLD0YAg/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-04T19:14:05Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "pywWPP9eNkCro4Nx8NJgjxIQ-WQ",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "9MXAQ27uyEI"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-04T18:09:56Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You Won't BELIEVE This Chibi Mermaid's Magical Winter Wonderland! ✨",
+          "description": "Dive into a whimsical winter wonderland with our adorable pink-haired chibi mermaid! 🧜‍♀️ Watch as she spreads joy and magic in a snowy pastel town, complete with a rainbow cobblestone path and glittering sparkles. Feel the cheer with upbeat music as snowflakes and shimmering crystal flakes fall around charming pastel buildings. Don't miss the delightful details, including snow-dusted tulips! ✨ This enchanting journey is sure to brighten your day. Watch till the end for pure winter magic! Like, share, and subscribe for more magical adventures!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/9MXAQ27uyEI/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/9MXAQ27uyEI/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/9MXAQ27uyEI/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/9MXAQ27uyEI/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/9MXAQ27uyEI/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-04T18:09:56Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "HxaN-Hr8QKQ_NpaOIZcOpwkqz8Y",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "EIuG5dtQRL0"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-04T17:38:50Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "🤯 Purple Fairy's Whimsical Forest Magic! You CAN'T Miss This!",
+          "description": "Step into a breathtaking world of pure enchantment! ✨ Watch our dazzling purple-haired fairy as she unleashes her incredible magic, conjuring floating glowing balls and shimmering sparkles. Get lost in a whimsical forest surrounded by giant mushrooms, vibrant plants, and a stunning rainbow in the sky. This magical adventure is too spectacular to miss!\n\nWhat's your favorite magical moment in this video? Tell us in the comments! 👇\n\n💫 Watch till the end for the most captivating magical displays!\n🔔 Don't forget to SUBSCRIBE for more fantastical journeys and hit the notification bell so you never miss an adventure!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/EIuG5dtQRL0/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/EIuG5dtQRL0/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/EIuG5dtQRL0/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/EIuG5dtQRL0/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/EIuG5dtQRL0/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-04T17:38:50Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "2AyhgkccJIISeJlRB2TpFhIM8KY",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "YDjV9rPgFcg"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-04T14:43:16Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You Won't Believe What Happens When She Sips This Magical Teacup! ✨",
+          "description": "Get ready for a whimsical journey! ✨ Watch as a sweet animated girl on a magical carousel unlocks a secret world of sparkles and glowing orbs with just a simple teacup. 'Magic lives in every spin,' she says, and you'll see why! This enchanting scene is packed with childlike wonder and pure joy. You absolutely CANNOT miss the breathtaking transformation!\n\nWhat's your favorite magical moment in this video? Let us know in the comments below! Don't forget to like, share, and subscribe for more delightful animations and magical adventures!\n#MagicalCarousel #AnimatedMagic #ChildlikeWonder #EnchantedJourney #FantasyAnimation #SparkleMagic #CarouselDreams #WhimsicalWorld",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/YDjV9rPgFcg/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/YDjV9rPgFcg/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/YDjV9rPgFcg/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/YDjV9rPgFcg/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/YDjV9rPgFcg/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-04T14:43:16Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "js32ruAwFo2Us35qMRMBy2FLIjE",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "d86Y5-st5Ys"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-04T14:07:07Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Candy Fireplace Magic: You WON'T BELIEVE Her Tea Cup Secret! ✨",
+          "description": "Get ready for a sprinkle of pure enchantment! ✨ Watch our charming cartoon girl discover an unbelievable secret within her teacup, right by a warm fireplace. From glowing sparkles and rainbow lights erupting around her to a whimsical candy-themed fireplace adorned with giant lollipops and candy canes, this video is a sweet, magical escape you can't miss! Her expression of surprise and awe is absolutely contagious. You *have* to see the magical butterflies and the floating, sparkling teapot! This dreamy pink and purple aesthetic will instantly warm your heart. Don't miss the heartwarming message at the very end! Watch till the end for the full magical journey and hit that subscribe button for more enchanting content like this! 💖 #MagicalMoments #CozyVibes #CuteCartoon #FantasyAnimation #SparkleMagic #CandyLand",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/d86Y5-st5Ys/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/d86Y5-st5Ys/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/d86Y5-st5Ys/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/d86Y5-st5Ys/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/d86Y5-st5Ys/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-04T14:07:07Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "T-E_AuvrGzc1f3Ro4CmQIifAuCQ",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "3rZA8Pxx8fQ"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-04T13:24:23Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Don't Blink! This Princess Magic & Dream Playroom Reveal is UNREAL! ✨",
+          "description": "Step into a world of pure enchantment with our latest 3D animation! Watch as a charming blonde princess in a vibrant purple dress conjures sparkling magic and winks you into her whimsical world. Explore a brightly lit room filled with adorable rocking unicorns, a fluffy hippopotamus, and flowers dancing in the air. The magic continues in a cozy nursery brimming with teddy bears, building blocks, and a breathtaking rainbow chandelier that sprinkles glitter everywhere! This delightful playroom scene is bursting with vibrant colors and enchanting elements you won't want to miss. Watch till the end for the full magical journey! ✨ Subscribe for more enchanting animations and fairy tale fun!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/3rZA8Pxx8fQ/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/3rZA8Pxx8fQ/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/3rZA8Pxx8fQ/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/3rZA8Pxx8fQ/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/3rZA8Pxx8fQ/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-04T13:24:23Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "AsisfshRr5hagL_je-or7l0rPy0",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "87IyFxkxRrw"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-04T13:14:49Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You WON'T BELIEVE the magic hidden inside this fairytale castle! ✨🏰",
+          "description": "Step into a world of pure enchantment! ✨ This mesmerizing animated video transports you to a vibrant fairytale castle, glowing with warmth amidst a dynamically shifting sky – from soft pink hues to a deep, starry galaxy night. Watch as shimmering glitter, sparkling lights, and floating bubbles bring this magical world to life. 🏰\n\nBut the adventure doesn't stop there! Peek into a secret picnic (0:08) where an adorable bear and bunny share tea and treats on a snowy balcony. Then, prepare to be charmed by a joyful animated girl (0:16) with spiky blue hair and a sparkling purple dress, dancing among musical notes and hearts. She's got a playful wink for you at the very end! 😉\n\nThis video is a feast for the eyes and soul, perfect for relaxation or a dash of whimsy. Don't miss a single magical detail – watch till the end! If you loved this journey, subscribe for more enchanting adventures and hit the notification bell! 💖 #MagicalCastle #Fairytale #AnimatedWorld #Whimsical #Fantasy #Dreamcore #CuteAnimation",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/87IyFxkxRrw/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/87IyFxkxRrw/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/87IyFxkxRrw/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/87IyFxkxRrw/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/87IyFxkxRrw/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-04T13:14:49Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "F6qJNToUKU3PN4FfusdL6hQxc-4",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "T_Qq6cwNbBg"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-04T11:57:13Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "WARNING: You'll be OBSESSED! Enter the most magical candy world NOW! ✨",
+          "description": "Dive into a whimsical wonderland where giant macarons, ice cream swirls, and lollipops create the sweetest candy town you've ever seen! Explore a charming gingerbread village dusted with snow, and meet our joyful animated girl with fluffy cotton candy hair, dancing playfully on clouds. This video is pure magic! ✨ From sparkling trees to candy cane lampposts, every detail will enchant you. Don't miss a single magical moment – watch till the end to experience the full enchantment! If you loved this sweet escape, hit that subscribe button for more delightful animated adventures!\n#CandyWorld #Animation #Whimsical #Magical #SweetEscape #PastelAesthetics #AnimatedGirl #GingerbreadVillage #CottonCandyHair #Fantasy",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/T_Qq6cwNbBg/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/T_Qq6cwNbBg/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/T_Qq6cwNbBg/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/T_Qq6cwNbBg/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/T_Qq6cwNbBg/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-04T11:57:13Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "CpKGG5H5SfHj1b6jNgj7d1ihDuQ",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "LQEpE2NmuPI"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-03T14:09:03Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Cutest Pastel Town & Magical Dance! You HAVE to see this! ✨",
+          "description": "Step into the enchanting world of Rainbow Street! ✨ Watch as a frosty pastel morning awakens in this whimsical, snow-covered town. Buildings glow, stars float, and magic fills the air, setting the perfect stage for our adorable Twinkle Star Girl. With her vibrant pink and purple hair, she begins her captivating dance on the rainbow path! 💖 You absolutely don't want to miss the magic unfold in this animated journey. What's your favorite part of Rainbow Street? Let us know in the comments below! 👇 Don't forget to like this video and subscribe for more magical adventures! Watch till the end to catch every sparkly moment!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/LQEpE2NmuPI/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/LQEpE2NmuPI/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/LQEpE2NmuPI/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/LQEpE2NmuPI/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/LQEpE2NmuPI/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-03T14:09:03Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "qlzDmindTym9mXaHvgqGx2ODLzY",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "RKotp2F6F-Y"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-03T12:07:35Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You Won't Believe What's Hidden in These Pastel Clouds! ☁️✨",
+          "description": "Step into a world where dreams come to life! ✨ This enchanting animation takes you on a journey through a whimsical landscape of pastel clouds, twinkling stars, and majestic castles. Witness planets like Saturn and Jupiter glowing in a gradient sky, as golden stars burst with magic. The highlight? Discover two adorable characters – a playful boy in star pajamas and a crowned girl with flowing blue hair – emerging from the clouds to add pure joy to this magical realm. Don't miss a single magical moment – watch till the end and subscribe for more dream-like adventures!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/RKotp2F6F-Y/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/RKotp2F6F-Y/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/RKotp2F6F-Y/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/RKotp2F6F-Y/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/RKotp2F6F-Y/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-03T12:07:35Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "CW8b2TU6s0IKgTZV8jiRsyFxlMY",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "GcHBMjU-O9w"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-03T04:55:26Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "The Cutest Fairytale Girl Just Blew a Kiss to YOU! You HAVE to See This! 💖",
+          "description": "Step into a pastel frosty world where dreams gently awoke! ✨ Get ready to be enchanted by an aerial view of a sparkling snow-covered village under a dreamy pastel sky. Journey into a whimsical swing park with vibrant purple trees and glowing flowers, where bubbles and sparkling dust float through the air. But wait until you meet our adorable lavender garden girl who dances with pure delight and blows a magical kiss just for you! 💖 You absolutely won't want to miss the adorable ending. Watch till the end and subscribe for more magical escapes! Let us know your favorite part in the comments!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/GcHBMjU-O9w/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/GcHBMjU-O9w/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/GcHBMjU-O9w/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/GcHBMjU-O9w/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/GcHBMjU-O9w/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-03T04:55:26Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "nfBUFLCGkC9NlUNbqIWrISYcRfA",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "TXOR7FizaUI"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-03T02:07:16Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You WON'T Believe This Magical Candy Land! 🤯 Sweetest Animated Journey & Reveal!",
+          "description": "Step into a dream! ✨ Join us on a whimsical journey through a breathtaking candy wonderland, where gingerbread houses meet lollipop forests and marshmallow paths lead to a majestic candy castle! But the real magic begins when our charming stardust dreamer makes her grand entrance, ready to sprinkle some joy. You absolutely NEED to see this enchanting reveal! 💖 Watch till the end to meet her! Don't forget to LIKE and SUBSCRIBE for more magical adventures! #CandyLand #Animation #MagicalJourney #SweetEscape #CharacterReveal #Fantasy",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/TXOR7FizaUI/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/TXOR7FizaUI/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/TXOR7FizaUI/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/TXOR7FizaUI/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/TXOR7FizaUI/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-03T02:07:16Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "YDOF6T0GRI7hhdzW4qZweOD1Yyk",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "xISHEdgIrmc"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-03T00:07:31Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Candy Town to Flower Street! You WON'T BELIEVE Who Appears! ✨",
+          "description": "Step into a world of pure imagination! 🍬🌸 This enchanting animated video takes you on a journey from a delectable candy-themed town to a vibrant, flower-adorned street, culminating in the most delightful surprise. Watch as glowing drops transform the scene and a cheerful, rainbow-haired girl dances into existence! You won't want to miss a single sparkling moment of this whimsical transformation. What's your favorite part of this magical reveal? Let us know in the comments below! 👇 Don't forget to LIKE, SHARE, and SUBSCRIBE for more captivating animations and magical wonders! ✨",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/xISHEdgIrmc/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/xISHEdgIrmc/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/xISHEdgIrmc/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/xISHEdgIrmc/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/xISHEdgIrmc/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-03T00:07:31Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "x7tktD9bo-Oy9npBOjSqy6YDgOM",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "ZAVfu8ghxOA"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-02T22:07:14Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "✨ You WON'T Believe What Happens at This Magical Elf Tea Party! 🤫",
+          "description": "Prepare to be whisked away on an unforgettable journey! 🌙 This video opens high above the clouds, revealing a luminous full moon and a city skyline before descending into a truly enchanted forest. Discover whimsical tea party settings with glowing lanterns, sparkling streams, and floating teacups. But the real magic begins when our adorable elf girl takes a sip from her special brew, creating a burst of pure wonder! ✨ You absolutely have to watch till the end to witness the full enchantment. Don't miss this dreamlike escape! What's your favorite magical element? Let us know in the comments! 👇 Subscribe for more captivating adventures and turn on notifications so you don't miss our next video! #MagicalJourney #EnchantedForest #ElfTeaParty #DreamCore #FantasyWorld #WatchTillTheEnd",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/ZAVfu8ghxOA/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/ZAVfu8ghxOA/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/ZAVfu8ghxOA/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/ZAVfu8ghxOA/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/ZAVfu8ghxOA/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-02T22:07:14Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "yrTXKGPiMSB-OAhN8WtKNE0rxfI",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "0eQIpsDnZlo"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-02T20:07:18Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Unbelievable Magic Unfolds! ✨ See the Castle, Fountain & Fairy Reveal!",
+          "description": "Prepare to be enchanted! ✨ Dive into a whimsical fantasy world where a grand castle glows with magic, a golden fountain sparkles, and a joyful fairy dances among iridescent wings. This animated journey is bursting with pastel colors, glowing effects, and pure magic! See the incredible transformation from a Cinderella-style castle to an adorable fairy's heartwarming reveal. You absolutely HAVE to watch till the end for the magical surprise! Don't forget to hit LIKE and SUBSCRIBE for more enchanting adventures! #FantasyWorld #MagicAnimation #FairyTale #MagicalCastle #Whimsical",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/0eQIpsDnZlo/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/0eQIpsDnZlo/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/0eQIpsDnZlo/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/0eQIpsDnZlo/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/0eQIpsDnZlo/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-02T20:07:18Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "c5d-_Adye3XVSkwBqVPLYn8ORfs",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "RtY5CNbavDI"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-02T18:07:37Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You WON'T Believe This Crystal Castle! ✨ Magical Artist Girl Unlocks Secrets!",
+          "description": "Step into a world of pure enchantment! 🏰✨ This video opens with a breathtaking view of a majestic crystal castle, shimmering in pastel blues, purples, and pinks under a magical sky. Watch as we journey through its grand, sparkling ice entrance into a vast hall filled with luminous light, floating crystals, and stars. But the magic doesn't stop there! Meet our adorable animated artist girl, dancing joyfully with her glowing magic wand, creating sparkles and musical notes in her enchanted icy landscape. You won't want to miss a single sparkling moment! Watch till the end to immerse yourself in this whimsical wonderland! Don't forget to like, comment, and subscribe for more magical adventures!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/RtY5CNbavDI/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/RtY5CNbavDI/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/RtY5CNbavDI/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/RtY5CNbavDI/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/RtY5CNbavDI/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-02T18:07:37Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "rKJSHjW0L96czFsn1GlpqP-_C1M",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "7Pg_Q8DgxUo"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-02T16:07:35Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "This Magical Cloud World Has a Secret! ✨ You WON'T Believe the Reveal! 🤫",
+          "description": "Step into a world beyond imagination! ✨☁️ Join us on a breathtaking journey through pink and purple clouds, floating islands, and a sparkling cloud path. Our enchanting storybook girl is ready to dance her way into your heart with a playful wink! Don't miss this whimsical escape!\n\nWatch till the very end to catch her magical surprise! Subscribe for more enchanting adventures and hit the bell for instant notifications! 🔔💖\n\n#CloudFantasy #MagicalAnimation #Dreamcore #WhimsicalWorld #FantasyGirl",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/7Pg_Q8DgxUo/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/7Pg_Q8DgxUo/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/7Pg_Q8DgxUo/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/7Pg_Q8DgxUo/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/7Pg_Q8DgxUo/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-02T16:07:35Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "-1vC2a6PRXJLf14bTacL6vKC8HY",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "8zDlJ3fMWlI"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-02T14:23:42Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You WON'T BELIEVE These Magical Floating Islands & Dancing Fairies! ✨",
+          "description": "Step into a world you never imagined! ✨ This video takes you on a breathtaking journey through enchanting floating islands, vibrant mushroom cloudscapes, and mystical forests where graceful fairy ballerinas dance under a starry sky. Every second is packed with wonder and magic that will leave you spellbound. Don't miss a single sparkling detail! Watch till the end to immerse yourself completely in this ethereal fantasy. What's your favorite magical scene? Let us know in the comments! 👇 Subscribe for more captivating animated adventures! #FantasyWorld #MagicalAnimation #FairyBallerina #FloatingIslands #Whimsical",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/8zDlJ3fMWlI/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/8zDlJ3fMWlI/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/8zDlJ3fMWlI/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/8zDlJ3fMWlI/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/8zDlJ3fMWlI/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-02T14:23:42Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "yj8veGT1EvRh15V9M13KzddW7T4",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "33IevENUAFI"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-02T09:08:17Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "✨ Secret Fairy World REVEALED! You WON'T Believe What She Creates! ✨",
+          "description": "Dive into a breathtaking animated world where magic comes to life! 🧚‍♀️✨ From sparkling pink and purple flower fields under a pastel sky to a luminous forest with glowing tendrils, every moment is pure enchantment. Witness vibrant, rainbow-colored bubbles and the arrival of our charming fairy, weaving wonders with a joyous heart. Her incredible magic will leave you spellbound! Hear the serene narration guiding you through this stardust and dream haven. Don't miss the magical burst she creates – watch till the end to see the incredible magic unfold! Subscribe for more enchanting adventures and step into worlds of pure fantasy!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/33IevENUAFI/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/33IevENUAFI/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/33IevENUAFI/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/33IevENUAFI/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/33IevENUAFI/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-02T09:08:17Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "x-BIS6u8dJeYxyErTE-RcrI3tRw",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "ZoLYBGwTMMM"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-02T09:00:30Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Enter Rainbow Town: You WON'T Believe the Magic This Girl Unlocks! ✨",
+          "description": "Prepare to be enchanted! ✨ Journey through a vibrant Rainbow Town where pastel buildings line a shimmering, glitter-filled rainbow road. Watch as colorful balloons float, smiling stars descend, and a magical chibi-style girl brings the scene to life with a sparkle and a wink! This whimsical animation is pure joy from start to finish. Don't miss the magical transformation at the end – watch till the end and subscribe for more fantastical adventures! 🌈💖\n\n#RainbowTown #MagicalAnimation #FairytaleWorld #KidsAnimation #Whimsical #Fantasy",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/ZoLYBGwTMMM/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/ZoLYBGwTMMM/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/ZoLYBGwTMMM/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/ZoLYBGwTMMM/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/ZoLYBGwTMMM/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-02T09:00:30Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "_2bBcdd2Qg-p7bHVksmR2JTAAhk",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "LzbjEGAilI8"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-02T08:35:54Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Discover the Secret Fairytale Town & The Magical Tea Girl's Dance!",
+          "description": "",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/LzbjEGAilI8/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/LzbjEGAilI8/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/LzbjEGAilI8/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/LzbjEGAilI8/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/LzbjEGAilI8/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-02T08:35:54Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "BodElJhnfa_yyAz0Id0yPgRJ6mg",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "J2eNRdsumCs"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-02T06:17:17Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "✨ Magical Elf Girls & Glowing Gems! You Won't Believe Your Eyes!",
+          "description": "Prepare to be charmed! 🧚‍♀️ Join our adorable elf girls on a magical adventure through a vibrant, floral forest. Witness breathtaking moments as colorful petals fall and transform into luminous, teardrop-shaped gems. Each elf's reaction is pure magic! This whimsical animation is packed with joy and wonder. You absolutely CANNOT miss the incredible transformations! Watch till the end and subscribe for endless enchantment! #ElfMagic #FantasyAnimation #CuteElves",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/J2eNRdsumCs/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/J2eNRdsumCs/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/J2eNRdsumCs/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/J2eNRdsumCs/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/J2eNRdsumCs/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-02T06:17:17Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "dqp_EiLMogIqyO46QRVvfMyRVvs",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "iwlEp-IQjJc"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-02T05:51:15Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You WON'T Believe What This Fairy Made Bloom! Magic Garden Secrets Revealed!",
+          "description": "Prepare to be spellbound! ✨ Join us in a truly enchanting whimsical garden where a cheerful, purple-haired fairy performs an unbelievable act of magic. Watch her wave her wand and make a colossal flower bloom right before your eyes! This vibrant world is filled with colorful, oversized blossoms and mystical glowing mushrooms. You won't want to blink! Watch till the very end to witness the full magical spectacle. Like, share, and subscribe for more breathtaking adventures from our enchanted realm! Don't miss out on the magic!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/iwlEp-IQjJc/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/iwlEp-IQjJc/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/iwlEp-IQjJc/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/iwlEp-IQjJc/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/iwlEp-IQjJc/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-02T05:51:15Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "f9KoSwqh7YdC63KAlxtSv2jaxUQ",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "iRQaB6prMIg"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-02T04:52:20Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Cozy Fox's Magical World: You WON'T Believe What Happens Next! ✨",
+          "description": "Step into an enchanting world where magic meets coziness! ✨🦊 This heartwarming video features an adorable fox on a whimsical journey through three captivating scenes you won't want to miss.\n\nFirst, get lost in a fantastical nighttime landscape illuminated by a glowing full moon, vibrant autumn trees, and a charming cottage surrounded by magical polka-dotted mushrooms. Then, witness the ultimate cozy moment as our anthropomorphic fox sips a warm drink on a snow-dusted porch, closing its eyes in pure bliss (listen for the satisfying slurp!). Finally, join the playful fox in a bright autumn forest as it discovers a sparkling secret with a touch of its paw.\n\nPerfect for relaxing, unwinding, or adding a sprinkle of magic to your day! Watch till the end to catch every magical detail.\n\nIf you loved this whimsical escape, please like this video, leave a comment telling us your favorite scene, and subscribe for more enchanting animations! We're always brewing up new magical adventures just for you.\n\n#MagicalFox #CozyVibes #WhimsicalAnimation #AutumnMagic #EnchantedForest #CuteAnimals #RelaxingVideo #Fairytale",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/iRQaB6prMIg/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/iRQaB6prMIg/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/iRQaB6prMIg/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/iRQaB6prMIg/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/iRQaB6prMIg/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-02T04:52:20Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "MiwW_yVtXzaLzVcAf--ANzPJZ9c",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "xH-6RKllI7Q"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-01T16:30:25Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You WON'T BELIEVE This Magical Candy Forest & Adorable Fox! ✨",
+          "description": "Prepare to be enchanted! ✨ Step into a vibrant, pastel-colored candy forest (0:00-0:08) filled with glowing mushrooms, floating orbs, and giant candy canes. It's a sweet, dreamlike world you won't want to leave! Then, get ready for cuteness overload (0:08-0:23) as an adorable, big-eyed fox meets a playful squirrel with the 'prettiest acorn yet!' See what happens when the fox gets a GIANT rainbow lollipop! 🦊🐿️ This whimsical adventure is packed with sparkles and joy. Don't miss a single magical moment – Watch till the end! Like, comment, and subscribe for more enchanting videos! 🔔",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/xH-6RKllI7Q/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/xH-6RKllI7Q/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/xH-6RKllI7Q/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/xH-6RKllI7Q/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/xH-6RKllI7Q/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-01T16:30:25Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "jF76ZRIFCT5mh86_Rh8GtP9bZlk",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "MPN1qR605TI"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-01T16:14:27Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You Won't Believe Her Reaction to This Magical Forest Tea Party! ✨",
+          "description": "Step into an enchanting world where twilight forests glow with vibrant purples, blues, and sparkling lights! ✨ Join a sweet little girl as she discovers the magic of a lifetime at a secret tea party, complete with luminescent mushrooms and ethereal dust. Her pure delight sipping glowing tea will fill your heart with wonder. This is the whimsical escape you've been waiting for! Watch till the end to see the full magical transformation! Don't forget to subscribe for more enchanting adventures and hit the notification bell so you never miss a moment of magic!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/MPN1qR605TI/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/MPN1qR605TI/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/MPN1qR605TI/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/MPN1qR605TI/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/MPN1qR605TI/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-01T16:14:27Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "ndtfLMFUZablov8g4zoeBtaTErY",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "mg0dor2tG3A"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-01T13:09:32Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Don't Miss This! Cute Boy's EPIC Journey Through a Magical World! 🌟",
+          "description": "Prepare to be enchanted! Join our adorable, big-eyed cartoon boy on an unforgettable journey through a whimsical fairytale village, an autumnal path filled with glowing creatures, and a mystical forest where ancient secrets reside. Watch as he discovers true magic around every corner! ✨ What's your favorite part of his adventure? Tell us in the comments! Don't miss a single magical moment – watch till the end and subscribe for more heartwarming animations! #MagicalAdventure #FairytaleJourney #CuteCartoon #WhimsicalWorld",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/mg0dor2tG3A/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/mg0dor2tG3A/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/mg0dor2tG3A/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/mg0dor2tG3A/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/mg0dor2tG3A/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-01T13:09:32Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "HLYP5l4_ZCWTFpmZQJkgwXoNChI",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "nkX8lmuxSd8"
+        },
+        "snippet": {
+          "publishedAt": "2025-11-01T13:00:06Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You WON'T Believe This Magical Autumn Wonderland! ✨ (Must See!)",
+          "description": "Step into an enchanting world where magic comes alive! ✨ This whimsical animated scene transports you to a breathtaking autumn wonderland, filled with glowing jack-o'-lanterns, vibrant bioluminescent plants, and a serene floating island under a shimmering twilight sky. Watch as a 'child of wonder' discovers her peaceful haven amidst falling golden sparkles and cozy fairy lights. Every detail, from the reflections in the water to the girl's awestruck smile, is designed to captivate your imagination. Don't miss this truly magical journey – watch till the end and let your spirit glow! Subscribe for more animated adventures that inspire wonder. #MagicalAutumn #WhimsicalAnimation #HalloweenVibes #EnchantedForest #PeacefulHaven #FantasyWorld #JackOLanterns #CozyVibes",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/nkX8lmuxSd8/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/nkX8lmuxSd8/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/nkX8lmuxSd8/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/nkX8lmuxSd8/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/nkX8lmuxSd8/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-11-01T13:00:06Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "6r1vw5cU-Y4RxWw7pEasDxzPSvQ",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "WEGVh07pdhQ"
+        },
+        "snippet": {
+          "publishedAt": "2025-10-31T17:08:50Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "MAGIC AWAITS! ✨ Cute Girls, Epic Beach Transformation – You HAVE to See This! 💖",
+          "description": "Step into a world of pure enchantment with our latest 3D animated adventure! ✨ Join our adorable chibi girls as they journey from a cozy coffee moment to a breathtaking tropical beach sunset, filled with golden sparkles and magical transformations. Every second is a dose of joy and wonder! 😍 Don't miss this whimsical escape – watch till the very end to experience the full magic and see our new character embrace the sea's enchanting song. Subscribe for more heartwarming animations and magical moments!",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/WEGVh07pdhQ/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/WEGVh07pdhQ/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/WEGVh07pdhQ/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/WEGVh07pdhQ/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/WEGVh07pdhQ/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-10-31T17:08:50Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "Tpyeop1XI4exiWliTIMgXvDeGvo",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "HB9RryIc5h4"
+        },
+        "snippet": {
+          "publishedAt": "2025-10-31T16:48:28Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "🤯 Latte Art Magic?! This Anime Girl's Transformation Is UNBELIEVABLE! | Cyber Bunny YOU CAN'T MISS!",
+          "description": "Get ready for an animated journey like no other! Watch as our adorable pink-haired girl's simple cup of steaming coffee transforms from beautiful latte art into a high-tech circuit board design! But the magic doesn't stop there... ☕✨\n\nWitness an EPIC glow-up as her outfit changes into a stunning white bunny costume, complete with futuristic glowing bunny ears and dazzling pink accents! The background morphs from a cozy indoor setting to a vibrant, futuristic city under a breathtaking pink sky. This is the ULTIMATE anime transformation you have to see to believe!\n\nWhat's your favorite part of this mind-blowing transformation? Let us know in the comments below! 👇\n\nDon't forget to LIKE this video, SUBSCRIBE for more amazing animations and creative content, and hit the notification bell so you never miss a magical moment! 🔔 Watch till the very end to catch every incredible detail!\n\n#AnimeTransformation #CoffeeMagic #CyberBunny #FuturisticAnimation #GlowUp #AnimeGirl #MagicalTransformation #ArtAnimation #MustWatch",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/HB9RryIc5h4/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/HB9RryIc5h4/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/HB9RryIc5h4/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/HB9RryIc5h4/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/HB9RryIc5h4/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-10-31T16:48:28Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "wrqSRXbPOkLLNUSh7AbXpueeXqM",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "wJoIOe53PE8"
+        },
+        "snippet": {
+          "publishedAt": "2025-10-31T16:29:37Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "🤯 You WON'T Believe What My Coffee Revealed! ✨ Magical Tropical Escape & The CUTEST Surprise!",
+          "description": "Get ready for a sprinkle of magic! ✨ Watch as our cozy, pink-haired girl's morning coffee transforms into an enchanting escape to a serene tropical paradise. From steaming lattes to sun-drenched beaches, this animated journey is pure bliss. But the biggest surprise? You absolutely *have* to watch till the very end to see the adorable secret that bursts from her cup! 🤯 It's guaranteed to make you smile. What's your dream escape? Tell us in the comments! 👇 Don't forget to LIKE, SHARE, and SUBSCRIBE for more magical moments! Hit the notification bell so you never miss an adventure.",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/wJoIOe53PE8/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/wJoIOe53PE8/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/wJoIOe53PE8/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/wJoIOe53PE8/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/wJoIOe53PE8/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-10-31T16:29:37Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "qC_wtc70zneza3ZaHpua1doJZCs",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "VaVH4rcd0Yg"
+        },
+        "snippet": {
+          "publishedAt": "2025-10-31T14:24:29Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "You Won't BELIEVE How Cozy This Bunny Girl's Morning Is! ☕✨ (Instant Warmth & Smiles!) #cute #kawaii",
+          "description": "Get ready to melt! Join our adorable bunny-eared girl as she sips on a steaming warm drink, bringing pure joy and coziness to her morning. Her happy, contented expressions are simply infectious!\n\nWatch till the very end to soak up all the blissful vibes – it’s the perfect pick-me-up for your day.\n\nDon't miss out on more heartwarming content like this!\n❤️ If this made you smile, hit the LIKE button!\n🔔 SUBSCRIBE to our channel for daily doses of cuteness and comfort!\n💬 Let us know in the comments: What's your favorite cozy drink?",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/VaVH4rcd0Yg/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/VaVH4rcd0Yg/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/VaVH4rcd0Yg/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/VaVH4rcd0Yg/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/VaVH4rcd0Yg/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-10-31T14:24:29Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "85BsQQaZIcxrC2jYuITP0UqidXg",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "p3J8ON3pn74"
+        },
+        "snippet": {
+          "publishedAt": "2025-10-31T05:43:57Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "When Your AI Waifu Gets Tsundere 😤🌸",
+          "description": "Zoom from the sky into a magical anime school courtyard — cherry blossoms, golden sunset, and one very angry (but adorable) catgirl waiting for you. 😤🌸\n\nAll generated with AI + n8n workflow from a single image and text prompt.\n\nWant to build your own AI anime scenes like this?\n📧 Email: algonovalabs@gmail.com\n\n#AI #Anime #n8n #AIanimation #AIart #AIvideo #AnimeEdit #AICreator #Shorts",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/p3J8ON3pn74/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/p3J8ON3pn74/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/p3J8ON3pn74/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/p3J8ON3pn74/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/p3J8ON3pn74/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-10-31T05:43:57Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "Qf4xz0XSDwQcwI8ETUwgSAUdG8k",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "MIy7jIDtGiE"
+        },
+        "snippet": {
+          "publishedAt": "2025-10-31T05:14:08Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Bring Your Anime Character to Life 💫",
+          "description": "Upload an image, add a text prompt, and watch your scene come alive — complete with camera movement, lighting, and cinematic anime vibes.\n\nExample prompt:\n“Camera orbiting around an adorable anime girl in a cozy sunset café, sparkles floating around.”\n\nPowered by AI + n8n. Perfect for creators, animators, and dreamers who want their characters to move, not just pose.",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/MIy7jIDtGiE/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/MIy7jIDtGiE/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/MIy7jIDtGiE/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/MIy7jIDtGiE/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/MIy7jIDtGiE/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-10-31T05:14:08Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "-Y0MVl7VJucWeYRpC86jgWfSfMk",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "4HkvfWx12jE"
+        },
+        "snippet": {
+          "publishedAt": "2025-10-29T17:19:08Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "She Became A Disney Princess ✨💜",
+          "description": "Transforming photos into magical animated scenes! This lavender field turned out like a Tangled/Encanto moment 🌸\n\nDrop a 💜 if you'd want to be a Disney character!\n\n#disney #animation #princess #shorts",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/4HkvfWx12jE/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/4HkvfWx12jE/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/4HkvfWx12jE/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/4HkvfWx12jE/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/4HkvfWx12jE/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-10-29T17:19:08Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "FJKG4pP1ZZFd4RUrtlt_5FdsBj4",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "7xCnlTNFwgM"
+        },
+        "snippet": {
+          "publishedAt": "2025-10-29T17:08:29Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "I Turned My Friend Into A Pixar Character 🏝️✨",
+          "description": "Transforming real photos into animated Pixar-style characters! \n\nWould you want to see yourself as a Disney character? Let me know in the comments what location you'd choose!\n\n#pixar #aiart #animation #shorts",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/7xCnlTNFwgM/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/7xCnlTNFwgM/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/7xCnlTNFwgM/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/7xCnlTNFwgM/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/7xCnlTNFwgM/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-10-29T17:08:29Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "BaaMeNKJOyyadcRs-U6JRLvKfNg",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "LF0j9Gjkz58"
+        },
+        "snippet": {
+          "publishedAt": "2025-10-28T14:39:16Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "Walking Through a Cherry Blossom Dream 🌸✨ #Shorts",
+          "description": "Sometimes you just need a moment of peace 🌸\n\nThis AI-generated scene captures that magical feeling of walking through cherry blossoms in full bloom ✨\n\nWhat's your happy place? Drop it in the comments 👇",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/LF0j9Gjkz58/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/LF0j9Gjkz58/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/LF0j9Gjkz58/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/LF0j9Gjkz58/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/LF0j9Gjkz58/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-10-28T14:39:16Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "eztIpWz1aXi9Vr31w-SEb2UxEac",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "UhPw0sNkMUs"
+        },
+        "snippet": {
+          "publishedAt": "2025-10-28T09:11:01Z",
+          "channelId": "UCr2Q0TirO6tHV-ZTEFNzfGQ",
+          "title": "When Your Automation Finally Works Perfectly 🎯✨ #shorts",
+          "description": "One trigger. A chain reaction. Everything automated.\n\nThis is what n8n workflow automation feels like when everything just clicks into place ⚡\n\nWhat repetitive task would YOU automate first? 👇",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/UhPw0sNkMUs/default.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/UhPw0sNkMUs/mqdefault.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/UhPw0sNkMUs/hqdefault.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/UhPw0sNkMUs/sddefault.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/UhPw0sNkMUs/maxresdefault.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "algonovalabs",
+          "liveBroadcastContent": "none",
+          "publishTime": "2025-10-28T09:11:01Z"
+        }
+      }
+    ]
+  },
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
