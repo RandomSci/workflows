@@ -486,7 +486,7 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        176,
+        128,
         1232
       ],
       "id": "e6f7c428-fea1-4fc4-8516-b1105a26610d",
@@ -1169,7 +1169,7 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        336,
+        272,
         1232
       ],
       "id": "ad6152f4-5675-429c-902e-048c0ef69b4a",
@@ -1282,7 +1282,7 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        1248,
+        1200,
         1232
       ],
       "id": "a2c3482c-677b-419e-be81-2ecacaf1a668",
@@ -1318,7 +1318,7 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        960,
+        912,
         1232
       ],
       "id": "b1da6789-4054-49cb-83a2-2b9b203574da",
@@ -1340,7 +1340,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        672,
+        640,
         1232
       ],
       "id": "81c4bfeb-e0e5-4638-879a-88cd9612b31c",
@@ -1390,6 +1390,28 @@
       ],
       "id": "0c3301a0-b643-4adf-8912-0d5ad5a838ce",
       "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "=[UPLOAD CONFIRMED]\nStatus: AUTOMATED PERFECTION\nThe AlgoNova Engine never sleeps.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        1232
+      ],
+      "id": "61b34093-f5db-474c-9495-ea00cf2a98e7",
+      "name": "Send a text message",
+      "webhookId": "b5323e80-6737-4449-97e2-a9cc0302db37",
+      "credentials": {
+        "telegramApi": {
+          "id": "k7m8mevEdyBrdj98",
+          "name": "Telegram account"
+        }
+      }
     }
   ],
   "connections": {
@@ -1925,7 +1947,13 @@
     },
     "Add a playlist item": {
       "main": [
-        []
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Instagram Post": {
