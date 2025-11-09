@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, Form
+from fastapi import FastAPI, File, UploadFile, Form, BackgroundTasks
 from fastapi.responses import FileResponse
 import subprocess
 import os
@@ -9,8 +9,17 @@ import shutil
 
 app = FastAPI(title="Video Editor API")
 
+def cleanup(temp_dir: Path):
+    """Cleanup temp directory"""
+    try:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+        print(f"🧹 Cleaned up {temp_dir}")
+    except Exception as e:
+        print(f"⚠️ Cleanup error: {e}")
+
 @app.post("/combine-video-audio")
 async def combine_video_audio(
+    background_tasks: BackgroundTasks,
     video: UploadFile = File(...),
     audio: UploadFile = File(...),
     audio_volume: float = Form(0.15),
@@ -31,8 +40,12 @@ async def combine_video_audio(
         video_content = await video.read()
         audio_content = await audio.read()
         
-        print(f"✅ Video size: {len(video_content)} bytes")
-        print(f"✅ Audio size: {len(audio_content)} bytes")
+        print(f"✅ Video: {video.filename} - {len(video_content)} bytes")
+        print(f"✅ Audio: {audio.filename} - {len(audio_content)} bytes")
+        
+        if video_content == audio_content:
+            print("⚠️ WARNING: Video and audio files are IDENTICAL!")
+            return {"error": "Video and audio files are the same. Check your n8n workflow!"}
         
         with open(video_path, "wb") as f:
             f.write(video_content)
@@ -59,7 +72,9 @@ async def combine_video_audio(
         
         print("⚙️ Starting FFmpeg processing...")
         ffmpeg_cmd = [
-            "ffmpeg", "-i", str(video_path), "-i", str(audio_path),
+            "ffmpeg", "-y",
+            "-i", str(video_path), 
+            "-i", str(audio_path),
             "-filter_complex",
             f"[0:v]fade=t=out:st={fade_start}:d={fade_duration}[v];"
             f"[0:a]afade=t=out:st={fade_start}:d={fade_duration}[a0];"
@@ -75,32 +90,34 @@ async def combine_video_audio(
         result = subprocess.run(ffmpeg_cmd, capture_output=True, text=True)
         
         if result.returncode != 0:
-            print(f"❌ FFmpeg error: {result.stderr}")
+            print(f"❌ FFmpeg stderr: {result.stderr}")
+            background_tasks.add_task(cleanup, temp_dir)
             return {"error": f"FFmpeg failed: {result.stderr}"}
         
         print("✅ FFmpeg processing complete!")
         
-        if output_path.exists():
-            output_size = output_path.stat().st_size
-            print(f"✅ Output file size: {output_size} bytes")
-        else:
+        if not output_path.exists():
             print("❌ Output file not created!")
+            background_tasks.add_task(cleanup, temp_dir)
             return {"error": "Output file was not created"}
+        
+        output_size = output_path.stat().st_size
+        print(f"✅ Output file size: {output_size} bytes")
+        
+        if output_size < 10000:  
+            print("⚠️ Output file is suspiciously small!")
+        
+        background_tasks.add_task(cleanup, temp_dir)
         
         return FileResponse(
             output_path,
             media_type="video/mp4",
-            filename="processed_video.mp4",
-            background=lambda: shutil.rmtree(temp_dir, ignore_errors=True)
+            filename="processed_video.mp4"
         )
     
-    except subprocess.CalledProcessError as e:
-        print(f"❌ Subprocess error: {e.stderr}")
-        shutil.rmtree(temp_dir, ignore_errors=True)
-        return {"error": f"FFmpeg error: {e.stderr}"}
     except Exception as e:
         print(f"❌ General error: {str(e)}")
-        shutil.rmtree(temp_dir, ignore_errors=True)
+        background_tasks.add_task(cleanup, temp_dir)
         return {"error": str(e)}
 
 @app.get("/health")
