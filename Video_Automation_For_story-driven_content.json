@@ -14,7 +14,8 @@
       ],
       "typeVersion": 1,
       "id": "b3bfd891-6636-4aca-9fe7-8d9937bf2f1f",
-      "name": "Sticky Note"
+      "name": "Sticky Note",
+      "disabled": true
     },
     {
       "parameters": {
@@ -31,7 +32,8 @@
         1232
       ],
       "id": "4628d584-0c1e-4a25-9987-ad982500ff46",
-      "name": "AI Agent - Image Prompt"
+      "name": "AI Agent - Image Prompt",
+      "disabled": true
     },
     {
       "parameters": {
@@ -58,7 +60,8 @@
         1232
       ],
       "id": "85359471-6910-450d-99bb-32a83c14452e",
-      "name": "HTTP Request - Create Image 1"
+      "name": "HTTP Request - Create Image 1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -72,7 +75,8 @@
       ],
       "id": "6877392e-2091-4dd6-b90e-54c23f74d76e",
       "name": "Wait - 30s",
-      "webhookId": "e85f5cb5-8bf9-4cff-b1f3-bc165cc25236"
+      "webhookId": "e85f5cb5-8bf9-4cff-b1f3-bc165cc25236",
+      "disabled": true
     },
     {
       "parameters": {
@@ -95,7 +99,8 @@
         1232
       ],
       "id": "1de02960-6120-49a2-b2f5-8c9b57328161",
-      "name": "HTTP Request - Get Image 1"
+      "name": "HTTP Request - Get Image 1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -111,7 +116,8 @@
       ],
       "typeVersion": 1,
       "id": "0ec9d815-205a-4617-a86d-0e66dedbf1ac",
-      "name": "Sticky Note1"
+      "name": "Sticky Note1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -130,6 +136,7 @@
       ],
       "id": "0840064b-29a6-4c4a-9351-d94e82c9d808",
       "name": "AI Agent - Video Prompter",
+      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -146,7 +153,8 @@
       ],
       "typeVersion": 1,
       "id": "1292a64f-4784-42a1-bcb9-5631ae36cd97",
-      "name": "Sticky Note2"
+      "name": "Sticky Note2",
+      "disabled": true
     },
     {
       "parameters": {
@@ -166,7 +174,8 @@
         1232
       ],
       "id": "88a41d0f-10f6-436b-aed1-64d31ad0f1df",
-      "name": "Aggregate"
+      "name": "Aggregate",
+      "disabled": true
     },
     {
       "parameters": {
@@ -189,7 +198,9 @@
         1232
       ],
       "id": "7364f42c-278a-4620-803c-04c4a8555d4a",
-      "name": "HTTP Request - Final Video"
+      "name": "HTTP Request - Final Video",
+      "retryOnFail": true,
+      "disabled": true
     },
     {
       "parameters": {
@@ -213,21 +224,8 @@
           "name": "Telegram account"
         }
       },
+      "disabled": true,
       "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "amount": 60
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        -1728,
-        1232
-      ],
-      "id": "20ebf2ac-a9fc-4e69-bc8d-2f686195ac0a",
-      "name": "Wait 30s",
-      "webhookId": "95ef2154-8111-46ff-9525-0f25ac8615ad"
     },
     {
       "parameters": {
@@ -254,7 +252,8 @@
         1232
       ],
       "id": "9c13c2a7-3c58-4feb-8ebe-c4952c1d84ed",
-      "name": "HTTP Request - Combine"
+      "name": "HTTP Request - Combine",
+      "disabled": true
     },
     {
       "parameters": {
@@ -286,7 +285,8 @@
           "id": "2KupETq4QLi8d9l8",
           "name": "Google Drive account"
         }
-      }
+      },
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -296,13 +296,14 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -624,
+        -688,
         688
       ],
       "id": "26f078e3-7bb5-4e8d-90d8-9531dca33cbe",
       "name": "HTTP Request",
       "retryOnFail": true,
-      "maxTries": 5
+      "maxTries": 5,
+      "disabled": true
     },
     {
       "parameters": {
@@ -320,7 +321,7 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        -432,
+        -464,
         688
       ],
       "id": "80015913-957a-4d00-a58c-8d18acc2e3a6",
@@ -333,12 +334,13 @@
           "id": "Qn2KmHKfcYN7JBvq",
           "name": "Google Gemini(PaLM) Api account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "from datetime import datetime\nimport random\n\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\n# Define some dynamic hooks and actions\nhook_phrases = [\n    \"When {character} {action}!\",\n    \"You won’t believe what {character} does!\",\n    \"Watch {character} {action} in pastel magic!\",\n    \"I can’t believe {character} just {action}!\",\n    \"{character} {action} and it’s adorable!\"\n]\n\nactions = [\n    \"dances in the candy clouds\",\n    \"discovers a rainbow waterfall\",\n    \"giggles while floating on lanterns\",\n    \"throws a sparkly magic spell\",\n    \"plays hide-and-seek in the pastel garden\",\n    \"slides down a fluffy cloud slide\",\n    \"spins under the twinkling stars\",\n    \"sings with magical sparkles around\",\n    \"jumps between floating petals\"\n]\n\n# Example character (you can replace with your generated character)\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\n\naction = random.choice(actions)\ntitle = random.choice(hook_phrases).format(character=character, action=action)\n\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\n\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, FOMO-style, MUST be under 90 characters)\n- \"YouTubeDescription\" (engaging, includes CTA like 'watch till the end' or 'subscribe for more')\n- \"TikTokDescription\" (short, punchy, instant hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, engaging)\n- \"InstagramDescription\" (short, emoji-rich, interaction-focused)\n- \"AdditionalNotes\" (hashtags, trends, posting tips)\n\nSTRICT RULES:\n1. The \"YouTubeTitle\" MUST NOT exceed 90 characters.\n2. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n3. The output MUST be valid JSON, properly escaped.\n\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",,\n  \"YoutubeTitleForEchoNova\",\n  \"YouTubeDescriptionForEchoNova\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\nMake sure that the Youtube titles and and descriptions should not be the same.\n\nGenerate irresistible, high-CTR titles and descriptions that make viewers feel they CAN’T miss the video.\n\"\"\"\n\nreturn {\n    \"chatInput\": Prompt\n}"
+        "pythonCode": "from datetime import datetime\nimport random\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n# Define some dynamic hooks and actions\nhook_phrases = [\n    \"When {character} {action}!\",\n    \"You won't believe what {character} does!\",\n    \"Watch {character} {action} in pastel magic!\",\n    \"I can't believe {character} just {action}!\",\n    \"{character} {action} and it's adorable!\"\n]\nactions = [\n    \"dances in the candy clouds\",\n    \"discovers a rainbow waterfall\",\n    \"giggles while floating on lanterns\",\n    \"throws a sparkly magic spell\",\n    \"plays hide-and-seek in the pastel garden\",\n    \"slides down a fluffy cloud slide\",\n    \"spins under the twinkling stars\",\n    \"sings with magical sparkles around\",\n    \"jumps between floating petals\"\n]\n# Example character (you can replace with your generated character)\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\naction = random.choice(actions)\ntitle = random.choice(hook_phrases).format(character=character, action=action)\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, FOMO-style, MUST be under 90 characters)\n- \"YouTubeTitle2\" (DIFFERENT catchy title, under 90 characters, use a different hook/angle than YouTubeTitle)\n- \"YouTubeDescription\" (engaging, includes CTA like 'watch till the end' or 'subscribe for more')\n- \"YouTubeDescription2\" (DIFFERENT description with different CTA and angle than YouTubeDescription)\n- \"TikTokDescription\" (short, punchy, instant hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, engaging)\n- \"InstagramDescription\" (short, emoji-rich, interaction-focused)\n- \"AdditionalNotes\" (hashtags, trends, posting tips)\nSTRICT RULES:\n1. Both \"YouTubeTitle\" and \"YouTubeTitle2\" MUST NOT exceed 90 characters.\n2. YouTubeTitle and YouTubeTitle2 MUST be COMPLETELY DIFFERENT - use different hooks, emotions, or angles.\n3. YouTubeDescription and YouTubeDescription2 MUST be COMPLETELY DIFFERENT - vary the CTAs and storytelling.\n4. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n5. The output MUST be valid JSON, properly escaped.\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\nCRITICAL: YouTubeTitle and YouTubeTitle2 must be DISTINCT. YouTubeDescription and YouTubeDescription2 must be DISTINCT. Do NOT repeat the same content.\nGenerate irresistible, high-CTR titles and descriptions that make viewers feel they CAN'T miss the video.\n\"\"\"\nreturn {\n    \"chatInput\": Prompt\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -347,7 +349,8 @@
         688
       ],
       "id": "9219a94a-7237-455a-81c5-a262797032a3",
-      "name": "Code in Python (Beta)"
+      "name": "Code in Python (Beta)",
+      "disabled": true
     },
     {
       "parameters": {
@@ -486,7 +489,7 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        112,
+        144,
         1232
       ],
       "id": "e6f7c428-fea1-4fc4-8516-b1105a26610d",
@@ -496,7 +499,8 @@
           "id": "Fnm7ZvrVLhKsF77T",
           "name": "YouTube account_AlgoNovaLabs"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -519,15 +523,17 @@
           "mappingMode": "defineBelow",
           "value": {
             "Date": "={{ $json.data[1].Date }}",
-            "YouTube Title": "={{ $json.data[1].YouTubeTitle }}",
-            "YouTube Description": "={{ $json.data[1].YouTubeDescription }}",
             "TikTok Description": "={{ $json.data[1].TikTokDescription }}",
             "Facebook Reel Description": "={{ $json.data[1].FacebookReelDescription }}",
             "Instagram Description": "={{ $json.data[1].InstagramDescription }}",
             "Additional Notes": "={{ $json.data[1].AdditionalNotes }}",
             "Video Url View": "={{ $('Upload file').item.json.webViewLink }}",
             "Video Url Download": "={{ $('Upload file').item.json.webContentLink }}",
-            "Time ": "={{ $json.data[1].Time }}"
+            "Time ": "={{ $json.data[1].Time }}",
+            "AlgoNova Youtube Title": "={{ $json.data[1].YouTubeTitle }}",
+            "EchoNova Youtube Title": "={{ $json.data[1].YouTubeTitle2 }}",
+            "AlgoNova YouTube Description": "={{ $json.data[1].YouTubeDescription }}",
+            "EchoNova YouTube Description": "={{ $json.data[1].YouTubeDescription2 }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -551,22 +557,44 @@
               "removed": false
             },
             {
-              "id": "YouTube Title",
-              "displayName": "YouTube Title",
+              "id": "AlgoNova Youtube Title",
+              "displayName": "AlgoNova Youtube Title",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
-              "id": "YouTube Description",
-              "displayName": "YouTube Description",
+              "id": "EchoNova Youtube Title",
+              "displayName": "EchoNova Youtube Title",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AlgoNova YouTube Description",
+              "displayName": "AlgoNova YouTube Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "EchoNova YouTube Description",
+              "displayName": "EchoNova YouTube Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "TikTok Description",
@@ -733,7 +761,8 @@
           "id": "Vwg2FlhVu2bY7dZ6",
           "name": "OpenAi account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -767,7 +796,8 @@
         720
       ],
       "id": "5467ba58-34a1-411b-b596-738e03f1331a",
-      "name": "Code in Python (Beta)2"
+      "name": "Code in Python (Beta)2",
+      "disabled": true
     },
     {
       "parameters": {
@@ -794,7 +824,8 @@
           "id": "Qn2KmHKfcYN7JBvq",
           "name": "Google Gemini(PaLM) Api account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -808,7 +839,8 @@
         720
       ],
       "id": "f6e882cb-d48c-48b8-bb48-96fe108351bf",
-      "name": "Code in Python (Beta)3"
+      "name": "Code in Python (Beta)3",
+      "disabled": true
     },
     {
       "parameters": {
@@ -821,7 +853,8 @@
         720
       ],
       "id": "d57d5b05-7a96-4a84-980e-9303788ec784",
-      "name": "AI Agent1"
+      "name": "AI Agent1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -851,7 +884,8 @@
           "id": "2KupETq4QLi8d9l8",
           "name": "Google Drive account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {},
@@ -862,7 +896,8 @@
         1232
       ],
       "id": "f5fd6ec2-b0e7-410e-aa3d-b612763e3e99",
-      "name": "Merge1"
+      "name": "Merge1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -875,7 +910,8 @@
         1232
       ],
       "id": "0f70647e-4667-45e8-be4f-790d291cf1d4",
-      "name": "Limit1"
+      "name": "Limit1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -890,7 +926,8 @@
         880
       ],
       "id": "91aaaff4-ed6f-4ccb-be5d-07e32817edc7",
-      "name": "Structured Output Parser"
+      "name": "Structured Output Parser",
+      "disabled": true
     },
     {
       "parameters": {
@@ -904,7 +941,8 @@
         672
       ],
       "id": "8d6bf6b4-10ff-42fd-bbc8-796b98bf3920",
-      "name": "Code in Python (Beta)4"
+      "name": "Code in Python (Beta)4",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1010,7 +1048,8 @@
         656
       ],
       "id": "43a14e27-0963-4189-99d0-36fee9719622",
-      "name": "Split Out"
+      "name": "Split Out",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1042,7 +1081,8 @@
         656
       ],
       "id": "ece3e7ea-4186-491e-9a75-0cd0ca29c6a3",
-      "name": "HTTP Request - Get Video"
+      "name": "HTTP Request - Get Video",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1073,7 +1113,8 @@
         656
       ],
       "id": "1ce0f53e-d575-464e-8b98-b7f346f977d9",
-      "name": "HTTP Request - Make Video1"
+      "name": "HTTP Request - Make Video1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1088,7 +1129,8 @@
       ],
       "id": "e4ad85f9-5b67-4724-8893-797331967abd",
       "name": "Wait 4m",
-      "webhookId": "7feaead4-5997-4d66-a596-78729fcf0ae5"
+      "webhookId": "7feaead4-5997-4d66-a596-78729fcf0ae5",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1103,7 +1145,8 @@
       ],
       "typeVersion": 1,
       "id": "dc462a1f-53c2-4ea7-8c08-5db52c8977f2",
-      "name": "Sticky Note3"
+      "name": "Sticky Note3",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1122,7 +1165,8 @@
           "id": "EiUQRi4x0N96lhYH",
           "name": "algonovalabs_YOUTUBE AUTOMATION RELATED"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -1141,7 +1185,8 @@
           "id": "Qn2KmHKfcYN7JBvq",
           "name": "Google Gemini(PaLM) Api account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -1179,7 +1224,8 @@
           "id": "Fnm7ZvrVLhKsF77T",
           "name": "YouTube account_AlgoNovaLabs"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -1297,6 +1343,7 @@
           "name": "Facebook Graph account"
         }
       },
+      "disabled": true,
       "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
     },
     {
@@ -1332,6 +1379,7 @@
           "name": "Facebook Graph account"
         }
       },
+      "disabled": true,
       "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
     },
     {
@@ -1346,7 +1394,8 @@
         1232
       ],
       "id": "81c4bfeb-e0e5-4638-879a-88cd9612b31c",
-      "name": "Tiktok Post"
+      "name": "Tiktok Post",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1376,7 +1425,8 @@
           "id": "2KupETq4QLi8d9l8",
           "name": "Google Drive account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -1390,7 +1440,8 @@
         1232
       ],
       "id": "0c3301a0-b643-4adf-8912-0d5ad5a838ce",
-      "name": "HTTP Request2"
+      "name": "HTTP Request2",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1414,7 +1465,8 @@
           "id": "k7m8mevEdyBrdj98",
           "name": "Telegram account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -1441,8 +1493,7 @@
           "id": "lP6X79rHDtk0jfT5",
           "name": "Youtube_Account_EchoNovaLabs"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {},
@@ -1624,6 +1675,102 @@
       ],
       "id": "e6a61816-fb78-4652-aeea-73d8b0a6f983",
       "name": "Combine Files"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1728,
+        1232
+      ],
+      "id": "20ebf2ac-a9fc-4e69-bc8d-2f686195ac0a",
+      "name": "Wait 60s",
+      "webhookId": "95ef2154-8111-46ff-9525-0f25ac8615ad",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "https://drive.google.com/file/d/1Av52nB-wwUVLxXG2lv6_0PQYQHmL932b/view?usp=sharing",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -688,
+        336
+      ],
+      "id": "63a2b362-20f3-4474-af23-e58c236a9777",
+      "name": "Download Video1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "2KupETq4QLi8d9l8",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        240
+      ],
+      "id": "cdd50257-e002-4d2b-8dda-5c661d1aecf2",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        400
+      ],
+      "id": "9edaee5a-bed5-403a-8524-5bbab9c3c304",
+      "name": "Analyze video1",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 3000,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Qn2KmHKfcYN7JBvq",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from datetime import datetime\nimport random\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n# Define some dynamic hooks and actions\nhook_phrases = [\n    \"When {character} {action}!\",\n    \"You won't believe what {character} does!\",\n    \"Watch {character} {action} in pastel magic!\",\n    \"I can't believe {character} just {action}!\",\n    \"{character} {action} and it's adorable!\"\n]\nactions = [\n    \"dances in the candy clouds\",\n    \"discovers a rainbow waterfall\",\n    \"giggles while floating on lanterns\",\n    \"throws a sparkly magic spell\",\n    \"plays hide-and-seek in the pastel garden\",\n    \"slides down a fluffy cloud slide\",\n    \"spins under the twinkling stars\",\n    \"sings with magical sparkles around\",\n    \"jumps between floating petals\"\n]\n# Example character (you can replace with your generated character)\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\naction = random.choice(actions)\ntitle = random.choice(hook_phrases).format(character=character, action=action)\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, FOMO-style, MUST be under 90 characters)\n- \"YouTubeTitle2\" (DIFFERENT catchy title, under 90 characters, use a different hook/angle than YouTubeTitle)\n- \"YouTubeDescription\" (engaging, includes CTA like 'watch till the end' or 'subscribe for more')\n- \"YouTubeDescription2\" (DIFFERENT description with different CTA and angle than YouTubeDescription)\n- \"TikTokDescription\" (short, punchy, instant hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, engaging)\n- \"InstagramDescription\" (short, emoji-rich, interaction-focused)\n- \"AdditionalNotes\" (hashtags, trends, posting tips)\nSTRICT RULES:\n1. Both \"YouTubeTitle\" and \"YouTubeTitle2\" MUST NOT exceed 90 characters.\n2. YouTubeTitle and YouTubeTitle2 MUST be COMPLETELY DIFFERENT - use different hooks, emotions, or angles.\n3. YouTubeDescription and YouTubeDescription2 MUST be COMPLETELY DIFFERENT - vary the CTAs and storytelling.\n4. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n5. The output MUST be valid JSON, properly escaped.\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\nCRITICAL: YouTubeTitle and YouTubeTitle2 must be DISTINCT. YouTubeDescription and YouTubeDescription2 must be DISTINCT. Do NOT repeat the same content.\nGenerate irresistible, high-CTR titles and descriptions that make viewers feel they CAN'T miss the video.\n\"\"\"\nreturn {\n    \"chatInput\": Prompt\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        464
+      ],
+      "id": "48ee806a-0063-48c3-8a08-20e69eaff313",
+      "name": "Code in Python (Beta)5"
     }
   ],
   "connections": {
@@ -1715,22 +1862,11 @@
         ]
       ]
     },
-    "Wait 30s": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request - Final Video",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "HTTP Request - Combine": {
       "main": [
         [
           {
-            "node": "Wait 30s",
+            "node": "Wait 60s",
             "type": "main",
             "index": 0
           }
@@ -2285,6 +2421,66 @@
         [
           {
             "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 60s": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Final Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Video1": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze video1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Download Video1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video1": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)5": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
             "type": "main",
             "index": 0
           }
