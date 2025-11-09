@@ -26,7 +26,7 @@ async def combine_video_audio(
     fade_duration: float = Form(1.0)
 ):
     """
-    Combines video with background music, adds fade out transition
+    Combines video with background music, adds fade out transition, and returns only the processed video.
     """
     job_id = str(uuid.uuid4())
     temp_dir = Path(tempfile.gettempdir()) / job_id
@@ -45,7 +45,7 @@ async def combine_video_audio(
         
         if video_content == audio_content:
             print("⚠️ WARNING: Video and audio files are IDENTICAL!")
-            return {"error": "Video and audio files are the same. Check your n8n workflow!"}
+            return {"error": "Video and audio files are the same. Check your workflow!"}
         
         with open(video_path, "wb") as f:
             f.write(video_content)
