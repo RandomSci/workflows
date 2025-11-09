@@ -14,8 +14,7 @@
       ],
       "typeVersion": 1,
       "id": "b3bfd891-6636-4aca-9fe7-8d9937bf2f1f",
-      "name": "Sticky Note",
-      "disabled": true
+      "name": "Sticky Note"
     },
     {
       "parameters": {
@@ -32,8 +31,7 @@
         1232
       ],
       "id": "4628d584-0c1e-4a25-9987-ad982500ff46",
-      "name": "AI Agent - Image Prompt",
-      "disabled": true
+      "name": "AI Agent - Image Prompt"
     },
     {
       "parameters": {
@@ -60,8 +58,7 @@
         1232
       ],
       "id": "85359471-6910-450d-99bb-32a83c14452e",
-      "name": "HTTP Request - Create Image 1",
-      "disabled": true
+      "name": "HTTP Request - Create Image 1"
     },
     {
       "parameters": {
@@ -75,8 +72,7 @@
       ],
       "id": "6877392e-2091-4dd6-b90e-54c23f74d76e",
       "name": "Wait - 30s",
-      "webhookId": "e85f5cb5-8bf9-4cff-b1f3-bc165cc25236",
-      "disabled": true
+      "webhookId": "e85f5cb5-8bf9-4cff-b1f3-bc165cc25236"
     },
     {
       "parameters": {
@@ -99,8 +95,7 @@
         1232
       ],
       "id": "1de02960-6120-49a2-b2f5-8c9b57328161",
-      "name": "HTTP Request - Get Image 1",
-      "disabled": true
+      "name": "HTTP Request - Get Image 1"
     },
     {
       "parameters": {
@@ -116,8 +111,7 @@
       ],
       "typeVersion": 1,
       "id": "0ec9d815-205a-4617-a86d-0e66dedbf1ac",
-      "name": "Sticky Note1",
-      "disabled": true
+      "name": "Sticky Note1"
     },
     {
       "parameters": {
@@ -136,7 +130,6 @@
       ],
       "id": "0840064b-29a6-4c4a-9351-d94e82c9d808",
       "name": "AI Agent - Video Prompter",
-      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -153,8 +146,7 @@
       ],
       "typeVersion": 1,
       "id": "1292a64f-4784-42a1-bcb9-5631ae36cd97",
-      "name": "Sticky Note2",
-      "disabled": true
+      "name": "Sticky Note2"
     },
     {
       "parameters": {
@@ -174,8 +166,7 @@
         1232
       ],
       "id": "88a41d0f-10f6-436b-aed1-64d31ad0f1df",
-      "name": "Aggregate",
-      "disabled": true
+      "name": "Aggregate"
     },
     {
       "parameters": {
@@ -199,8 +190,7 @@
       ],
       "id": "7364f42c-278a-4620-803c-04c4a8555d4a",
       "name": "HTTP Request - Final Video",
-      "retryOnFail": true,
-      "disabled": true
+      "retryOnFail": true
     },
     {
       "parameters": {
@@ -224,7 +214,6 @@
           "name": "Telegram account"
         }
       },
-      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -252,8 +241,7 @@
         1232
       ],
       "id": "9c13c2a7-3c58-4feb-8ebe-c4952c1d84ed",
-      "name": "HTTP Request - Combine",
-      "disabled": true
+      "name": "HTTP Request - Combine"
     },
     {
       "parameters": {
@@ -302,8 +290,7 @@
       "id": "26f078e3-7bb5-4e8d-90d8-9531dca33cbe",
       "name": "HTTP Request",
       "retryOnFail": true,
-      "maxTries": 5,
-      "disabled": true
+      "maxTries": 5
     },
     {
       "parameters": {
@@ -334,8 +321,7 @@
           "id": "Qn2KmHKfcYN7JBvq",
           "name": "Google Gemini(PaLM) Api account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -349,8 +335,7 @@
         688
       ],
       "id": "9219a94a-7237-455a-81c5-a262797032a3",
-      "name": "Code in Python (Beta)",
-      "disabled": true
+      "name": "Code in Python (Beta)"
     },
     {
       "parameters": {
@@ -463,7 +448,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -288,
+        -272,
         1232
       ],
       "id": "61bbc758-c809-489c-a4b9-d6b46e553d7b",
@@ -473,14 +458,13 @@
       "parameters": {
         "resource": "video",
         "operation": "upload",
-        "title": "={{ $('Limit').item.json[\"YouTube Title\"] }}",
+        "title": "={{ $json['AlgoNova Youtube Title'] }}",
         "regionCode": "PH",
         "categoryId": "1",
         "options": {
           "defaultLanguage": "en",
-          "description": "={{ $('Limit').item.json[\"YouTube Description\"] }}",
+          "description": "={{ $json['AlgoNova YouTube Description'] }}",
           "embeddable": true,
-          "notifySubscribers": true,
           "privacyStatus": "public",
           "selfDeclaredMadeForKids": false,
           "tags": "anime shorts, cinematic anime, anime aesthetic, studio quality animation, demon slayer style, makoto shinkai, anime edit, atmospheric anime, viral anime shorts, anime vibes"
@@ -499,8 +483,7 @@
           "id": "Fnm7ZvrVLhKsF77T",
           "name": "YouTube account_AlgoNovaLabs"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -727,7 +710,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -112,
+        -64,
         1232
       ],
       "id": "f8a7dec5-535b-4928-a31b-b84241eae9ff",
@@ -761,8 +744,7 @@
           "id": "Vwg2FlhVu2bY7dZ6",
           "name": "OpenAi account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -796,8 +778,7 @@
         720
       ],
       "id": "5467ba58-34a1-411b-b596-738e03f1331a",
-      "name": "Code in Python (Beta)2",
-      "disabled": true
+      "name": "Code in Python (Beta)2"
     },
     {
       "parameters": {
@@ -824,8 +805,7 @@
           "id": "Qn2KmHKfcYN7JBvq",
           "name": "Google Gemini(PaLM) Api account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -839,8 +819,7 @@
         720
       ],
       "id": "f6e882cb-d48c-48b8-bb48-96fe108351bf",
-      "name": "Code in Python (Beta)3",
-      "disabled": true
+      "name": "Code in Python (Beta)3"
     },
     {
       "parameters": {
@@ -853,8 +832,7 @@
         720
       ],
       "id": "d57d5b05-7a96-4a84-980e-9303788ec784",
-      "name": "AI Agent1",
-      "disabled": true
+      "name": "AI Agent1"
     },
     {
       "parameters": {
@@ -884,8 +862,7 @@
           "id": "2KupETq4QLi8d9l8",
           "name": "Google Drive account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {},
@@ -896,8 +873,7 @@
         1232
       ],
       "id": "f5fd6ec2-b0e7-410e-aa3d-b612763e3e99",
-      "name": "Merge1",
-      "disabled": true
+      "name": "Merge1"
     },
     {
       "parameters": {
@@ -910,8 +886,7 @@
         1232
       ],
       "id": "0f70647e-4667-45e8-be4f-790d291cf1d4",
-      "name": "Limit1",
-      "disabled": true
+      "name": "Limit1"
     },
     {
       "parameters": {
@@ -926,8 +901,7 @@
         880
       ],
       "id": "91aaaff4-ed6f-4ccb-be5d-07e32817edc7",
-      "name": "Structured Output Parser",
-      "disabled": true
+      "name": "Structured Output Parser"
     },
     {
       "parameters": {
@@ -941,100 +915,7 @@
         672
       ],
       "id": "8d6bf6b4-10ff-42fd-bbc8-796b98bf3920",
-      "name": "Code in Python (Beta)4",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "updates": [
-          "message"
-        ],
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        -3968,
-        320
-      ],
-      "id": "43ac5837-6736-4bae-a773-1d30fb3a194d",
-      "name": "Telegram Trigger",
-      "webhookId": "5fc2b001-9a7c-4b01-9bb1-2dee51478ad9",
-      "credentials": {
-        "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
-          "name": "Telegram account"
-        }
-      },
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "9e02677a-b4c5-4e21-b97e-6536d336181b",
-              "name": "bot id",
-              "value": "8351768336:AAF9RLjBvcUpcYeO_bnIGDGodALvUFCPy3s",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -3760,
-        320
-      ],
-      "id": "5935c48d-d90c-44b0-8aea-1f52a004d6db",
-      "name": "Edit Fields - Bot ID 1",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "url": "=https://api.telegram.org/bot{{ $json['bot id'] }}/getFile?file_id={{ $('Telegram Trigger').item.json.message.photo[0].file_id }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -3568,
-        320
-      ],
-      "id": "5d7a8904-78c7-4a44-a97d-91fd814609c9",
-      "name": "HTTP Request - Image Path",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "resource": "image",
-        "operation": "analyze",
-        "modelId": {
-          "__rl": true,
-          "value": "chatgpt-4o-latest",
-          "mode": "list",
-          "cachedResultName": "CHATGPT-4O-LATEST"
-        },
-        "text": "Determine if the image is a character or a product. It is only considered both if there are two completely separate images within the same image. If it is both, describe them separately. Describe the appearance details only.\n\nYour output should only include the description, nothing else.",
-        "imageUrls": "=https://api.telegram.org/file/bot{{ $('Edit Fields - Bot ID 1').item.json['bot id'] }}/{{ $json.result.file_path }}",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.8,
-      "position": [
-        -3392,
-        320
-      ],
-      "id": "c3dfab28-dea2-4166-a53a-9cdd1a230c97",
-      "name": "Analyze image",
-      "credentials": {
-        "openAiApi": {
-          "id": "Vwg2FlhVu2bY7dZ6",
-          "name": "OpenAi account"
-        }
-      }
+      "name": "Code in Python (Beta)4"
     },
     {
       "parameters": {
@@ -1048,8 +929,7 @@
         656
       ],
       "id": "43a14e27-0963-4189-99d0-36fee9719622",
-      "name": "Split Out",
-      "disabled": true
+      "name": "Split Out"
     },
     {
       "parameters": {
@@ -1081,8 +961,7 @@
         656
       ],
       "id": "ece3e7ea-4186-491e-9a75-0cd0ca29c6a3",
-      "name": "HTTP Request - Get Video",
-      "disabled": true
+      "name": "HTTP Request - Get Video"
     },
     {
       "parameters": {
@@ -1113,8 +992,7 @@
         656
       ],
       "id": "1ce0f53e-d575-464e-8b98-b7f346f977d9",
-      "name": "HTTP Request - Make Video1",
-      "disabled": true
+      "name": "HTTP Request - Make Video1"
     },
     {
       "parameters": {
@@ -1129,8 +1007,7 @@
       ],
       "id": "e4ad85f9-5b67-4724-8893-797331967abd",
       "name": "Wait 4m",
-      "webhookId": "7feaead4-5997-4d66-a596-78729fcf0ae5",
-      "disabled": true
+      "webhookId": "7feaead4-5997-4d66-a596-78729fcf0ae5"
     },
     {
       "parameters": {
@@ -1145,8 +1022,7 @@
       ],
       "typeVersion": 1,
       "id": "dc462a1f-53c2-4ea7-8c08-5db52c8977f2",
-      "name": "Sticky Note3",
-      "disabled": true
+      "name": "Sticky Note3"
     },
     {
       "parameters": {
@@ -1165,8 +1041,7 @@
           "id": "EiUQRi4x0N96lhYH",
           "name": "algonovalabs_YOUTUBE AUTOMATION RELATED"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -1185,8 +1060,7 @@
           "id": "Qn2KmHKfcYN7JBvq",
           "name": "Google Gemini(PaLM) Api account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -1224,8 +1098,7 @@
           "id": "Fnm7ZvrVLhKsF77T",
           "name": "YouTube account_AlgoNovaLabs"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -1257,8 +1130,7 @@
       ],
       "typeVersion": 1,
       "id": "16643a0c-15c9-4a8d-ae32-90a1f844b163",
-      "name": "Sticky Note8",
-      "disabled": true
+      "name": "Sticky Note8"
     },
     {
       "parameters": {
@@ -1274,8 +1146,7 @@
       ],
       "typeVersion": 1,
       "id": "8f5d8c7f-ba51-4638-9f3d-38ff9f8626dd",
-      "name": "Sticky Note9",
-      "disabled": true
+      "name": "Sticky Note9"
     },
     {
       "parameters": {
@@ -1291,8 +1162,7 @@
       ],
       "typeVersion": 1,
       "id": "b2f2fe0e-a99b-43e2-a2b3-0e1226060a0c",
-      "name": "Sticky Note10",
-      "disabled": true
+      "name": "Sticky Note10"
     },
     {
       "parameters": {
@@ -1307,8 +1177,7 @@
       ],
       "typeVersion": 1,
       "id": "40983990-abc7-4f95-b51d-3396e1245f59",
-      "name": "Sticky Note11",
-      "disabled": true
+      "name": "Sticky Note11"
     },
     {
       "parameters": {
@@ -1425,8 +1294,7 @@
           "id": "2KupETq4QLi8d9l8",
           "name": "Google Drive account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -1440,8 +1308,7 @@
         1232
       ],
       "id": "0c3301a0-b643-4adf-8912-0d5ad5a838ce",
-      "name": "HTTP Request2",
-      "disabled": true
+      "name": "HTTP Request2"
     },
     {
       "parameters": {
@@ -1465,26 +1332,28 @@
           "id": "k7m8mevEdyBrdj98",
           "name": "Telegram account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
         "resource": "video",
         "operation": "upload",
-        "title": "={{ $('Limit').item.json[\"YouTube Title\"] }}",
+        "title": "={{ $('Limit').first().json['EchoNova Youtube Title'] }}",
         "regionCode": "PH",
         "categoryId": "1",
         "binaryProperty": "=data",
         "options": {
-          "description": "={{ $('Limit').item.json[\"YouTube Description\"] }}"
+          "description": "={{ $('Limit').first().json['EchoNova YouTube Description'] }}",
+          "embeddable": true,
+          "selfDeclaredMadeForKids": false,
+          "tags": "anime shorts, cinematic anime, anime aesthetic, studio quality animation, demon slayer style, makoto shinkai, anime edit, atmospheric anime, viral anime shorts, anime vibes"
         }
       },
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        1056,
-        1616
+        1040,
+        1536
       ],
       "id": "d7400314-93a9-4a4a-920a-bbffea8f1737",
       "name": "Echonova Labs Upload",
@@ -1505,38 +1374,6 @@
       ],
       "id": "a7f16f64-e279-40e3-a826-f6fd658cff25",
       "name": "Wait for Both Files"
-    },
-    {
-      "parameters": {
-        "name": "={{ $now.format('yyyy-MM-dd_HHmmss') }}_money_forest.mp4",
-        "driveId": {
-          "__rl": true,
-          "mode": "list",
-          "value": "My Drive"
-        },
-        "folderId": {
-          "__rl": true,
-          "mode": "list",
-          "value": "root"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleDrive",
-      "typeVersion": 3,
-      "position": [
-        1056,
-        1472
-      ],
-      "id": "1f10fc44-e384-45b6-ae7c-3b37f282223f",
-      "name": "Upload Final Video",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "2KupETq4QLi8d9l8",
-          "name": "Google Drive account"
-        }
-      },
-      "disabled": true,
-      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -1612,7 +1449,7 @@
       "typeVersion": 3,
       "position": [
         128,
-        1568
+        1552
       ],
       "id": "4d70df47-cb6c-4701-b40f-55c0cdc94e2b",
       "name": "Download Music",
@@ -1625,34 +1462,10 @@
     },
     {
       "parameters": {
-        "chatId": "6472037679",
-        "text": "=[UPLOAD CONFIRMED]\nStatus: AUTOMATED PERFECTION\nThe EchoNova Engine never sleeps.",
-        "additionalFields": {
-          "appendAttribution": false
-        }
-      },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        1280,
-        1552
-      ],
-      "id": "1c45dafd-1551-461e-a008-94a7d91939c2",
-      "name": "Send a text message1",
-      "webhookId": "b5323e80-6737-4449-97e2-a9cc0302db37",
-      "credentials": {
-        "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
-          "name": "Telegram account"
-        }
-      },
-      "disabled": true
-    },
-    {
-      "parameters": {
         "content": "Youtube Post - EchoNova",
         "height": 304,
-        "width": 1488
+        "width": 1488,
+        "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1688,89 +1501,124 @@
       ],
       "id": "20ebf2ac-a9fc-4e69-bc8d-2f686195ac0a",
       "name": "Wait 60s",
-      "webhookId": "95ef2154-8111-46ff-9525-0f25ac8615ad",
+      "webhookId": "95ef2154-8111-46ff-9525-0f25ac8615ad"
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "=[UPLOAD CONFIRMED]\nStatus: AUTOMATED PERFECTION\nThe EchoNova Engine never sleeps.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1248,
+        1536
+      ],
+      "id": "1c45dafd-1551-461e-a008-94a7d91939c2",
+      "name": "EchoNova Confirmation",
+      "webhookId": "b5323e80-6737-4449-97e2-a9cc0302db37",
+      "credentials": {
+        "telegramApi": {
+          "id": "k7m8mevEdyBrdj98",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "text": "Determine if the image is a character or a product. It is only considered both if there are two completely separate images within the same image. If it is both, describe them separately. Describe the appearance details only.\n\nYour output should only include the description, nothing else.",
+        "imageUrls": "=https://api.telegram.org/file/bot{{ $('Edit Fields - Bot ID 1').item.json['bot id'] }}/{{ $json.result.file_path }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -3392,
+        320
+      ],
+      "id": "c3dfab28-dea2-4166-a53a-9cdd1a230c97",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vwg2FlhVu2bY7dZ6",
+          "name": "OpenAi account"
+        }
+      },
       "disabled": true
     },
     {
       "parameters": {
-        "operation": "download",
-        "fileId": {
-          "__rl": true,
-          "value": "https://drive.google.com/file/d/1Av52nB-wwUVLxXG2lv6_0PQYQHmL932b/view?usp=sharing",
-          "mode": "url"
-        },
+        "url": "=https://api.telegram.org/bot{{ $json['bot id'] }}/getFile?file_id={{ $('Telegram Trigger').item.json.message.photo[0].file_id }}",
         "options": {}
       },
-      "type": "n8n-nodes-base.googleDrive",
-      "typeVersion": 3,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        -688,
-        336
+        -3568,
+        320
       ],
-      "id": "63a2b362-20f3-4474-af23-e58c236a9777",
-      "name": "Download Video1",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "2KupETq4QLi8d9l8",
-          "name": "Google Drive account"
-        }
-      }
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -880,
-        240
-      ],
-      "id": "cdd50257-e002-4d2b-8dda-5c661d1aecf2",
-      "name": "When clicking ‘Execute workflow’"
+      "id": "5d7a8904-78c7-4a44-a97d-91fd814609c9",
+      "name": "HTTP Request - Image Path",
+      "disabled": true
     },
     {
       "parameters": {
-        "resource": "video",
-        "operation": "analyze",
-        "modelId": {
-          "__rl": true,
-          "value": "models/gemini-2.5-flash",
-          "mode": "list",
-          "cachedResultName": "models/gemini-2.5-flash"
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9e02677a-b4c5-4e21-b97e-6536d336181b",
+              "name": "bot id",
+              "value": "8351768336:AAF9RLjBvcUpcYeO_bnIGDGodALvUFCPy3s",
+              "type": "string"
+            }
+          ]
         },
-        "inputType": "binary",
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.googleGemini",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
       "position": [
-        -480,
-        400
+        -3760,
+        320
       ],
-      "id": "9edaee5a-bed5-403a-8524-5bbab9c3c304",
-      "name": "Analyze video1",
-      "retryOnFail": true,
-      "maxTries": 5,
-      "waitBetweenTries": 3000,
-      "credentials": {
-        "googlePalmApi": {
-          "id": "Qn2KmHKfcYN7JBvq",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
+      "id": "5935c48d-d90c-44b0-8aea-1f52a004d6db",
+      "name": "Edit Fields - Bot ID 1",
+      "disabled": true
     },
     {
       "parameters": {
-        "language": "python",
-        "pythonCode": "from datetime import datetime\nimport random\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n# Define some dynamic hooks and actions\nhook_phrases = [\n    \"When {character} {action}!\",\n    \"You won't believe what {character} does!\",\n    \"Watch {character} {action} in pastel magic!\",\n    \"I can't believe {character} just {action}!\",\n    \"{character} {action} and it's adorable!\"\n]\nactions = [\n    \"dances in the candy clouds\",\n    \"discovers a rainbow waterfall\",\n    \"giggles while floating on lanterns\",\n    \"throws a sparkly magic spell\",\n    \"plays hide-and-seek in the pastel garden\",\n    \"slides down a fluffy cloud slide\",\n    \"spins under the twinkling stars\",\n    \"sings with magical sparkles around\",\n    \"jumps between floating petals\"\n]\n# Example character (you can replace with your generated character)\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\naction = random.choice(actions)\ntitle = random.choice(hook_phrases).format(character=character, action=action)\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, FOMO-style, MUST be under 90 characters)\n- \"YouTubeTitle2\" (DIFFERENT catchy title, under 90 characters, use a different hook/angle than YouTubeTitle)\n- \"YouTubeDescription\" (engaging, includes CTA like 'watch till the end' or 'subscribe for more')\n- \"YouTubeDescription2\" (DIFFERENT description with different CTA and angle than YouTubeDescription)\n- \"TikTokDescription\" (short, punchy, instant hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, engaging)\n- \"InstagramDescription\" (short, emoji-rich, interaction-focused)\n- \"AdditionalNotes\" (hashtags, trends, posting tips)\nSTRICT RULES:\n1. Both \"YouTubeTitle\" and \"YouTubeTitle2\" MUST NOT exceed 90 characters.\n2. YouTubeTitle and YouTubeTitle2 MUST be COMPLETELY DIFFERENT - use different hooks, emotions, or angles.\n3. YouTubeDescription and YouTubeDescription2 MUST be COMPLETELY DIFFERENT - vary the CTAs and storytelling.\n4. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n5. The output MUST be valid JSON, properly escaped.\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\nCRITICAL: YouTubeTitle and YouTubeTitle2 must be DISTINCT. YouTubeDescription and YouTubeDescription2 must be DISTINCT. Do NOT repeat the same content.\nGenerate irresistible, high-CTR titles and descriptions that make viewers feel they CAN'T miss the video.\n\"\"\"\nreturn {\n    \"chatInput\": Prompt\n}"
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
       },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
       "position": [
-        -320,
-        464
+        -3968,
+        320
       ],
-      "id": "48ee806a-0063-48c3-8a08-20e69eaff313",
-      "name": "Code in Python (Beta)5"
+      "id": "43ac5837-6736-4bae-a773-1d30fb3a194d",
+      "name": "Telegram Trigger",
+      "webhookId": "5fc2b001-9a7c-4b01-9bb1-2dee51478ad9",
+      "credentials": {
+        "telegramApi": {
+          "id": "k7m8mevEdyBrdj98",
+          "name": "Telegram account"
+        }
+      },
+      "disabled": true
     }
   ],
   "connections": {
@@ -2194,39 +2042,6 @@
         ]
       ]
     },
-    "Telegram Trigger": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields - Bot ID 1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields - Bot ID 1": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request - Image Path",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request - Image Path": {
-      "main": [
-        [
-          {
-            "node": "Analyze image",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Split Out": {
       "main": [
         [
@@ -2355,7 +2170,7 @@
       "main": [
         [
           {
-            "node": "Send a text message1",
+            "node": "EchoNova Confirmation",
             "type": "main",
             "index": 0
           }
@@ -2373,19 +2188,9 @@
         ]
       ]
     },
-    "Upload Final Video": {
-      "main": [
-        []
-      ]
-    },
     "HTTP Request3": {
       "main": [
         [
-          {
-            "node": "Upload Final Video",
-            "type": "main",
-            "index": 0
-          },
           {
             "node": "Echonova Labs Upload",
             "type": "main",
@@ -2438,49 +2243,33 @@
         ]
       ]
     },
-    "Download Video1": {
+    "HTTP Request - Image Path": {
       "main": [
         [
           {
-            "node": "Upload file",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Analyze video1",
+            "node": "Analyze image",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "When clicking ‘Execute workflow’": {
+    "Edit Fields - Bot ID 1": {
       "main": [
         [
           {
-            "node": "Download Video1",
+            "node": "HTTP Request - Image Path",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Analyze video1": {
+    "Telegram Trigger": {
       "main": [
         [
           {
-            "node": "Code in Python (Beta)5",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in Python (Beta)5": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
+            "node": "Edit Fields - Bot ID 1",
             "type": "main",
             "index": 0
           }
