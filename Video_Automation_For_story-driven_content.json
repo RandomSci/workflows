@@ -427,14 +427,14 @@
     {
       "parameters": {
         "content": "## Upload Videos",
-        "height": 304,
+        "height": 656,
         "width": 2272,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -704,
-        1136
+        -720,
+        1120
       ],
       "typeVersion": 1,
       "id": "1b09fac0-e299-47be-9c03-fe0073321548",
@@ -448,8 +448,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -272,
-        1232
+        -336,
+        1360
       ],
       "id": "61bbc758-c809-489c-a4b9-d6b46e553d7b",
       "name": "HTTP Request1"
@@ -473,8 +473,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        144,
-        1232
+        80,
+        1216
       ],
       "id": "e6f7c428-fea1-4fc4-8516-b1105a26610d",
       "name": "Upload a video",
@@ -678,8 +678,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -624,
-        1232
+        -640,
+        1360
       ],
       "id": "58a1d70a-7017-4d0c-b630-7b783066b10a",
       "name": "Get row(s) in sheet",
@@ -697,8 +697,8 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        -464,
-        1232
+        -496,
+        1360
       ],
       "id": "9e474a19-4d97-48e4-9b94-012f729b7f44",
       "name": "Limit"
@@ -710,8 +710,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -64,
-        1232
+        -160,
+        1360
       ],
       "id": "f8a7dec5-535b-4928-a31b-b84241eae9ff",
       "name": "Wait",
@@ -1088,8 +1088,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        272,
-        1232
+        224,
+        1216
       ],
       "id": "ad6152f4-5675-429c-902e-048c0ef69b4a",
       "name": "Add a playlist item",
@@ -1125,8 +1125,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        880,
-        1168
+        848,
+        1152
       ],
       "typeVersion": 1,
       "id": "16643a0c-15c9-4a8d-ae32-90a1f844b163",
@@ -1141,8 +1141,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        80,
-        1168
+        48,
+        1152
       ],
       "typeVersion": 1,
       "id": "8f5d8c7f-ba51-4638-9f3d-38ff9f8626dd",
@@ -1157,8 +1157,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        592,
-        1168
+        560,
+        1152
       ],
       "typeVersion": 1,
       "id": "b2f2fe0e-a99b-43e2-a2b3-0e1226060a0c",
@@ -1172,8 +1172,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1184,
-        1168
+        1152,
+        1152
       ],
       "typeVersion": 1,
       "id": "40983990-abc7-4f95-b51d-3396e1245f59",
@@ -1201,8 +1201,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        1200,
-        1232
+        1216,
+        1216
       ],
       "id": "a2c3482c-677b-419e-be81-2ecacaf1a668",
       "name": "Instagram Post",
@@ -1237,8 +1237,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        912,
-        1232
+        928,
+        1216
       ],
       "id": "b1da6789-4054-49cb-83a2-2b9b203574da",
       "name": "Facebook Post",
@@ -1260,7 +1260,7 @@
       "typeVersion": 4.2,
       "position": [
         640,
-        1232
+        1216
       ],
       "id": "81c4bfeb-e0e5-4638-879a-88cd9612b31c",
       "name": "Tiktok Post",
@@ -1321,8 +1321,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        416,
-        1232
+        384,
+        1216
       ],
       "id": "61b34093-f5db-474c-9495-ea00cf2a98e7",
       "name": "Send a text message",
@@ -1352,8 +1352,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        1040,
-        1536
+        960,
+        1520
       ],
       "id": "d7400314-93a9-4a4a-920a-bbffea8f1737",
       "name": "Echonova Labs Upload",
@@ -1369,8 +1369,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        304,
-        1536
+        256,
+        1520
       ],
       "id": "a7f16f64-e279-40e3-a826-f6fd658cff25",
       "name": "Wait for Both Files"
@@ -1414,8 +1414,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        832,
-        1536
+        784,
+        1520
       ],
       "id": "a9f9ea3d-3286-4ab4-b600-42b760c84474",
       "name": "HTTP Request3"
@@ -1427,8 +1427,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        656,
-        1536
+        608,
+        1520
       ],
       "id": "dcc969eb-3cae-44bb-a300-ba3926f7a8b8",
       "name": "Wait1",
@@ -1448,8 +1448,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        128,
-        1552
+        80,
+        1520
       ],
       "id": "4d70df47-cb6c-4701-b40f-55c0cdc94e2b",
       "name": "Download Music",
@@ -1464,13 +1464,13 @@
       "parameters": {
         "content": "Youtube Post - EchoNova",
         "height": 304,
-        "width": 1488,
+        "width": 1424,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        80,
-        1456
+        48,
+        1440
       ],
       "typeVersion": 1,
       "id": "fa5a45fc-5fad-4d1a-97a0-5a547fa5356d",
@@ -1483,8 +1483,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        480,
-        1536
+        432,
+        1520
       ],
       "id": "e6a61816-fb78-4652-aeea-73d8b0a6f983",
       "name": "Combine Files"
@@ -1514,8 +1514,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1248,
-        1536
+        1328,
+        1520
       ],
       "id": "1c45dafd-1551-461e-a008-94a7d91939c2",
       "name": "EchoNova Confirmation",
@@ -1619,6 +1619,28 @@
         }
       },
       "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "playlistItem",
+        "playlistId": "PL3S1q3_3y1Qsv-JtGJakVKjP7OiTeYKH3",
+        "videoId": "={{ $json.uploadId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        1520
+      ],
+      "id": "5584b581-c7b6-40ff-826f-0000fbec7308",
+      "name": "Echonova Labs playlist",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "lP6X79rHDtk0jfT5",
+          "name": "Youtube_Account_EchoNovaLabs"
+        }
+      }
     }
   ],
   "connections": {
@@ -2170,7 +2192,7 @@
       "main": [
         [
           {
-            "node": "EchoNova Confirmation",
+            "node": "Echonova Labs playlist",
             "type": "main",
             "index": 0
           }
@@ -2270,6 +2292,17 @@
         [
           {
             "node": "Edit Fields - Bot ID 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Echonova Labs playlist": {
+      "main": [
+        [
+          {
+            "node": "EchoNova Confirmation",
             "type": "main",
             "index": 0
           }
