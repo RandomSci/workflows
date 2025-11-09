@@ -897,8 +897,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -1904,
-        880
+        -1936,
+        848
       ],
       "id": "91aaaff4-ed6f-4ccb-be5d-07e32817edc7",
       "name": "Structured Output Parser"
@@ -1031,8 +1031,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -2544,
-        992
+        -3616,
+        1024
       ],
       "id": "d0448ae1-7664-459a-98cf-464c4a8b36ac",
       "name": "Google Gemini Chat Model1",
@@ -1051,7 +1051,7 @@
       "typeVersion": 1,
       "position": [
         -2096,
-        816
+        864
       ],
       "id": "834d4562-7a34-4638-b26b-ec7264e25d62",
       "name": "Google Gemini Chat Model2",
@@ -1134,7 +1134,7 @@
     },
     {
       "parameters": {
-        "content": "Youtube Post - AlgoNova",
+        "content": "Youtube Post - AlgoNova [Link](https://www.youtube.com/@algonovalabs)",
         "height": 240,
         "width": 470,
         "color": 3
@@ -1462,7 +1462,7 @@
     },
     {
       "parameters": {
-        "content": "Youtube Post - EchoNova",
+        "content": "Youtube Post - EchoNova [Link](https://www.youtube.com/@EchoNovaLabs)",
         "height": 304,
         "width": 1424,
         "color": 5
@@ -2120,11 +2120,6 @@
             "node": "AI Agent - Image Prompt",
             "type": "ai_languageModel",
             "index": 0
-          },
-          {
-            "node": "Structured Output Parser",
-            "type": "ai_languageModel",
-            "index": 0
           }
         ]
       ]
@@ -2134,6 +2129,11 @@
         [
           {
             "node": "AI Agent - Video Prompter",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
             "type": "ai_languageModel",
             "index": 0
           }
