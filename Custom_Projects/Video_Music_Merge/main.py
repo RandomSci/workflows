@@ -28,21 +28,36 @@ async def combine_video_audio(
         audio_path = temp_dir / "background_music.mp3"
         output_path = temp_dir / "output_video.mp4"
         
+        video_content = await video.read()
+        audio_content = await audio.read()
+        
+        print(f"✅ Video size: {len(video_content)} bytes")
+        print(f"✅ Audio size: {len(audio_content)} bytes")
+        
         with open(video_path, "wb") as f:
-            f.write(await video.read())
+            f.write(video_content)
         
         with open(audio_path, "wb") as f:
-            f.write(await audio.read())
+            f.write(audio_content)
         
+        print(f"✅ Files saved to {temp_dir}")
+        
+        print("🔍 Getting video duration...")
         duration_cmd = [
             "ffprobe", "-v", "error",
             "-show_entries", "format=duration",
             "-of", "default=noprint_wrappers=1:nokey=1",
             str(video_path)
         ]
-        duration = float(subprocess.check_output(duration_cmd).decode().strip())
+        duration_output = subprocess.check_output(duration_cmd).decode().strip()
+        print(f"📹 Video duration: {duration_output} seconds")
+        
+        duration = float(duration_output)
         fade_start = max(0, duration - fade_duration)
         
+        print(f"🎬 Fade will start at: {fade_start} seconds")
+        
+        print("⚙️ Starting FFmpeg processing...")
         ffmpeg_cmd = [
             "ffmpeg", "-i", str(video_path), "-i", str(audio_path),
             "-filter_complex",
@@ -57,7 +72,20 @@ async def combine_video_audio(
             str(output_path)
         ]
         
-        subprocess.run(ffmpeg_cmd, check=True, capture_output=True)
+        result = subprocess.run(ffmpeg_cmd, capture_output=True, text=True)
+        
+        if result.returncode != 0:
+            print(f"❌ FFmpeg error: {result.stderr}")
+            return {"error": f"FFmpeg failed: {result.stderr}"}
+        
+        print("✅ FFmpeg processing complete!")
+        
+        if output_path.exists():
+            output_size = output_path.stat().st_size
+            print(f"✅ Output file size: {output_size} bytes")
+        else:
+            print("❌ Output file not created!")
+            return {"error": "Output file was not created"}
         
         return FileResponse(
             output_path,
@@ -67,9 +95,11 @@ async def combine_video_audio(
         )
     
     except subprocess.CalledProcessError as e:
+        print(f"❌ Subprocess error: {e.stderr}")
         shutil.rmtree(temp_dir, ignore_errors=True)
-        return {"error": f"FFmpeg error: {e.stderr.decode()}"}
+        return {"error": f"FFmpeg error: {e.stderr}"}
     except Exception as e:
+        print(f"❌ General error: {str(e)}")
         shutil.rmtree(temp_dir, ignore_errors=True)
         return {"error": str(e)}
 
