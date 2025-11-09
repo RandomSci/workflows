@@ -213,7 +213,6 @@
           "name": "Telegram account"
         }
       },
-      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -339,7 +338,7 @@
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "from datetime import datetime\nimport random\n\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\n# Define some dynamic hooks and actions\nhook_phrases = [\n    \"When {character} {action}!\",\n    \"You won’t believe what {character} does!\",\n    \"Watch {character} {action} in pastel magic!\",\n    \"I can’t believe {character} just {action}!\",\n    \"{character} {action} and it’s adorable!\"\n]\n\nactions = [\n    \"dances in the candy clouds\",\n    \"discovers a rainbow waterfall\",\n    \"giggles while floating on lanterns\",\n    \"throws a sparkly magic spell\",\n    \"plays hide-and-seek in the pastel garden\",\n    \"slides down a fluffy cloud slide\",\n    \"spins under the twinkling stars\",\n    \"sings with magical sparkles around\",\n    \"jumps between floating petals\"\n]\n\n# Example character (you can replace with your generated character)\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\n\naction = random.choice(actions)\ntitle = random.choice(hook_phrases).format(character=character, action=action)\n\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\n\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, FOMO-style, MUST be under 90 characters)\n- \"YouTubeDescription\" (engaging, includes CTA like 'watch till the end' or 'subscribe for more')\n- \"TikTokDescription\" (short, punchy, instant hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, engaging)\n- \"InstagramDescription\" (short, emoji-rich, interaction-focused)\n- \"AdditionalNotes\" (hashtags, trends, posting tips)\n\nSTRICT RULES:\n1. The \"YouTubeTitle\" MUST NOT exceed 90 characters.\n2. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n3. The output MUST be valid JSON, properly escaped.\n\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeDescription\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\n\nGenerate irresistible, high-CTR titles and descriptions that make viewers feel they CAN’T miss the video.\n\"\"\"\n\nreturn {\n    \"chatInput\": Prompt\n}"
+        "pythonCode": "from datetime import datetime\nimport random\n\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\n# Define some dynamic hooks and actions\nhook_phrases = [\n    \"When {character} {action}!\",\n    \"You won’t believe what {character} does!\",\n    \"Watch {character} {action} in pastel magic!\",\n    \"I can’t believe {character} just {action}!\",\n    \"{character} {action} and it’s adorable!\"\n]\n\nactions = [\n    \"dances in the candy clouds\",\n    \"discovers a rainbow waterfall\",\n    \"giggles while floating on lanterns\",\n    \"throws a sparkly magic spell\",\n    \"plays hide-and-seek in the pastel garden\",\n    \"slides down a fluffy cloud slide\",\n    \"spins under the twinkling stars\",\n    \"sings with magical sparkles around\",\n    \"jumps between floating petals\"\n]\n\n# Example character (you can replace with your generated character)\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\n\naction = random.choice(actions)\ntitle = random.choice(hook_phrases).format(character=character, action=action)\n\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\n\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, FOMO-style, MUST be under 90 characters)\n- \"YouTubeDescription\" (engaging, includes CTA like 'watch till the end' or 'subscribe for more')\n- \"TikTokDescription\" (short, punchy, instant hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, engaging)\n- \"InstagramDescription\" (short, emoji-rich, interaction-focused)\n- \"AdditionalNotes\" (hashtags, trends, posting tips)\n\nSTRICT RULES:\n1. The \"YouTubeTitle\" MUST NOT exceed 90 characters.\n2. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n3. The output MUST be valid JSON, properly escaped.\n\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",,\n  \"YoutubeTitleForEchoNova\",\n  \"YouTubeDescriptionForEchoNova\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\nMake sure that the Youtube titles and and descriptions should not be the same.\n\nGenerate irresistible, high-CTR titles and descriptions that make viewers feel they CAN’T miss the video.\n\"\"\"\n\nreturn {\n    \"chatInput\": Prompt\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -497,8 +496,7 @@
           "id": "Fnm7ZvrVLhKsF77T",
           "name": "YouTube account_AlgoNovaLabs"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -1181,8 +1179,7 @@
           "id": "Fnm7ZvrVLhKsF77T",
           "name": "YouTube account_AlgoNovaLabs"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -1219,7 +1216,7 @@
     },
     {
       "parameters": {
-        "content": "Youtube Post",
+        "content": "Youtube Post - AlgoNova",
         "height": 240,
         "width": 470,
         "color": 3
@@ -1300,7 +1297,6 @@
           "name": "Facebook Graph account"
         }
       },
-      "disabled": true,
       "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
     },
     {
@@ -1336,7 +1332,6 @@
           "name": "Facebook Graph account"
         }
       },
-      "disabled": true,
       "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
     },
     {
@@ -1351,8 +1346,7 @@
         1232
       ],
       "id": "81c4bfeb-e0e5-4638-879a-88cd9612b31c",
-      "name": "Tiktok Post",
-      "disabled": true
+      "name": "Tiktok Post"
     },
     {
       "parameters": {
@@ -1420,23 +1414,25 @@
           "id": "k7m8mevEdyBrdj98",
           "name": "Telegram account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
         "resource": "video",
         "operation": "upload",
-        "title": "sampe1",
+        "title": "={{ $('Limit').item.json[\"YouTube Title\"] }}",
         "regionCode": "PH",
         "categoryId": "1",
-        "options": {}
+        "binaryProperty": "=data",
+        "options": {
+          "description": "={{ $('Limit').item.json[\"YouTube Description\"] }}"
+        }
       },
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        1408,
-        1696
+        1056,
+        1616
       ],
       "id": "d7400314-93a9-4a4a-920a-bbffea8f1737",
       "name": "Echonova Labs Upload",
@@ -1445,15 +1441,16 @@
           "id": "lP6X79rHDtk0jfT5",
           "name": "Youtube_Account_EchoNovaLabs"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {},
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        320,
-        1696
+        304,
+        1536
       ],
       "id": "a7f16f64-e279-40e3-a826-f6fd658cff25",
       "name": "Wait for Both Files"
@@ -1476,8 +1473,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        1216,
-        1696
+        1056,
+        1472
       ],
       "id": "1f10fc44-e384-45b6-ae7c-3b37f282223f",
       "name": "Upload Final Video",
@@ -1486,20 +1483,9 @@
           "id": "2KupETq4QLi8d9l8",
           "name": "Google Drive account"
         }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "// Get items from both inputs\nconst input1 = $('HTTP Request1').first();\nconst input2 = $('Download Music').first();\n\nconsole.log('Video binary exists:', !!input1.binary);\nconsole.log('Audio binary exists:', !!input2.binary);\n\nreturn [\n  {\n    json: {},\n    binary: {\n      video: input1.binary.data,\n      audio: input2.binary.data\n    }\n  }\n];"
       },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        544,
-        1696
-      ],
-      "id": "e6a61816-fb78-4652-aeea-73d8b0a6f983",
-      "name": "Combine Files"
+      "disabled": true,
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -1540,8 +1526,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        992,
-        1696
+        832,
+        1536
       ],
       "id": "a9f9ea3d-3286-4ab4-b600-42b760c84474",
       "name": "HTTP Request3"
@@ -1553,8 +1539,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        768,
-        1696
+        656,
+        1536
       ],
       "id": "dcc969eb-3cae-44bb-a300-ba3926f7a8b8",
       "name": "Wait1",
@@ -1574,8 +1560,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        96,
-        1744
+        128,
+        1568
       ],
       "id": "4d70df47-cb6c-4701-b40f-55c0cdc94e2b",
       "name": "Download Music",
@@ -1597,8 +1583,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1600,
-        1696
+        1280,
+        1552
       ],
       "id": "1c45dafd-1551-461e-a008-94a7d91939c2",
       "name": "Send a text message1",
@@ -1608,7 +1594,36 @@
           "id": "k7m8mevEdyBrdj98",
           "name": "Telegram account"
         }
-      }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "Youtube Post - EchoNova",
+        "height": 304,
+        "width": 1488
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        80,
+        1456
+      ],
+      "typeVersion": 1,
+      "id": "fa5a45fc-5fad-4d1a-97a0-5a547fa5356d",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get items from both inputs\nconst input1 = $('HTTP Request1').first();\nconst input2 = $('Download Music').first();\n\nconsole.log('Video binary exists:', !!input1.binary);\nconsole.log('Audio binary exists:', !!input2.binary);\n\nreturn [\n  {\n    json: {},\n    binary: {\n      video: input1.binary.data,\n      audio: input2.binary.data\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        1536
+      ],
+      "id": "e6a61816-fb78-4652-aeea-73d8b0a6f983",
+      "name": "Combine Files"
     }
   ],
   "connections": {
@@ -2224,24 +2239,7 @@
     },
     "Upload Final Video": {
       "main": [
-        [
-          {
-            "node": "Echonova Labs Upload",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Combine Files": {
-      "main": [
-        [
-          {
-            "node": "Wait1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "HTTP Request3": {
@@ -2249,6 +2247,11 @@
         [
           {
             "node": "Upload Final Video",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Echonova Labs Upload",
             "type": "main",
             "index": 0
           }
@@ -2276,437 +2279,20 @@
           }
         ]
       ]
+    },
+    "Combine Files": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "pinData": {
-    "AI Agent - Video Prompter": [
-      {
-        "output": {
-          "scenes": {
-            "scene1": "A cute animated style, 3D Pixar animation, kawaii aesthetic, Disney inspired cartoon character, Starlight Girl, with vibrant purple bob cut hair and straight bangs adorned with a soft pink flower accessory. She has big expressive sparkling blue anime eyes and a heartwarming animated expression of pure joy. She wears a pastel purple top and a pink and lavender skirt decorated with whimsical candy shapes. Starlight Girl gently twirls in place, holding a large glowing yellow lollipop, with magical sparkles bursting from her hands and trailing behind her. The background is a soft pastel magical Candy Land environment during a dreamy autumn sunset, filled with oversized pink and red swirled lollipops and soft pastel bushes, with floating iridescent magical particles in the air. A gentle push in or slight orbit around Starlight Girl, who fills 70% of the frame. She speaks aloud, \"Sending you a little sprinkle of happiness!\" Animated movie quality, soft lighting highlighting her cuteness. Duration: 5-6 seconds.",
-            "scene2": "A cute animated style, 3D Pixar animation, kawaii aesthetic, Disney inspired magical Candy Land environment, without any character present. The scene reveals an enchanting part of the world during a soft autumn sunset, consistent with Scene 1's pastel color palette. Oversized, glowing pastel candy structures, such as a towering pink swirled lollipop and a shimmering lavender gumdrop hill, pulse gently with internal light. Delicate, glowing candy hearts float serenely through the air. Tiny, friendly, whimsical sugar sprites with translucent wings flutter playfully around a patch of sparkling, iridescent pastel flowers that bloom and unbloom in a gentle magical rhythm. Magical sparkles and golden dust fall gracefully through the air. A gentle pan across the details, showcasing the vibrant magical elements. Immersive sound design with soft twinkling bells, gentle harp glissandos, and a delicate \"ping\" sound as the candy hearts float by, creating a dreamy atmosphere. Narration: \"The sweet magic of Candy Land whispers tales of joy.\" Animated movie quality, dreamy atmosphere. Duration: 5-6 seconds."
-          }
-        }
-      }
-    ],
-    "Upload file": [
-      {
-        "kind": "drive#file",
-        "id": "1KSvlY1Vj7-2yFIuLtGGHAFFTXAmD6WjP",
-        "name": "Nov Nov 9, 2025, YYYY_18-15-04 UTC+8",
-        "mimeType": "video/mp4",
-        "starred": false,
-        "trashed": false,
-        "explicitlyTrashed": false,
-        "parents": [
-          "1Me5CXQY2k86PXbeZtYsZ5vGoBD8b6v_S"
-        ],
-        "spaces": [
-          "drive"
-        ],
-        "version": "3",
-        "webContentLink": "https://drive.google.com/uc?id=1KSvlY1Vj7-2yFIuLtGGHAFFTXAmD6WjP&export=download",
-        "webViewLink": "https://drive.google.com/file/d/1KSvlY1Vj7-2yFIuLtGGHAFFTXAmD6WjP/view?usp=drivesdk",
-        "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/video/mp4",
-        "hasThumbnail": false,
-        "thumbnailVersion": "0",
-        "viewedByMe": false,
-        "createdTime": "2025-11-09T15:15:09.147Z",
-        "modifiedTime": "2025-11-09T15:15:09.968Z",
-        "modifiedByMeTime": "2025-11-09T15:15:09.968Z",
-        "modifiedByMe": true,
-        "owners": [
-          {
-            "kind": "drive#user",
-            "displayName": "Selwyn Jayme",
-            "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocJTDdTyP1L4kGJz8uftPoSAfhcPQVuJDcGJH0HzuEG8mfRMOdG-=s64",
-            "me": true,
-            "permissionId": "08411627689155439676",
-            "emailAddress": "jaymeselwyn@gmail.com"
-          }
-        ],
-        "lastModifyingUser": {
-          "kind": "drive#user",
-          "displayName": "Selwyn Jayme",
-          "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocJTDdTyP1L4kGJz8uftPoSAfhcPQVuJDcGJH0HzuEG8mfRMOdG-=s64",
-          "me": true,
-          "permissionId": "08411627689155439676",
-          "emailAddress": "jaymeselwyn@gmail.com"
-        },
-        "shared": true,
-        "ownedByMe": true,
-        "downloadRestrictions": {
-          "itemDownloadRestriction": {
-            "restrictedForReaders": false,
-            "restrictedForWriters": false
-          },
-          "effectiveDownloadRestrictionWithContext": {
-            "restrictedForReaders": false,
-            "restrictedForWriters": false
-          }
-        },
-        "capabilities": {
-          "canAcceptOwnership": false,
-          "canAddChildren": false,
-          "canAddMyDriveParent": false,
-          "canChangeCopyRequiresWriterPermission": true,
-          "canChangeItemDownloadRestriction": true,
-          "canChangeSecurityUpdateEnabled": false,
-          "canChangeViewersCanCopyContent": true,
-          "canComment": true,
-          "canCopy": true,
-          "canDelete": true,
-          "canDisableInheritedPermissions": false,
-          "canDownload": true,
-          "canEdit": true,
-          "canEnableInheritedPermissions": true,
-          "canListChildren": false,
-          "canModifyContent": true,
-          "canModifyContentRestriction": true,
-          "canModifyEditorContentRestriction": true,
-          "canModifyOwnerContentRestriction": true,
-          "canModifyLabels": false,
-          "canMoveChildrenWithinDrive": false,
-          "canMoveItemIntoTeamDrive": true,
-          "canMoveItemOutOfDrive": true,
-          "canMoveItemWithinDrive": true,
-          "canReadLabels": false,
-          "canReadRevisions": true,
-          "canRemoveChildren": false,
-          "canRemoveContentRestriction": false,
-          "canRemoveMyDriveParent": true,
-          "canRename": true,
-          "canShare": true,
-          "canTrash": true,
-          "canUntrash": true
-        },
-        "viewersCanCopyContent": true,
-        "copyRequiresWriterPermission": false,
-        "writersCanShare": true,
-        "permissions": [
-          {
-            "kind": "drive#permission",
-            "id": "anyoneWithLink",
-            "type": "anyone",
-            "role": "writer",
-            "allowFileDiscovery": false
-          },
-          {
-            "kind": "drive#permission",
-            "id": "08411627689155439676",
-            "type": "user",
-            "emailAddress": "jaymeselwyn@gmail.com",
-            "role": "owner",
-            "displayName": "jaymeselwyn",
-            "deleted": false,
-            "pendingOwner": false
-          }
-        ],
-        "permissionIds": [
-          "anyoneWithLink",
-          "08411627689155439676"
-        ],
-        "originalFilename": "Nov Nov 9, 2025, YYYY_18-15-04 UTC+8",
-        "fullFileExtension": "",
-        "fileExtension": "",
-        "md5Checksum": "bfcb6deb26ac3e64b60a595d3cc593af",
-        "sha1Checksum": "c595fcba8dc1a6f8b2d7431fe34302da15fcb83a",
-        "sha256Checksum": "4966f89fb16932ea6f1f102e3a29bd3695882deb19b9f76a670290844a173b49",
-        "size": "7177968",
-        "quotaBytesUsed": "7177968",
-        "headRevisionId": "0By20JVVzLuB_VUhNN0NMNi8zTy9jaXlUQ2FETmZJc1JHMEN3PQ",
-        "isAppAuthorized": true,
-        "linkShareMetadata": {
-          "securityUpdateEligible": false,
-          "securityUpdateEnabled": true
-        },
-        "inheritedPermissionsDisabled": false
-      }
-    ],
-    "HTTP Request": [
-      {
-        "ok": true,
-        "result": {
-          "message_id": 356,
-          "from": {
-            "id": 8351768336,
-            "is_bot": true,
-            "first_name": "AI Agent",
-            "username": "zkllmt_bot"
-          },
-          "chat": {
-            "id": 6472037679,
-            "first_name": "Selwyn",
-            "last_name": "Jayme",
-            "type": "private"
-          },
-          "date": 1762701301,
-          "video": {
-            "duration": 17,
-            "width": 720,
-            "height": 1280,
-            "file_name": "Z0ASHy85PgDr2Dk1UI_qk_merged_video.mp4",
-            "mime_type": "video/mp4",
-            "thumbnail": {
-              "file_id": "AAMCBAADGQMAAgFkaRCv9eNaclaYyGwJzUDOug2uaToAApIJAALeyI1QIN7BAQuyWMoBAAdtAAM2BA",
-              "file_unique_id": "AQADkgkAAt7IjVBy",
-              "file_size": 16488,
-              "width": 180,
-              "height": 320
-            },
-            "thumb": {
-              "file_id": "AAMCBAADGQMAAgFkaRCv9eNaclaYyGwJzUDOug2uaToAApIJAALeyI1QIN7BAQuyWMoBAAdtAAM2BA",
-              "file_unique_id": "AQADkgkAAt7IjVBy",
-              "file_size": 16488,
-              "width": 180,
-              "height": 320
-            },
-            "file_id": "BAACAgQAAxkDAAIBZGkQr_XjWnJWmMhsCc1AzroNrmk6AAKSCQAC3siNUCDewQELsljKNgQ",
-            "file_unique_id": "AgADkgkAAt7IjVA",
-            "file_size": 7177968
-          }
-        }
-      }
-    ],
-    "Split Out": [
-      {
-        "output.scenes": "A cute animated style, 3D Pixar animation, kawaii aesthetic, Disney inspired cartoon character, Starlight Girl, with vibrant purple bob cut hair and straight bangs adorned with a soft pink flower accessory. She has big expressive sparkling blue anime eyes and a heartwarming animated expression of pure joy. She wears a pastel purple top and a pink and lavender skirt decorated with whimsical candy shapes. Starlight Girl gently twirls in place, holding a large glowing yellow lollipop, with magical sparkles bursting from her hands and trailing behind her. The background is a soft pastel magical Candy Land environment during a dreamy autumn sunset, filled with oversized pink and red swirled lollipops and soft pastel bushes, with floating iridescent magical particles in the air. A gentle push in or slight orbit around Starlight Girl, who fills 70% of the frame. She speaks aloud, \"Sending you a little sprinkle of happiness!\" Animated movie quality, soft lighting highlighting her cuteness. Duration: 5-6 seconds."
-      },
-      {
-        "output.scenes": "A cute animated style, 3D Pixar animation, kawaii aesthetic, Disney inspired magical Candy Land environment, without any character present. The scene reveals an enchanting part of the world during a soft autumn sunset, consistent with Scene 1's pastel color palette. Oversized, glowing pastel candy structures, such as a towering pink swirled lollipop and a shimmering lavender gumdrop hill, pulse gently with internal light. Delicate, glowing candy hearts float serenely through the air. Tiny, friendly, whimsical sugar sprites with translucent wings flutter playfully around a patch of sparkling, iridescent pastel flowers that bloom and unbloom in a gentle magical rhythm. Magical sparkles and golden dust fall gracefully through the air. A gentle pan across the details, showcasing the vibrant magical elements. Immersive sound design with soft twinkling bells, gentle harp glissandos, and a delicate \"ping\" sound as the candy hearts float by, creating a dreamy atmosphere. Narration: \"The sweet magic of Candy Land whispers tales of joy.\" Animated movie quality, dreamy atmosphere. Duration: 5-6 seconds."
-      }
-    ],
-    "HTTP Request - Get Video": [
-      {
-        "code": 200,
-        "msg": "success",
-        "data": {
-          "taskId": "6fcc723b8f687bc13e2d4f2469155013",
-          "paramJson": "{\"aspectRatio\":\"9:16\",\"enableFallback\":false,\"enableTranslation\":true,\"model\":\"veo3_fast\",\"prompt\":\"A cute animated style, 3D Pixar animation, kawaii aesthetic, Disney inspired cartoon character, Starlight Girl, with vibrant purple bob cut hair and straight bangs adorned with a soft pink flower accessory. She has big expressive sparkling blue anime eyes and a heartwarming animated expression of pure joy. She wears a pastel purple top and a pink and lavender skirt decorated with whimsical candy shapes. Starlight Girl gently twirls in place, holding a large glowing yellow lollipop, with magical sparkles bursting from her hands and trailing behind her. The background is a soft pastel magical Candy Land environment during a dreamy autumn sunset, filled with oversized pink and red swirled lollipops and soft pastel bushes, with floating iridescent magical particles in the air. A gentle push in or slight orbit around Starlight Girl, who fills 70% of the frame. She speaks aloud, \\\"Sending you a little sprinkle of happiness!\\\" Animated movie quality, soft lighting highlighting her cuteness. Duration: 5-6 seconds.\"}",
-          "response": {
-            "taskId": "6fcc723b8f687bc13e2d4f2469155013",
-            "resolution": "720p",
-            "originUrls": null,
-            "resultUrls": [
-              "https://tempfile.aiquickdraw.com/v/6fcc723b8f687bc13e2d4f2469155013_1762701078.mp4"
-            ],
-            "hasAudioList": [
-              true
-            ],
-            "seeds": [
-              89016
-            ]
-          },
-          "successFlag": 1,
-          "fallbackFlag": false,
-          "completeTime": 1762701081000,
-          "createTime": 1762700996000,
-          "errorCode": null,
-          "errorMessage": null
-        }
-      },
-      {
-        "code": 200,
-        "msg": "success",
-        "data": {
-          "taskId": "465b957ed404e8240e89b384f2df6a95",
-          "paramJson": "{\"aspectRatio\":\"9:16\",\"enableFallback\":false,\"enableTranslation\":true,\"model\":\"veo3_fast\",\"prompt\":\"A cute animated style, 3D Pixar animation, kawaii aesthetic, Disney inspired magical Candy Land environment, without any character present. The scene reveals an enchanting part of the world during a soft autumn sunset, consistent with Scene 1's pastel color palette. Oversized, glowing pastel candy structures, such as a towering pink swirled lollipop and a shimmering lavender gumdrop hill, pulse gently with internal light. Delicate, glowing candy hearts float serenely through the air. Tiny, friendly, whimsical sugar sprites with translucent wings flutter playfully around a patch of sparkling, iridescent pastel flowers that bloom and unbloom in a gentle magical rhythm. Magical sparkles and golden dust fall gracefully through the air. A gentle pan across the details, showcasing the vibrant magical elements. Immersive sound design with soft twinkling bells, gentle harp glissandos, and a delicate \\\"ping\\\" sound as the candy hearts float by, creating a dreamy atmosphere. Narration: \\\"The sweet magic of Candy Land whispers tales of joy.\\\" Animated movie quality, dreamy atmosphere. Duration: 5-6 seconds.\"}",
-          "response": {
-            "taskId": "465b957ed404e8240e89b384f2df6a95",
-            "resolution": "720p",
-            "originUrls": null,
-            "resultUrls": [
-              "https://tempfile.aiquickdraw.com/v/465b957ed404e8240e89b384f2df6a95_1762701083.mp4"
-            ],
-            "hasAudioList": [
-              true
-            ],
-            "seeds": [
-              26317
-            ]
-          },
-          "successFlag": 1,
-          "fallbackFlag": false,
-          "completeTime": 1762701085000,
-          "createTime": 1762700996000,
-          "errorCode": null,
-          "errorMessage": null
-        }
-      }
-    ],
-    "HTTP Request - Make Video1": [
-      {
-        "code": 200,
-        "msg": "success",
-        "data": {
-          "taskId": "6fcc723b8f687bc13e2d4f2469155013"
-        }
-      },
-      {
-        "code": 200,
-        "msg": "success",
-        "data": {
-          "taskId": "465b957ed404e8240e89b384f2df6a95"
-        }
-      }
-    ],
-    "Wait 4m": [
-      {
-        "code": 200,
-        "msg": "success",
-        "data": {
-          "taskId": "6fcc723b8f687bc13e2d4f2469155013"
-        }
-      },
-      {
-        "code": 200,
-        "msg": "success",
-        "data": {
-          "taskId": "465b957ed404e8240e89b384f2df6a95"
-        }
-      }
-    ],
-    "Upload file2": [
-      {
-        "kind": "drive#file",
-        "id": "1YexH1yzHVsmAeZGYPKl2B6veAE5pAL5P",
-        "name": "Starlight Girl in Candy Land | Magical Pastel Dream 🍭 | Whimsical Autumn Sunset 🍂.png",
-        "mimeType": "image/png",
-        "starred": false,
-        "trashed": false,
-        "explicitlyTrashed": false,
-        "parents": [
-          "1we0g8UTGbPhtMv2v9WkuZUN7cVW4ey3j"
-        ],
-        "spaces": [
-          "drive"
-        ],
-        "version": "2",
-        "webContentLink": "https://drive.google.com/uc?id=1YexH1yzHVsmAeZGYPKl2B6veAE5pAL5P&export=download",
-        "webViewLink": "https://drive.google.com/file/d/1YexH1yzHVsmAeZGYPKl2B6veAE5pAL5P/view?usp=drivesdk",
-        "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/image/png",
-        "hasThumbnail": true,
-        "thumbnailLink": "https://lh3.googleusercontent.com/drive-storage/AJQWtBOOVnJARiekID4vqNk75txFYr-zZ14a2zG2glD1Hr6g1NtOHVwjs3PDSWcPzgMFygmcOEsy3ips8yf7efdJ2iUsmY94UfYP5hJtJCSpM5uVMFE=s220",
-        "thumbnailVersion": "1",
-        "viewedByMe": false,
-        "createdTime": "2025-11-09T15:09:40.921Z",
-        "modifiedTime": "2025-11-09T15:09:42.550Z",
-        "modifiedByMeTime": "2025-11-09T15:09:42.550Z",
-        "modifiedByMe": true,
-        "owners": [
-          {
-            "kind": "drive#user",
-            "displayName": "Selwyn Jayme",
-            "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocJTDdTyP1L4kGJz8uftPoSAfhcPQVuJDcGJH0HzuEG8mfRMOdG-=s64",
-            "me": true,
-            "permissionId": "08411627689155439676",
-            "emailAddress": "jaymeselwyn@gmail.com"
-          }
-        ],
-        "lastModifyingUser": {
-          "kind": "drive#user",
-          "displayName": "Selwyn Jayme",
-          "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocJTDdTyP1L4kGJz8uftPoSAfhcPQVuJDcGJH0HzuEG8mfRMOdG-=s64",
-          "me": true,
-          "permissionId": "08411627689155439676",
-          "emailAddress": "jaymeselwyn@gmail.com"
-        },
-        "shared": true,
-        "ownedByMe": true,
-        "downloadRestrictions": {
-          "itemDownloadRestriction": {
-            "restrictedForReaders": false,
-            "restrictedForWriters": false
-          },
-          "effectiveDownloadRestrictionWithContext": {
-            "restrictedForReaders": false,
-            "restrictedForWriters": false
-          }
-        },
-        "capabilities": {
-          "canAcceptOwnership": false,
-          "canAddChildren": false,
-          "canAddMyDriveParent": false,
-          "canChangeCopyRequiresWriterPermission": true,
-          "canChangeItemDownloadRestriction": true,
-          "canChangeSecurityUpdateEnabled": false,
-          "canChangeViewersCanCopyContent": true,
-          "canComment": true,
-          "canCopy": true,
-          "canDelete": true,
-          "canDisableInheritedPermissions": false,
-          "canDownload": true,
-          "canEdit": true,
-          "canEnableInheritedPermissions": true,
-          "canListChildren": false,
-          "canModifyContent": true,
-          "canModifyContentRestriction": true,
-          "canModifyEditorContentRestriction": true,
-          "canModifyOwnerContentRestriction": true,
-          "canModifyLabels": false,
-          "canMoveChildrenWithinDrive": false,
-          "canMoveItemIntoTeamDrive": true,
-          "canMoveItemOutOfDrive": true,
-          "canMoveItemWithinDrive": true,
-          "canReadLabels": false,
-          "canReadRevisions": true,
-          "canRemoveChildren": false,
-          "canRemoveContentRestriction": false,
-          "canRemoveMyDriveParent": true,
-          "canRename": true,
-          "canShare": true,
-          "canTrash": true,
-          "canUntrash": true
-        },
-        "viewersCanCopyContent": true,
-        "copyRequiresWriterPermission": false,
-        "writersCanShare": true,
-        "permissions": [
-          {
-            "kind": "drive#permission",
-            "id": "anyoneWithLink",
-            "type": "anyone",
-            "role": "writer",
-            "allowFileDiscovery": false
-          },
-          {
-            "kind": "drive#permission",
-            "id": "08411627689155439676",
-            "type": "user",
-            "emailAddress": "jaymeselwyn@gmail.com",
-            "role": "owner",
-            "displayName": "jaymeselwyn",
-            "deleted": false,
-            "pendingOwner": false
-          }
-        ],
-        "permissionIds": [
-          "anyoneWithLink",
-          "08411627689155439676"
-        ],
-        "originalFilename": "Starlight Girl in Candy Land | Magical Pastel Dream 🍭 | Whimsical Autumn Sunset 🍂.png",
-        "fullFileExtension": "png",
-        "fileExtension": "png",
-        "md5Checksum": "c0bf11da7c27b6e239b00b969417a1ed",
-        "sha1Checksum": "ffc2b720837f2d64245a1bdb2834e97b30ea4dfb",
-        "sha256Checksum": "6e13abba4ab9629e3fd41102bcb38e565b6c1f80b05753433bdf18d6db2e4fc5",
-        "size": "2337446",
-        "quotaBytesUsed": "2337446",
-        "headRevisionId": "0By20JVVzLuB_bTJrRzl0ZlVxMTRsdnpmT1Q0RXhacnhXMngwPQ",
-        "imageMediaMetadata": {
-          "width": 1344,
-          "height": 768,
-          "rotation": 0
-        },
-        "isAppAuthorized": true,
-        "linkShareMetadata": {
-          "securityUpdateEligible": false,
-          "securityUpdateEnabled": true
-        },
-        "inheritedPermissionsDisabled": false
-      }
-    ]
-  },
+  "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
