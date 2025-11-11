@@ -58,7 +58,10 @@
         1232
       ],
       "id": "85359471-6910-450d-99bb-32a83c14452e",
-      "name": "HTTP Request - Create Image 1"
+      "name": "HTTP Request - Create Image 1",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -91,11 +94,13 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2800,
+        -2816,
         1232
       ],
       "id": "1de02960-6120-49a2-b2f5-8c9b57328161",
-      "name": "HTTP Request - Get Image 1"
+      "name": "HTTP Request - Get Image 1",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -130,6 +135,7 @@
       ],
       "id": "0840064b-29a6-4c4a-9351-d94e82c9d808",
       "name": "AI Agent - Video Prompter",
+      "retryOnFail": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -190,7 +196,8 @@
       ],
       "id": "7364f42c-278a-4620-803c-04c4a8555d4a",
       "name": "HTTP Request - Final Video",
-      "retryOnFail": true
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -208,6 +215,7 @@
       "id": "6f0900b5-c5da-4fa7-aa3f-c7d3f2a0b19e",
       "name": "Send a video",
       "webhookId": "99320899-067d-4b15-b754-ef183d9dcdf6",
+      "retryOnFail": true,
       "credentials": {
         "telegramApi": {
           "id": "k7m8mevEdyBrdj98",
@@ -241,7 +249,9 @@
         1232
       ],
       "id": "9c13c2a7-3c58-4feb-8ebe-c4952c1d84ed",
-      "name": "HTTP Request - Combine"
+      "name": "HTTP Request - Combine",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -268,6 +278,7 @@
       ],
       "id": "73f0334e-bbf3-4ac1-95f8-c95bca4b20f4",
       "name": "Upload file",
+      "retryOnFail": true,
       "credentials": {
         "googleDriveOAuth2Api": {
           "id": "2KupETq4QLi8d9l8",
@@ -348,7 +359,8 @@
         688
       ],
       "id": "62031a2c-9400-412c-8b88-03f7164b1a11",
-      "name": "AI Agent"
+      "name": "AI Agent",
+      "retryOnFail": true
     },
     {
       "parameters": {
@@ -427,14 +439,14 @@
     {
       "parameters": {
         "content": "## Upload Videos",
-        "height": 656,
-        "width": 2272,
+        "height": 672,
+        "width": 2048,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -720,
-        1120
+        -704,
+        1104
       ],
       "typeVersion": 1,
       "id": "1b09fac0-e299-47be-9c03-fe0073321548",
@@ -448,42 +460,12 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -336,
-        1360
+        -368,
+        1344
       ],
       "id": "61bbc758-c809-489c-a4b9-d6b46e553d7b",
-      "name": "HTTP Request1"
-    },
-    {
-      "parameters": {
-        "resource": "video",
-        "operation": "upload",
-        "title": "={{ $json['AlgoNova Youtube Title'] }}",
-        "regionCode": "PH",
-        "categoryId": "1",
-        "options": {
-          "defaultLanguage": "en",
-          "description": "={{ $json['AlgoNova YouTube Description'] }}",
-          "embeddable": true,
-          "privacyStatus": "public",
-          "selfDeclaredMadeForKids": false,
-          "tags": "anime shorts, cinematic anime, anime aesthetic, studio quality animation, demon slayer style, makoto shinkai, anime edit, atmospheric anime, viral anime shorts, anime vibes"
-        }
-      },
-      "type": "n8n-nodes-base.youTube",
-      "typeVersion": 1,
-      "position": [
-        80,
-        1216
-      ],
-      "id": "e6f7c428-fea1-4fc4-8516-b1105a26610d",
-      "name": "Upload a video",
-      "credentials": {
-        "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account_AlgoNovaLabs"
-        }
-      }
+      "name": "HTTP Request1",
+      "retryOnFail": true
     },
     {
       "parameters": {
@@ -649,6 +631,7 @@
       ],
       "id": "02d95689-e416-4357-be98-b86d8271b110",
       "name": "Append row in sheet",
+      "retryOnFail": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "Q33u7QDdFT7kx3S6",
@@ -673,16 +656,20 @@
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit#gid=0"
         },
         "combineFilters": "OR",
-        "options": {}
+        "options": {
+          "returnFirstMatch": true
+        }
       },
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -640,
-        1360
+        -656,
+        1344
       ],
       "id": "58a1d70a-7017-4d0c-b630-7b783066b10a",
       "name": "Get row(s) in sheet",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "Q33u7QDdFT7kx3S6",
@@ -697,8 +684,8 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        -496,
-        1360
+        -512,
+        1344
       ],
       "id": "9e474a19-4d97-48e4-9b94-012f729b7f44",
       "name": "Limit"
@@ -710,8 +697,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -160,
-        1360
+        -224,
+        1344
       ],
       "id": "f8a7dec5-535b-4928-a31b-b84241eae9ff",
       "name": "Wait",
@@ -734,11 +721,13 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -2784,
+        -2640,
         800
       ],
       "id": "4a4c34c3-0d10-4330-be5e-907db74cbdb9",
       "name": "Analyze image1",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "openAiApi": {
           "id": "Vwg2FlhVu2bY7dZ6",
@@ -760,8 +749,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -3984,
-        720
+        -3904,
+        784
       ],
       "id": "400db6f2-ddb7-4d6d-bf4a-4cce00d3953d",
       "name": "Schedule Trigger"
@@ -774,8 +763,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3808,
-        720
+        -3648,
+        704
       ],
       "id": "5467ba58-34a1-411b-b596-738e03f1331a",
       "name": "Code in Python (Beta)2"
@@ -785,9 +774,9 @@
         "resource": "image",
         "modelId": {
           "__rl": true,
-          "value": "models/gemini-2.0-flash-exp-image-generation",
+          "value": "models/gemini-2.0-flash-preview-image-generation",
           "mode": "list",
-          "cachedResultName": "models/gemini-2.0-flash-exp-image-generation"
+          "cachedResultName": "models/gemini-2.0-flash-preview-image-generation"
         },
         "prompt": "={{ $json.imagePrompt }}",
         "options": {}
@@ -795,15 +784,17 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        -3088,
-        720
+        -2976,
+        704
       ],
       "id": "aea68a24-ddcf-4c3d-be21-b7db4a32d55e",
       "name": "Generate an image",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "googlePalmApi": {
-          "id": "Qn2KmHKfcYN7JBvq",
-          "name": "Google Gemini(PaLM) Api account"
+          "id": "EiUQRi4x0N96lhYH",
+          "name": "algonovalabs_YOUTUBE AUTOMATION RELATED"
         }
       }
     },
@@ -815,8 +806,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3280,
-        720
+        -3136,
+        704
       ],
       "id": "f6e882cb-d48c-48b8-bb48-96fe108351bf",
       "name": "Code in Python (Beta)3"
@@ -828,8 +819,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -3616,
-        720
+        -3456,
+        704
       ],
       "id": "d57d5b05-7a96-4a84-980e-9303788ec784",
       "name": "AI Agent1"
@@ -852,8 +843,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -2896,
-        672
+        -2832,
+        624
       ],
       "id": "11895223-967e-4739-a65f-7cc338c11975",
       "name": "Upload file1",
@@ -911,8 +902,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -2672,
-        672
+        -2640,
+        576
       ],
       "id": "8d6bf6b4-10ff-42fd-bbc8-796b98bf3920",
       "name": "Code in Python (Beta)4"
@@ -961,7 +952,9 @@
         656
       ],
       "id": "ece3e7ea-4186-491e-9a75-0cd0ca29c6a3",
-      "name": "HTTP Request - Get Video"
+      "name": "HTTP Request - Get Video",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -992,7 +985,9 @@
         656
       ],
       "id": "1ce0f53e-d575-464e-8b98-b7f346f977d9",
-      "name": "HTTP Request - Make Video1"
+      "name": "HTTP Request - Make Video1",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -1064,7 +1059,7 @@
     },
     {
       "parameters": {
-        "content": "## For Tiktok Upload\n\nhttps://developers.tiktok.com/app/7568099330684225548/pending\n\nClient key\nawueea9a9ibxpnd3\n\nClient secret\nPtNO3aWgbHkCPFClAoSg7ZoEUXH5wE41\n\n\n## Facebook \nCredentials for fb graph API expires ever 1-2 hrs",
+        "content": "## For Tiktok Upload\n\n[Tiktok For Developers](https://developers.tiktok.com/app/7568099330684225548/pending)\n\n[Client key](\nawueea9a9ibxpnd3)\n\n[Client secret](\nPtNO3aWgbHkCPFClAoSg7ZoEUXH5wE41)\n\n\n## Facebook \nCredentials for fb graph API expires ever 1-2 hrs",
         "height": 336,
         "width": 416,
         "color": 5
@@ -1077,28 +1072,6 @@
       "typeVersion": 1,
       "id": "6538d6fc-1c8f-478d-9193-dcdb3365a90a",
       "name": "Sticky Note7"
-    },
-    {
-      "parameters": {
-        "resource": "playlistItem",
-        "playlistId": "PLDwTA4rx1Wnni3H2p-REOifME6ZP-kAlK",
-        "videoId": "={{ $json.uploadId }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.youTube",
-      "typeVersion": 1,
-      "position": [
-        224,
-        1216
-      ],
-      "id": "ad6152f4-5675-429c-902e-048c0ef69b4a",
-      "name": "Add a playlist item",
-      "credentials": {
-        "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account_AlgoNovaLabs"
-        }
-      }
     },
     {
       "parameters": {
@@ -1125,7 +1098,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        848,
+        752,
         1152
       ],
       "typeVersion": 1,
@@ -1135,13 +1108,13 @@
     {
       "parameters": {
         "content": "Youtube Post - AlgoNova [Link](https://www.youtube.com/@algonovalabs)",
-        "height": 240,
-        "width": 470,
+        "height": 224,
+        "width": 486,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        48,
+        -80,
         1152
       ],
       "typeVersion": 1,
@@ -1157,7 +1130,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        560,
+        464,
         1152
       ],
       "typeVersion": 1,
@@ -1172,7 +1145,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1152,
+        1056,
         1152
       ],
       "typeVersion": 1,
@@ -1201,7 +1174,7 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        1216,
+        1120,
         1216
       ],
       "id": "a2c3482c-677b-419e-be81-2ecacaf1a668",
@@ -1237,7 +1210,7 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        928,
+        832,
         1216
       ],
       "id": "b1da6789-4054-49cb-83a2-2b9b203574da",
@@ -1259,7 +1232,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        640,
+        544,
         1216
       ],
       "id": "81c4bfeb-e0e5-4638-879a-88cd9612b31c",
@@ -1289,6 +1262,8 @@
       ],
       "id": "6c55c9f9-18f2-401e-b81e-6e5383c2a245",
       "name": "Upload file2",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "googleDriveOAuth2Api": {
           "id": "2KupETq4QLi8d9l8",
@@ -1308,7 +1283,9 @@
         1232
       ],
       "id": "0c3301a0-b643-4adf-8912-0d5ad5a838ce",
-      "name": "HTTP Request2"
+      "name": "HTTP Request2",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -1321,7 +1298,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        384,
+        288,
         1216
       ],
       "id": "61b34093-f5db-474c-9495-ea00cf2a98e7",
@@ -1352,11 +1329,12 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        960,
-        1520
+        800,
+        1472
       ],
       "id": "d7400314-93a9-4a4a-920a-bbffea8f1737",
       "name": "Echonova Labs Upload",
+      "retryOnFail": true,
       "credentials": {
         "youTubeOAuth2Api": {
           "id": "lP6X79rHDtk0jfT5",
@@ -1369,8 +1347,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        256,
-        1520
+        144,
+        1472
       ],
       "id": "a7f16f64-e279-40e3-a826-f6fd658cff25",
       "name": "Wait for Both Files"
@@ -1414,11 +1392,13 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        784,
-        1520
+        640,
+        1472
       ],
       "id": "a9f9ea3d-3286-4ab4-b600-42b760c84474",
-      "name": "HTTP Request3"
+      "name": "HTTP Request3",
+      "retryOnFail": true,
+      "maxTries": 5
     },
     {
       "parameters": {
@@ -1427,8 +1407,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        608,
-        1520
+        464,
+        1472
       ],
       "id": "dcc969eb-3cae-44bb-a300-ba3926f7a8b8",
       "name": "Wait1",
@@ -1448,8 +1428,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        80,
-        1520
+        -32,
+        1456
       ],
       "id": "4d70df47-cb6c-4701-b40f-55c0cdc94e2b",
       "name": "Download Music",
@@ -1464,13 +1444,13 @@
       "parameters": {
         "content": "Youtube Post - EchoNova [Link](https://www.youtube.com/@EchoNovaLabs)",
         "height": 304,
-        "width": 1424,
+        "width": 1392,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        48,
-        1440
+        -80,
+        1408
       ],
       "typeVersion": 1,
       "id": "fa5a45fc-5fad-4d1a-97a0-5a547fa5356d",
@@ -1483,8 +1463,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        432,
-        1520
+        304,
+        1472
       ],
       "id": "e6a61816-fb78-4652-aeea-73d8b0a6f983",
       "name": "Combine Files"
@@ -1514,12 +1494,13 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1328,
-        1520
+        1120,
+        1472
       ],
       "id": "1c45dafd-1551-461e-a008-94a7d91939c2",
       "name": "EchoNova Confirmation",
       "webhookId": "b5323e80-6737-4449-97e2-a9cc0302db37",
+      "retryOnFail": true,
       "credentials": {
         "telegramApi": {
           "id": "k7m8mevEdyBrdj98",
@@ -1529,47 +1510,105 @@
     },
     {
       "parameters": {
-        "resource": "image",
-        "operation": "analyze",
-        "modelId": {
-          "__rl": true,
-          "value": "chatgpt-4o-latest",
-          "mode": "list",
-          "cachedResultName": "CHATGPT-4O-LATEST"
-        },
-        "text": "Determine if the image is a character or a product. It is only considered both if there are two completely separate images within the same image. If it is both, describe them separately. Describe the appearance details only.\n\nYour output should only include the description, nothing else.",
-        "imageUrls": "=https://api.telegram.org/file/bot{{ $('Edit Fields - Bot ID 1').item.json['bot id'] }}/{{ $json.result.file_path }}",
+        "resource": "playlistItem",
+        "playlistId": "PL3S1q3_3y1Qsv-JtGJakVKjP7OiTeYKH3",
+        "videoId": "={{ $json.uploadId }}",
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.8,
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
       "position": [
-        -3392,
-        320
+        960,
+        1472
       ],
-      "id": "c3dfab28-dea2-4166-a53a-9cdd1a230c97",
-      "name": "Analyze image",
+      "id": "5584b581-c7b6-40ff-826f-0000fbec7308",
+      "name": "Echonova Labs playlist",
+      "retryOnFail": true,
       "credentials": {
-        "openAiApi": {
-          "id": "Vwg2FlhVu2bY7dZ6",
-          "name": "OpenAi account"
+        "youTubeOAuth2Api": {
+          "id": "lP6X79rHDtk0jfT5",
+          "name": "Youtube_Account_EchoNovaLabs"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
-        "url": "=https://api.telegram.org/bot{{ $json['bot id'] }}/getFile?file_id={{ $('Telegram Trigger').item.json.message.photo[0].file_id }}",
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $('Limit').first().json['EchoNova Youtube Title'] }}",
+        "regionCode": "PH",
+        "categoryId": "1",
+        "binaryProperty": "=data",
+        "options": {
+          "description": "={{ $('Limit').first().json['EchoNova YouTube Description'] }}",
+          "embeddable": true,
+          "selfDeclaredMadeForKids": false,
+          "tags": "anime shorts, cinematic anime, anime aesthetic, studio quality animation, demon slayer style, makoto shinkai, anime edit, atmospheric anime, viral anime shorts, anime vibes"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        1216
+      ],
+      "id": "c1532870-530a-4430-9df7-9a20073fcb0b",
+      "name": "Algonova Labs Upload1",
+      "retryOnFail": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "Fnm7ZvrVLhKsF77T",
+          "name": "YouTube account_AlgoNovaLabs"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "playlistItem",
+        "playlistId": "PLDwTA4rx1Wnni3H2p-REOifME6ZP-kAlK",
+        "videoId": "={{ $json.uploadId }}",
         "options": {}
       },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
       "position": [
-        -3568,
+        112,
+        1216
+      ],
+      "id": "ad6152f4-5675-429c-902e-048c0ef69b4a",
+      "name": "Add a playlist item",
+      "retryOnFail": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "Fnm7ZvrVLhKsF77T",
+          "name": "YouTube account_AlgoNovaLabs"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -3968,
         320
       ],
-      "id": "5d7a8904-78c7-4a44-a97d-91fd814609c9",
-      "name": "HTTP Request - Image Path",
+      "id": "43ac5837-6736-4bae-a773-1d30fb3a194d",
+      "name": "Telegram Trigger",
+      "webhookId": "5fc2b001-9a7c-4b01-9bb1-2dee51478ad9",
+      "credentials": {
+        "telegramApi": {
+          "id": "k7m8mevEdyBrdj98",
+          "name": "Telegram account"
+        }
+      },
       "disabled": true
     },
     {
@@ -1598,49 +1637,29 @@
     },
     {
       "parameters": {
-        "updates": [
-          "message"
-        ],
-        "additionalFields": {}
+        "url": "=https://api.telegram.org/bot{{ $json['bot id'] }}/getFile?file_id={{ $('Telegram Trigger').item.json.message.photo[0].file_id }}",
+        "options": {}
       },
-      "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.2,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        -3968,
+        -3568,
         320
       ],
-      "id": "43ac5837-6736-4bae-a773-1d30fb3a194d",
-      "name": "Telegram Trigger",
-      "webhookId": "5fc2b001-9a7c-4b01-9bb1-2dee51478ad9",
-      "credentials": {
-        "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
-          "name": "Telegram account"
-        }
-      },
+      "id": "5d7a8904-78c7-4a44-a97d-91fd814609c9",
+      "name": "HTTP Request - Image Path",
       "disabled": true
     },
     {
-      "parameters": {
-        "resource": "playlistItem",
-        "playlistId": "PL3S1q3_3y1Qsv-JtGJakVKjP7OiTeYKH3",
-        "videoId": "={{ $json.uploadId }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.youTube",
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        1136,
-        1520
+        -3904,
+        624
       ],
-      "id": "5584b581-c7b6-40ff-826f-0000fbec7308",
-      "name": "Echonova Labs playlist",
-      "credentials": {
-        "youTubeOAuth2Api": {
-          "id": "lP6X79rHDtk0jfT5",
-          "name": "Youtube_Account_EchoNovaLabs"
-        }
-      }
+      "id": "2f9c6d15-0127-4bc3-a291-e149aed77cdd",
+      "name": "When clicking ‘Execute workflow’"
     }
   ],
   "connections": {
@@ -1858,17 +1877,6 @@
         ]
       ]
     },
-    "Upload a video": {
-      "main": [
-        [
-          {
-            "node": "Add a playlist item",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Append row in sheet": {
       "main": [
         [
@@ -1906,11 +1914,6 @@
       "main": [
         [
           {
-            "node": "Upload a video",
-            "type": "main",
-            "index": 0
-          },
-          {
             "node": "Tiktok Post",
             "type": "main",
             "index": 0
@@ -1932,6 +1935,11 @@
           },
           {
             "node": "Wait for Both Files",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Algonova Labs Upload1",
             "type": "main",
             "index": 0
           }
@@ -2140,17 +2148,6 @@
         ]
       ]
     },
-    "Add a playlist item": {
-      "main": [
-        [
-          {
-            "node": "Send a text message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Instagram Post": {
       "main": [
         []
@@ -2265,22 +2262,33 @@
         ]
       ]
     },
-    "HTTP Request - Image Path": {
+    "Echonova Labs playlist": {
       "main": [
         [
           {
-            "node": "Analyze image",
+            "node": "EchoNova Confirmation",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Edit Fields - Bot ID 1": {
+    "Algonova Labs Upload1": {
       "main": [
         [
           {
-            "node": "HTTP Request - Image Path",
+            "node": "Add a playlist item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add a playlist item": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
             "type": "main",
             "index": 0
           }
@@ -2298,11 +2306,11 @@
         ]
       ]
     },
-    "Echonova Labs playlist": {
+    "When clicking ‘Execute workflow’": {
       "main": [
         [
           {
-            "node": "EchoNova Confirmation",
+            "node": "Code in Python (Beta)2",
             "type": "main",
             "index": 0
           }
