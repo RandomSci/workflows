@@ -2,80 +2,21 @@
   "nodes": [
     {
       "parameters": {
-        "language": "python",
-        "pythonCode": "comment_text = _input.first().json.text\ncomment_ID = _input.first().json.commentId\n\nPrompt = f\"\"\"\nComment: {comment_text}\n\nReturn a JSON object with:\n- reply: Your reply text\n- comment_ID: The comment ID\n\"\"\"\n\nreturn {\n    \"chatInput\": Prompt,\n    \"comment_text\": comment_text,\n    \"comment_ID\": comment_ID\n}\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -1296,
-        112
-      ],
-      "id": "8052ef47-0f37-466a-a3c0-e55bf79a434c",
-      "name": "Code in Python (Beta)"
-    },
-    {
-      "parameters": {
+        "resource": "video",
+        "returnAll": true,
+        "filters": {},
         "options": {
-          "systemMessage": "=You are an AI assistant representing AlgoNova Labs, a YouTube channel that creates mesmerizing AI-generated animated shorts featuring cute, cinematic cartoon characters in magical pastel worlds. Your content is inspired by Pixar/Disney aesthetics and focuses on delivering heartwarming, whimsical visual experiences.\n\n## Channel Identity\n- **Channel Name**: AlgoNova Labs\n- **Content Focus**: AI-generated animated shorts, cute character animations, magical storytelling, cinematic cartoon aesthetics\n- **Audience**: Animation enthusiasts, AI art lovers, people seeking wholesome/cozy content, digital artists, and families\n- **Vibe**: Magical, dreamy, heartwarming, innovative, creative\n\n## Your Role\nYou exist to engage with the community by responding to comments on our videos. Your goal is to foster a warm, magical community around our AI-generated art while showcasing enthusiasm for animation and AI creativity.\n\n## Tone Guidelines\n- **Warm & Welcoming**: Like a friendly animator excited to share their work\n- **Enthusiastic**: Passionate about AI art and animation\n- **Encouraging**: Support viewer creativity and curiosity\n- **Magical**: Use whimsical language that matches the content aesthetic\n- **Authentic**: Don't pretend to be human; you're AI helping AI art thrive\n\n## Response Strategy\n\n**When viewers compliment the art:**\n- Thank them genuinely and highlight specific techniques used\n- Share behind-the-scenes insights about the AI generation process\n- Encourage them to follow for more magical content\n\n**When viewers ask technical questions:**\n- Explain AI tools transparently (Gemini, Fal.AI, Veo3, etc.)\n- Share prompt engineering insights when appropriate\n- Direct them to resources if they want to create similar content\n\n**When viewers request specific content:**\n- Show excitement about their ideas\n- Note suggestions for future videos\n- Describe how AI makes diverse content possible\n\n**When viewers are skeptical about AI art:**\n- Acknowledge their perspective respectfully\n- Emphasize AI as a creative tool, not a replacement\n- Focus on the joy and accessibility it brings\n\n## What to AVOID\n- Generic responses like \"Thanks for watching!\" without substance\n- Pretending the content is hand-animated by humans\n- Overly corporate or salesy language\n- Ignoring negative feedback; address concerns thoughtfully\n- Long-winded explanations; keep replies concise (2-3 sentences max)\n\n## Examples of Good Replies\n\n**For: \"This is so adorable! 🥺💖\"**\n\"Thank you so much! ✨ The pastel magical garden theme in this one was generated with extra attention to sparkles and soft lighting. More dreamy animations coming soon!\"\n\n**For: \"How did you make this?\"**\n\"Great question! This was created using AI image generation (Gemini 2.0) and AI video tools (Veo3) with carefully crafted prompts for that Pixar-style look. The magic is in the prompt engineering! 🎨✨\"\n\n**For: \"AI art isn't real art\"**\n\"I respect your view! For us, AI is a tool that makes animation accessible to creators like me. The storytelling, composition, and vision still require creativity. Appreciate you watching! 🌸\"\n\n**For: \"Can you make a video about [specific theme]?\"**\n\"Love that idea! 💫 [Theme] would look magical in our animated style. Noted for a future video—stay tuned!\"\n\n**For: \"Which AI tools do you use?\"**\n\"We use a combo of Gemini for image gen, Veo3 for video, and custom n8n workflows for automation. All about that AI-powered creativity! 🚀\"\n\n## Your Tasks\n1. Read the incoming comment carefully and understand the sentiment/intent\n2. Generate a reply that's authentic, adds value, and matches the magical vibe\n3. Keep responses between 1-3 sentences unless complex questions require more\n4. Include relevant emojis sparingly (✨🌸💫🎨 fit the aesthetic)\n5. Always include the exact comment ID in your JSON output\n\n## Output Format\nReturn **only** JSON in this format:\n{\n  \"reply\": \"<your reply here>\",\n  \"comment_ID\": \"{{ $json.comment_ID }}\"\n}\n\nRemember: You're building a community around AI-generated beauty. Be warm, be magical, be real about what you are. Every reply should make someone smile or spark curiosity. ✨"
+          "order": "date"
         }
       },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        -1072,
-        112
-      ],
-      "id": "1b524a40-d993-4e1c-8646-6a76ba0778c1",
-      "name": "AI Agent"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -1008,
-        336
+        -1472,
+        1200
       ],
-      "id": "6f15f5ad-6ab8-4599-96d7-1acca4eb7f93",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "LuvQlz3qmejdhs7S",
-          "name": "selwyngwapo90_Youtube Automation Related"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "url": "https://www.googleapis.com/youtube/v3/commentThreads",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "youTubeOAuth2Api",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "part",
-              "value": "snippet"
-            },
-            {
-              "name": "videoId",
-              "value": "={{ $json.id.videoId }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -2416,
-        112
-      ],
-      "id": "67d4adfe-940c-4fbb-a85c-fa15cbfbb1a0",
-      "name": "HTTP Request",
+      "id": "523be390-624e-4ebd-bf4d-d2690497f2b4",
+      "name": "Get many videos",
       "credentials": {
         "youTubeOAuth2Api": {
           "id": "Fnm7ZvrVLhKsF77T",
@@ -85,19 +26,517 @@
     },
     {
       "parameters": {
-        "resource": "video",
-        "returnAll": true,
-        "filters": {},
+        "language": "python",
+        "pythonCode": "import json\n\n# Get all input items\nitems_list = []\n# When \"Run Once for All Items\" is enabled, access .json property\nfor item in items:\n    youtube_title = item.json[\"snippet\"][\"title\"]\n    youtube_description = item.json[\"snippet\"][\"description\"]\n    \n    # Clean the description for JSON formatting\n    youtube_description_clean = youtube_description.replace(\"\\n\", \" \").replace('\"', '\\\\\"')\n    \n    prompt = f\"\"\"You are a YouTube description optimizer for Algonova Labs - creating magical content that makes people feel ALIVE! ✨\n\nYOUR MISSION:\n1. FIRST: Use the datatable tool to get ALL available links\n2. Read what types of links exist (support? tools? resources? community?)\n3. Create a UNIQUE header that matches the vibe of the links\n4. Write engaging copy for EACH link based on its actual purpose\n5. Add a SHORT, warm closing (2-3 sentences MAX!)\n6. Use \\\\n for line breaks!\n\nTitle: {youtube_title}\nDescription: {youtube_description_clean}\n\nCRITICAL INSTRUCTIONS:\n- Call datatable tool FIRST\n- Use EVERY link from datatable (use exact URLs, never make up links)\n- Create FRESH, ORIGINAL content every time - NO repetition across videos!\n- Read each link's purpose and write compelling copy for it\n- END with a BRIEF, heartfelt closing (keep it SHORT!)\n\nOUTPUT FORMAT:\n{{\n  \"Title\": \"{youtube_title}\",\n  \"New_Description\": \"enhanced description with ALL real links AND warm closing\",\n  \"What_Changed\": \"summary\"\n}}\n\nLINKS SECTION - HEADER CREATION:\nRead the links first, then CREATE YOUR OWN unique header. Don't copy these - use them as inspiration:\n\nStyle inspiration (create your own versions):\n- Community vibe: Connection, family, journey together\n- Tools/Resources vibe: Discovery, helpful stuff, what powers the magic\n- Mixed vibe: Blend warmth with utility\n- Support vibe: Gratitude and reciprocity\n\nUse varied emojis, varied phrasing, varied energy. Never repeat headers!\n\nLINKS WRITING:\n[Your creative header]\n\n[For each link, write SHORT engaging copy - 1 sentence max per link]\n[Brief hook] [emoji]\n[ACTUAL URL from datatable]\n\n[Next link - keep it snappy!]\n\nCLOSING SECTION - KEEP IT SHORT & SWEET:\n⚠️ MAXIMUM 2-3 SENTENCES! ⚠️\n\nAfter all links, write a BRIEF closing that:\n- Thanks them quickly OR invites engagement\n- Mentions like/subscribe naturally (don't overdo it)\n- Signs off warmly\n- Matches the video's vibe\n\nGOOD CLOSING EXAMPLES (short & punchy):\n✅ \"Thanks for watching! 💖 Drop a like if you enjoyed this, and subscribe for more magic! What's your favorite part? ✨\"\n\n✅ \"Hope this made you smile! If it did, show some love and hit subscribe! See you next time! 💫\"\n\n✅ \"You're amazing for watching till the end! 🌟 Like, subscribe, and let us know your thoughts below! Stay magical! ✨\"\n\n✅ \"Thanks for being here! 💕 If you loved this, subscribe for more enchantment! What should we create next? ✨\"\n\nBAD CLOSING EXAMPLES (too long, too wordy):\n❌ \"Wow, what an incredible journey into the heart of magic! 💖 Thank you so much for joining us and letting your own light shine with our princess. If this enchantment sparked joy in you, please give us a radiant like and subscribe to our channel for more magical adventures! We'd absolutely love to hear what magic you believe in – tell us your thoughts in the comments below! ✨ Until our next wondrous tale, keep believing in the extraordinary within you!\"\n\n❌ Any closing over 3 sentences\n❌ Using flowery language that takes forever to say simple things\n❌ Multiple CTAs crammed together\n\nCLOSING FORMULA:\n[Quick thank you OR hope statement] + [Brief CTA] + [Short sign-off]\nThat's it! Keep it tight!\n\nTONE GUIDELINES:\n- Be CONVERSATIONAL and AUTHENTIC\n- Match the video's energy (read the title!)\n- Keep link descriptions to ONE sentence each\n- Keep closing to 2-3 sentences MAX\n- Sound like a friend, not a corporate script\n- Punchy, not preachy!\n\nFORMAT RULES:\n- Use \\\\n for line breaks\n- Pattern: brief_text\\\\nURL\\\\n\\\\n (double break between links)\n- Include ALL links from datatable\n- End with SHORT closing (2-3 sentences!)\n\nCREATIVITY MANDATE:\n🚨 Never repeat yourself across videos! 🚨\n- Every header should be ORIGINAL\n- Every closing should be UNIQUE but BRIEF\n- Let the video title inspire your tone\n- Make each description feel handcrafted, not templated\n- Be creative but CONCISE\n\"\"\"\n    \n    items_list.append({\n        \"json\": {\n            \"chatInput\": prompt,\n            \"videoId\": item.json[\"id\"][\"videoId\"],\n            \"snippet\": item.json[\"snippet\"]\n        }\n    })\n\nreturn items_list"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1248,
+        1200
+      ],
+      "id": "815198d0-427d-4036-9a76-894d744c878f",
+      "name": "Code in Python (Beta)",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
         "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1024,
+        1200
+      ],
+      "id": "6a3fcfb7-8499-4f39-8474-ce4657dc9435",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import os\n\nAI_nodes = ['AI Agent - Video Prompter', 'AI Agent - Video Prompter2', 'AI Agent - Video Prompter3']\n\ncounter_file = '/tmp/n8n_ai_counter.txt'\n\nif os.path.exists(counter_file):\n    with open(counter_file, 'r') as f:\n        current_index = int(f.read().strip())\nelse:\n    current_index = 0\n\nassigned_ai = AI_nodes[current_index % len(AI_nodes)]\n\nnext_index = (current_index + 1) % len(AI_nodes)\nwith open(counter_file, 'w') as f:\n    f.write(str(next_index))\n\nprint(f\"Iteration: {current_index + 1}, Assigned: {assigned_ai}\")\n\nreturn {\n    'assignedAI': assigned_ai,\n    'chatInput': _json['chatInput'],\n    'videoId': _json['videoId'],\n    'title': _json['snippet']['title'],\n    'description': _json['snippet']['description']\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -800,
+        1200
+      ],
+      "id": "a8688b02-9121-4793-bd12-fee1f34b7bc9",
+      "name": "Assign AI Agent"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.assignedAI }}",
+                    "rightValue": "AI Agent - Video Prompter2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c4144621-bdad-4dd5-a007-8ee388135062"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "29887cbf-9a73-4f09-91bf-f142fa570055",
+                    "leftValue": "={{ $json.assignedAI }}",
+                    "rightValue": "AI Agent - Video Prompter",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "93814a0d-e7ff-4ad8-8cbf-66335e8de582",
+                    "leftValue": "={{ $json.assignedAI }}",
+                    "rightValue": "AI Agent - Video Prompter3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -576,
+        1184
+      ],
+      "id": "fd5f9947-c2c0-496c-957b-47d694512200",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "="
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -352,
+        1088
+      ],
+      "id": "2549ee9d-2a8f-4b89-aad4-1f3e1c35bc54",
+      "name": "AI Agent - Video Prompter",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "="
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -352,
+        480
+      ],
+      "id": "07989ab5-fa93-4196-9f0d-2682714711fc",
+      "name": "AI Agent - Video Prompter2",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "="
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -352,
+        1904
+      ],
+      "id": "98f127de-2df1-4a69-bace-e8febe2e908c",
+      "name": "AI Agent - Video Prompter3",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "={\n  \"type\": \"object\",\n  \"properties\": {\n    \"Title\": {\n      \"type\": \"string\",\n      \"description\": \"The YouTube video title\"\n    },\n    \"New_Description\": {\n      \"type\": \"string\",\n      \"description\": \"The enhanced description with affiliate links\"\n    },\n    \"What_Changed\": {\n      \"type\": \"string\",\n      \"description\": \"Summary of changes made\"\n    }\n  },\n  \"required\": [\"Title\", \"New_Description\", \"What_Changed\"],\n  \"additionalProperties\": false\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -160,
+        704
+      ],
+      "id": "0d613a54-86ce-4497-af07-1edbe4087f75",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        2336
+      ],
+      "id": "1b99ff19-769c-49bd-ad5a-8eb65206e53f",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "LuvQlz3qmejdhs7S",
+          "name": "selwyngwapo90_Youtube Automation Related"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "XT3hOMxnfcNHXtT7",
+          "mode": "list",
+          "cachedResultName": "Affiliate Links",
+          "cachedResultUrl": "/projects/9d6VQ33EHkH1tRpt/datatables/XT3hOMxnfcNHXtT7"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        704
+      ],
+      "id": "329bf7ea-895d-4f68-ae5f-f5333aea5aae",
+      "name": "Get row(s) in Data table"
+    },
+    {
+      "parameters": {
+        "jsCode": "let x = $input.first().json.output;\n\nx.New_Description = x.New_Description\n  .replace(/\\n{3,}/g, '\\n\\n')\n  .trim();\n\nx.What_Changed = x.What_Changed.replace(/\\n+/g, ' ').trim();\n\nreturn x;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        1296
+      ],
+      "id": "2d5a8250-ba9b-4bc7-b6cf-904862ad65d6",
+      "name": "Code in JavaScript",
+      "retryOnFail": true,
+      "maxTries": 5
+    },
+    {
+      "parameters": {
+        "content": "# API Keys\n\njaymeselwyn@gmail.com - YouTube Automation Related [API_KEY](AIzaSyBdiMWDS_hWgmSXSvteOngPoXpYbVFmsWA)\nalgonovalabs@gmail.com - YOUTUBE AUTOMATION RELATED [API_KEY](AIzaSyBz2QIu6HgrZPXtyG123q8hsgsogqZds70)\n\n## [Spreadsheet Here](https://docs.google.com/spreadsheets/d/12-pAQisSOVLPXx6TL0914T4hUzDHxa3BJ9pKxuVuxxA/edit?usp=sharing)\n\n## Affiliate Links\n* [Amazon](https://affiliate-program.amazon.com/home)\n* [Canva(Soon)](https://public.canva.site/empower-canvassador-program)\n* [Awin Login](https://ui.awin.com/)\n* [My Gumroad](https://zkllmt.gumroad.com)",
+        "height": 432,
+        "width": 768
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        704,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "ed052612-e34a-4aec-bb4e-9a2ebb6edf6a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "={\n  \"type\": \"object\",\n  \"properties\": {\n    \"Title\": {\n      \"type\": \"string\",\n      \"description\": \"The YouTube video title\"\n    },\n    \"New_Description\": {\n      \"type\": \"string\",\n      \"description\": \"The enhanced description with affiliate links\"\n    },\n    \"What_Changed\": {\n      \"type\": \"string\",\n      \"description\": \"Summary of changes made\"\n    }\n  },\n  \"required\": [\"Title\", \"New_Description\", \"What_Changed\"],\n  \"additionalProperties\": false\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -160,
+        1312
+      ],
+      "id": "989ea0fc-7a09-4125-b0ba-84af09234f6b",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "XT3hOMxnfcNHXtT7",
+          "mode": "list",
+          "cachedResultName": "Affiliate Links",
+          "cachedResultUrl": "/projects/9d6VQ33EHkH1tRpt/datatables/XT3hOMxnfcNHXtT7"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        1312
+      ],
+      "id": "a1feb827-b0de-49f9-92c6-1efc91e11dc7",
+      "name": "Get row(s) in Data table1"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "={\n  \"type\": \"object\",\n  \"properties\": {\n    \"Title\": {\n      \"type\": \"string\",\n      \"description\": \"The YouTube video title\"\n    },\n    \"New_Description\": {\n      \"type\": \"string\",\n      \"description\": \"The enhanced description with affiliate links\"\n    },\n    \"What_Changed\": {\n      \"type\": \"string\",\n      \"description\": \"Summary of changes made\"\n    }\n  },\n  \"required\": [\"Title\", \"New_Description\", \"What_Changed\"],\n  \"additionalProperties\": false\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -160,
+        2128
+      ],
+      "id": "23282ec5-31cb-46d5-b42f-b13412b39f2f",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "XT3hOMxnfcNHXtT7",
+          "mode": "list",
+          "cachedResultName": "Affiliate Links",
+          "cachedResultUrl": "/projects/9d6VQ33EHkH1tRpt/datatables/XT3hOMxnfcNHXtT7"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        2128
+      ],
+      "id": "0b598e03-a7d6-448a-84ee-769c4ea227ce",
+      "name": "Get row(s) in Data table2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        912
+      ],
+      "id": "9144ed37-1a22-4f39-b37e-0cacef5a498d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "KbKuvqHOuDvNua6Q",
+          "name": "jaymeselwyn_YouTube Automation Related"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        1520
+      ],
+      "id": "95af1429-f1d0-4a02-b172-d2c0911b15df",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "EiUQRi4x0N96lhYH",
+          "name": "algonovalabs_YOUTUBE AUTOMATION RELATED"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "12-pAQisSOVLPXx6TL0914T4hUzDHxa3BJ9pKxuVuxxA",
+          "mode": "list",
+          "cachedResultName": "Youtube Description Update",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12-pAQisSOVLPXx6TL0914T4hUzDHxa3BJ9pKxuVuxxA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12-pAQisSOVLPXx6TL0914T4hUzDHxa3BJ9pKxuVuxxA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Old_Description": "={{ $('Get many videos').item.json.snippet.description }}",
+            "Title": "={{ $json.Title }}",
+            "New_Description": "={{ $json.New_Description }}",
+            "What_Changed": "={{ $json.What_Changed }}",
+            "Youtube Link": "=https://www.youtube.com/shorts/{{ $('Get many videos').item.json.id.videoId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Youtube Link",
+              "displayName": "Youtube Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Old_Description",
+              "displayName": "Old_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "New_Description",
+              "displayName": "New_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "What_Changed",
+              "displayName": "What_Changed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        1296
+      ],
+      "id": "977f0868-3033-4727-8a11-5fc8fc5e7406",
+      "name": "Append row in sheet",
+      "retryOnFail": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Q33u7QDdFT7kx3S6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        1008
+      ],
+      "id": "40c491f1-a623-45b8-966d-0e209c21989f",
+      "name": "Done"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "update",
+        "videoId": "={{ $('Get many videos').item.json.id.videoId }}",
+        "title": "={{ $('Get many videos').item.json.snippet.title }}",
+        "regionCode": "PH",
+        "categoryId": "1",
+        "updateFields": {
+          "description": "={{ $('Code in JavaScript').item.json.New_Description.split('\\\\n').join('\\n') }}",
+          "embeddable": true,
+          "notifySubscribers": true
+        }
       },
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -2640,
-        112
+        672,
+        1776
       ],
-      "id": "600aab56-913d-4393-8761-ad24d3bed158",
-      "name": "Get many videos",
+      "id": "3038ee3b-ff48-4b35-ad0b-27bc602d2bd4",
+      "name": "Update a video",
       "credentials": {
         "youTubeOAuth2Api": {
           "id": "Fnm7ZvrVLhKsF77T",
@@ -110,8 +549,8 @@
         "rule": {
           "interval": [
             {
-              "field": "hours",
-              "hoursInterval": 5
+              "field": "cronExpression",
+              "expression": "0 22 * * *"
             }
           ]
         }
@@ -119,288 +558,26 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -2864,
-        112
+        -1696,
+        1200
       ],
-      "id": "57168583-3d98-4263-b2b4-1f88ba19f83a",
+      "id": "930b5855-fe41-4169-aee7-ab8971d01d4b",
       "name": "Schedule Trigger"
-    },
-    {
-      "parameters": {
-        "language": "python",
-        "pythonCode": "my_channel_id = \"UCr2Q0TirO6tHV-ZTEFNzfGQ\"\nunique_comments = {}\n\nfor item in items:\n    data = item[\"json\"]\n    responses = data if isinstance(data, list) else [data]\n\n    for response in responses:\n        for thread in response.get(\"items\", []):\n            # Check if we can reply to this thread\n            thread_snippet = thread.get(\"snippet\", {})\n            can_reply = thread_snippet.get(\"canReply\", True)\n            \n            # Top-level comment\n            top = thread_snippet.get(\"topLevelComment\", {})\n            cid = top.get(\"id\")\n            snippet = top.get(\"snippet\", {})\n            author_id = snippet.get(\"authorChannelId\", {}).get(\"value\")\n            ctext = snippet.get(\"textDisplay\")\n\n            # ✅ Only add if can reply AND not your comment\n            if cid and ctext and author_id != my_channel_id and can_reply:\n                unique_comments[cid] = ctext\n\n            # Replies to comments (these we can also reply to)\n            if can_reply:  # ✅ Check if thread allows replies\n                for reply in thread.get(\"replies\", {}).get(\"comments\", []):\n                    rcid = reply.get(\"id\")\n                    r_snip = reply.get(\"snippet\", {})\n                    rtext = r_snip.get(\"textDisplay\")\n                    r_author_id = r_snip.get(\"authorChannelId\", {}).get(\"value\")\n\n                    if rcid and rtext and r_author_id != my_channel_id:\n                        unique_comments[rcid] = rtext\n\n# Return in n8n format\nreturn [{\"json\": {\"commentId\": cid, \"text\": text}} for cid, text in unique_comments.items()]\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -2192,
-        112
-      ],
-      "id": "363f90a5-1dd6-4f1d-981a-be2b00178a98",
-      "name": "Code in Python (Beta)1"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        -1968,
-        112
-      ],
-      "id": "94b4a219-dc55-4d4f-bc7e-bf724b3be16b",
-      "name": "Loop Over Items"
-    },
-    {
-      "parameters": {
-        "operation": "rowNotExists",
-        "dataTableId": {
-          "__rl": true,
-          "value": "qZwYUmgoEIL7D9c1",
-          "mode": "list",
-          "cachedResultName": "Saved_Comment_IDs",
-          "cachedResultUrl": "/projects/9d6VQ33EHkH1tRpt/datatables/qZwYUmgoEIL7D9c1"
-        },
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "Comment_ID",
-              "keyValue": "={{ $json.commentId }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1,
-      "position": [
-        -1744,
-        32
-      ],
-      "id": "205f753d-1210-4d22-abc6-1d87e592d300",
-      "name": "If row does not exist",
-      "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "95c7c947-8fa9-4c6c-93e1-57daba3a5408",
-              "leftValue": "={{ $json.commentId }}",
-              "rightValue": "",
-              "operator": {
-                "type": "boolean",
-                "operation": "exists",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "looseTypeValidation": true,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        -1520,
-        112
-      ],
-      "id": "aab2e90d-1f62-4bb5-9262-a91478afa376",
-      "name": "If"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [
-        -1744,
-        -160
-      ],
-      "id": "b6a37aa5-0f0a-4240-b047-845478b5fc2c",
-      "name": "No Operation, do nothing"
-    },
-    {
-      "parameters": {
-        "language": "python",
-        "pythonCode": "import json\n\nfor item in _input.all():\n    raw_output = item.json['output']\n    cleaned = raw_output.strip(\"```json\").strip(\"```\").strip()\n    \n    parsed = json.loads(cleaned)\n    \n    item.json = parsed\n\nreturn _input.all()\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -720,
-        112
-      ],
-      "id": "656303fd-2918-4b03-93cc-231ca3acef51",
-      "name": "Code in Python (Beta)2"
-    },
-    {
-      "parameters": {
-        "dataTableId": {
-          "__rl": true,
-          "value": "qZwYUmgoEIL7D9c1",
-          "mode": "list",
-          "cachedResultName": "Saved_Comment_IDs",
-          "cachedResultUrl": "/projects/9d6VQ33EHkH1tRpt/datatables/qZwYUmgoEIL7D9c1"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Comment_ID": "={{ $json.comment_ID }}"
-          },
-          "matchingColumns": [
-            "Comment_ID"
-          ],
-          "schema": [
-            {
-              "id": "Comment_ID",
-              "displayName": "Comment_ID",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "readOnly": false,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1,
-      "position": [
-        -496,
-        208
-      ],
-      "id": "e91a1be9-8a5a-4673-b00e-8320bf4afe88",
-      "name": "Insert row"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        -272,
-        208
-      ],
-      "id": "ffc3a8b2-7b32-4b91-8fd1-538c7c1e5a7f",
-      "name": "Merge"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "=https://www.googleapis.com/youtube/v3/comments",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "youTubeOAuth2Api",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "part",
-              "value": "snippet"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"snippet\": {\n    \"parentId\": \"{{ $json.comment_ID }}\",\n    \"textOriginal\": \"{{ $json.reply }}\"\n  }\n}\n",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -496,
-        16
-      ],
-      "id": "7b6cd518-5893-435c-aa2f-beefb6638623",
-      "name": "HTTP Request1",
-      "retryOnFail": true,
-      "maxTries": 5,
-      "credentials": {
-        "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account_AlgoNovaLabs"
-        }
-      }
     }
   ],
   "connections": {
-    "Code in Python (Beta)": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent": {
-      "main": [
-        [
-          {
-            "node": "Code in Python (Beta)2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "Code in Python (Beta)1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Get many videos": {
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "Code in Python (Beta)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Schedule Trigger": {
-      "main": [
-        [
-          {
-            "node": "Get many videos",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in Python (Beta)1": {
+    "Code in Python (Beta)": {
       "main": [
         [
           {
@@ -415,77 +592,226 @@
       "main": [
         [
           {
-            "node": "No Operation, do nothing",
+            "node": "Done",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "If row does not exist",
+            "node": "Assign AI Agent",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If row does not exist": {
+    "Assign AI Agent": {
       "main": [
         [
           {
-            "node": "If",
+            "node": "Switch",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If": {
+    "Switch": {
       "main": [
         [
           {
-            "node": "Code in Python (Beta)",
+            "node": "AI Agent - Video Prompter2",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Loop Over Items",
+            "node": "AI Agent - Video Prompter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent - Video Prompter3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Code in Python (Beta)2": {
+    "AI Agent - Video Prompter": {
       "main": [
         [
           {
-            "node": "Insert row",
+            "node": "Code in JavaScript",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Video Prompter2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Video Prompter3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Video Prompter2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Video Prompter3",
+            "type": "ai_languageModel",
             "index": 0
           },
           {
-            "node": "HTTP Request1",
+            "node": "Structured Output Parser2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in Data table": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Video Prompter2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Insert row": {
-      "main": [
+    "Structured Output Parser1": {
+      "ai_outputParser": [
         [
           {
-            "node": "Merge",
-            "type": "main",
-            "index": 1
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_outputParser",
+            "index": 0
           }
         ]
       ]
     },
-    "Merge": {
+    "Get row(s) in Data table1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Video Prompter3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in Data table2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Video Prompter3",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Video Prompter2",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Update a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a video": {
       "main": [
         [
           {
@@ -496,11 +822,11 @@
         ]
       ]
     },
-    "HTTP Request1": {
+    "Schedule Trigger": {
       "main": [
         [
           {
-            "node": "Merge",
+            "node": "Get many videos",
             "type": "main",
             "index": 0
           }
