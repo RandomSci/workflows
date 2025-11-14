@@ -7,7 +7,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -4160,
+        -4176,
         272
       ],
       "id": "818fb027-1a27-42a8-b8af-474c1523704d",
@@ -84,7 +84,7 @@
       "credentials": {
         "youTubeOAuth2Api": {
           "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account"
+          "name": "YouTube account_AlgoNovaLabs"
         }
       }
     },
@@ -106,7 +106,7 @@
       "credentials": {
         "youTubeOAuth2Api": {
           "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account"
+          "name": "YouTube account_AlgoNovaLabs"
         }
       }
     },
@@ -128,8 +128,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -4400,
-        -144
+        -4416,
+        -128
       ],
       "id": "8c78b996-941a-4167-86a2-3a5c9b77cfdb",
       "name": "No Operation, do nothing"
@@ -167,7 +167,7 @@
         "filtersUI": {
           "values": [
             {
-              "lookupColumn": "YouTube Title",
+              "lookupColumn": "AlgoNova Youtube Title",
               "lookupValue": "={{ $('Loop Over Items').item.json.snippet.title }}"
             }
           ]
@@ -307,9 +307,9 @@
         "resource": "image",
         "modelId": {
           "__rl": true,
-          "value": "models/gemini-2.0-flash-exp-image-generation",
+          "value": "models/imagen-4.0-generate-preview-06-06",
           "mode": "list",
-          "cachedResultName": "models/gemini-2.0-flash-exp-image-generation"
+          "cachedResultName": "models/imagen-4.0-generate-preview-06-06"
         },
         "prompt": "={{ $json.prompt }}",
         "options": {}
@@ -324,8 +324,8 @@
       "name": "Generate an image",
       "credentials": {
         "googlePalmApi": {
-          "id": "EiUQRi4x0N96lhYH",
-          "name": "algonovalabs_YOUTUBE AUTOMATION RELATED"
+          "id": "Qn2KmHKfcYN7JBvq",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
@@ -679,7 +679,7 @@
       "credentials": {
         "youTubeOAuth2Api": {
           "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account"
+          "name": "YouTube account_AlgoNovaLabs"
         }
       }
     }
