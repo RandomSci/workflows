@@ -14,13 +14,9 @@ logger = logging.getLogger("main")
 app = FastAPI(title="Audio Visualizer Streaming API")
 
 class AudioRequest(BaseModel):
-    audio_url: str  # Can be direct or Google Drive link
+    audio_url: str
 
 def download_file(url: str) -> str:
-    """
-    Downloads a file and returns its temporary path.
-    Supports Google Drive links (publicly shared) automatically.
-    """
     logger.debug(f"Downloading audio from URL: {url}")
 
     drive_match = re.match(r"https://drive\.google\.com/uc\?id=([a-zA-Z0-9_-]+)", url)
@@ -36,7 +32,7 @@ def download_file(url: str) -> str:
         logger.error(f"Failed to download audio: {e}")
         raise HTTPException(status_code=400, detail=f"Failed to download audio: {str(e)}")
 
-    tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".audio")
+    tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
     for chunk in resp.iter_content(chunk_size=1024*1024):
         if chunk:
             tmp_file.write(chunk)
@@ -61,13 +57,13 @@ async def visualizer(request: AudioRequest):
         "-ar", "44100",           
         "-f", "wav",             
         "-filter_complex",        
-        "showwaves=s=1080x1080:mode=line:colors=white",
+        "showwaves=s=1080x1080:mode=line:colors=white",  
         "-pix_fmt", "yuv420p",
         "-c:v", "libx264",        
         "-preset", "veryfast",    
         "-movflags", "frag_keyframe+empty_moov",  
         "-f", "mp4",             
-        "pipe:1"                 
+        "pipe:1"                  
     ]
 
     logger.debug(f"Running FFmpeg command: {' '.join(ffmpeg_cmd)}")
