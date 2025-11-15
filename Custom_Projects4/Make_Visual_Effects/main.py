@@ -90,12 +90,10 @@ async def visualizer(request: AudioRequest):
     pcm_audio_path = None
 
     try:
-        # === DOWNLOAD ===
         downloaded_file = download_file(audio_url)
         if not validate_audio_file(downloaded_file):
             raise HTTPException(status_code=400, detail="No audio stream")
 
-        # === CONVERT TO WAV ===
         pcm_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
         pcm_audio_path = pcm_file.name
         pcm_file.close()
@@ -104,7 +102,6 @@ async def visualizer(request: AudioRequest):
             "ffmpeg", "-y", "-i", downloaded_file,
             "-vn", "-ac", "1", "-ar", "44100", "-f", "wav", pcm_audio_path
         ]
-        logger.debug(f"Convert: {' '.join(convert_cmd)}")
         result = subprocess.run(convert_cmd, capture_output=True, text=True)
         if result.returncode != 0:
             logger.error(f"Convert failed: {result.stderr}")
@@ -113,17 +110,20 @@ async def visualizer(request: AudioRequest):
         if not os.path.exists(pcm_audio_path) or os.path.getsize(pcm_audio_path) == 0:
             raise HTTPException(status_code=500, detail="WAV file missing or empty")
 
-        # === GENERATE VISUALIZER ===
         vis_cmd = [
-            "ffmpeg", "-y", "-i", pcm_audio_path,
-            "-filter_complex", "showwaves=s=1080x1080:mode=line:colors=white",
-            "-pix_fmt", "yuv420p", "-c:v", "libx264", "-preset", "veryfast",
-            "-movflags", "frag_keyframe+empty_moov", "-f", "mp4", "pipe:1"
+            "ffmpeg", "-y",
+            "-i", pcm_audio_path,
+            "-filter_complex", "[0:a]showwaves=s=1080x1080:mode=line:colors=white[col];[col]format=yuv420p[out]",
+            "-map", "[out]",
+            "-c:v", "libx264",
+            "-preset", "veryfast",
+            "-movflags", "frag_keyframe+empty_moov",
+            "-f", "mp4",
+            "pipe:1"
         ]
         logger.debug(f"Visualizer: {' '.join(vis_cmd)}")
         process = subprocess.Popen(vis_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        # === STREAM + CLEANUP AFTER STREAM ENDS ===
         def video_stream():
             try:
                 while True:
@@ -153,7 +153,6 @@ async def visualizer(request: AudioRequest):
         )
 
     except HTTPException:
-        # Cleanup on error
         for path in [downloaded_file, pcm_audio_path]:
             if path and os.path.exists(path):
                 try:
