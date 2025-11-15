@@ -1,14 +1,19 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
 import subprocess
 import requests
 import tempfile
 import os
+from pydantic import BaseModel
 
 app = FastAPI(title="Audio Visualizer Streaming API")
 
-@app.get("/visualizer")
-async def visualizer(audio_url: str = Query(..., description="Public URL to your audio file")):
+class AudioRequest(BaseModel):
+    audio_url: str
+
+@app.post("/visualizer")
+async def visualizer(request: AudioRequest):
+    audio_url = request.audio_url
     if not audio_url:
         raise HTTPException(status_code=400, detail="Audio URL is required")
     
