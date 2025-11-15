@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.responses import FileResponse
 import subprocess
 import uuid
 import os
@@ -29,12 +30,12 @@ async def download_video(req: VideoRequest):
         subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except subprocess.CalledProcessError as e:
         raise HTTPException(
-            status_code=500, 
+            status_code=500,
             detail=f"Download failed: {e.stderr.decode('utf-8', errors='ignore')}"
         )
 
-    return {
-        "status": "success",
-        "file": output_filename,
-        "path": os.path.abspath(output_filename)
-    }
+    return FileResponse(
+        path=output_filename,
+        media_type="video/mp4",
+        filename=output_filename
+    )
