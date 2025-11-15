@@ -14,7 +14,7 @@ logger = logging.getLogger("main")
 app = FastAPI(title="Audio Visualizer Streaming API")
 
 class AudioRequest(BaseModel):
-    audio_url: str  
+    audio_url: str  # Can be direct or Google Drive link
 
 def download_file(url: str) -> str:
     """
@@ -57,17 +57,19 @@ async def visualizer(request: AudioRequest):
     ffmpeg_cmd = [
         "ffmpeg",
         "-i", tmp_file_path,
-        "-f", "wav",        
-        "-ac", "1",         
-        "-ar", "44100",     
-        "-filter_complex", "showwaves=s=1080x1080:mode=line:colors=white",
+        "-ac", "1",               
+        "-ar", "44100",           
+        "-f", "wav",             
+        "-filter_complex",        
+        "showwaves=s=1080x1080:mode=line:colors=white",
         "-pix_fmt", "yuv420p",
-        "-c:v", "libx264",
-        "-preset", "veryfast",
-        "-movflags", "frag_keyframe+empty_moov",
-        "-f", "mp4",
-        "pipe:1"
+        "-c:v", "libx264",        
+        "-preset", "veryfast",    
+        "-movflags", "frag_keyframe+empty_moov",  
+        "-f", "mp4",             
+        "pipe:1"                 
     ]
+
     logger.debug(f"Running FFmpeg command: {' '.join(ffmpeg_cmd)}")
 
     try:
