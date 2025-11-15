@@ -1,97 +1,43 @@
-import io
+from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi.responses import StreamingResponse
 import subprocess
 import tempfile
-import requests
 import logging
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+import io
+
+app = FastAPI(title="Audio Visualizer Streaming API")
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("main")
 
-app = FastAPI(title="Audio Visualizer Streaming API")
-
-class AudioRequest(BaseModel):
-    audio_url: str
-
-def download_file(url: str) -> io.BytesIO:
-    logger.debug(f"Downloading from URL: {url}")
-
-    # Use webContentLink directly
-    if "uc?id=" in url and "export=download" not in url:
-        direct_url = url + "&export=download"
-    else:
-        direct_url = url
-
-    logger.debug(f"Final download URL: {direct_url}")
-
-    session = requests.Session()
-    session.headers.update({
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-    })
-
-    try:
-        response = session.get(direct_url, stream=True, allow_redirects=True, timeout=60)
-        response.raise_for_status()
-
-        # Check first chunk
-        first_chunk = next(response.iter_content(1024), b"")
-        if not first_chunk:
-            raise HTTPException(status_code=400, detail="File is empty or blocked")
-
-        content_type = response.headers.get("Content-Type", "").lower()
-        if "text/html" in content_type:
-            raise HTTPException(status_code=400, detail="Received HTML. File not accessible.")
-
-    except Exception as e:
-        logger.error(f"Download failed: {e}")
-        raise HTTPException(status_code=400, detail=f"Download failed: {str(e)}")
-
-    file_data = io.BytesIO()
-    for chunk in response.iter_content(chunk_size=1024*1024):
-        if chunk:
-            file_data.write(chunk)
-    file_data.seek(0)
-    logger.debug(f"Downloaded file data: {file_data.getbuffer().nbytes} bytes")
-    return file_data
-
-def validate_audio_file(file_data: io.BytesIO) -> bool:
-    cmd = ["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries", "stream=index", "-of", "csv=p=0", "-"]
-    try:
-        process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate(input=file_data.read())
-        if process.returncode != 0:
-            logger.error(f"Validation failed: {stderr.decode()}")
-            return False
-        return bool(stdout.strip())
-    except Exception as e:
-        logger.error(f"Validation failed: {str(e)}")
-        return False
-
 @app.post("/visualizer")
-async def visualizer(request: AudioRequest):
-    audio_url = request.audio_url.strip()
-    if not audio_url:
-        raise HTTPException(status_code=400, detail="Audio URL required")
+async def visualizer(file: UploadFile = File(...)):
+    logger.debug(f"Received file: {file.filename}")
 
-    file_data = None
+    # Read binary data from file
+    file_data = await file.read()
+    logger.debug(f"Received {len(file_data)} bytes of audio data")
+
+    # Write it to a temporary file
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp_audio_file:
+        tmp_audio_file.write(file_data)
+        tmp_audio_path = tmp_audio_file.name
 
     try:
-        file_data = download_file(audio_url)
-        if not validate_audio_file(file_data):
-            raise HTTPException(status_code=400, detail="No audio stream")
+        # Validate audio file
+        if not validate_audio_file(tmp_audio_path):
+            raise HTTPException(status_code=400, detail="No audio stream found")
 
-        # Generate the audio spectrum directly from in-memory data
+        # Generate video using FFmpeg
         vis_cmd = [
-            "ffmpeg", "-y", "-f", "wav", "-i", "pipe:0", 
-            "-filter_complex", "[0:a]showwaves=s=640x360:mode=line:colors=white[col];[col]format=yuv420p[out]", 
-            "-map", "[out]", "-c:v", "libx264", "-preset", "ultrafast", "-movflags", "frag_keyframe+empty_moov", 
-            "-f", "mp4", "pipe:1"
+            "ffmpeg", "-y", "-i", tmp_audio_path,
+            "-filter_complex", "[0:a]showwaves=s=640x360:mode=line:colors=white[col];[col]format=yuv420p[out]",
+            "-map", "[out]", "-c:v", "libx264", "-preset", "ultrafast",
+            "-movflags", "frag_keyframe+empty_moov", "-f", "mp4", "pipe:1"
         ]
-        process = subprocess.Popen(vis_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        
+        process = subprocess.Popen(vis_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        # Stream the video directly
         def video_stream():
             try:
                 while True:
@@ -106,13 +52,26 @@ async def visualizer(request: AudioRequest):
             finally:
                 process.stdout.close()
                 process.stderr.close()
+                try:
+                    os.remove(tmp_audio_path)
+                except Exception as e:
+                    logger.error(f"Error cleaning up temp file: {e}")
 
         return StreamingResponse(
             video_stream(),
             media_type="video/mp4",
             headers={"Content-Disposition": 'attachment; filename="visualizer.mp4"'}
         )
-
     except Exception as e:
-        logger.exception("Unexpected error")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error generating visualizer: {e}")
+        raise HTTPException(status_code=500, detail="Error generating visualizer")
+
+def validate_audio_file(filepath: str) -> bool:
+    # Validate audio file using ffprobe (for audio stream presence)
+    cmd = ["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries", "stream=index", "-of", "csv=p=0", filepath]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        return bool(result.stdout.strip())
+    except Exception as e:
+        logger.error(f"Validation error: {e}")
+        return False
