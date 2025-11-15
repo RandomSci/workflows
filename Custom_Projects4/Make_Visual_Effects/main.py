@@ -61,6 +61,10 @@ async def visualizer(request: AudioRequest):
             ffmpeg_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         logger.debug("FFmpeg process started successfully.")
+        
+        stderr = process.stderr.read().decode('utf-8')
+        if stderr:
+            logger.error(f"FFmpeg stderr: {stderr}")
     except Exception as e:
         logger.error(f"Failed to start FFmpeg process: {str(e)}")
         os.remove(tmp_file_path)
