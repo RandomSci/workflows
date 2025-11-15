@@ -56,26 +56,40 @@ async def visualizer(request: AudioRequest):
     # Download the audio file
     tmp_file_path = download_file(audio_url)
 
+    # Check the file's stream to ensure it's valid
+    ffmpeg_cmd = ["ffmpeg", "-i", tmp_file_path]
+    logger.debug(f"Checking input file metadata: {' '.join(ffmpeg_cmd)}")
+
+    try:
+        # Run FFmpeg to get file info (no conversion, just checking streams)
+        subprocess.run(ffmpeg_cmd, check=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    except Exception as e:
+        logger.error(f"Failed to inspect audio file: {str(e)}")
+        if os.path.exists(tmp_file_path):
+            os.remove(tmp_file_path)
+        raise HTTPException(status_code=500, detail=f"Failed to inspect audio file: {str(e)}")
+
     # Define the temporary file path for PCM audio
     pcm_audio_path = tempfile.NamedTemporaryFile(delete=False, suffix=".wav").name
 
-    # Define FFmpeg command to extract and convert audio to raw PCM
+    # Forced extraction of audio (just in case the WebM file has multiple streams)
     ffmpeg_cmd = [
         "ffmpeg",
-        "-i", tmp_file_path,      # Input audio file (may be WebM, Opus, etc.)
-        "-ac", "1",                # Mono audio channel
-        "-ar", "44100",            # Audio sample rate
-        "-vn",                     # No video output
-        "-f", "wav",               # Convert to WAV format for visualization
-        pcm_audio_path            # Output PCM WAV file
+        "-i", tmp_file_path,  # Input audio file (may be WebM, Opus, etc.)
+        "-vn",                 # No video output
+        "-ac", "1",            # Mono audio channel
+        "-ar", "44100",        # Audio sample rate
+        "-f", "wav",           # Force conversion to WAV format for visualization
+        pcm_audio_path        # Output PCM WAV file
     ]
 
     logger.debug(f"Running FFmpeg to convert audio to PCM: {' '.join(ffmpeg_cmd)}")
 
     try:
-        # Run the FFmpeg process
+        # Run the FFmpeg process to convert the audio file to PCM WAV
         subprocess.run(ffmpeg_cmd, check=True)
     except Exception as e:
+        logger.error(f"FFmpeg failed during conversion: {str(e)}")
         if os.path.exists(tmp_file_path):
             os.remove(tmp_file_path)
         raise HTTPException(status_code=500, detail=f"Failed to convert audio to PCM: {str(e)}")
