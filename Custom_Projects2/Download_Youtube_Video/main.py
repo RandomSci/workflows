@@ -1,11 +1,13 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.responses import FileResponse
+from pydantic import BaseModel
 import subprocess
 import uuid
 import os
 
-app = FastAPI(title="YouTube Downloader API")
+app = FastAPI(title="YouTube Downloader API with Cookies")
+
+COOKIES_FILE = "/app/cookies.txt"
 
 class VideoRequest(BaseModel):
     url: str
@@ -21,6 +23,8 @@ async def download_video(req: VideoRequest):
 
     cmd = [
         "yt-dlp",
+        "--cookies", COOKIES_FILE,
+        "--extractor-args", "youtube:player_client=default",
         "-o", output_filename,
         "-f", "bestvideo+bestaudio/best",
         video_url
@@ -34,8 +38,7 @@ async def download_video(req: VideoRequest):
             detail=f"Download failed: {e.stderr.decode('utf-8', errors='ignore')}"
         )
 
-    return FileResponse(
-        path=output_filename,
-        media_type="video/mp4",
-        filename=output_filename
-    )
+    if not os.path.exists(output_filename):
+        raise HTTPException(status_code=500, detail="Video download failed or file missing.")
+
+    return FileResponse(path=output_filename, filename=output_filename, media_type="video/mp4")
