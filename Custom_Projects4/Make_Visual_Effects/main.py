@@ -59,18 +59,18 @@ async def visualizer(request: AudioRequest):
     # Define FFmpeg command to generate visualizer
     ffmpeg_cmd = [
         "ffmpeg",
-        "-i", tmp_file_path,      # Input file (audio)
-        "-ac", "1",                # Mono audio channel
-        "-ar", "44100",           # Audio sample rate
-        "-f", "wav",              # Output format (wav)
-        "-filter_complex",        
+        "-i", tmp_file_path,             # Input file (audio)
+        "-ac", "1",                       # Mono audio channel
+        "-ar", "44100",                  # Audio sample rate
+        "-f", "wav",                     # Output format (WAV) for internal processing
+        "-filter_complex",               
         "showwaves=s=1080x1080:mode=line:colors=white",  # Waveform visualization
-        "-pix_fmt", "yuv420p",     # Pixel format for video compatibility
-        "-c:v", "libx264",        # Video codec
-        "-preset", "veryfast",    # Encoding speed
+        "-pix_fmt", "yuv420p",            # Pixel format for video compatibility
+        "-c:v", "libx264",               # Video codec
+        "-preset", "veryfast",           # Encoding speed
         "-movflags", "frag_keyframe+empty_moov",  # Flag for smooth streaming
-        "-f", "mp4",              # Output format (mp4)
-        "pipe:1"                  # Output to stdout (streaming)
+        "-f", "mp4",                     # Output format (MP4)
+        "pipe:1"                         # Output to stdout (streaming)
     ]
 
     logger.debug(f"Running FFmpeg command: {' '.join(ffmpeg_cmd)}")
