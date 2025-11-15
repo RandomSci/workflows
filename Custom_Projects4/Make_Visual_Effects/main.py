@@ -52,10 +52,10 @@ async def visualizer(audio_url: str = Query(..., description="Public URL to your
                 if not chunk:
                     break
                 yield chunk
+            process.wait()  
         finally:
             process.stdout.close()
             process.stderr.close()
-            process.terminate()
             os.remove(tmp_file_path)
 
     return StreamingResponse(
