@@ -7,151 +7,154 @@ import logging
 from pydantic import BaseModel
 import requests
 import re
+import shutil
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("main")
 
 app = FastAPI(title="Audio Visualizer Streaming API")
 
-# Define the request body model
 class AudioRequest(BaseModel):
     audio_url: str
 
-# Function to download the audio file from the provided URL (e.g., Google Drive)
 def download_file(url: str) -> str:
-    logger.debug(f"Downloading audio from URL: {url}")
+    logger.debug(f"Downloading from URL: {url}")
 
-    # If the URL is from Google Drive, we extract the file ID
     drive_match = re.match(r"https://drive\.google\.com/uc\?id=([a-zA-Z0-9_-]+)", url)
     if drive_match:
         file_id = drive_match.group(1)
         url = f"https://drive.google.com/uc?export=download&id={file_id}"
-        logger.debug(f"Detected Google Drive file, updated URL: {url}")
+        logger.debug(f"Google Drive file detected, using URL: {url}")
 
+    session = requests.Session()
     try:
-        resp = requests.get(url, stream=True)
-        resp.raise_for_status()  # Will raise an error if the download fails
+        resp = session.get(url, stream=True, allow_redirects=True)
+        resp.raise_for_status()
+
+        if "text/html" in resp.headers.get("Content-Type", ""):
+            confirm_match = re.search(r'confirm=([a-zA-Z0-9]+)', resp.text)
+            if confirm_match:
+                confirm_token = confirm_match.group(1)
+                download_url = f"{url}&confirm={confirm_token}"
+                logger.debug(f"Using confirm token: {confirm_token}")
+                resp = session.get(download_url, stream=True)
+                resp.raise_for_status()
+
+        content_type = resp.headers.get("Content-Type", "")
+        if "text/html" in content_type or "octet-stream" not in content_type:
+            if "googleusercontent.com" not in resp.url:
+                logger.error("Downloaded HTML instead of file (likely virus scan page)")
+                raise HTTPException(status_code=400, detail="Failed to download: Google Drive virus scan page detected. Use a shared link with 'anyone with link' access.")
+
     except Exception as e:
-        logger.error(f"Failed to download audio: {e}")
-        raise HTTPException(status_code=400, detail=f"Failed to download audio: {str(e)}")
+        logger.error(f"Download failed: {e}")
+        raise HTTPException(status_code=400, detail=f"Download failed: {str(e)}")
 
-    # Save the downloaded audio to a temporary file
-    tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".webm")  # Save as .webm to ensure we handle various formats
-    for chunk in resp.iter_content(chunk_size=1024*1024):
-        if chunk:
-            tmp_file.write(chunk)
-    tmp_file_path = tmp_file.name
-    tmp_file.close()
+    suffix = ".webm" if "webm" in content_type else ".mp4" if "mp4" in content_type else ".bin"
+    tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+    try:
+        for chunk in resp.iter_content(chunk_size=1024*1024):
+            if chunk:
+                tmp_file.write(chunk)
+        tmp_file.close()
+        logger.debug(f"File downloaded to: {tmp_file.name}")
+        return tmp_file.name
+    except Exception as e:
+        os.unlink(tmp_file.name)
+        raise HTTPException(status_code=500, detail=f"Failed to save file: {e}")
 
-    logger.debug(f"Audio saved to temporary file: {tmp_file_path}")
-    return tmp_file_path
+def validate_audio_file(filepath: str) -> bool:
+    """Check if file has at least one audio stream using ffprobe"""
+    ffprobe_cmd = [
+        "ffprobe", "-v", "error", "-select_streams", "a:0",
+        "-show_entries", "stream=index", "-of", "csv=p=0", filepath
+    ]
+    try:
+        result = subprocess.run(ffprobe_cmd, capture_output=True, text=True, check=True)
+        return bool(result.stdout.strip())
+    except subprocess.CalledProcessError:
+        return False
+    except FileNotFoundError:
+        logger.error("ffprobe not found. Install ffmpeg.")
+        return False
 
 @app.post("/visualizer")
 async def visualizer(request: AudioRequest):
-    # Extract the audio URL from the request body
-    audio_url = request.audio_url
+    audio_url = request.audio_url.strip()
     if not audio_url:
         raise HTTPException(status_code=400, detail="Audio URL is required")
 
-    # Download the audio file
-    tmp_file_path = download_file(audio_url)
-
-    # Check the file's stream to ensure it's valid
-    ffmpeg_cmd = ["ffmpeg", "-i", tmp_file_path]
-    logger.debug(f"Checking input file metadata: {' '.join(ffmpeg_cmd)}")
+    tmp_file_path = None
+    pcm_audio_path = None
 
     try:
-        # Run FFmpeg to get file info (no conversion, just checking streams)
-        subprocess.run(ffmpeg_cmd, check=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-    except Exception as e:
-        logger.error(f"Failed to inspect audio file: {str(e)}")
-        if os.path.exists(tmp_file_path):
-            os.remove(tmp_file_path)
-        raise HTTPException(status_code=500, detail=f"Failed to inspect audio file: {str(e)}")
+        tmp_file_path = download_file(audio_url)
 
-    # Define the temporary file path for PCM audio
-    pcm_audio_path = tempfile.NamedTemporaryFile(delete=False, suffix=".wav").name
+        if not validate_audio_file(tmp_file_path):
+            logger.error("No audio stream found in file")
+            raise HTTPException(status_code=400, detail="File has no audio stream or is corrupted.")
 
-    # Forced extraction of audio (just in case the WebM file has multiple streams)
-    ffmpeg_cmd = [
-        "ffmpeg",
-        "-i", tmp_file_path,  # Input audio file (may be WebM, Opus, etc.)
-        "-vn",                 # No video output
-        "-ac", "1",            # Mono audio channel
-        "-ar", "44100",        # Audio sample rate
-        "-f", "wav",           # Force conversion to WAV format for visualization
-        pcm_audio_path        # Output PCM WAV file
-    ]
+        pcm_audio_path = tempfile.NamedTemporaryFile(delete=False, suffix=".wav").name
+        convert_cmd = [
+            "ffmpeg", "-y", 
+            "-i", tmp_file_path,
+            "-vn",           
+            "-ac", "1",      
+            "-ar", "44100", 
+            "-f", "wav",
+            pcm_audio_path
+        ]
+        logger.debug(f"Converting: {' '.join(convert_cmd)}")
+        result = subprocess.run(convert_cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            logger.error(f"FFmpeg conversion failed: {result.stderr}")
+            raise HTTPException(status_code=500, detail="Audio conversion failed")
 
-    logger.debug(f"Running FFmpeg to convert audio to PCM: {' '.join(ffmpeg_cmd)}")
+        vis_cmd = [
+            "ffmpeg", "-y",
+            "-i", pcm_audio_path,
+            "-filter_complex", "showwaves=s=1080x1080:mode=line:colors=white:s=1080x1080",
+            "-pix_fmt", "yuv420p",
+            "-c:v", "libx264",
+            "-preset", "veryfast",
+            "-movflags", "frag_keyframe+empty_moov",
+            "-f", "mp4",
+            "pipe:1"
+        ]
 
-    try:
-        # Run the FFmpeg process to convert the audio file to PCM WAV
-        subprocess.run(ffmpeg_cmd, check=True)
-    except Exception as e:
-        logger.error(f"FFmpeg failed during conversion: {str(e)}")
-        if os.path.exists(tmp_file_path):
-            os.remove(tmp_file_path)
-        raise HTTPException(status_code=500, detail=f"Failed to convert audio to PCM: {str(e)}")
+        logger.debug(f"Generating visualizer: {' '.join(vis_cmd)}")
+        process = subprocess.Popen(vis_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-    # Now generate the visualizer video from the PCM audio
-    ffmpeg_cmd = [
-        "ffmpeg",
-        "-i", pcm_audio_path,                    # Input the PCM WAV file
-        "-ac", "1",                               # Mono audio channel
-        "-ar", "44100",                           # Audio sample rate
-        "-filter_complex",                        
-        "showwaves=s=1080x1080:mode=line:colors=white",  # Waveform visualization
-        "-pix_fmt", "yuv420p",                    # Pixel format for video compatibility
-        "-c:v", "libx264",                        # Video codec
-        "-preset", "veryfast",                    # Encoding speed
-        "-movflags", "frag_keyframe+empty_moov",  # Flag for smooth streaming
-        "-f", "mp4",                              # Output format (MP4)
-        "pipe:1"                                  # Output to stdout (streaming)
-    ]
+        def video_stream():
+            try:
+                while True:
+                    data = process.stdout.read(1024 * 1024)
+                    if not data:
+                        break
+                    yield data
+                process.wait()
+                if process.returncode != 0:
+                    err = process.stderr.read().decode()
+                    logger.error(f"FFmpeg visualizer error: {err}")
+            finally:
+                process.stdout.close()
+                process.stderr.close()
 
-    logger.debug(f"Running FFmpeg command to generate visualizer: {' '.join(ffmpeg_cmd)}")
-
-    try:
-        # Run the FFmpeg process for video generation
-        process = subprocess.Popen(
-            ffmpeg_cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
+        return StreamingResponse(
+            video_stream(),
+            media_type="video/mp4",
+            headers={"Content-Disposition": 'attachment; filename="visualizer.mp4"'}
         )
+
+    except HTTPException:
+        raise
     except Exception as e:
-        if os.path.exists(tmp_file_path):
-            os.remove(tmp_file_path)
-        if os.path.exists(pcm_audio_path):
-            os.remove(pcm_audio_path)
-        raise HTTPException(status_code=500, detail=f"Failed to start visualizer: {str(e)}")
-
-    # Function to stream the video chunks back to the client
-    def iter_video():
-        try:
-            logger.debug("Streaming video chunks...")
-            while True:
-                chunk = process.stdout.read(1024*1024)
-                if not chunk:
-                    logger.debug("End of video stream reached.")
-                    break
-                yield chunk
-            process.wait()
-            stderr_output = process.stderr.read().decode()
-            if stderr_output:
-                logger.error(f"FFmpeg stderr:\n{stderr_output}")
-        finally:
-            process.stdout.close()
-            process.stderr.close()
-            if os.path.exists(tmp_file_path):
-                os.remove(tmp_file_path)  # Clean up the temporary files
-            if os.path.exists(pcm_audio_path):
-                os.remove(pcm_audio_path)
-            logger.debug("Temporary audio file removed.")
-
-    # Return the streaming video as a response
-    return StreamingResponse(
-        iter_video(),
-        media_type="video/mp4",  # Video format
-        headers={"Content-Disposition": 'attachment; filename="visualizer.mp4"'}
-    )
+        logger.exception("Unexpected error")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        for path in [tmp_file_path, pcm_audio_path]:
+            if path and os.path.exists(path):
+                try:
+                    os.unlink(path)
+                except:
+                    pass
