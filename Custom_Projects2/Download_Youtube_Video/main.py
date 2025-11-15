@@ -1,70 +1,47 @@
-import asyncio
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import StreamingResponse
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import os
-import shlex
+import subprocess
 import uuid
+import os
 
-app = FastAPI(title="YouTube Downloader API with Cookies")
+app = FastAPI(title="YouTube Downloader API")
 
-COOKIES_FILE = "/app/cookies.txt"
-
-if not os.path.exists(COOKIES_FILE):
-    raise RuntimeError("cookies.txt not found at /app/cookies.txt")
+COOKIES_FILE = "/app/cookies.txt"  
+DOWNLOAD_DIR = "/app/downloads"
+os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 class VideoRequest(BaseModel):
     url: str
 
 @app.post("/download")
-async def download_video(req: VideoRequest, request: Request):
+async def download_video(req: VideoRequest):
     video_url = req.url
     if not video_url:
         raise HTTPException(status_code=400, detail="URL is required")
 
+    output_filename = f"{uuid.uuid4()}.mp4"
+    output_path = os.path.join(DOWNLOAD_DIR, output_filename)
+
     cmd = [
         "yt-dlp",
-        "--cookies", COOKIES_FILE,
-        "--extractor-args", "youtube:player_client=default",
+        "-o", output_path,
         "-f", "bestvideo+bestaudio/best",
-        "-o", "-",  
         video_url
     ]
 
-    process = await asyncio.create_subprocess_exec(
-        *cmd,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE
-    )
+    if os.path.exists(COOKIES_FILE):
+        cmd.insert(1, "--cookies")
+        cmd.insert(2, COOKIES_FILE)
 
-    async def stream_generator():
-        try:
-            while True:
-                chunk = await process.stdout.read(2 * 1024 * 1024) 
-                if not chunk:
-                    break
-                yield chunk
+    try:
+        subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Download failed: {e.stderr.decode('utf-8', errors='ignore')}"
+        )
 
-                if await request.is_disconnected():
-                    process.kill()
-                    break
+    if not os.path.exists(output_path):
+        raise HTTPException(status_code=500, detail="Video download failed.")
 
-            await process.wait()
-
-            if process.returncode != 0:
-                stderr = await process.stderr.read()
-                raise HTTPException(
-                    status_code=500,
-                    detail=f"yt-dlp failed: {stderr.decode(errors='ignore')}"
-                )
-
-        except Exception:
-            process.kill()
-            raise
-
-    filename = f"{uuid.uuid4()}.mp4"
-    return StreamingResponse(
-        stream_generator(),
-        media_type="video/mp4",
-        headers={"Content-Disposition": f'attachment; filename="{filename}"'}
-    )
+    return {"status": "success", "file": output_filename, "path": output_path}
