@@ -7,7 +7,6 @@ import logging
 from pydantic import BaseModel
 import requests
 import re
-import shutil
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("main")
@@ -19,15 +18,12 @@ class AudioRequest(BaseModel):
 
 def download_file(url: str) -> str:
     logger.debug(f"Downloading from URL: {url}")
-
-    # Normalize Google Drive URL
-    drive_match = re.search(r"[?&]id=([a-zA-Z0-9_-]+)", url)
-    if not drive_match:
+    file_id_match = re.search(r"[?&]id=([a-zA-Z0-9_-]+)", url)
+    if not file_id_match:
         raise HTTPException(status_code=400, detail="Invalid Google Drive URL")
-    
-    file_id = drive_match.group(1)
+    file_id = file_id_match.group(1)
     direct_url = f"https://drive.google.com/uc?export=download&id={file_id}"
-    logger.debug(f"Using direct download URL: {direct_url}")
+    logger.debug(f"Direct URL: {direct_url}")
 
     session = requests.Session()
     session.headers.update({
@@ -35,39 +31,24 @@ def download_file(url: str) -> str:
     })
 
     try:
-        # Step 1: Get the file page (to get cookies + confirm token)
-        response = session.get(direct_url, stream=True, allow_redirects=True)
+        response = session.get(direct_url, stream=True, allow_redirects=True, timeout=30)
         response.raise_for_status()
 
-        # Check if it's the virus scan page
         if "text/html" in response.headers.get("Content-Type", ""):
-            logger.debug("Virus scan page detected. Extracting confirm token...")
             confirm_match = re.search(r'confirm=([0-9A-Za-z_]+)', response.text)
             if not confirm_match:
-                raise HTTPException(status_code=400, detail="Virus scan page detected but no confirm token found.")
-            
-            confirm_token = confirm_match.group(1)
-            download_url = f"{direct_url}&confirm={confirm_token}"
-            logger.debug(f"Using confirm token: {confirm_token}")
-
-            # Step 2: Download with confirm token
-            response = session.get(download_url, stream=True)
+                raise HTTPException(status_code=400, detail="Virus scan page: no confirm token")
+            token = confirm_match.group(1)
+            response = session.get(f"{direct_url}&confirm={token}", stream=True, timeout=60)
             response.raise_for_status()
-
-            # Final check: still HTML?
             if "text/html" in response.headers.get("Content-Type", ""):
-                raise HTTPException(status_code=400, detail="Failed to bypass virus scan. Try downloading the file in browser first.")
+                raise HTTPException(status_code=400, detail="Failed to bypass virus scan")
 
-        # Final content type
-        content_type = response.headers.get("Content-Type", "")
-        if "octet-stream" not in content_type and "audio" not in content_type and "video" not in content_type:
-            logger.warning(f"Unexpected content-type: {content_type}")
-
+        content_type = response.headers.get("Content-Type", "").lower()
     except Exception as e:
         logger.error(f"Download failed: {e}")
         raise HTTPException(status_code=400, detail=f"Download failed: {str(e)}")
 
-    # Save to temp file
     suffix = ".webm"
     if "mp3" in content_type: suffix = ".mp3"
     elif "wav" in content_type: suffix = ".wav"
@@ -79,74 +60,68 @@ def download_file(url: str) -> str:
             if chunk:
                 tmp_file.write(chunk)
         tmp_file.close()
-        logger.debug(f"File downloaded: {tmp_file.name} ({os.path.getsize(tmp_file.name)} bytes)")
+        logger.debug(f"Downloaded: {tmp_file.name} ({os.path.getsize(tmp_file.name)} bytes)")
         return tmp_file.name
     except Exception as e:
-        if os.path.exists(tmp_file.name):
-            os.unlink(tmp_file.name)
-        raise HTTPException(status_code=500, detail=f"Failed to save file: {e}")
+        os.unlink(tmp_file.name)
+        raise HTTPException(status_code=500, detail=f"Save failed: {e}")
 
-        
 def validate_audio_file(filepath: str) -> bool:
-    """Check if file has at least one audio stream using ffprobe"""
-    ffprobe_cmd = [
-        "ffprobe", "-v", "error", "-select_streams", "a:0",
-        "-show_entries", "stream=index", "-of", "csv=p=0", filepath
-    ]
+    cmd = ["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries", "stream=index", "-of", "csv=p=0", filepath]
     try:
-        result = subprocess.run(ffprobe_cmd, capture_output=True, text=True, check=True)
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         return bool(result.stdout.strip())
     except subprocess.CalledProcessError:
         return False
     except FileNotFoundError:
-        logger.error("ffprobe not found. Install ffmpeg.")
-        return False
+        logger.error("ffprobe not found")
+        raise HTTPException(status_code=500, detail="FFmpeg not installed")
 
 @app.post("/visualizer")
 async def visualizer(request: AudioRequest):
     audio_url = request.audio_url.strip()
     if not audio_url:
-        raise HTTPException(status_code=400, detail="Audio URL is required")
+        raise HTTPException(status_code=400, detail="Audio URL required")
 
-    tmp_file_path = None
+    # Keep file handles to prevent deletion
+    downloaded_file = None
+    pcm_file_obj = None
     pcm_audio_path = None
 
     try:
-        tmp_file_path = download_file(audio_url)
+        # === DOWNLOAD ===
+        downloaded_file = download_file(audio_url)
 
-        if not validate_audio_file(tmp_file_path):
-            logger.error("No audio stream found in file")
-            raise HTTPException(status_code=400, detail="File has no audio stream or is corrupted.")
+        # === VALIDATE ===
+        if not validate_audio_file(downloaded_file):
+            raise HTTPException(status_code=400, detail="No audio stream")
 
-        pcm_audio_path = tempfile.NamedTemporaryFile(delete=False, suffix=".wav").name
+        # === CONVERT TO WAV (keep file open) ===
+        pcm_file_obj = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
+        pcm_audio_path = pcm_file_obj.name
+        pcm_file_obj.close()  # Close handle but keep file
+
         convert_cmd = [
-            "ffmpeg", "-y", 
-            "-i", tmp_file_path,
-            "-vn",           
-            "-ac", "1",      
-            "-ar", "44100", 
-            "-f", "wav",
-            pcm_audio_path
+            "ffmpeg", "-y", "-i", downloaded_file,
+            "-vn", "-ac", "1", "-ar", "44100", "-f", "wav", pcm_audio_path
         ]
-        logger.debug(f"Converting: {' '.join(convert_cmd)}")
+        logger.debug(f"Convert: {' '.join(convert_cmd)}")
         result = subprocess.run(convert_cmd, capture_output=True, text=True)
         if result.returncode != 0:
-            logger.error(f"FFmpeg conversion failed: {result.stderr}")
+            logger.error(f"Convert failed: {result.stderr}")
             raise HTTPException(status_code=500, detail="Audio conversion failed")
 
-        vis_cmd = [
-            "ffmpeg", "-y",
-            "-i", pcm_audio_path,
-            "-filter_complex", "showwaves=s=1080x1080:mode=line:colors=white:s=1080x1080",
-            "-pix_fmt", "yuv420p",
-            "-c:v", "libx264",
-            "-preset", "veryfast",
-            "-movflags", "frag_keyframe+empty_moov",
-            "-f", "mp4",
-            "pipe:1"
-        ]
+        if not os.path.exists(pcm_audio_path) or os.path.getsize(pcm_audio_path) == 0:
+            raise HTTPException(status_code=500, detail="WAV file empty or missing")
 
-        logger.debug(f"Generating visualizer: {' '.join(vis_cmd)}")
+        # === GENERATE VISUALIZER ===
+        vis_cmd = [
+            "ffmpeg", "-y", "-i", pcm_audio_path,
+            "-filter_complex", "showwaves=s=1080x1080:mode=line:colors=white",
+            "-pix_fmt", "yuv420p", "-c:v", "libx264", "-preset", "veryfast",
+            "-movflags", "frag_keyframe+empty_moov", "-f", "mp4", "pipe:1"
+        ]
+        logger.debug(f"Visualizer: {' '.join(vis_cmd)}")
         process = subprocess.Popen(vis_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         def video_stream():
@@ -159,7 +134,7 @@ async def visualizer(request: AudioRequest):
                 process.wait()
                 if process.returncode != 0:
                     err = process.stderr.read().decode()
-                    logger.error(f"FFmpeg visualizer error: {err}")
+                    logger.error(f"Visualizer error: {err}")
             finally:
                 process.stdout.close()
                 process.stderr.close()
@@ -176,9 +151,11 @@ async def visualizer(request: AudioRequest):
         logger.exception("Unexpected error")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        for path in [tmp_file_path, pcm_audio_path]:
+        # === CLEANUP: Only after streaming! ===
+        for path in [downloaded_file, pcm_audio_path]:
             if path and os.path.exists(path):
                 try:
                     os.unlink(path)
+                    logger.debug(f"Deleted: {path}")
                 except:
                     pass
