@@ -36,7 +36,7 @@ def download_file(url: str) -> str:
         raise HTTPException(status_code=400, detail=f"Failed to download audio: {str(e)}")
 
     # Save the downloaded audio to a temporary file
-    tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
+    tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".webm")  # Save as .webm to ensure we handle various formats
     for chunk in resp.iter_content(chunk_size=1024*1024):
         if chunk:
             tmp_file.write(chunk)
@@ -56,27 +56,50 @@ async def visualizer(request: AudioRequest):
     # Download the audio file
     tmp_file_path = download_file(audio_url)
 
-    # Define FFmpeg command to generate visualizer
+    # Define the temporary file path for PCM audio
+    pcm_audio_path = tempfile.NamedTemporaryFile(delete=False, suffix=".wav").name
+
+    # Define FFmpeg command to extract and convert audio to raw PCM
     ffmpeg_cmd = [
         "ffmpeg",
-        "-i", tmp_file_path,             # Input file (audio)
-        "-ac", "1",                       # Mono audio channel
-        "-ar", "44100",                  # Audio sample rate
-        "-f", "wav",                     # Output format (WAV) for internal processing
-        "-filter_complex",               
-        "showwaves=s=1080x1080:mode=line:colors=white",  # Waveform visualization
-        "-pix_fmt", "yuv420p",            # Pixel format for video compatibility
-        "-c:v", "libx264",               # Video codec
-        "-preset", "veryfast",           # Encoding speed
-        "-movflags", "frag_keyframe+empty_moov",  # Flag for smooth streaming
-        "-f", "mp4",                     # Output format (MP4)
-        "pipe:1"                         # Output to stdout (streaming)
+        "-i", tmp_file_path,      # Input audio file (may be WebM, Opus, etc.)
+        "-ac", "1",                # Mono audio channel
+        "-ar", "44100",            # Audio sample rate
+        "-vn",                     # No video output
+        "-f", "wav",               # Convert to WAV format for visualization
+        pcm_audio_path            # Output PCM WAV file
     ]
 
-    logger.debug(f"Running FFmpeg command: {' '.join(ffmpeg_cmd)}")
+    logger.debug(f"Running FFmpeg to convert audio to PCM: {' '.join(ffmpeg_cmd)}")
 
     try:
         # Run the FFmpeg process
+        subprocess.run(ffmpeg_cmd, check=True)
+    except Exception as e:
+        if os.path.exists(tmp_file_path):
+            os.remove(tmp_file_path)
+        raise HTTPException(status_code=500, detail=f"Failed to convert audio to PCM: {str(e)}")
+
+    # Now generate the visualizer video from the PCM audio
+    ffmpeg_cmd = [
+        "ffmpeg",
+        "-i", pcm_audio_path,                    # Input the PCM WAV file
+        "-ac", "1",                               # Mono audio channel
+        "-ar", "44100",                           # Audio sample rate
+        "-filter_complex",                        
+        "showwaves=s=1080x1080:mode=line:colors=white",  # Waveform visualization
+        "-pix_fmt", "yuv420p",                    # Pixel format for video compatibility
+        "-c:v", "libx264",                        # Video codec
+        "-preset", "veryfast",                    # Encoding speed
+        "-movflags", "frag_keyframe+empty_moov",  # Flag for smooth streaming
+        "-f", "mp4",                              # Output format (MP4)
+        "pipe:1"                                  # Output to stdout (streaming)
+    ]
+
+    logger.debug(f"Running FFmpeg command to generate visualizer: {' '.join(ffmpeg_cmd)}")
+
+    try:
+        # Run the FFmpeg process for video generation
         process = subprocess.Popen(
             ffmpeg_cmd,
             stdout=subprocess.PIPE,
@@ -85,6 +108,8 @@ async def visualizer(request: AudioRequest):
     except Exception as e:
         if os.path.exists(tmp_file_path):
             os.remove(tmp_file_path)
+        if os.path.exists(pcm_audio_path):
+            os.remove(pcm_audio_path)
         raise HTTPException(status_code=500, detail=f"Failed to start visualizer: {str(e)}")
 
     # Function to stream the video chunks back to the client
@@ -105,7 +130,9 @@ async def visualizer(request: AudioRequest):
             process.stdout.close()
             process.stderr.close()
             if os.path.exists(tmp_file_path):
-                os.remove(tmp_file_path)  # Clean up the temporary file
+                os.remove(tmp_file_path)  # Clean up the temporary files
+            if os.path.exists(pcm_audio_path):
+                os.remove(pcm_audio_path)
             logger.debug("Temporary audio file removed.")
 
     # Return the streaming video as a response
