@@ -1,12 +1,11 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import StreamingResponse
+import io
 import subprocess
 import tempfile
-import os
-import logging
-from pydantic import BaseModel
 import requests
-import re
+import logging
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("main")
@@ -16,7 +15,7 @@ app = FastAPI(title="Audio Visualizer Streaming API")
 class AudioRequest(BaseModel):
     audio_url: str
 
-def download_file(url: str) -> str:
+def download_file(url: str) -> io.BytesIO:
     logger.debug(f"Downloading from URL: {url}")
 
     # Use webContentLink directly
@@ -49,35 +48,25 @@ def download_file(url: str) -> str:
         logger.error(f"Download failed: {e}")
         raise HTTPException(status_code=400, detail=f"Download failed: {str(e)}")
 
-    suffix = ".webm"
-    if "mp3" in content_type: suffix = ".mp3"
-    elif "wav" in content_type: suffix = ".wav"
-    elif "mp4" in content_type: suffix = ".mp4"
+    file_data = io.BytesIO()
+    for chunk in response.iter_content(chunk_size=1024*1024):
+        if chunk:
+            file_data.write(chunk)
+    file_data.seek(0)
+    logger.debug(f"Downloaded file data: {file_data.getbuffer().nbytes} bytes")
+    return file_data
 
-    tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+def validate_audio_file(file_data: io.BytesIO) -> bool:
+    cmd = ["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries", "stream=index", "-of", "csv=p=0", "-"]
     try:
-        tmp_file.write(first_chunk)
-        for chunk in response.iter_content(chunk_size=1024*1024):
-            if chunk:
-                tmp_file.write(chunk)
-        tmp_file.close()
-        size = os.path.getsize(tmp_file.name)
-        if size == 0:
-            os.unlink(tmp_file.name)
-            raise HTTPException(status_code=400, detail="Downloaded file is 0 bytes")
-        logger.debug(f"Downloaded: {tmp_file.name} ({size} bytes)")
-        return tmp_file.name
+        process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate(input=file_data.read())
+        if process.returncode != 0:
+            logger.error(f"Validation failed: {stderr.decode()}")
+            return False
+        return bool(stdout.strip())
     except Exception as e:
-        if os.path.exists(tmp_file.name):
-            os.unlink(tmp_file.name)
-        raise HTTPException(status_code=500, detail=f"Save failed: {e}")
-
-def validate_audio_file(filepath: str) -> bool:
-    cmd = ["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries", "stream=index", "-of", "csv=p=0", filepath]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        return bool(result.stdout.strip())
-    except:
+        logger.error(f"Validation failed: {str(e)}")
         return False
 
 @app.post("/visualizer")
@@ -86,44 +75,23 @@ async def visualizer(request: AudioRequest):
     if not audio_url:
         raise HTTPException(status_code=400, detail="Audio URL required")
 
-    downloaded_file = None
-    pcm_audio_path = None
+    file_data = None
 
     try:
-        downloaded_file = download_file(audio_url)
-        if not validate_audio_file(downloaded_file):
+        file_data = download_file(audio_url)
+        if not validate_audio_file(file_data):
             raise HTTPException(status_code=400, detail="No audio stream")
 
-        pcm_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
-        pcm_audio_path = pcm_file.name
-        pcm_file.close()
-
-        convert_cmd = [
-            "ffmpeg", "-y", "-i", downloaded_file,
-            "-vn", "-ac", "1", "-ar", "44100", "-f", "wav", pcm_audio_path
-        ]
-        result = subprocess.run(convert_cmd, capture_output=True, text=True)
-        if result.returncode != 0:
-            logger.error(f"Convert failed: {result.stderr}")
-            raise HTTPException(status_code=500, detail="Audio conversion failed")
-
-        if not os.path.exists(pcm_audio_path) or os.path.getsize(pcm_audio_path) == 0:
-            raise HTTPException(status_code=500, detail="WAV file missing or empty")
-
+        # Generate the audio spectrum directly from in-memory data
         vis_cmd = [
-            "ffmpeg", "-y",
-            "-i", pcm_audio_path,
-            "-filter_complex", "[0:a]showwaves=s=1080x1080:mode=line:colors=white[col];[col]format=yuv420p[out]",
-            "-map", "[out]",
-            "-c:v", "libx264",
-            "-preset", "veryfast",
-            "-movflags", "frag_keyframe+empty_moov",
-            "-f", "mp4",
-            "pipe:1"
+            "ffmpeg", "-y", "-f", "wav", "-i", "pipe:0", 
+            "-filter_complex", "[0:a]showwaves=s=640x360:mode=line:colors=white[col];[col]format=yuv420p[out]", 
+            "-map", "[out]", "-c:v", "libx264", "-preset", "ultrafast", "-movflags", "frag_keyframe+empty_moov", 
+            "-f", "mp4", "pipe:1"
         ]
-        logger.debug(f"Visualizer: {' '.join(vis_cmd)}")
-        process = subprocess.Popen(vis_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(vis_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
+        # Stream the video directly
         def video_stream():
             try:
                 while True:
@@ -138,13 +106,6 @@ async def visualizer(request: AudioRequest):
             finally:
                 process.stdout.close()
                 process.stderr.close()
-                for path in [downloaded_file, pcm_audio_path]:
-                    if path and os.path.exists(path):
-                        try:
-                            os.unlink(path)
-                            logger.debug(f"Cleaned up: {path}")
-                        except:
-                            pass
 
         return StreamingResponse(
             video_stream(),
@@ -152,20 +113,6 @@ async def visualizer(request: AudioRequest):
             headers={"Content-Disposition": 'attachment; filename="visualizer.mp4"'}
         )
 
-    except HTTPException:
-        for path in [downloaded_file, pcm_audio_path]:
-            if path and os.path.exists(path):
-                try:
-                    os.unlink(path)
-                except:
-                    pass
-        raise
     except Exception as e:
         logger.exception("Unexpected error")
-        for path in [downloaded_file, pcm_audio_path]:
-            if path and os.path.exists(path):
-                try:
-                    os.unlink(path)
-                except:
-                    pass
         raise HTTPException(status_code=500, detail=str(e))
