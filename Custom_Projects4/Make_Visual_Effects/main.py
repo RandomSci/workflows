@@ -46,7 +46,7 @@ async def visualizer(request: AudioRequest):
         "ffmpeg",
         "-i", tmp_file_path,
         "-filter_complex",
-        "aformat=channel_layouts=mono,showwaves=s=1080x1080:mode=circle:colors=white",
+        "aformat=channel_layouts=mono,showwaves=s=1080x1080:mode=line:colors=white",  # Use mode=line for linear wave
         "-pix_fmt", "yuv420p",
         "-c:v", "libx264",
         "-preset", "veryfast",
@@ -54,6 +54,21 @@ async def visualizer(request: AudioRequest):
         "-f", "mp4",
         "pipe:1"
     ]
+
+    # Alternatively, for circular mode, use avectorscope (uncomment the next line to use it instead)
+    # ffmpeg_cmd = [
+    #     "ffmpeg",
+    #     "-i", tmp_file_path,
+    #     "-filter_complex",
+    #     "aformat=channel_layouts=mono,avectorscope=s=1080x1080:zoom=2:fps=30",  # Circular mode
+    #     "-pix_fmt", "yuv420p",
+    #     "-c:v", "libx264",
+    #     "-preset", "veryfast",
+    #     "-movflags", "frag_keyframe+empty_moov",
+    #     "-f", "mp4",
+    #     "pipe:1"
+    # ]
+    
     logger.debug(f"Running ffmpeg command: {' '.join(ffmpeg_cmd)}")
     
     try:
