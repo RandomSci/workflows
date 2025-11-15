@@ -20,49 +20,73 @@ class AudioRequest(BaseModel):
 def download_file(url: str) -> str:
     logger.debug(f"Downloading from URL: {url}")
 
-    drive_match = re.match(r"https://drive\.google\.com/uc\?id=([a-zA-Z0-9_-]+)", url)
-    if drive_match:
-        file_id = drive_match.group(1)
-        url = f"https://drive.google.com/uc?export=download&id={file_id}"
-        logger.debug(f"Google Drive file detected, using URL: {url}")
+    # Normalize Google Drive URL
+    drive_match = re.search(r"[?&]id=([a-zA-Z0-9_-]+)", url)
+    if not drive_match:
+        raise HTTPException(status_code=400, detail="Invalid Google Drive URL")
+    
+    file_id = drive_match.group(1)
+    direct_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    logger.debug(f"Using direct download URL: {direct_url}")
 
     session = requests.Session()
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    })
+
     try:
-        resp = session.get(url, stream=True, allow_redirects=True)
-        resp.raise_for_status()
+        # Step 1: Get the file page (to get cookies + confirm token)
+        response = session.get(direct_url, stream=True, allow_redirects=True)
+        response.raise_for_status()
 
-        if "text/html" in resp.headers.get("Content-Type", ""):
-            confirm_match = re.search(r'confirm=([a-zA-Z0-9]+)', resp.text)
-            if confirm_match:
-                confirm_token = confirm_match.group(1)
-                download_url = f"{url}&confirm={confirm_token}"
-                logger.debug(f"Using confirm token: {confirm_token}")
-                resp = session.get(download_url, stream=True)
-                resp.raise_for_status()
+        # Check if it's the virus scan page
+        if "text/html" in response.headers.get("Content-Type", ""):
+            logger.debug("Virus scan page detected. Extracting confirm token...")
+            confirm_match = re.search(r'confirm=([0-9A-Za-z_]+)', response.text)
+            if not confirm_match:
+                raise HTTPException(status_code=400, detail="Virus scan page detected but no confirm token found.")
+            
+            confirm_token = confirm_match.group(1)
+            download_url = f"{direct_url}&confirm={confirm_token}"
+            logger.debug(f"Using confirm token: {confirm_token}")
 
-        content_type = resp.headers.get("Content-Type", "")
-        if "text/html" in content_type or "octet-stream" not in content_type:
-            if "googleusercontent.com" not in resp.url:
-                logger.error("Downloaded HTML instead of file (likely virus scan page)")
-                raise HTTPException(status_code=400, detail="Failed to download: Google Drive virus scan page detected. Use a shared link with 'anyone with link' access.")
+            # Step 2: Download with confirm token
+            response = session.get(download_url, stream=True)
+            response.raise_for_status()
+
+            # Final check: still HTML?
+            if "text/html" in response.headers.get("Content-Type", ""):
+                raise HTTPException(status_code=400, detail="Failed to bypass virus scan. Try downloading the file in browser first.")
+
+        # Final content type
+        content_type = response.headers.get("Content-Type", "")
+        if "octet-stream" not in content_type and "audio" not in content_type and "video" not in content_type:
+            logger.warning(f"Unexpected content-type: {content_type}")
 
     except Exception as e:
         logger.error(f"Download failed: {e}")
         raise HTTPException(status_code=400, detail=f"Download failed: {str(e)}")
 
-    suffix = ".webm" if "webm" in content_type else ".mp4" if "mp4" in content_type else ".bin"
+    # Save to temp file
+    suffix = ".webm"
+    if "mp3" in content_type: suffix = ".mp3"
+    elif "wav" in content_type: suffix = ".wav"
+    elif "mp4" in content_type: suffix = ".mp4"
+
     tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
     try:
-        for chunk in resp.iter_content(chunk_size=1024*1024):
+        for chunk in response.iter_content(chunk_size=1024*1024):
             if chunk:
                 tmp_file.write(chunk)
         tmp_file.close()
-        logger.debug(f"File downloaded to: {tmp_file.name}")
+        logger.debug(f"File downloaded: {tmp_file.name} ({os.path.getsize(tmp_file.name)} bytes)")
         return tmp_file.name
     except Exception as e:
-        os.unlink(tmp_file.name)
+        if os.path.exists(tmp_file.name):
+            os.unlink(tmp_file.name)
         raise HTTPException(status_code=500, detail=f"Failed to save file: {e}")
 
+        
 def validate_audio_file(filepath: str) -> bool:
     """Check if file has at least one audio stream using ffprobe"""
     ffprobe_cmd = [
