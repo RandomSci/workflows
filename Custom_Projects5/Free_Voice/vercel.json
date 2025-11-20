@@ -1,8 +1,7 @@
 {
   "functions": {
     "api/generate.py": {
-      "runtime": "python3.9",
-      "maxDuration": 60
+      "runtime": "python3.9"
     }
   }
 }
