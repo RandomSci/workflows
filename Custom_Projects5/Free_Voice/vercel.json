@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "generate.py": {
+      "runtime": "python3.9",
+      "maxDuration": 60
+    }
+  }
+}
