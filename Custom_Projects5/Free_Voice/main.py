@@ -8,6 +8,7 @@ import os
 import tempfile
 import uuid
 import time
+import random
 
 app = FastAPI(title="EchoNova TTS API", version="1.0.0")
 
@@ -24,18 +25,25 @@ class TTSRequest(BaseModel):
     voice: str = "en-US-JennyNeural"
     rate: str = "+12%"
 
+# Voice rotation to avoid pattern detection
+VOICE_ALTERNATES = [
+    "en-US-JennyNeural",
+    "en-US-AriaNeural", 
+    "en-US-SaraNeural",
+]
+
 @app.get("/")
 async def root():
     return {
         "service": "EchoNova TTS API",
         "status": "running",
-        "version": "1.0.0"
+        "version": "2.0.0"
     }
 
 @app.post("/generate")
 async def generate_tts(request: TTSRequest):
-    max_retries = 3
-    retry_delay = 2
+    max_retries = 5
+    base_delay = 3
     
     for attempt in range(max_retries):
         try:
@@ -44,10 +52,20 @@ async def generate_tts(request: TTSRequest):
             
             temp_file = os.path.join(temp_dir, f"{uuid.uuid4()}.mp3")
             
+            # Use requested voice, but rotate on retry
+            voice_to_use = request.voice
+            if attempt > 0:
+                voice_to_use = random.choice(VOICE_ALTERNATES)
+            
+            # Add random delay to seem more human (0-2 seconds)
+            human_delay = random.uniform(0, 2)
+            await asyncio.sleep(human_delay)
+            
             communicate = edge_tts.Communicate(
                 request.text, 
-                request.voice, 
-                rate=request.rate
+                voice_to_use, 
+                rate=request.rate,
+                # Proxy settings can be added here if needed later
             )
             
             await communicate.save(temp_file)
@@ -68,6 +86,10 @@ async def generate_tts(request: TTSRequest):
             
         except Exception as e:
             if attempt < max_retries - 1:
+                # Exponential backoff with jitter
+                retry_delay = base_delay * (2 ** attempt) + random.uniform(0, 3)
+                print(f"Attempt {attempt + 1} failed: {str(e)}")
+                print(f"Retrying in {retry_delay:.1f} seconds...")
                 await asyncio.sleep(retry_delay)
                 continue
             else:
