@@ -52,12 +52,10 @@ async def generate_tts(request: TTSRequest):
             
             temp_file = os.path.join(temp_dir, f"{uuid.uuid4()}.mp3")
             
-            # Use requested voice, but rotate on retry
             voice_to_use = request.voice
             if attempt > 0:
                 voice_to_use = random.choice(VOICE_ALTERNATES)
             
-            # Add random delay to seem more human (0-2 seconds)
             human_delay = random.uniform(0, 2)
             await asyncio.sleep(human_delay)
             
@@ -65,7 +63,6 @@ async def generate_tts(request: TTSRequest):
                 request.text, 
                 voice_to_use, 
                 rate=request.rate,
-                # Proxy settings can be added here if needed later
             )
             
             await communicate.save(temp_file)
