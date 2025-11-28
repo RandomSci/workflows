@@ -4,7 +4,6 @@ import subprocess
 import requests
 import os
 import uuid
-import base64
 
 app = FastAPI()
 
@@ -16,18 +15,15 @@ class TrimRequest(BaseModel):
 @app.post("/trim")
 async def trim_video(request: TrimRequest):
     try:
-        # Fixed indentation here!
         video_id = str(uuid.uuid4())
         input_path = f"/tmp/{video_id}_input.mp4"
         output_path = f"/tmp/{video_id}_output.mp4"
         
-        # Download video
         response = requests.get(request.video_url, timeout=30)
         response.raise_for_status()
         with open(input_path, 'wb') as f:
             f.write(response.content)
         
-        # Trim with ffmpeg
         subprocess.run([
             'ffmpeg', '-i', input_path,
             '-ss', str(request.start_time),
@@ -36,21 +32,18 @@ async def trim_video(request: TrimRequest):
             output_path
         ], check=True, capture_output=True)
         
-        # Read trimmed video
         with open(output_path, 'rb') as f:
-            trimmed_data = f.read()
+            files = {'file': f}
+            upload_response = requests.post('https://file.io', files=files)
+            upload_data = upload_response.json()
         
-        # Clean up
         os.remove(input_path)
         os.remove(output_path)
         
-        # Return base64
-        video_base64 = base64.b64encode(trimmed_data).decode('utf-8')
-        
         return {
             "success": True,
-            "video_base64": video_base64,
-            "message": "Video trimmed successfully"
+            "video_url": upload_data['link'],
+            "message": "Video trimmed and uploaded successfully"
         }
         
     except Exception as e:
