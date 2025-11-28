@@ -24,15 +24,15 @@ async def trim_video(request: TrimRequest):
         input_path = f"/tmp/{video_id}_input.mp4"
         output_path = f"/tmp/{video_id}_output.mp4"
         
-        print(f"Downloading video from: {request.video_url}")
+        print(f"Downloading: {request.video_url}")
         response = requests.get(request.video_url, timeout=60)
         response.raise_for_status()
         
         with open(input_path, 'wb') as f:
             f.write(response.content)
-        print(f"Downloaded video: {len(response.content)} bytes")
+        print(f"Downloaded: {len(response.content)} bytes")
         
-        print(f"Trimming video from {request.start_time}s to {request.end_time}s")
+        print(f"Trimming: {request.start_time}s to {request.end_time}s")
         result = subprocess.run([
             'ffmpeg', '-i', input_path,
             '-ss', str(request.start_time),
@@ -43,37 +43,25 @@ async def trim_video(request: TrimRequest):
         ], capture_output=True, text=True, timeout=120)
         
         if result.returncode != 0:
-            print(f"FFmpeg error: {result.stderr}")
             raise Exception(f"FFmpeg failed: {result.stderr}")
         
-        print("Video trimmed successfully")
-        
         if not os.path.exists(output_path):
-            raise Exception("Output file was not created")
+            raise Exception("Output file not created")
         
         file_size = os.path.getsize(output_path)
-        print(f"Output file size: {file_size} bytes")
+        print(f"Trimmed: {file_size} bytes")
         
-        if file_size == 0:
-            raise Exception("Output file is empty")
-        
-        print("Uploading to 0x0.st...")
         with open(output_path, 'rb') as f:
-            files = {'file': ('trimmed.mp4', f, 'video/mp4')}
-            upload_response = requests.post(
-                'https://0x0.st',
-                files=files,
-                timeout=120
-            )
-            upload_response.raise_for_status()
-            video_url = upload_response.text.strip()
+            video_data = f.read()
+            video_base64 = base64.b64encode(video_data).decode('utf-8')
+            data_uri = f"data:video/mp4;base64,{video_base64}"
         
-        print(f"Video uploaded successfully: {video_url}")
+        print(f"Returning base64 ({len(video_base64)} chars)")
         
         return {
             "success": True,
-            "video_url": video_url,
-            "message": "Video trimmed and uploaded successfully"
+            "video_url": data_uri,  
+            "message": "Video trimmed successfully"
         }
         
     except Exception as e:
@@ -83,10 +71,8 @@ async def trim_video(request: TrimRequest):
     finally:
         if input_path and os.path.exists(input_path):
             os.remove(input_path)
-            print(f"Cleaned up input file")
         if output_path and os.path.exists(output_path):
             os.remove(output_path)
-            print(f"Cleaned up output file")
 
 @app.get("/health")
 async def health():
