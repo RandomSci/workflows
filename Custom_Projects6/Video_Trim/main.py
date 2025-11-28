@@ -38,7 +38,7 @@ async def trim_video(request: TrimRequest):
             '-ss', str(request.start_time),
             '-t', str(request.end_time - request.start_time),
             '-c', 'copy',
-            '-y', 
+            '-y',
             output_path
         ], capture_output=True, text=True, timeout=120)
         
@@ -57,31 +57,17 @@ async def trim_video(request: TrimRequest):
         if file_size == 0:
             raise Exception("Output file is empty")
         
-        print("Uploading to file.io...")
+        print("Uploading to 0x0.st...")
         with open(output_path, 'rb') as f:
             files = {'file': ('trimmed.mp4', f, 'video/mp4')}
             upload_response = requests.post(
-                'https://file.io',
+                'https://0x0.st',
                 files=files,
                 timeout=120
             )
             upload_response.raise_for_status()
-            upload_data = upload_response.json()
+            video_url = upload_response.text.strip()
         
-        print(f"Upload response: {upload_data}")
-        
-        if not upload_data.get('success'):
-            print("file.io upload failed, returning base64")
-            with open(output_path, 'rb') as f:
-                video_base64 = base64.b64encode(f.read()).decode('utf-8')
-            
-            return {
-                "success": True,
-                "video_base64": video_base64,
-                "message": "Video trimmed (base64 fallback)"
-            }
-        
-        video_url = upload_data.get('link')
         print(f"Video uploaded successfully: {video_url}")
         
         return {
