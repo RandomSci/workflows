@@ -7,6 +7,8 @@ import requests
 import os
 import uuid
 import shutil
+import time
+from apscheduler.schedulers.background import BackgroundScheduler
 
 app = FastAPI()
 
@@ -26,6 +28,37 @@ class TrimRequest(BaseModel):
     start_time: float = 0
     end_time: float = 7
     fade_duration: float = 0.5
+
+def cleanup_old_videos():
+    """Delete videos older than 1 hour"""
+    try:
+        now = time.time()
+        deleted = 0
+        total = 0
+        
+        for filename in os.listdir(VIDEOS_DIR):
+            filepath = os.path.join(VIDEOS_DIR, filename)
+            if os.path.isfile(filepath):
+                total += 1
+                age = now - os.path.getmtime(filepath)
+                if age > 3600:
+                    os.remove(filepath)
+                    deleted += 1
+                    print(f"Deleted old video: {filename} (age: {int(age/60)} minutes)")
+        
+        print(f"Cleanup complete: Deleted {deleted}/{total} videos")
+    except Exception as e:
+        print(f"Cleanup error: {str(e)}")
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(cleanup_old_videos, 'interval', minutes=30)
+scheduler.start()
+
+@app.on_event("startup")
+async def startup_event():
+    """Run cleanup on startup"""
+    print("Starting up... Running initial cleanup")
+    cleanup_old_videos()
 
 @app.post("/trim")
 async def trim_video(request: TrimRequest):
@@ -96,10 +129,27 @@ async def serve_video(filename: str):
 async def root():
     return {
         "status": "Video trim service running",
-        "version": "3.0 - Self-hosted",
-        "storage": "Railway filesystem"
+        "version": "3.0 - Self-hosted with auto-cleanup",
+        "storage": "Railway filesystem",
+        "cleanup": "Every 30 minutes, deletes videos older than 1 hour"
     }
 
 @app.get("/health")
 async def health():
-    return {"status": "healthy", "videos_stored": len(os.listdir(VIDEOS_DIR))}
+    videos = os.listdir(VIDEOS_DIR)
+    return {
+        "status": "healthy",
+        "videos_stored": len(videos),
+        "cleanup_schedule": "Every 30 minutes",
+        "retention": "1 hour"
+    }
+
+@app.get("/cleanup")
+async def manual_cleanup():
+    """Manually trigger cleanup"""
+    cleanup_old_videos()
+    return {"message": "Cleanup triggered", "videos_remaining": len(os.listdir(VIDEOS_DIR))}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8080)
