@@ -11,7 +11,7 @@ class TrimRequest(BaseModel):
     video_url: str
     start_time: float = 0
     end_time: float = 7
-    fade_duration: float = 0.5  # Add 0.5s crossfade between scenes
+    fade_duration: float = 0.5  
 
 @app.post("/trim")
 async def trim_video(request: TrimRequest):
@@ -24,30 +24,27 @@ async def trim_video(request: TrimRequest):
         input_path = f"/tmp/{video_id}_input.mp4"
         output_path = f"/tmp/{video_id}_output.mp4"
         
-        # Download video
         print(f"Downloading: {request.video_url}")
-        response = requests.get(request.video_url, timeout=60)
+        response = requests.get(request.video_url, timeout=120)  
         response.raise_for_status()
         
         with open(input_path, 'wb') as f:
             f.write(response.content)
         print(f"Downloaded: {len(response.content)} bytes")
         
-        # Trim with ffmpeg + add fade out at the end for smooth transitions
         print(f"Trimming: {request.start_time}s to {request.end_time}s with {request.fade_duration}s fade")
         
-        # Calculate fade start time (fade out in last 0.5 seconds)
         fade_start = request.end_time - request.start_time - request.fade_duration
         
         result = subprocess.run([
             'ffmpeg', '-i', input_path,
             '-ss', str(request.start_time),
             '-t', str(request.end_time - request.start_time),
-            '-vf', f'fade=t=out:st={fade_start}:d={request.fade_duration}',  # Video fade out
-            '-af', f'afade=t=out:st={fade_start}:d={request.fade_duration}',  # Audio fade out
-            '-c:v', 'libx264',  # Re-encode video (needed for fade effect)
-            '-c:a', 'aac',      # Re-encode audio (needed for fade effect)
-            '-preset', 'ultrafast',  # Fast encoding
+            '-vf', f'fade=t=out:st={fade_start}:d={request.fade_duration}',
+            '-af', f'afade=t=out:st={fade_start}:d={request.fade_duration}', 
+            '-c:v', 'libx264',
+            '-c:a', 'aac',      
+            '-preset', 'ultrafast',
             '-y',
             output_path
         ], capture_output=True, text=True, timeout=120)
@@ -61,14 +58,14 @@ async def trim_video(request: TrimRequest):
         file_size = os.path.getsize(output_path)
         print(f"Trimmed with fade: {file_size} bytes")
         
-        # Upload to tmpfiles.org
+        # Upload to tmpfiles.org with 300s timeout
         print("Uploading to tmpfiles.org...")
         with open(output_path, 'rb') as f:
             files = {'file': ('video.mp4', f, 'video/mp4')}
             upload_response = requests.post(
                 'https://tmpfiles.org/api/v1/upload',
                 files=files,
-                timeout=60
+                timeout=300  
             )
             upload_response.raise_for_status()
         
@@ -91,6 +88,12 @@ async def trim_video(request: TrimRequest):
         else:
             raise Exception(f"Upload failed: {upload_data}")
         
+    except requests.exceptions.Timeout as e:
+        print(f"Timeout error: {str(e)}")
+        raise HTTPException(status_code=504, detail=f"Request timed out: {str(e)}")
+    except requests.exceptions.RequestException as e:
+        print(f"Request error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Network error: {str(e)}")
     except Exception as e:
         print(f"Error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -105,6 +108,14 @@ async def trim_video(request: TrimRequest):
 async def health():
     return {"status": "healthy"}
 
+@app.get("/")
+async def root():
+    return {
+        "status": "Video trim service running",
+        "version": "2.0",
+        "timeout": "300s upload, 120s download"
+    }
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)  
