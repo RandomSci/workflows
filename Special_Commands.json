@@ -27,20 +27,6 @@
     },
     {
       "parameters": {
-        "language": "python",
-        "pythonCode": "command = _input.first().json.message.text\n\nprompt = f'''\nUser Query: {command}\n\nIMPORTANT: \n- If this query is about current date/time, recent events, or anything time-sensitive, you MUST use Brave Search first\n- Base your answer ONLY on the search results, NOT on your training data\n- Your training data is outdated - trust the search results\n\nAnswer the query: {command}\n'''\n\nreturn {'chatInput': prompt}"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -192,
-        48
-      ],
-      "id": "e2ca9286-e736-4f6e-95a4-b2131eddb591",
-      "name": "Code in Python (Beta)"
-    },
-    {
-      "parameters": {
         "rules": {
           "values": [
             {
@@ -368,12 +354,26 @@
     },
     {
       "parameters": {
+        "jsCode": "const command = $input.first().json.message.text;\n\nconst prompt = `\nUser Query: ${command}\n\nIMPORTANT:\n- If this query is about current date/time, recent events, or anything time-sensitive, you MUST use Brave Search first\n- Base your answer ONLY on the search results, NOT on your training data\n- Your training data is outdated - trust the search results\n\nAnswer the query: ${command}\n`;\n\nreturn {\n  chatInput: prompt\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -192,
+        48
+      ],
+      "id": "e2ca9286-e736-4f6e-95a4-b2131eddb591",
+      "name": "Code in JavaScript",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "UfPOMko36yQ3PEgy",
+          "value": "qT7lUl2dziNBSFpy",
           "mode": "list",
-          "cachedResultUrl": "/workflow/UfPOMko36yQ3PEgy",
-          "cachedResultName": "YouTube Affiliate Update"
+          "cachedResultUrl": "/workflow/qT7lUl2dziNBSFpy",
+          "cachedResultName": "Video Automation For Story Driven Content For Scenery"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -390,7 +390,7 @@
         -208
       ],
       "id": "84bd0aa5-a89b-4522-b416-3814544e1b36",
-      "name": "Call 'YouTube Affiliate Update'"
+      "name": "Call 'Video Automation For Story Driven Content For Scenery'"
     }
   ],
   "connections": {
@@ -398,18 +398,7 @@
       "main": [
         [
           {
-            "node": "Code in Python (Beta)",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in Python (Beta)": {
-      "main": [
-        [
-          {
-            "node": "Switch",
+            "node": "Code in JavaScript",
             "type": "main",
             "index": 0
           }
@@ -522,7 +511,7 @@
       "main": [
         [
           {
-            "node": "Call 'YouTube Affiliate Update'",
+            "node": "Call 'Video Automation For Story Driven Content For Scenery'",
             "type": "main",
             "index": 0
           }
@@ -535,6 +524,17 @@
           {
             "node": "AI Agent",
             "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
             "index": 0
           }
         ]
