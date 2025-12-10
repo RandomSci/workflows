@@ -163,8 +163,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        304,
-        240
+        288,
+        208
       ],
       "credentials": {
         "openAiApi": {
@@ -195,8 +195,9 @@
         "resource": "speech",
         "voice": {
           "__rl": true,
-          "value": "0SpgpJ4D3MpHCiWdyTg3",
-          "mode": "id"
+          "value": "MpZY6e8MW2zHVi4Vtxrn",
+          "mode": "list",
+          "cachedResultName": "Drew – Calm AI Therapist Assistant"
         },
         "text": "={{ $json.output }}",
         "additionalOptions": {},
@@ -215,7 +216,8 @@
           "id": "vBS4v7AViGZ4xqBa",
           "name": "ElevenLabs account"
         }
-      }
+      },
+      "notes": "0SpgpJ4D3MpHCiWdyTg3 - MACHIAVELI"
     },
     {
       "parameters": {
@@ -225,8 +227,8 @@
       "type": "@brave/n8n-nodes-brave-search.braveSearchTool",
       "typeVersion": 1,
       "position": [
-        560,
-        240
+        608,
+        256
       ],
       "id": "57141bae-92f6-4e1d-a7d3-11a8ef4cae9e",
       "name": "Brave Search",
@@ -246,8 +248,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        432,
-        272
+        416,
+        256
       ],
       "id": "a0363d0e-3678-4ddd-9ada-65d2f9f9de1a",
       "name": "Simple Memory"
