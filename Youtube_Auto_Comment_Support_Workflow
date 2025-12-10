@@ -8,7 +8,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1296,
+        -1344,
         112
       ],
       "id": "8052ef47-0f37-466a-a3c0-e55bf79a434c",
@@ -23,7 +23,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -1072,
+        -1120,
         112
       ],
       "id": "1b524a40-d993-4e1c-8646-6a76ba0778c1",
@@ -36,7 +36,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -1008,
+        -1056,
         336
       ],
       "id": "6f15f5ad-6ab8-4599-96d7-1acca4eb7f93",
@@ -71,7 +71,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2416,
+        -2464,
         112
       ],
       "id": "67d4adfe-940c-4fbb-a85c-fa15cbfbb1a0",
@@ -93,7 +93,7 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -2640,
+        -2688,
         112
       ],
       "id": "600aab56-913d-4393-8761-ad24d3bed158",
@@ -119,7 +119,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -2864,
+        -2912,
         112
       ],
       "id": "57168583-3d98-4263-b2b4-1f88ba19f83a",
@@ -133,7 +133,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -2192,
+        -2240,
         112
       ],
       "id": "363f90a5-1dd6-4f1d-981a-be2b00178a98",
@@ -146,7 +146,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -1968,
+        -2016,
         112
       ],
       "id": "94b4a219-dc55-4d4f-bc7e-bf724b3be16b",
@@ -174,7 +174,7 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        -1744,
+        -1792,
         32
       ],
       "id": "205f753d-1210-4d22-abc6-1d87e592d300",
@@ -210,7 +210,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -1520,
+        -1568,
         112
       ],
       "id": "aab2e90d-1f62-4bb5-9262-a91478afa376",
@@ -221,7 +221,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -1744,
+        -1792,
         -160
       ],
       "id": "b6a37aa5-0f0a-4240-b047-845478b5fc2c",
@@ -235,7 +235,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -720,
+        -768,
         112
       ],
       "id": "656303fd-2918-4b03-93cc-231ca3acef51",
@@ -278,7 +278,7 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        -496,
+        -544,
         208
       ],
       "id": "e91a1be9-8a5a-4673-b00e-8320bf4afe88",
@@ -289,7 +289,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -272,
+        -320,
         208
       ],
       "id": "ffc3a8b2-7b32-4b91-8fd1-538c7c1e5a7f",
@@ -318,7 +318,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -496,
+        -544,
         16
       ],
       "id": "7b6cd518-5893-435c-aa2f-beefb6638623",
