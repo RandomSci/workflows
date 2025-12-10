@@ -3,7 +3,7 @@
     {
       "parameters": {
         "resource": "video",
-        "returnAll": true,
+        "limit": 1,
         "filters": {},
         "options": {
           "order": "date"
@@ -399,8 +399,8 @@
       "name": "Google Gemini Chat Model3",
       "credentials": {
         "googlePalmApi": {
-          "id": "EiUQRi4x0N96lhYH",
-          "name": "algonovalabs_YOUTUBE AUTOMATION RELATED"
+          "id": "LuvQlz3qmejdhs7S",
+          "name": "selwyngwapo90_Youtube Automation Related"
         }
       }
     },
@@ -537,6 +537,7 @@
       ],
       "id": "3038ee3b-ff48-4b35-ad0b-27bc602d2bd4",
       "name": "Update a video",
+      "retryOnFail": true,
       "credentials": {
         "youTubeOAuth2Api": {
           "id": "Fnm7ZvrVLhKsF77T",
