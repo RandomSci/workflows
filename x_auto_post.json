@@ -1,0 +1,138 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 7,9,18 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1888,
+        688
+      ],
+      "id": "6ae70858-a2dd-442f-84f7-0f6f4eaaab97",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.content.parts[0].text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        -1088,
+        688
+      ],
+      "id": "ee5b89e1-7571-4d18-a140-e1df380d7fa0",
+      "name": "Create Tweet",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "5D5HJ8WIowbKcvzG",
+          "name": "X account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import random\n\nangles = [\n    \"why most people fail at automation (and how to fix it)\",\n    \"the uncomfortable truth about content creation in 2025\",\n    \"what I learned building a system that replaced me\",\n    \"the one thing holding back content creators from scaling\",\n    \"why manual work is keeping you broke\",\n    \"the counterintuitive way to grow faster with less effort\",\n    \"what nobody tells you about AI automation\",\n    \"the biggest lie about 'working hard'\",\n    \"how I went from burnout to building systems that work 24/7\",\n    \"the future of content creation (and why most will miss it)\",\n    \"harsh truth: your time is your bottleneck\",\n    \"the exact moment I realized I was doing it wrong\"\n]\n\ntone_variations = [\n    \"bold and provocative\",\n    \"raw and honest\", \n    \"educational and insightful\",\n    \"contrarian and thought-provoking\"\n]\n\nangle = random.choice(angles)\ntone = random.choice(tone_variations)\n\nprompt = f\"\"\"You are Selwyn, founder of AlgoNova - you build autonomous AI systems that work 24/7.\n\nYour expertise:\n- AI automation (n8n, Python, AI APIs)\n- Autonomous content generation systems\n- Building in public, forged in execution\n\nWrite a {tone} tweet about: {angle}\n\nSTYLE RULES:\n- Max 280 characters\n- NO hashtags, NO emojis unless absolutely perfect\n- Short punchy sentences (5-12 words each)\n- Start with a hook that stops the scroll\n- End with intrigue or a micro-CTA (optional)\n- Sound like a builder who's actually done it, not a guru\n\nEXAMPLES OF GOOD HOOKS:\n\"Most people automate the wrong things.\"\n\"I wasted 6 months before I realized this.\"\n\"You don't have a time problem.\"\n\"Everyone says scale. Nobody says how.\"\n\"The hard part isn't building the system.\"\n\nVOICE:\n- Confident but not arrogant\n- Direct but not preachy  \n- Experienced but still learning\n- Founder energy, not influencer energy\n\nReturn ONLY the tweet text. Nothing else.\n\"\"\"\n\nreturn {'chatInput': prompt}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1664,
+        688
+      ],
+      "id": "80a83525-fa87-4d5a-9aba-2ea1034ad9f0",
+      "name": "Code in Python (Beta)"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $json.chatInput }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1440,
+        688
+      ],
+      "id": "bee64458-6495-4fec-b34f-dfb80b40c0b5",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "LuvQlz3qmejdhs7S",
+          "name": "selwyngwapo90_Youtube Automation Related"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Tweet": {
+      "main": [
+        []
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Create Tweet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+  }
+}
