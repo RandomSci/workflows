@@ -19,9 +19,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Make one image prompt.\n\nEnsure you use the details of the reference image as accurately as possible for your final output. Make it short as possible as well\n\nUser Instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image:\n{{ $json.content }}\n\n",
+        "text": "=Create ONE photorealistic image prompt for a cinematic aurora borealis and winter landscape scene.\n\nEnsure you capture the essence of the reference image: vivid aurora colors, realistic snow/ice textures, atmospheric depth, and cinematic composition.\n\nKeep the prompt under 150 words but pack it with visual details.\n\nUser Instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image:\n{{ $json.content }}",
         "options": {
-          "systemMessage": "=Role: You create **image prompts for HIGH-QUALITY CUTE ANIMATED CARTOON characters and scenes**, Pixar/Disney-inspired.\n\nMain objective: Transform the reference image into a **detailed, expressive animated character** in a **studio-quality cartoon scene**, fully cinematic and visually captivating.\n\n### Art Style Guidelines:\n\n* Studio-quality animated cartoon (Pixar, Disney, DreamWorks-level detail)\n* Detailed expressive eyes with highlights and sparkle\n* Realistic cartoon proportions (not chibi unless requested)\n* Rich pastel or vibrant color palettes with magical depth\n* Cinematic lighting: golden hour, sunrise, sunset, soft glows, sparkles\n* 3D/2D animated frame look, whimsical yet polished\n* Magical, charming, or heartwarming aesthetic\n* Dreamy, storybook-style atmosphere\n\n---\n\n### Character Design:\n\n* Detailed animated facial expressions showing emotion\n* Hair with individual strand details and dynamic movement\n* Clothing with realistic folds, fabric physics, or stylized charm\n* Expressive body language (dancing, posing, waving, singing)\n* Magical sparkles, glows, or cute motifs enhancing personality\n* Cinematic cartoon presence: character **anchors the scene visually and emotionally**\n\n---\n\n### Scene Style:\n\n* Cinematic, whimsical, and magical composition\n* Detailed environments: parks, rooftops, beaches, city streets, fantasy lands\n* Soft, volumetric lighting (sunlight, fairy lights, sparkles)\n* Atmospheric effects: floating particles, fog, magical trails, or twinkling lights\n* Consistent color palette and motif for continuity if used in multiple frames/videos\n* Theatrical, storybook-style framing that guides the viewer’s eye\n\n---\n\n### Rules:\n\n* Always use **single quotes ('')**, never double quotes (\"\")\n* Output only the **image prompt text**\n* No hyphens or dashes\n* Always specify at least one of: `\"cute animated style\"`, `\"3D Pixar animation\"`, `\"Disney-inspired\"`, `\"animated movie quality\"`, `\"cartoon character\"`\n* Describe as if it’s a **frame from a high-budget animated film**\n* Make it cinematic, magical, and visually rich\n* Include **lighting, magical effects, and environment details**\n\n---\n\n### Example Outputs:\n\n✅ GOOD:\n'Beautiful animated girl with sparkling expressive eyes showing joy, long flowing wavy hair with motion physics, wearing a pastel pink dress with realistic folds, standing on a whimsical floating garden bridge surrounded by glowing fairy lights and twinkling magical particles, soft golden hour lighting casting warm shadows, cute animated style, 3D Pixar animation, dreamy pastel clouds in background, magical sparkles, animated movie quality, cinematic cartoon composition, storybook framing'\n\n✅ GOOD:\n'Adorable animated boy with big shiny eyes and playful smile, messy wind-blown hair, wearing casual clothes with soft folds, skipping across a candy-colored park with floating lanterns and twinkling magical lights, soft sunset glow reflecting on animated water puddles, Disney-inspired, cute animated style, 3D Pixar animation, cinematic cartoon quality, whimsical atmosphere, magical sparkles, storybook cinematic framing'\n\n❌ BAD:\n'Cute cartoon girl in a cafe'\n\n---\n\n### Style Keywords to Include:\n\n* 'Cute animated style'\n* '3D Pixar animation'\n* 'Disney-inspired'\n* 'Animated movie quality'\n* 'Magical sparkles and glows'\n* 'Dreamy atmosphere'\n* 'Cinematic cartoon composition'\n* 'Storybook-style framing'\n* 'Soft pastel colors or vibrant whimsical palette'\n\n\n### Lighting Options (Always Specify):\n\n* 'Golden hour lighting' (warm, magical)\n* 'Sunrise soft glow' (hopeful, dreamy)\n* 'Sunset warm radiance' (romantic, whimsical)\n* 'Fairy lights sparkle' (magical, charming)\n* 'Soft ambient glow' (dreamy, storybook)\n"
+          "systemMessage": "=Role: You create **image prompts for CINEMATIC AURORA BOREALIS and WINTER LANDSCAPE scenes**, National Geographic/BBC Earth-inspired.\n\nMain objective: Transform the reference image into a **photorealistic, breathtaking Arctic scene** with vivid northern lights over pristine winter landscapes.\n\n### Art Style Guidelines:\n* Photorealistic nature cinematography (National Geographic, BBC Earth, Planet Earth quality)\n* Ultra-detailed 4K/8K quality with sharp clarity\n* Vivid aurora colors: greens, purples, pinks, blues with natural light physics\n* Pristine white snow with realistic texture and ice crystal details\n* Cinematic wide-angle landscape composition\n* Natural atmospheric effects: mist, fog, stars, moonlight\n* Ethereal, majestic, awe-inspiring aesthetic\n* Documentary-style realism with magical natural beauty\n\n---\n\n### Aurora Design:\n* Dynamic northern lights with flowing, dancing movement\n* Realistic light physics: reflections on snow/ice/water\n* Vivid color gradients blending naturally\n* Celestial backdrop with visible stars and Milky Way\n* Atmospheric depth with layered aurora curtains\n* Natural light intensity variations creating dramatic effect\n\n---\n\n### Landscape Style:\n* Photorealistic Arctic/winter environments\n* Detailed snow textures: powder, ice crystals, frost patterns\n* Natural formations: mountains, glaciers, frozen lakes, forests\n* Atmospheric perspective with depth and scale\n* Volumetric lighting from aurora illuminating terrain\n* Pristine, untouched wilderness aesthetic\n* Cinematic wide shots showcasing vastness\n\n---\n\n### Rules:\n* Always use **single quotes ('')**, never double quotes (\"\")\n* Output only the **image prompt text**\n* No hyphens or dashes\n* Always specify: `'photorealistic'`, `'cinematic nature photography'`, `'4K quality'`, `'National Geographic style'`\n* Describe as if it's a **frame from a premium nature documentary**\n* Make it majestic, ethereal, and visually stunning\n* Include **aurora details, lighting physics, and atmospheric effects**\n\n---\n\n### Example Outputs:\n\n✅ GOOD:\n'Breathtaking photorealistic scene of vivid green and purple aurora borealis dancing across starlit sky over frozen Arctic lake with perfect reflection, snow covered mountains in background with detailed ice crystal textures, soft mist rising from water surface, Milky Way visible above aurora curtains, cinematic nature photography, National Geographic style, 4K quality, wide angle landscape composition, ethereal natural lighting, pristine winter wilderness, ultra detailed, documentary cinematography'\n\n✅ GOOD:\n'Stunning photorealistic aurora borealis in electric blue and emerald green cascading over snow laden pine forest at twilight, individual snowflakes visible on tree branches catching aurora glow, frozen ground with detailed frost patterns, volumetric light beams piercing through trees, starry sky backdrop, cinematic nature photography, BBC Earth quality, 4K photorealistic, atmospheric depth, magical natural phenomenon, pristine Arctic environment'\n\n❌ BAD:\n'Aurora over snow'\n\n---\n\n### Style Keywords to Include:\n* 'Photorealistic'\n* 'Cinematic nature photography'\n* 'National Geographic style' or 'BBC Earth quality'\n* '4K quality' or '8K ultra detailed'\n* 'Aurora borealis' or 'northern lights'\n* 'Pristine winter wilderness'\n* 'Natural lighting physics'\n* 'Documentary cinematography'\n* 'Atmospheric depth'\n\n### Lighting Options (Always Specify):\n* 'Aurora glow illuminating landscape' (magical, ethereal)\n* 'Starlit sky with Milky Way visible' (cosmic, vast)\n* 'Twilight blue hour atmosphere' (serene, mystical)\n* 'Moonlight reflecting on snow' (peaceful, luminous)\n* 'Aurora reflections in ice/water' (mirror-like, stunning)\n* 'Volumetric light beams' (dramatic, cinematic)"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -31,7 +31,10 @@
         1232
       ],
       "id": "4628d584-0c1e-4a25-9987-ad982500ff46",
-      "name": "AI Agent - Image Prompt"
+      "name": "AI Agent - Image Prompt",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 3000
     },
     {
       "parameters": {
@@ -65,20 +68,6 @@
     },
     {
       "parameters": {
-        "amount": 30
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        -3040,
-        1232
-      ],
-      "id": "6877392e-2091-4dd6-b90e-54c23f74d76e",
-      "name": "Wait - 30s",
-      "webhookId": "e85f5cb5-8bf9-4cff-b1f3-bc165cc25236"
-    },
-    {
-      "parameters": {
         "url": "=https://queue.fal.run/fal-ai/nano-banana/requests/{{ $json.request_id }}",
         "sendHeaders": true,
         "headerParameters": {
@@ -105,7 +94,7 @@
     {
       "parameters": {
         "content": "## Image Creation",
-        "height": 304,
+        "height": 368,
         "width": 1536,
         "color": 3
       },
@@ -124,7 +113,7 @@
         "text": "=Create video prompts.\n\nUser instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image(s).\n{{ $('Analyze image1').item.json.content }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=You are an AI agent that generates CHARACTER-FIRST ANIMATED video prompts in CUTE ANIMATED CARTOON STYLE.\n\nCRITICAL TECHNICAL CONSTRAINTS: Each scene is an INDEPENDENT 5-6 SECOND video generated separately. Scenes are stitched together AFTER generation (no visual continuity between them). Each scene must be COMPLETE and STANDALONE. Every scene must be ANIMATED/CARTOON style (NOT realistic footage). This is a cute animated story like a Pixar/Disney movie.\n\nYour output must be 2 scenes:\n\n```json\n{\n\"scenes\": {\n\"scene1\": \"\",\n\"scene2\": \"\"\n}\n}\n```\n\nOPTIMIZED CHARACTER-FIRST FRAMEWORK:\n\n**Scene 1 (5-6 SECONDS ONLY - CHARACTER HOOK):** START WITH THE CHARACTER IMMEDIATELY to hook viewers in the first frame. CRITICAL: The character from the reference image MUST be visible and prominent in the FIRST 0.5 SECONDS.\n\nMedium or medium-close shot of the adorable ANIMATED character. Character fills 60-80% of the frame. Character doing something IMMEDIATELY engaging: waving hello enthusiastically with sparkles bursting from hands, giggling joyfully while holding/touching something magical, dancing with colorful motion lines trailing behind, twirling with magical sparkles swirling around body, expressing wonder/joy with exaggerated cute expressions, or interacting with a magical object (wand, flower, glowing item).\n\nInclude visible magical context around character: soft pastel or vibrant magical environment visible in background, floating sparkles, magical particles in air, glowing magical elements nearby (flowers, objects, lights), enough environment to establish \"where\" but character is FOCUS.\n\nBig expressive anime eyes, kawaii aesthetic, heartwarming animated expression. Camera: static frame, gentle push-in, or slight orbit around character. Soft lighting that highlights character's cuteness. Maximum charm and personality from frame 1.\n\n**MANDATORY QUOTE FOR SCENE 1:** Character must **speak** 1 uplifting, positive quote that instantly brightens the mood and makes viewers smile. The quote MUST **not appear as text** on-screen. It should be about spreading happiness, warmth, kindness, or joy to others, delivered through speech or audio only.\n\nALLOWED quote themes: sending love/hugs, complimenting the viewer, spreading smiles, sharing magic/sparkles, brightening someone's day, being a light for others, making today special.\n\nExample quotes (DO NOT COPY THESE EXACTLY, create similar variations): 'You make the world sparkle,' 'Sending you magical hugs,' 'Your smile is pure magic,' 'Today is full of sweet surprises,' 'You deserve all the sparkles,' 'Sprinkling happiness your way,' 'You light up my world,' 'Wrapped in love and magic,' 'You are somebody's sunshine,' 'Magical vibes coming your way,' 'Your heart is beautiful,' 'Smile, you are loved.'\n\nFORBIDDEN quote themes: DO NOT use dream big, believe in yourself, chase your dreams, never give up, be strong, you can do it, achieve your goals, hustle, grind, motivation, inspiration, life mantras, self improvement, or any achievement focused messages.\n\nCreate a NEW quote inspired by the allowed examples but with DIFFERENT WORDS. Keep it sweet, warm, and happiness focused. Maximum 1 sentence. The quote should feel like a warm hug or a sweet compliment to the viewer. Ensures viewers are emotionally hooked in the first 1–2 seconds.\n\nCHARACTER DESCRIPTION REQUIREMENTS FOR SCENE 1: Describe character's hair color, style, and length in detail. Describe character's eye color and expression. Describe character's outfit/dress color and style. Describe character's specific action/pose. Include ALL visual details needed to generate this character.\n\nDuration: EXACTLY 5-6 seconds. This scene must work as a standalone video AND hook viewers immediately.\n\n**Scene 2 (5-6 SECONDS ONLY - MAGICAL WORLD EXPLORATION):** Show the enchanting magical world WITHOUT the character. CRITICAL: NO character in this scene. Focus on world/environment only.\n\nReveal the beautiful magical world where the character exists. Different angle or area of the same thematic world from Scene 1. Show magical elements and whimsical details: enchanted objects, floating books, glowing flowers, magical creatures, whimsical environment elements, candy houses, cloud paths, crystal forests, magical effects actively happening, sparkles falling, magic swirling, butterflies flying. Something DYNAMIC must be happening: magical creatures moving or flying, objects glowing and pulsing with magic, sparkles and particles in motion, flowers blooming or transforming, lights twinkling and shifting.\n\nIncorporate immersive sound design directly tied to the visuals. Include twinkling bells, sparkling chimes, magical wind, soft harp glissandos, short whimsical musical motifs, and magic-driven audio cues such as flowers \"pinging\" or books \"fluttering\" as they move. Coordinate sounds with magical visual effects so the scene feels alive and engaging even without a character.\n\nMedium shot or close-up of magical elements. Show 2-3 distinct magical details. Camera: gentle pan, slow reveal, or orbit around magical element. Builds curiosity about this magical world. Maintains the same color palette/theme from Scene 1.\n\nWORLD CONSISTENCY REQUIREMENTS: Use similar color scheme as Scene 1. Maintain thematic consistency through magical elements. Dialogue should be sweet, simple narration about the story or moment. NO mentions of 'click link', 'follow', 'check out', 'get yours'. Focus on the emotion and magic of the moment. Maximum 2 short sentences per scene.\n\nDuration: EXACTLY 5-6 seconds. This scene must work as a standalone showcase of magical beauty.\n\nSCENE INDEPENDENCE RULES (CRITICAL): Each scene is generated COMPLETELY SEPARATELY by AI video generation. Scene 2 will NOT see what Scene 1 looked like. There is NO visual continuity or image reference between scenes. Create thematic cohesion through consistent color palettes, consistent world theme, consistent magical elements.\n\nDescription Requirements: ALWAYS specify 'cute animated style', '3D Pixar animation', 'cartoon aesthetic', or 'Disney-inspired'. Describe cute/whimsical animated elements in detail. Soft pastel colors OR vibrant magical colors (be consistent across scenes). Add sparkles, glows, magical lighting throughout. Make it look like a high-quality animated movie or music video.\n\nCamera Guidelines: Scene 1: Medium character shot, gentle push-in on character, slight orbit around character, character-focused framing. Scene 2: Medium shot of magical elements, gentle pan across details, slow reveal of enchanted area. Each scene's camera work is self-contained. Never mention iPhone, phone footage, UGC, selfie, amateur. Always animated or cinematic studio quality.\n\nANIMATION KEYWORDS TO ALWAYS USE: cute animated style, 3D Pixar animation, kawaii aesthetic, Disney-inspired, cartoon character (Scene 1 only), animated movie quality, soft pastel colors OR vibrant magical colors, magical sparkles, dreamy atmosphere.\n\nMANDATORY RULES: NO texts, lyrics, or any valid texts in videos allowed. EVERY scene = ANIMATED/CARTOON only (never realistic). NO product pitches or CTAs. Character appears ONLY in Scene 1. Character in Scene 1 doing something cute such as singing, dancing, posing, waving, or playing. Character must **speak the uplifting quote in audio only**. Soft pastel or vibrant colors consistent across all scenes. Magical sparkles and glows in ALL scenes. Scene 1 = CHARACTER CLOSE/MEDIUM (5-6 seconds, immediate visual hook). Scene 2 = MAGICAL WORLD (5-6 seconds, no character, exploration). Each scene is EXACTLY 5-6 seconds duration. Single quotes only. NO hyphens or dashes in descriptions. Character from reference image appears in Scene 1 ONLY. Follow exact JSON schema format.\n\nCRITICAL SUCCESS FACTORS: Scene 1 MUST show character prominently in FIRST 0.5 SECONDS. Character doing something engaging or cute within first 1-2 seconds. Scene 2 has NO character but includes rich sound design and dynamic magical effects. Maintain thematic consistency through detailed descriptions. Each scene is exactly 5-6 seconds and completely self-contained. Minor style variations allowed. Flow when stitched: Cute character hook → Beautiful world alive with magic and sound.\n\n🎀✨"
+          "systemMessage": "=You are an AI agent that generates high-quality cinematic photorealistic winter blizzard scenery prompts with aurora borealis for Veo 3.\n\nCRITICAL: Final prompt MUST be under 500 characters. Be ruthlessly concise.\n\nYour output:\n```json\n{\n\"scene\": \"\"\n}\n```\n\nCORE REQUIREMENTS:\n\nThe prompt must describe purely realistic winter storm environments with aurora borealis faintly visible through extreme blizzard conditions. Do not include characters, humans, animals, or any animated/cartoon style elements.\n\nPRIMARY FOCUS: Heavy blizzard and snowstorm conditions dominate the scene. Aurora is secondary, barely visible through the storm.\n\nShow the intense snowstorm immediately in the first frame. Aurora should be subtle background element.\n\nInclude MANDATORY dynamic winter storm elements (MOST IMPORTANT):\n- Extreme heavy falling snow filling entire frame\n- Fierce wind-driven snow creating near-whiteout conditions\n- Thick blowing snow reducing visibility dramatically\n- Violent swirling snow patterns dominating view\n- Dense snowfall obscuring most of the landscape\n- Snow accumulation rapidly building on all surfaces\n- Snowdrifts actively forming and shifting\n- Blizzard intensity as primary visual focus\n\nInclude winter landscape elements:\n- Snow-covered mountains, frozen lakes, forests, glaciers, or tundra\n- Terrain buried under deep snow layers\n- Atmospheric storm effects with heavy wind\n- Natural textures of blowing and accumulated snow\n- Ground blizzard conditions with snow moving horizontally\n\nInclude aurora elements (SECONDARY, SUBTLE):\n- Faint aurora borealis glow barely visible through thick snow\n- Aurora colors (green, purple, pink, blue - pick 2) heavily obscured\n- Aurora partially hidden behind dense snowfall\n- Dim aurora glow faintly penetrating storm\n- Aurora presence felt more than clearly seen\n\nDescribe lighting:\n- Twilight or night storm conditions\n- Faint aurora glow illuminating swirling snow particles\n- Diffused light through heavy snowfall\n- Snow reflecting minimal aurora colors\n- Dark moody storm atmosphere\n\nInclude camera perspective:\n- Wide-angle through blizzard\n- Ground-level immersed in storm\n- Slow push through heavy snow\n- Static shot emphasizing storm movement and intensity\n\nDescribe all visible elements prioritizing storm:\n- Sky filled with heavy falling snow\n- Landscape mostly obscured by blizzard\n- Texture of violent wind-driven snow\n- Dense atmospheric storm effects dominating\n- Minimal visibility creating dramatic mood\n\nWRITING STYLE:\nStorm elements first. Aurora mentioned last. Short precise phrases.\n\nExample: \"4K fierce Arctic blizzard with extreme wind-driven snow creating near-whiteout, thick falling snow filling frame, violent swirling snowstorm over buried landscape, faint green aurora barely visible through dense snowfall, ground-level wide shot, twilight storm atmosphere\"\n\nESSENTIAL KEYWORDS (use 3-4):\ncinematic photorealism, 4K, fierce blizzard, heavy snowstorm, extreme winter conditions, atmospheric depth, natural storm textures, faint aurora glow\n\nBANNED WORDS/PHRASES:\n- \"showcasing\"\n- \"featuring\"\n- \"approximately\"\n- \"pristine\"\n- \"dancing aurora\" (too prominent)\n- \"vivid aurora\" (too bright)\n- Any repetition\n\nRULES:\n- Photorealistic nature only (no animation/cartoon)\n- No people, buildings (unless distant/abandoned), text overlays\n- Single quotes only\n- Under 500 characters mandatory\n- STORM is primary focus (70%), aurora is secondary (30%)\n- Extreme heavy snowfall mandatory in every prompt\n- Aurora must be faint, barely visible, heavily obscured\n\nAvoid narrative, text, quotes, or story elements. Make the scene visually rich, cinematic, and immersive with BRUTAL winter storm atmosphere dominating the frame. Aurora should feel like a subtle magical touch barely breaking through nature's fury."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -142,12 +131,12 @@
       "parameters": {
         "content": "## Create Video ",
         "height": 448,
-        "width": 1344,
+        "width": 1360,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -2288,
+        -2304,
         560
       ],
       "typeVersion": 1,
@@ -156,61 +145,16 @@
     },
     {
       "parameters": {
-        "fieldsToAggregate": {
-          "fieldToAggregate": [
-            {
-              "fieldToAggregate": "data.response.resultUrls[0]"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        -2160,
-        1232
-      ],
-      "id": "88a41d0f-10f6-436b-aed1-64d31ad0f1df",
-      "name": "Aggregate"
-    },
-    {
-      "parameters": {
-        "url": "=https://queue.fal.run/fal-ai/ffmpeg-api/requests/{{ $json.request_id }}",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Authorization",
-              "value": "Key d843d270-9c37-4833-bab7-79b367f9c579:708fd98d6dacdc23103c80d4fc34d5e2"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -1520,
-        1232
-      ],
-      "id": "7364f42c-278a-4620-803c-04c4a8555d4a",
-      "name": "HTTP Request - Final Video",
-      "retryOnFail": true,
-      "waitBetweenTries": 2000
-    },
-    {
-      "parameters": {
         "operation": "sendVideo",
         "chatId": "6472037679",
-        "file": "={{ $json.video.url }}",
+        "file": "={{ $json.data.response.resultUrls[0] }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -1312,
-        1232
+        -1088,
+        656
       ],
       "id": "6f0900b5-c5da-4fa7-aa3f-c7d3f2a0b19e",
       "name": "Send a video",
@@ -226,35 +170,6 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://queue.fal.run/fal-ai/ffmpeg-api/merge-videos",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Authorization",
-              "value": "Key d843d270-9c37-4833-bab7-79b367f9c579:708fd98d6dacdc23103c80d4fc34d5e2"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"video_urls\": [{{ $json.resultUrls[0].map(url => `\"${url}\"`) }}]\n}\n",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -1952,
-        1232
-      ],
-      "id": "9c13c2a7-3c58-4feb-8ebe-c4952c1d84ed",
-      "name": "HTTP Request - Combine",
-      "retryOnFail": true,
-      "waitBetweenTries": 2000
-    },
-    {
-      "parameters": {
         "name": "={{ $now.plus({ hours: 8 }).format('MMM DD, YYYY_HH-mm-ss') }} UTC+8",
         "driveId": {
           "__rl": true,
@@ -265,16 +180,18 @@
         },
         "folderId": {
           "__rl": true,
-          "value": "https://drive.google.com/drive/u/0/folders/1Me5CXQY2k86PXbeZtYsZ5vGoBD8b6v_S",
-          "mode": "url"
+          "value": "1-qzP9pteGVUxZrnaLAxjRo_Nf9pch7LJ",
+          "mode": "list",
+          "cachedResultName": "Generated Videos",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1-qzP9pteGVUxZrnaLAxjRo_Nf9pch7LJ"
         },
         "options": {}
       },
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        240,
-        592
+        -1328,
+        1168
       ],
       "id": "73f0334e-bbf3-4ac1-95f8-c95bca4b20f4",
       "name": "Upload file",
@@ -289,14 +206,14 @@
     },
     {
       "parameters": {
-        "url": "={{ $('HTTP Request - Final Video').item.json.video.url }}",
+        "url": "={{ $('HTTP Request - Get Video').item.json.data.response.resultUrls[0] }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -688,
-        688
+        -2256,
+        1264
       ],
       "id": "26f078e3-7bb5-4e8d-90d8-9531dca33cbe",
       "name": "HTTP Request",
@@ -305,58 +222,14 @@
     },
     {
       "parameters": {
-        "resource": "video",
-        "operation": "analyze",
-        "modelId": {
-          "__rl": true,
-          "value": "models/gemini-2.5-flash",
-          "mode": "list",
-          "cachedResultName": "models/gemini-2.5-flash"
-        },
-        "inputType": "binary",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.googleGemini",
-      "typeVersion": 1,
-      "position": [
-        -464,
-        688
-      ],
-      "id": "80015913-957a-4d00-a58c-8d18acc2e3a6",
-      "name": "Analyze video",
-      "retryOnFail": true,
-      "maxTries": 5,
-      "waitBetweenTries": 3000,
-      "credentials": {
-        "googlePalmApi": {
-          "id": "Qn2KmHKfcYN7JBvq",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "language": "python",
-        "pythonCode": "from datetime import datetime\nimport random\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n# Define some dynamic hooks and actions\nhook_phrases = [\n    \"When {character} {action}!\",\n    \"You won't believe what {character} does!\",\n    \"Watch {character} {action} in pastel magic!\",\n    \"I can't believe {character} just {action}!\",\n    \"{character} {action} and it's adorable!\"\n]\nactions = [\n    \"dances in the candy clouds\",\n    \"discovers a rainbow waterfall\",\n    \"giggles while floating on lanterns\",\n    \"throws a sparkly magic spell\",\n    \"plays hide-and-seek in the pastel garden\",\n    \"slides down a fluffy cloud slide\",\n    \"spins under the twinkling stars\",\n    \"sings with magical sparkles around\",\n    \"jumps between floating petals\"\n]\n# Example character (you can replace with your generated character)\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\naction = random.choice(actions)\ntitle = random.choice(hook_phrases).format(character=character, action=action)\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, FOMO-style, MUST be under 90 characters)\n- \"YouTubeTitle2\" (DIFFERENT catchy title, under 90 characters, use a different hook/angle than YouTubeTitle)\n- \"YouTubeDescription\" (engaging, includes CTA like 'watch till the end' or 'subscribe for more')\n- \"YouTubeDescription2\" (DIFFERENT description with different CTA and angle than YouTubeDescription)\n- \"TikTokDescription\" (short, punchy, instant hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, engaging)\n- \"InstagramDescription\" (short, emoji-rich, interaction-focused)\n- \"AdditionalNotes\" (hashtags, trends, posting tips)\nSTRICT RULES:\n1. Both \"YouTubeTitle\" and \"YouTubeTitle2\" MUST NOT exceed 90 characters.\n2. YouTubeTitle and YouTubeTitle2 MUST be COMPLETELY DIFFERENT - use different hooks, emotions, or angles.\n3. YouTubeDescription and YouTubeDescription2 MUST be COMPLETELY DIFFERENT - vary the CTAs and storytelling.\n4. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n5. The output MUST be valid JSON, properly escaped.\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\nCRITICAL: YouTubeTitle and YouTubeTitle2 must be DISTINCT. YouTubeDescription and YouTubeDescription2 must be DISTINCT. Do NOT repeat the same content.\nGenerate irresistible, high-CTR titles and descriptions that make viewers feel they CAN'T miss the video.\n\"\"\"\nreturn {\n    \"chatInput\": Prompt\n}"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -256,
-        688
-      ],
-      "id": "9219a94a-7237-455a-81c5-a262797032a3",
-      "name": "Code in Python (Beta)"
-    },
-    {
-      "parameters": {
+        "hasOutputParser": true,
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -80,
-        688
+        -1600,
+        1328
       ],
       "id": "62031a2c-9400-412c-8b88-03f7164b1a11",
       "name": "AI Agent",
@@ -364,48 +237,15 @@
     },
     {
       "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        -32,
-        848
-      ],
-      "id": "3b661834-90de-495b-a779-32ce55c1f773",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "Qn2KmHKfcYN7JBvq",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "language": "python",
-        "pythonCode": "import json\nimport re\n\n# Get the raw AI output\nmodel_output = _input.first().json[\"output\"]\n\n# Extract JSON inside ```json ... ``` or ``` blocks\njson_match = re.search(r\"```json\\s*(\\{.*\\})\\s*```\", model_output, re.DOTALL)\nif not json_match:\n    json_match = re.search(r\"```(.*?)```\", model_output, re.DOTALL)\n\nif not json_match:\n    raise ValueError(\"No JSON found in the AI output!\")\n\njson_str = json_match.group(1)\n\n# Parse the JSON string\nparsed_data = json.loads(json_str)\n\n# Return it for n8n\nreturn {\"json\": parsed_data}\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        240,
-        736
-      ],
-      "id": "2a642a78-7dff-49be-b536-c269e2fbc4ec",
-      "name": "Code in Python (Beta)1"
-    },
-    {
-      "parameters": {
         "content": "## Analyze Video | Create Descriptions",
-        "height": 432,
+        "height": 480,
         "width": 1696,
         "color": 2
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -704,
-        560
+        -2304,
+        1136
       ],
       "typeVersion": 1,
       "id": "8aa46c61-ead3-4738-ad7a-823a4e70949f",
@@ -416,8 +256,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        448,
-        688
+        -1120,
+        1264
       ],
       "id": "81b5c8a5-f2f4-4056-8d37-9ebc8f6e756c",
       "name": "Merge"
@@ -430,8 +270,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        640,
-        688
+        -928,
+        1264
       ],
       "id": "c707c35d-c396-41d4-b063-3523f0db79fc",
       "name": "Aggregate1"
@@ -445,8 +285,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -704,
-        1104
+        -688,
+        432
       ],
       "typeVersion": 1,
       "id": "1b09fac0-e299-47be-9c03-fe0073321548",
@@ -460,8 +300,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -368,
-        1344
+        -336,
+        656
       ],
       "id": "61bbc758-c809-489c-a4b9-d6b46e553d7b",
       "name": "HTTP Request1",
@@ -626,8 +466,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        816,
-        688
+        -752,
+        1264
       ],
       "id": "02d95689-e416-4357-be98-b86d8271b110",
       "name": "Append row in sheet",
@@ -663,8 +503,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -656,
-        1344
+        -624,
+        656
       ],
       "id": "58a1d70a-7017-4d0c-b630-7b783066b10a",
       "name": "Get row(s) in sheet",
@@ -684,8 +524,8 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        -512,
-        1344
+        -480,
+        656
       ],
       "id": "9e474a19-4d97-48e4-9b94-012f729b7f44",
       "name": "Limit"
@@ -697,8 +537,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -224,
-        1344
+        -192,
+        656
       ],
       "id": "f8a7dec5-535b-4928-a31b-b84241eae9ff",
       "name": "Wait",
@@ -714,7 +554,6 @@
           "mode": "list",
           "cachedResultName": "CHATGPT-4O-LATEST"
         },
-        "text": "Determine if the image is a character or a product. It is only considered both if there are two completely separate images within the same image. If it is both, describe them separately. Describe the appearance details only.\n\nYour output should only include the description, nothing else.",
         "inputType": "base64",
         "options": {}
       },
@@ -739,10 +578,7 @@
       "parameters": {
         "rule": {
           "interval": [
-            {
-              "field": "cronExpression",
-              "expression": "0 6,8,17 * * *"
-            }
+            {}
           ]
         }
       },
@@ -758,7 +594,7 @@
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "import random\nfrom datetime import datetime\n\n# --- Helper to escape quotes for JSON ---\ndef escape_quotes(s):\n    return s.replace('\"', '\\\\\"')\n\n# --- Current date/time ---\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\n# --- Options ---\ncharacters = [\n    \"Cheerful Girl in Pink\", \"Magical Fairy Girl\", \"Tiny Mermaid Girl\",\n    \"Adorable Elf Girl\", \"Joyful Princess\", \"Cute Wizard Girl\",\n    \"Playful School Girl\", \"Pastel Magical Girl\", \"Bubbly Flower Girl\",\n    \"Giggly Garden Fairy\", \"Twilight Star Girl\", \"Candyland Adventurer\",\n    \"Rainbow Fairy\", \"Star Princess\", \"Moonlight Elf\", \"Cotton Candy Girl\",\n    \"Sky Dance Girl\", \"Magical Librarian Girl\", \"Pastel Explorer\", \"Sparkling Artist Girl\",\n    \"Tea Party Girl\", \"Soft Glow Fairy\", \"Twinkle Star Girl\", \"Floating Cloud Fairy\",\n    \"Candy Castle Princess\", \"Flower Crown Girl\", \"Pastel Music Girl\", \"Magic Potion Girl\",\n    \"Sweet Bakery Girl\", \"Charming Sorceress\", \"Rainbow Ribbon Girl\", \"Lavender Garden Girl\",\n    \"Bubblegum Fairy\", \"Magical Forest Girl\", \"Joyful Picnic Girl\", \"Cute Potion Maker\",\n    \"Twinkling Garden Elf\", \"Moonlit Tea Girl\", \"Pastel Snow Girl\", \"Cherry Blossom Fairy\",\n    \"Sparkling Ice Princess\", \"Fairy Tale Princess\", \"Starlight Girl\", \"Enchanted Forest Girl\",\n    \"Magical Playdate Girl\", \"Dreamy Storybook Girl\", \"Rainbow Dance Fairy\", \"Pastel Carnival Girl\",\n    \"Whimsical Balloon Girl\"\n]\n\nlocations = [\n    \"Candy Land\", \"Floating Cloud Playground\", \"Sunny Pastel Garden\", \"Rainbow Street\",\n    \"Cozy Pink Café\", \"Twinkling Forest Path\", \"Pastel Castle Tower\", \"Magical Library\",\n    \"Toy Room\", \"Floating Castle Balcony\", \"Cherry Blossom Meadow\", \"Pastel Tea Garden\",\n    \"Rainbow Waterfall\", \"Starry Night Meadow\", \"Bubblegum Village\", \"Cotton Candy Fields\",\n    \"Twilight Flower Meadow\", \"Magic Fountain\", \"Starlight Riverbank\", \"Sparkling Ice Palace\",\n    \"Gingerbread Village\", \"Cozy Treehouse\", \"Pastel Market Square\", \"Dreamy Cloud Bridge\",\n    \"Floating Lantern Festival\", \"Magical Garden Courtyard\", \"Rainbow Carousel\", \"Whimsical Swing Park\",\n    \"Moonlight Picnic Hill\"\n]\n\nmoods = [\n    \"Joyful\", \"Playful\", \"Whimsical\", \"Dreamy\", \"Heartwarming\", \"Excited\",\n    \"Cheerful\", \"Giggly\", \"Bubbly\", \"Delighted\", \"Curious\", \"Sparkling\",\n    \"Enchanted\", \"Cozy\", \"Lighthearted\", \"Carefree\", \"Magical\", \"Radiant\",\n    \"Adorable\", \"Blissful\"\n]\n\nlighting = [\n    \"soft snowy glow\", \"twinkling snowflake sparkle\", \"warm cozy fireplace light\", \n    \"frosty pastel morning\", \"snowy twilight with pink hues\", \"winter magic shimmer\",\n    \"soft pink morning light\", \"cherry blossom golden hour\", \"pastel rainbow sunlight\",\n    \"gentle spring glow\", \"magical flower shimmer\", \"twinkling dew sparkle\",\n    \"bright sunny pastel light\", \"soft sunset glow\", \"golden hour sparkle\",\n    \"twilight pink shimmer\", \"warm playful sunlight\", \"magical summer haze\",\n    \"soft autumn sunset\", \"gentle moonlight pastel\"\n]\n\nemojis = [\"🌸\",\"✨\",\"🎀\",\"🌈\",\"🍭\",\"💖\",\"☀️\",\"🎉\",\"💫\"]\n\nseasons = [\n    \"Winter ❄️\", \"Spring 🌸\", \"Summer ☀️\", \"Autumn 🍂\", \"Late Autumn 🍂\"\n]\n\nthemes = [\n    \"Cozy Snow Adventure\", \"Winter Festival Fun\", \"Snowball Play\", \"Magical Snowland\",\n    \"Gingerbread Village\", \"Sparkling Ice Skating\", \"Cherry Blossom Picnic\",\n    \"Magical Flower Meadow\", \"Butterfly Playtime\", \"Pastel Garden Adventure\",\n    \"Kawaii Easter Morning\", \"Beach Playtime\", \"Ice Cream Adventure\",\n    \"Magical Summer Festival\", \"Sunny Picnic Fun\", \"Rainbow Playground\",\n    \"Bubbly Soda Party\", \"Twilight Fireflies\", \"Pumpkin Patch Fun\", \"Cute Café Afternoon\",\n    \"Leaf Pile Jumping\", \"Autumn Fair Adventure\", \"Magical Forest Stroll\",\n    \"Pastel Harvest Festival\", \"Starry Night Fun\", \"Cute Magical Moonlight\",\n    \"Pastel Twilight Adventure\", \"Whimsical Night Picnic\", \"Floating Lantern Festival\",\n    \"Sparkling Countryside\"\n]\n\n# --- Pick random elements ---\ncharacter = random.choice(characters)\nlocation = random.choice(locations)\nmood = random.choice(moods)\nlight = random.choice(lighting)\nemoji = random.choice(emojis)\nseason = random.choice(seasons)\ntheme = random.choice(themes)\n\n# --- Build prompts ---\ngenerated_title = f\"{character} in {location} | {mood} Cartoon Aesthetic {emoji} | {theme} {season}\"\ntext_prompt = (\n    f\"Create a cute animated pastel-themed scene with {character} in {location} during {light}. \"\n    \"She should interact, dance, talk, or play expressively. Include magical sparkles, glows, \"\n    \"and floating objects. Avoid narration, text, mushrooms, boys, dark characters, robots, and animals alone. \"\n    \"Pastel-colored, heartwarming, magical, whimsical.\"\n)\nimage_prompt = (\n    f\"High-quality 3D animation, Pixar/Disney inspired. {character} in {location} during {light}. \"\n    \"Whimsical environment, pastel colors, magical sparkles, soft dreamy style. Studio-quality.\"\n)\n\n# --- Escape quotes for JSON safety ---\ngenerated_title_escaped = escape_quotes(generated_title)\ntext_prompt_escaped = escape_quotes(text_prompt)\nimage_prompt_escaped = escape_quotes(image_prompt)\n\n# --- Return exactly what AI node expects ---\nreturn {\"chatInput\": f\"\"\"\nEnsure to return the output in this EXACT FORMAT:\n{{\n'imagePrompt':'{image_prompt_escaped}',\n'textPrompt':'{text_prompt_escaped}',\n'generatedTitle':'{generated_title_escaped}'\n}}\n\"\"\"}"
+        "pythonCode": "import random\nfrom datetime import datetime\n\ndef escape_quotes(s):\n    return s.replace('\"', '\\\\\"')\n\nnow = datetime.now()\n\n# --- BLIZZARD-FOCUSED Winter Landscapes ---\nlandscapes = [\n    \"snow-covered frozen lagoon\", \"buried glacial ice field\", \"snow-laden Arctic tundra\",\n    \"frozen mountain peak\", \"snowy pine forest\", \"ice-covered frozen lake\",\n    \"snow-buried valley\", \"Arctic plateau\", \"frozen coastal shoreline\",\n    \"glacial basin\", \"snowy canyon\", \"ice shelf\",\n    \"frozen fjord\", \"snow-covered highlands\", \"Arctic ice ridge\"\n]\n\n# --- EXTREME WEATHER (Blizzard Priority) ---\nweather_intensity = [\n    \"extreme heavy falling snow filling frame\",\n    \"fierce wind-driven swirling snow creating near-whiteout\",\n    \"intense blizzard with thick blowing snow\",\n    \"violent snowstorm obscuring visibility\",\n    \"brutal Arctic blizzard conditions\",\n    \"overwhelming heavy snowfall dominating scene\"\n]\n\n# --- Aurora (Subtle/Faint) ---\naurora_colors = [\n    \"faint green and purple aurora\", \"dim blue and green aurora glow\",\n    \"barely visible pink and green aurora\", \"subtle purple aurora light\",\n    \"faint emerald and violet aurora\", \"dim multicolored aurora\"\n]\n\n# --- Storm Moods ---\nmoods = [\n    \"Brutal\", \"Fierce\", \"Extreme\", \"Intense\", \"Violent\", \"Overwhelming\",\n    \"Harsh\", \"Relentless\", \"Savage\", \"Unforgiving\"\n]\n\n# --- Time (Always dark/twilight for aurora) ---\ntimes = [\n    \"twilight storm\", \"deep winter night\", \"polar night conditions\",\n    \"midnight blizzard\", \"dark evening storm\"\n]\n\n# --- Additional Storm Elements ---\nstorm_details = [\n    \"thick blowing snow obscuring terrain\",\n    \"violent snow patterns dominate frame\",\n    \"deep snow accumulation and shifting snowdrifts\",\n    \"dense snowfall reducing visibility dramatically\",\n    \"horizontal wind-driven snow across landscape\",\n    \"swirling snow particles filling air\"\n]\n\n# --- Pick random elements ---\nlandscape = random.choice(landscapes)\nweather = random.choice(weather_intensity)\naurora = random.choice(aurora_colors)\nmood = random.choice(moods)\ntime = random.choice(times)\nstorm_detail = random.choice(storm_details)\n\n# --- Build prompts (STORM FIRST, AURORA LAST) ---\ngenerated_title = f\"{mood} Arctic Blizzard Over {landscape.title()} - Hidden Aurora Glow | Epic Winter Storm\"\n\ntext_prompt = (\n    f\"Create cinematic photorealistic scene of {weather.lower()} over {landscape} during {time}. \"\n    f\"{storm_detail.capitalize()}. {aurora.capitalize()} barely visible through dense snowfall, \"\n    \"heavily obscured behind storm. Ground-level wide shot emphasizing brutal blizzard atmosphere. \"\n    \"4K quality, National Geographic style. NO text, NO people, NO buildings. Pure winter storm fury.\"\n)\n\nimage_prompt = (\n    f\"4K cinematic photorealism, {weather.lower()} over {landscape}, {storm_detail.lower()}, \"\n    f\"ground-level wide shot in {time}, {aurora.lower()} barely visible heavily obscured behind dense snowfall, \"\n    \"dim aurora glow faintly lighting swirling snow particles, atmospheric storm depth, \"\n    \"natural textures of brutal blizzard, National Geographic style\"\n)\n\n# --- Escape quotes ---\ngenerated_title_escaped = escape_quotes(generated_title)\ntext_prompt_escaped = escape_quotes(text_prompt)\nimage_prompt_escaped = escape_quotes(image_prompt)\n\n# --- Return ---\nreturn {\n    \"chatInput\": f\"\"\"\nEnsure to return the output in this EXACT FORMAT:\n{{\n'imagePrompt':'{image_prompt_escaped}',\n'textPrompt':'{text_prompt_escaped}',\n'generatedTitle':'{generated_title_escaped}'\n}}\n\"\"\"\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -768,35 +604,6 @@
       ],
       "id": "5467ba58-34a1-411b-b596-738e03f1331a",
       "name": "Code in Python (Beta)2"
-    },
-    {
-      "parameters": {
-        "resource": "image",
-        "modelId": {
-          "__rl": true,
-          "value": "models/gemini-2.0-flash-preview-image-generation",
-          "mode": "list",
-          "cachedResultName": "models/gemini-2.0-flash-preview-image-generation"
-        },
-        "prompt": "={{ $json.imagePrompt }}",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.googleGemini",
-      "typeVersion": 1,
-      "position": [
-        -2976,
-        704
-      ],
-      "id": "aea68a24-ddcf-4c3d-be21-b7db4a32d55e",
-      "name": "Generate an image",
-      "retryOnFail": true,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "googlePalmApi": {
-          "id": "EiUQRi4x0N96lhYH",
-          "name": "algonovalabs_YOUTUBE AUTOMATION RELATED"
-        }
-      }
     },
     {
       "parameters": {
@@ -823,7 +630,8 @@
         704
       ],
       "id": "d57d5b05-7a96-4a84-980e-9303788ec784",
-      "name": "AI Agent1"
+      "name": "AI Agent1",
+      "retryOnFail": true
     },
     {
       "parameters": {
@@ -835,7 +643,7 @@
         },
         "folderId": {
           "__rl": true,
-          "value": "=https://drive.google.com/drive/folders/1we0g8UTGbPhtMv2v9WkuZUN7cVW4ey3j?usp=sharing",
+          "value": "=https://drive.google.com/drive/folders/1D-7GLLCIt7geHkwZH4iklYqYKkpnVBEY",
           "mode": "url"
         },
         "options": {}
@@ -882,7 +690,7 @@
     {
       "parameters": {
         "schemaType": "manual",
-        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"scenes\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"scene1\": { \"type\": \"string\" },\n        \"scene2\": { \"type\": \"string\" }\n      },\n      \"required\": [\"scene1\", \"scene2\"]\n    }\n  },\n  \"required\": [\"scenes\"],\n  \"additionalProperties\": false\n}",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"scene\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"scene\": { \"type\": \"string\" }\n      },\n      \"required\": [\"scene\"]\n    }\n  },\n  \"required\": [\"scene\"],\n  \"additionalProperties\": false\n}",
         "autoFix": true
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
@@ -910,20 +718,6 @@
     },
     {
       "parameters": {
-        "fieldToSplitOut": "output.scenes",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitOut",
-      "typeVersion": 1,
-      "position": [
-        -1744,
-        656
-      ],
-      "id": "43a14e27-0963-4189-99d0-36fee9719622",
-      "name": "Split Out"
-    },
-    {
-      "parameters": {
         "url": "https://api.kie.ai/api/v1/veo/record-info",
         "sendQuery": true,
         "queryParameters": {
@@ -948,7 +742,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1152,
+        -1296,
         656
       ],
       "id": "ece3e7ea-4186-491e-9a75-0cd0ca29c6a3",
@@ -971,17 +765,13 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": {
-          "prompt": "={{ $json[\"output.scenes\"] }}",
-          "model": "veo3_fast",
-          "aspectRatio": "9:16"
-        },
+        "jsonBody": "={\n  \"prompt\": \"{{ $json.output.scene }}\",\n  \"model\": \"veo3_fast\",\n  \"aspectRatio\": \"9:16\",\n  \"imageUrls\": \"{{ $('HTTP Request - Get Image 1').item.json.images[0].url }}\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1536,
+        -1712,
         656
       ],
       "id": "1ce0f53e-d575-464e-8b98-b7f346f977d9",
@@ -997,65 +787,12 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -1360,
+        -1504,
         656
       ],
       "id": "e4ad85f9-5b67-4724-8893-797331967abd",
       "name": "Wait 4m",
       "webhookId": "7feaead4-5997-4d66-a596-78729fcf0ae5"
-    },
-    {
-      "parameters": {
-        "content": "## Image Creation",
-        "height": 304,
-        "width": 1360
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -2288,
-        1136
-      ],
-      "typeVersion": 1,
-      "id": "dc462a1f-53c2-4ea7-8c08-5db52c8977f2",
-      "name": "Sticky Note3"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        -3616,
-        1024
-      ],
-      "id": "d0448ae1-7664-459a-98cf-464c4a8b36ac",
-      "name": "Google Gemini Chat Model1",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "EiUQRi4x0N96lhYH",
-          "name": "algonovalabs_YOUTUBE AUTOMATION RELATED"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        -2096,
-        864
-      ],
-      "id": "834d4562-7a34-4638-b26b-ec7264e25d62",
-      "name": "Google Gemini Chat Model2",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "Qn2KmHKfcYN7JBvq",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
     },
     {
       "parameters": {
@@ -1098,8 +835,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        752,
-        1152
+        784,
+        480
       ],
       "typeVersion": 1,
       "id": "16643a0c-15c9-4a8d-ae32-90a1f844b163",
@@ -1114,8 +851,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -80,
-        1152
+        -48,
+        480
       ],
       "typeVersion": 1,
       "id": "8f5d8c7f-ba51-4638-9f3d-38ff9f8626dd",
@@ -1130,8 +867,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        464,
-        1152
+        496,
+        480
       ],
       "typeVersion": 1,
       "id": "b2f2fe0e-a99b-43e2-a2b3-0e1226060a0c",
@@ -1145,8 +882,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1056,
-        1152
+        1088,
+        480
       ],
       "typeVersion": 1,
       "id": "40983990-abc7-4f95-b51d-3396e1245f59",
@@ -1174,8 +911,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        1120,
-        1216
+        1152,
+        544
       ],
       "id": "a2c3482c-677b-419e-be81-2ecacaf1a668",
       "name": "Instagram Post",
@@ -1210,8 +947,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        832,
-        1216
+        864,
+        544
       ],
       "id": "b1da6789-4054-49cb-83a2-2b9b203574da",
       "name": "Facebook Post",
@@ -1232,8 +969,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        544,
-        1216
+        576,
+        544
       ],
       "id": "81c4bfeb-e0e5-4638-879a-88cd9612b31c",
       "name": "Tiktok Post",
@@ -1249,7 +986,7 @@
         },
         "folderId": {
           "__rl": true,
-          "value": "=https://drive.google.com/drive/folders/1we0g8UTGbPhtMv2v9WkuZUN7cVW4ey3j?usp=sharing",
+          "value": "=https://drive.google.com/drive/folders/1D-7GLLCIt7geHkwZH4iklYqYKkpnVBEY",
           "mode": "url"
         },
         "options": {}
@@ -1298,8 +1035,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        288,
-        1216
+        320,
+        544
       ],
       "id": "61b34093-f5db-474c-9495-ea00cf2a98e7",
       "name": "Send a text message",
@@ -1329,8 +1066,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        800,
-        1472
+        832,
+        800
       ],
       "id": "d7400314-93a9-4a4a-920a-bbffea8f1737",
       "name": "Echonova Labs Upload",
@@ -1340,18 +1077,20 @@
           "id": "lP6X79rHDtk0jfT5",
           "name": "Youtube_Account_EchoNovaLabs"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {},
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        144,
-        1472
+        176,
+        800
       ],
       "id": "a7f16f64-e279-40e3-a826-f6fd658cff25",
-      "name": "Wait for Both Files"
+      "name": "Wait for Both Files",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1392,13 +1131,14 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        640,
-        1472
+        672,
+        800
       ],
       "id": "a9f9ea3d-3286-4ab4-b600-42b760c84474",
       "name": "HTTP Request3",
       "retryOnFail": true,
-      "maxTries": 5
+      "maxTries": 5,
+      "disabled": true
     },
     {
       "parameters": {
@@ -1407,12 +1147,13 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        464,
-        1472
+        496,
+        800
       ],
       "id": "dcc969eb-3cae-44bb-a300-ba3926f7a8b8",
       "name": "Wait1",
-      "webhookId": "76a2314b-a64a-4a8b-908f-56e963b63a8b"
+      "webhookId": "76a2314b-a64a-4a8b-908f-56e963b63a8b",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1428,17 +1169,18 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -32,
-        1456
+        0,
+        784
       ],
       "id": "4d70df47-cb6c-4701-b40f-55c0cdc94e2b",
       "name": "Download Music",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "ELypk9dkRw9E38Ca",
-          "name": "EchoNovaLabs"
+          "id": "2KupETq4QLi8d9l8",
+          "name": "Google Drive account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -1449,8 +1191,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -80,
-        1408
+        -48,
+        736
       ],
       "typeVersion": 1,
       "id": "fa5a45fc-5fad-4d1a-97a0-5a547fa5356d",
@@ -1463,25 +1205,12 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        304,
-        1472
+        336,
+        800
       ],
       "id": "e6a61816-fb78-4652-aeea-73d8b0a6f983",
-      "name": "Combine Files"
-    },
-    {
-      "parameters": {
-        "amount": 60
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        -1728,
-        1232
-      ],
-      "id": "20ebf2ac-a9fc-4e69-bc8d-2f686195ac0a",
-      "name": "Wait 60s",
-      "webhookId": "95ef2154-8111-46ff-9525-0f25ac8615ad"
+      "name": "Combine Files",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1494,8 +1223,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1120,
-        1472
+        1152,
+        800
       ],
       "id": "1c45dafd-1551-461e-a008-94a7d91939c2",
       "name": "EchoNova Confirmation",
@@ -1506,7 +1235,8 @@
           "id": "k7m8mevEdyBrdj98",
           "name": "Telegram account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -1518,8 +1248,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        960,
-        1472
+        992,
+        800
       ],
       "id": "5584b581-c7b6-40ff-826f-0000fbec7308",
       "name": "Echonova Labs playlist",
@@ -1529,13 +1259,14 @@
           "id": "lP6X79rHDtk0jfT5",
           "name": "Youtube_Account_EchoNovaLabs"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
         "resource": "video",
         "operation": "upload",
-        "title": "={{ $('Limit').first().json['EchoNova Youtube Title'] }}",
+        "title": "={{ $('Limit').first().json['AlgoNova Youtube Title'] }}",
         "regionCode": "PH",
         "categoryId": "1",
         "binaryProperty": "=data",
@@ -1549,8 +1280,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -64,
-        1216
+        -32,
+        544
       ],
       "id": "c1532870-530a-4430-9df7-9a20073fcb0b",
       "name": "Algonova Labs Upload1",
@@ -1560,8 +1291,7 @@
           "id": "Fnm7ZvrVLhKsF77T",
           "name": "YouTube account_AlgoNovaLabs"
         }
-      },
-      "onError": "continueRegularOutput"
+      }
     },
     {
       "parameters": {
@@ -1573,8 +1303,8 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        112,
-        1216
+        144,
+        544
       ],
       "id": "ad6152f4-5675-429c-902e-048c0ef69b4a",
       "name": "Add a playlist item",
@@ -1588,69 +1318,6 @@
       "onError": "continueRegularOutput"
     },
     {
-      "parameters": {
-        "updates": [
-          "message"
-        ],
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        -3968,
-        320
-      ],
-      "id": "43ac5837-6736-4bae-a773-1d30fb3a194d",
-      "name": "Telegram Trigger",
-      "webhookId": "5fc2b001-9a7c-4b01-9bb1-2dee51478ad9",
-      "credentials": {
-        "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
-          "name": "Telegram account"
-        }
-      },
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "9e02677a-b4c5-4e21-b97e-6536d336181b",
-              "name": "bot id",
-              "value": "8351768336:AAF9RLjBvcUpcYeO_bnIGDGodALvUFCPy3s",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -3760,
-        320
-      ],
-      "id": "5935c48d-d90c-44b0-8aea-1f52a004d6db",
-      "name": "Edit Fields - Bot ID 1",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "url": "=https://api.telegram.org/bot{{ $json['bot id'] }}/getFile?file_id={{ $('Telegram Trigger').item.json.message.photo[0].file_id }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -3568,
-        320
-      ],
-      "id": "5d7a8904-78c7-4a44-a97d-91fd814609c9",
-      "name": "HTTP Request - Image Path",
-      "disabled": true
-    },
-    {
       "parameters": {},
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
@@ -1660,6 +1327,187 @@
       ],
       "id": "2f9c6d15-0127-4bc3-a291-e149aed77cdd",
       "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "={{ $json.imagePrompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -2976,
+        704
+      ],
+      "id": "63a0469e-8fb4-459b-9d9a-d62bc8fd5829",
+      "name": "Generate an image1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vwg2FlhVu2bY7dZ6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -3040,
+        1232
+      ],
+      "id": "6877392e-2091-4dd6-b90e-54c23f74d76e",
+      "name": "Wait - 60s",
+      "webhookId": "e85f5cb5-8bf9-4cff-b1f3-bc165cc25236"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "48ddc792-3d49-490c-9341-a23fd5fe5587",
+              "name": "chatInput",
+              "value": "This video shows an aerial view of a castle blanketed in snow during a blizzard. The castle sits amidst snow dunes and the entire scene is shrouded in mist, creating a hazy, ethereal atmosphere.\\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2080,
+        1408
+      ],
+      "id": "1631330a-8d34-4ee6-9c3c-b9bd87e05448",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from datetime import datetime\nimport random\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n# Define some dynamic hooks and actions\nhook_phrases = [\n    \"When {character} {action}!\",\n    \"You won't believe what {character} does!\",\n    \"Watch {character} {action} in pastel magic!\",\n    \"I can't believe {character} just {action}!\",\n    \"{character} {action} and it's adorable!\"\n]\nactions = [\n    \"dances in the candy clouds\",\n    \"discovers a rainbow waterfall\",\n    \"giggles while floating on lanterns\",\n    \"throws a sparkly magic spell\",\n    \"plays hide-and-seek in the pastel garden\",\n    \"slides down a fluffy cloud slide\",\n    \"spins under the twinkling stars\",\n    \"sings with magical sparkles around\",\n    \"jumps between floating petals\"\n]\n# Example character (you can replace with your generated character)\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\naction = random.choice(actions)\ntitle = random.choice(hook_phrases).format(character=character, action=action)\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.chatInput}\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, FOMO-style, MUST be under 90 characters)\n- \"YouTubeTitle2\" (DIFFERENT catchy title, under 90 characters, use a different hook/angle than YouTubeTitle)\n- \"YouTubeDescription\" (engaging, includes CTA like 'watch till the end' or 'subscribe for more')\n- \"YouTubeDescription2\" (DIFFERENT description with different CTA and angle than YouTubeDescription)\n- \"TikTokDescription\" (short, punchy, instant hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, engaging)\n- \"InstagramDescription\" (short, emoji-rich, interaction-focused)\n- \"AdditionalNotes\" (hashtags, trends, posting tips)\nSTRICT RULES:\n1. Both \"YouTubeTitle\" and \"YouTubeTitle2\" MUST NOT exceed 90 characters.\n2. YouTubeTitle and YouTubeTitle2 MUST be COMPLETELY DIFFERENT - use different hooks, emotions, or angles.\n3. YouTubeDescription and YouTubeDescription2 MUST be COMPLETELY DIFFERENT - vary the CTAs and storytelling.\n4. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n5. The output MUST be valid JSON, properly escaped.\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\nCRITICAL: YouTubeTitle and YouTubeTitle2 must be DISTINCT. YouTubeDescription and YouTubeDescription2 must be DISTINCT. Do NOT repeat the same content.\nGenerate irresistible, high-CTR titles and descriptions that make viewers feel they CAN'T miss the video.\n\"\"\"\nreturn {\n    \"chatInput\": Prompt\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1856,
+        1360
+      ],
+      "id": "114be7e0-7af1-4228-829a-bd0d38e6f430",
+      "name": "Code in Python (Beta)5"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -3600,
+        912
+      ],
+      "id": "8b908f78-e409-4aca-abf7-d2781e06eba2",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vwg2FlhVu2bY7dZ6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -3664,
+        1424
+      ],
+      "id": "e5e4bc2c-4450-4c62-a0c9-09cc98cc9ee1",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vwg2FlhVu2bY7dZ6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2112,
+        944
+      ],
+      "id": "ee219649-3cb7-49b8-9f45-28d1f68e86ef",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vwg2FlhVu2bY7dZ6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1712,
+        1520
+      ],
+      "id": "8fed033c-f049-4a50-9782-1e48ec5e8a2d",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vwg2FlhVu2bY7dZ6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -1376,
+        1536
+      ],
+      "id": "0c498bd4-0abd-4978-9e38-c647fd80297b",
+      "name": "Structured Output Parser1"
     }
   ],
   "connections": {
@@ -1678,18 +1526,7 @@
       "main": [
         [
           {
-            "node": "Wait - 30s",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait - 30s": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request - Get Image 1",
+            "node": "Wait - 60s",
             "type": "main",
             "index": 0
           }
@@ -1711,29 +1548,7 @@
       "main": [
         [
           {
-            "node": "Split Out",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Aggregate": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request - Combine",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request - Final Video": {
-      "main": [
-        [
-          {
-            "node": "Send a video",
+            "node": "HTTP Request - Make Video1",
             "type": "main",
             "index": 0
           }
@@ -1745,17 +1560,6 @@
         [
           {
             "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request - Combine": {
-      "main": [
-        [
-          {
-            "node": "Wait 60s",
             "type": "main",
             "index": 0
           }
@@ -1782,29 +1586,7 @@
             "index": 0
           },
           {
-            "node": "Analyze video",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Analyze video": {
-      "main": [
-        [
-          {
-            "node": "Code in Python (Beta)",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in Python (Beta)": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
@@ -1812,28 +1594,6 @@
       ]
     },
     "AI Agent": {
-      "main": [
-        [
-          {
-            "node": "Code in Python (Beta)1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in Python (Beta)1": {
       "main": [
         [
           {
@@ -1979,27 +1739,11 @@
         ]
       ]
     },
-    "Generate an image": {
-      "main": [
-        [
-          {
-            "node": "Upload file1",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Analyze image1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Code in Python (Beta)3": {
       "main": [
         [
           {
-            "node": "Generate an image",
+            "node": "Generate an image1",
             "type": "main",
             "index": 0
           }
@@ -2072,22 +1816,11 @@
         ]
       ]
     },
-    "Split Out": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request - Make Video1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "HTTP Request - Get Video": {
       "main": [
         [
           {
-            "node": "Aggregate",
+            "node": "Send a video",
             "type": "main",
             "index": 0
           }
@@ -2111,38 +1844,6 @@
           {
             "node": "HTTP Request - Get Video",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "AI Agent - Image Prompt",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model2": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent - Video Prompter",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "Structured Output Parser",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -2251,17 +1952,6 @@
         ]
       ]
     },
-    "Wait 60s": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request - Final Video",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Echonova Labs playlist": {
       "main": [
         [
@@ -2295,23 +1985,121 @@
         ]
       ]
     },
-    "Telegram Trigger": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields - Bot ID 1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "When clicking ‘Execute workflow’": {
       "main": [
         [
           {
             "node": "Code in Python (Beta)2",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image1": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait - 60s": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Get Image 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)5": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Image Prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
             "index": 0
           }
         ]
