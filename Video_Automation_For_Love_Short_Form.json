@@ -1,0 +1,696 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an AI narrator. Your job is to adapt your style based on the user prompt you receive.\n\nGeneral Output Rules:\n- Output as ONE single continuous string.\n- Use single quotes only.\n- Fill ~25–30 seconds of TTS narration.\n- Never include video, cinematic, or camera directions.\n- Never include image instructions.\n- Never break into bullet points.\n\nTone Logic:\n- If the prompt describes Machiavelli style, you must write in a ruthless, cunning, sharp, philosophical tone focused on power, strategy, betrayal, and manipulation.\n\n- If the prompt is dating-related in a sweet or emotional style, write softly, warmly, romantically, and comfortingly. \n  Tone must be gentle, uplifting, heartwarming, and universal. \n  No aggression. No savagery. No dark themes.\n\n- If the prompt is fitness-related, write with intense discipline, motivational fire, and tough-love energy.\n\n- Always rely ONLY on the tone described in the prompt injected by the Python code.\n\nYour task is to follow the prompt EXACTLY and produce a narrative that matches its tone 100%.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -5920,
+        160
+      ],
+      "id": "2c12f75f-22bc-4065-a858-fc9b7115d2c2",
+      "name": "AI Agent - Video Prompter",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8,13,22 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -6368,
+        256
+      ],
+      "id": "24e329d3-a711-409c-b2e7-ed045847d23b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"scene\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\"scene\"],\n  \"additionalProperties\": false\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -5840,
+        384
+      ],
+      "id": "108e852b-1363-4e21-8fbd-a0e64bc4768b",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -6368,
+        64
+      ],
+      "id": "148f10fa-3c4d-4890-8879-e38183d3dc69",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -5856,
+        592
+      ],
+      "id": "c5959a13-6be6-4e50-8f40-e41648531458",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "KbKuvqHOuDvNua6Q",
+          "name": "jaymeselwyn_YouTube Automation Related"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "machiavelli_img = \"https://github.com/RandomSci/Personal_Project/raw/main/static/img/Portrait_of_Niccol%C3%B2_Machiavelli_by_Santi_di_Tito.jpg\"\n\n# Define your categories and prompts\nPROMPTS = {\n    \"machiavelli\": (\n        \"Generate a continuous Machiavelli-style story, naturally filling ~25–30 seconds of TTS narration. \"\n        \"Focus on power, ambition, manipulation, betrayal, and strategy. \"\n        \"Include multiple plot beats, philosophical insight, and consequences. \"\n        \"Lines must be sharp, ruthless, thought-provoking, and commanding. \"\n        \"Original content only; do NOT quote historical texts. \"\n        \"Output is for TTS narration only; do NOT include video, cinematic, or image instructions.\"\n    ),\n\n    \"dating\": (\n        \"Generate a sweet, heartwarming, emotional dating narration, naturally filling ~25–30 seconds of TTS narration. \"\n        \"Tone must be gentle, romantic, uplifting, soft, and comforting. \"\n        \"Focus on love, connection, warmth, affection, kindness, and emotional closeness. \"\n        \"Do NOT be aggressive, savage, manipulative, or dark. \"\n        \"Do NOT target men only — keep it universal and gender-neutral. \"\n        \"Original content only; avoid clichés. \"\n        \"For TTS narration only; do NOT include video or camera instructions.\"\n    ),\n\n    \"fitness\": (\n        \"Generate a motivational fitness narration, naturally filling ~25–30 seconds of TTS narration. \"\n        \"Tone: intense, disciplined, determined, tough-love. \"\n        \"Focus on consistency, sacrifice, mental toughness, and growth. \"\n        \"Original content only; no references to influencers. \"\n        \"For TTS narration only; do NOT include video instructions.\"\n    )\n}\n\nfor item in _input.all():\n    category = item.json.get(\"category\", \"dating\").lower()\n\n    # fallback to machiavelli if invalid category\n    video_prompt = PROMPTS.get(category, PROMPTS[\"machiavelli\"])\n\n    item.json.chatInput = video_prompt\n\nreturn _input.all()\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -6144,
+        160
+      ],
+      "id": "99873d7f-019d-4645-bb12-e52c7ca7ec40",
+      "name": "Code in Python (Beta)2"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.output.scene }}",
+        "voiceId": {
+          "__rl": true,
+          "value": "en-US-natalie",
+          "mode": "list",
+          "cachedResultName": "Natalie (F)"
+        },
+        "multiNativeLocale": {
+          "__rl": true,
+          "value": "en-US",
+          "mode": "list",
+          "cachedResultName": "English (US & Canada)"
+        },
+        "style": {
+          "__rl": true,
+          "value": "Conversational",
+          "mode": "list",
+          "cachedResultName": "Conversational"
+        },
+        "format": "MP3",
+        "additionalOptions": {
+          "rate": 0.75
+        }
+      },
+      "type": "n8n-nodes-murf.murf",
+      "typeVersion": 1,
+      "position": [
+        -5472,
+        160
+      ],
+      "id": "8bca2cfe-3197-4aa3-8167-cd1e2c5fd95a",
+      "name": "Generate speech from text",
+      "credentials": {
+        "murfApi": {
+          "id": "g41kZRXVvm64cTGa",
+          "name": "Murf account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.audioFile }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -5248,
+        160
+      ],
+      "id": "35832685-a7d7-46e5-8c7c-d8c3a505e953",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -5024,
+        32
+      ],
+      "id": "57cc86b8-46c4-431b-80f1-a35245a3975e",
+      "name": "Analyze audio",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "LuvQlz3qmejdhs7S",
+          "name": "selwyngwapo90_Youtube Automation Related"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Audio analysis:\n {{ $json.content.parts[0].text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert in creating high-performing, data-driven YouTube content for the love/romance niche.\nYour task is to generate three outputs based on the user input:\n\nYouTube Video Title: Short, catchy, emotionally engaging, optimized for clicks and search. Include curiosity, urgency, or emotional hooks. Maximum 100 characters.\n\nYouTube Video Description: Sweet, engaging, and CTA-driven (~2–4 sentences). Include at least one call-to-action (subscribe, watch next, comment). Tailor it to love/romance content. Ask a question to encourage comments if possible.\n\nThumbnail Image Prompt: Create a visually striking, aesthetic, romantic thumbnail WITHOUT any people. Use colors, textures, symbols, or abstract elements to convey love, warmth, or longing. Include soft glows, pastel tones, sparkles, flowers, letters, or other abstract cues. Introduce contrast or dynamic shapes to attract clicks. Add subtle cues like arrows or glowing paths pointing to the focus area to imply playability. Emotionally compelling and designed for maximum CTR.\n\nRules:\n\nOutput must be valid JSON with keys: \"title\", \"description\", \"thumbnailPrompt\".\n\nDo NOT include extra text outside the JSON.\n\nOptimize all outputs for YouTube CTR and audience engagement.\n\nUse the user input below as the main source for inspiration.\n\nBe concise, creative, and highly clickable."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -4800,
+        32
+      ],
+      "id": "9d0ca0df-cbb3-4064-9466-de01923cd1c6",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -4800,
+        256
+      ],
+      "id": "c628d38c-86b6-4360-9a14-03652d848ca8",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "LuvQlz3qmejdhs7S",
+          "name": "selwyngwapo90_Youtube Automation Related"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"title\": {\n            \"type\": \"string\"\n        },\n        \"description\": {\n            \"type\": \"string\"\n        },\n        \"thumbnailPrompt\": {\n            \"type\": \"string\"\n        }\n    },\n    \"required\": [\"title\", \"description\", \"thumbnailPrompt\"]\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -4672,
+        256
+      ],
+      "id": "766b2c31-5bd9-4f7f-9515-c9b2c641f179",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "owner": {
+          "__rl": true,
+          "value": "RandomSci",
+          "mode": "list",
+          "cachedResultName": "RandomSci",
+          "cachedResultUrl": "https://github.com/RandomSci"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "Automation_For_Love_Niche",
+          "mode": "list",
+          "cachedResultName": "Automation_For_Love_Niche",
+          "cachedResultUrl": "https://github.com/RandomSci/Automation_For_Love_Niche"
+        },
+        "filePath": "Audio_Voice/new_love.mp3",
+        "binaryData": true,
+        "commitMessage": "new_love.mp3",
+        "additionalParameters": {
+          "author": {
+            "name": "randomsci",
+            "email": "jaymeselwyn@gmail.com"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -4448,
+        288
+      ],
+      "id": "e2ce10ac-4138-42cb-9c8e-86c101ecf335",
+      "name": "Edit a file",
+      "webhookId": "250c3188-1088-47aa-a4bc-ec4224d84d49",
+      "credentials": {
+        "githubApi": {
+          "id": "02d60aMLyuzpdyHG",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://automationforloveniche-production.up.railway.app/generate",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4000,
+        160
+      ],
+      "id": "143a47f2-80d2-4cf4-9c26-44c007ed3b56",
+      "name": "Trigger Video Generation"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -3776,
+        160
+      ],
+      "id": "69398c2a-ed10-4b9a-8ca1-56d34b91925f",
+      "name": "Wait 60 seconds",
+      "webhookId": "cde6393a-2637-40d0-9d3b-2843ad877ea0"
+    },
+    {
+      "parameters": {
+        "url": "https://automationforloveniche-production.up.railway.app/status",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3552,
+        160
+      ],
+      "id": "b9f7cf42-0d8a-4d5a-a9e8-44526b6099ac",
+      "name": "Check Status"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.status }}",
+              "value2": "completed"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -3328,
+        96
+      ],
+      "id": "34c4f987-099a-4c83-9182-79cab2853222",
+      "name": "Is Complete?"
+    },
+    {
+      "parameters": {
+        "url": "https://automationforloveniche-production.up.railway.app/download",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3104,
+        48
+      ],
+      "id": "5c6e9bf4-5d2d-4454-ae6c-1caeb51a66b2",
+      "name": "Download Video"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -3104,
+        256
+      ],
+      "id": "a0801d73-c157-4a70-af72-ed73be4f1b6d",
+      "name": "Wait & Retry",
+      "webhookId": "ab4af97b-0ff0-4e50-bb97-299507204fd2"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $('AI Agent1').item.json.output.title }}",
+        "regionCode": "PH",
+        "categoryId": "1",
+        "options": {
+          "description": "={{ $('AI Agent1').item.json.output.description }}",
+          "license": "youtube",
+          "notifySubscribers": true,
+          "privacyStatus": "public",
+          "selfDeclaredMadeForKids": false,
+          "tags": "Love, kindness, Beauty, unspoken, heart"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        -2880,
+        48
+      ],
+      "id": "0f4c94c4-5355-4b52-9015-ef76ef2dd732",
+      "name": "Upload a video",
+      "executeOnce": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "wgnhkjDYfRI9x3uM",
+          "name": "jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -4224,
+        160
+      ],
+      "id": "d3a5d141-b19d-42ff-8d92-e7234f6d203c",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "={{ $json.output.thumbnailPrompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -4448,
+        32
+      ],
+      "id": "8e093d0c-37cf-4f9e-8a3b-82892a9842e9",
+      "name": "Generate an image",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vwg2FlhVu2bY7dZ6",
+          "name": "OpenAi account"
+        }
+      },
+      "disabled": true
+    }
+  ],
+  "connections": {
+    "AI Agent - Video Prompter": {
+      "main": [
+        [
+          {
+            "node": "Generate speech from text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate speech from text": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Edit a file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze audio": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit a file": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Trigger Video Generation": {
+      "main": [
+        [
+          {
+            "node": "Wait 60 seconds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 60 seconds": {
+      "main": [
+        [
+          {
+            "node": "Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Status": {
+      "main": [
+        [
+          {
+            "node": "Is Complete?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Complete?": {
+      "main": [
+        [
+          {
+            "node": "Download Video",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait & Retry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Video": {
+      "main": [
+        [
+          {
+            "node": "Upload a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait & Retry": {
+      "main": [
+        [
+          {
+            "node": "Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Trigger Video Generation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+  }
+}
