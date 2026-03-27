@@ -14,10 +14,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -704,
-        -176
+        -1056,
+        160
       ],
-      "id": "04d81847-6974-4731-abbb-e2c1c736536c",
+      "id": "d4e343e7-e85b-4e06-bb8f-5ddbc6eb2c8e",
       "name": "Schedule Trigger"
     },
     {
@@ -28,79 +28,31 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -480,
-        -272
+        -832,
+        64
       ],
-      "id": "490ec3bd-ec02-44e3-bb46-d7be49ae7907",
+      "id": "aa03a82a-b08c-4f8b-9b0f-ae25ce2c8815",
       "name": "Get a channel",
       "credentials": {
         "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account_AlgoNovaLabs"
+          "id": "buXpxt448yigQv78",
+          "name": "YouTube account | AlgoNova"
         }
       }
     },
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "import json\nfrom datetime import datetime\nimport pytz\n\n# Get current weekday in PH\nph_tz = pytz.timezone(\"Asia/Manila\")\nnow_ph = datetime.now(ph_tz)\nweekday_ph = now_ph.strftime(\"%A\")\n\n# Fetch channel data\nchannel_data_algonova = _('Get a channel').all()\nchannel_data_echonova = _('Get a channel1').all()\n\nchannel_data = [item.to_py() for item in channel_data_algonova + channel_data_echonova]\nchannel_data_str = json.dumps(channel_data, indent=2)\n\nprompt = f\"\"\"\nCURRENT_WEEKDAY_PHT: {weekday_ph}\n\nBelow is the latest YouTube channel data for AlgoNova and EchoNova. Combine both channels into a single professional post per platform, showing milestones, numbers, and handles/links:\n\nCHANNEL_DATA:\n{channel_data_str}\n\nYou are a content generator for professional, adult-focused social posts.\nFollow the content pattern below based on the weekday provided above.\nAlways return clean JSON only — no explanations, no markdown, no comments.\n\nCONTENT THEMES BY DAY:\nMon:\n  fb_page: milestone\n  fb_group: poll\n  linkedin: milestone\nTue:\n  fb_page: short_clip\n  fb_group: mini_challenge\n  linkedin: short_clip\nWed:\n  fb_page: ai_automation_tip\n  fb_group: engagement_question\n  linkedin: automation_tip\nThu:\n  fb_page: sneak_peek\n  fb_group: fun_gif_style_post\n  linkedin: sneak_peek\nFri:\n  fb_page: milestone_update\n  fb_group: poll\n  linkedin: milestone_update\nSat:\n  fb_page: animation_clip\n  fb_group: free_discussion\n  linkedin: animation_clip\nSun:\n  fb_page: weekly_recap\n  fb_group: mini_challenge\n  linkedin: weekly_recap\n\nRULES:\n- Text should be concise, professional, and engaging for an adult audience.\n- Include subscriberCount, viewCount, and videoCount for both channels when mentioning milestones.\n- Reference both channel handles (customUrl) or links.\n- Include an image_prompt for each platform that is visually appealing and relevant.\n- Follow the content theme for the current weekday.\n- Do NOT repeat the same structure daily.\n\nThe JSON must follow this exact schema:\n\n{{\n  \"date_to_post\": \"\",\n  \"fb_page\": {{\n    \"text\": \"\",\n    \"image_prompt\": \"\"\n  }},\n  \"fb_group\": {{\n    \"text\": \"\",\n    \"image_prompt\": \"\"\n  }},\n  \"linkedin\": {{\n    \"text\": \"\",\n    \"image_prompt\": \"\"\n  }}\n}}\n\nGenerate the output based on CURRENT_WEEKDAY_PHT, combining both channels in each platform post.\n\"\"\"\n\nreturn {\"chatInput\": prompt}\n"
+        "pythonCode": "import json\nfrom datetime import datetime\nimport pytz\n\n# Get current weekday in PH\nph_tz = pytz.timezone(\"Asia/Manila\")\nnow_ph = datetime.now(ph_tz)\nweekday_ph = now_ph.strftime(\"%A\")\n\n# Fetch channel data (for case study reference only)\nchannel_data_algonova = _('Get a channel').all()\nchannel_data_echonova = _('Get a channel1').all()\n\nchannel_data = [item.to_py() for item in channel_data_algonova + channel_data_echonova]\nchannel_data_str = json.dumps(channel_data, indent=2)\n\n# Content themes focused on VALUE, not self-promotion\nCONTENT_THEMES = {\n    \"Monday\": {\n        \"fb_page\": \"ai_automation_tutorial\",\n        \"fb_group\": \"problem_poll\",\n        \"linkedin\": \"tutorial_professional\"\n    },\n    \"Tuesday\": {\n        \"fb_page\": \"tool_comparison\",\n        \"fb_group\": \"mini_challenge\",\n        \"linkedin\": \"industry_insight\"\n    },\n    \"Wednesday\": {\n        \"fb_page\": \"case_study_example\",\n        \"fb_group\": \"showcase_thread\",\n        \"linkedin\": \"results_driven\"\n    },\n    \"Thursday\": {\n        \"fb_page\": \"mistake_breakdown\",\n        \"fb_group\": \"fun_automation_meme\",\n        \"linkedin\": \"thought_leadership\"\n    },\n    \"Friday\": {\n        \"fb_page\": \"weekly_tip_compilation\",\n        \"fb_group\": \"what_to_build_poll\",\n        \"linkedin\": \"weekend_inspiration\"\n    },\n    \"Saturday\": {\n        \"fb_page\": \"behind_the_scenes\",\n        \"fb_group\": \"free_discussion\",\n        \"linkedin\": \"light_content\"\n    },\n    \"Sunday\": {\n        \"fb_page\": \"weekly_recap_with_cta\",\n        \"fb_group\": \"mini_challenge\",\n        \"linkedin\": \"reflection_post\"\n    }\n}\n\ntoday_themes = CONTENT_THEMES[weekday_ph]\n\nprompt = f\"\"\"\nCURRENT_WEEKDAY_PHT: {weekday_ph}\n\nYou are generating social media posts for AlgoNova Labs - an AI automation business that helps content creators automate their workflows.\n\nTARGET AUDIENCE: Content creators, entrepreneurs, AI enthusiasts who want to learn automation.\n\nBUSINESS GOAL: Teach automation, build trust, generate leads for automation services ($500-5000).\n\nCHANNEL DATA (for case study reference ONLY - use sparingly):\n{channel_data_str}\n\nTODAY'S CONTENT THEMES:\n- Facebook Page: {today_themes['fb_page']}\n- Facebook Group: {today_themes['fb_group']}\n- LinkedIn: {today_themes['linkedin']}\n\nCONTENT STRATEGY BY THEME:\n\n**ai_automation_tutorial**: Teach a specific automation concept. Step-by-step. Actionable. Example: \"How to automate YouTube Shorts in 5 steps\"\n\n**problem_poll**: Ask what's blocking them from automating. Use emoji options. Encourage comments.\n\n**tool_comparison**: Compare 2 automation tools (n8n vs Zapier, OpenAI vs Gemini). Pros/cons. When to use each.\n\n**mini_challenge**: Give them something to build. \"Try automating your morning report\" with hints.\n\n**case_study_example**: Use YOUR channels as proof of concept. Show numbers, process, results. End with \"Want help building yours?\"\n\n**showcase_thread**: Ask community to share what they're building. Create engagement.\n\n**mistake_breakdown**: \"I wasted 10 hours doing X wrong. Here's the right way.\"\n\n**fun_automation_meme**: Light humor about automation struggles. Relatable.\n\n**thought_leadership**: Opinion on AI/automation trends. Professional but conversational.\n\n**weekly_tip_compilation**: 3-5 quick tips. Scannable. Valuable.\n\n**what_to_build_poll**: Ask what automation they want you to build next. Options with emojis.\n\n**behind_the_scenes**: Show your workflow, tools, process. Not polished - authentic.\n\n**free_discussion**: Open thread. \"What are you working on this weekend?\"\n\n**weekly_recap_with_cta**: Recap value from the week. CTA: \"Need help? DM me AUTOMATE\"\n\n**reflection_post**: Personal insight. What you learned. Vulnerable but professional.\n\n**weekend_inspiration**: Motivational but grounded. \"The best automation is the one you actually build.\"\n\n**light_content**: Easy, engaging. No heavy sales. Just presence.\n\nCRITICAL RULES:\n1. ONLY mention channel stats if the theme is \"case_study_example\" - otherwise IGNORE channel data\n2. Focus on TEACHING, not promoting\n3. Every post must provide VALUE (tutorial, insight, engagement, or entertainment)\n4. End with engagement hooks: questions, polls, CTAs\n5. Professional but conversational tone\n6. NO self-promotion unless it serves the audience\n7. Use channel handles/links ONLY in case studies\n\nPOST STRUCTURE EXAMPLES:\n\n**Tutorial (fb_page):**\n\"Want to automate your content creation?\n\nHere's my 5-step process:\n1. Generate ideas with ChatGPT\n2. Create scripts automatically\n3. Synthesize voiceovers (Murf)\n4. Build workflows (n8n)\n5. Schedule posts\n\nI went from manually posting 3x/week to 90 automated videos/month.\n\nWhat would you automate first? 👇\"\n\n**Problem Poll (fb_group):**\n\"Quick poll for content creators 👇\n\nWhat's your biggest automation roadblock?\n\n🔴 Don't know where to start\n🟠 Too technical for me\n🟡 Worried about quality\n🟢 Need tool recommendations\n\nDrop your answer - happy to help!\"\n\n**Case Study (linkedin):**\n\"I automated 2 YouTube channels to post 3x daily.\n\n30-day results:\n✅ 90 videos created\n✅ 0 hours of manual work\n✅ $45 total costs\n\nThe stack:\n- n8n (workflow automation)\n- OpenAI (content generation)\n- Murf (text-to-speech)\n- Railway (hosting)\n\nChannels: @AlgoNova & @EchoNova\n\nBuilding something similar? Let's chat.\"\n\n**Tool Comparison (fb_page):**\n\"n8n vs Zapier for content automation:\n\nn8n:\n✅ Self-hosted (cheaper at scale)\n✅ More control\n❌ Steeper learning curve\n\nZapier:\n✅ Easier to start\n✅ Great integrations\n❌ Expensive for high volume\n\nMy take: Start with Zapier, switch to n8n when you hit $50/month.\n\nWhat are you using? 💬\"\n\nThe JSON must follow this exact schema:\n{{\n  \"date_to_post\": \"\",\n  \"fb_page\": {{\n    \"text\": \"\",\n    \"image_prompt\": \"\"\n  }},\n  \"fb_group\": {{\n    \"text\": \"\",\n    \"image_prompt\": \"\"\n  }},\n  \"linkedin\": {{\n    \"text\": \"\",\n    \"image_prompt\": \"\"\n  }}\n}}\n\nIMAGE PROMPT GUIDELINES:\n- Professional, clean, modern aesthetic\n- Relevant to the content theme (tutorial = code/workflow, poll = question mark graphic, case study = dashboard/stats)\n- NO cartoons, NO fantasy elements\n- Focus on: workflows, data dashboards, code snippets, clean graphics, abstract tech visuals\n- Include text space for overlay if needed\n\nGenerate the output based on today's themes: {today_themes}\nFocus on VALUE, not self-promotion.\n\"\"\"\n\nreturn {\"chatInput\": prompt}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -32,
-        -176
+        -384,
+        160
       ],
-      "id": "baa0ab28-3482-4422-8f20-0b0fd6c40358",
+      "id": "dc8f8404-6d5a-41e2-9b52-87f4deaa870c",
       "name": "Code in Python (Beta)"
-    },
-    {
-      "parameters": {
-        "hasOutputParser": true,
-        "options": {
-          "systemMessage": "You are a content generator for professional social posts. \n\nRULES:\n- Target audience: adult professionals, entrepreneurs, and animation enthusiasts. No references to children, fantasy, or magical elements.\n- Text must highlight achievements, milestones, or relevant content updates.\n- Include actual subscriberCount, viewCount, videoCount, and channel handle or link where appropriate.\n- Image prompts must be visually appealing, professional, and relevant to the content. No cartoon, fantasy, or magical style.\n- Text should be concise, scroll-stopping, and polished."
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        192,
-        -176
-      ],
-      "id": "fc4b5bdc-2f1d-435a-833a-3f9dcd8dd224",
-      "name": "AI Agent"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        208,
-        48
-      ],
-      "id": "621077c9-79d3-46d6-a2f2-e603e4ff3c65",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "LuvQlz3qmejdhs7S",
-          "name": "selwyngwapo90_Youtube Automation Related"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsonSchemaExample": "[\n  {\n    \"channel\": \"AlgoNova\",\n    \"date_to_post\": \"\",\n    \"fb_page\": { \"text\": \"\", \"image_prompt\": \"\" },\n    \"fb_group\": { \"text\": \"\", \"image_prompt\": \"\" },\n    \"linkedin\": { \"text\": \"\", \"image_prompt\": \"\" }\n  },\n  {\n    \"channel\": \"EchoNova\",\n    \"date_to_post\": \"\",\n    \"fb_page\": { \"text\": \"\", \"image_prompt\": \"\" },\n    \"fb_group\": { \"text\": \"\", \"image_prompt\": \"\" },\n    \"linkedin\": { \"text\": \"\", \"image_prompt\": \"\" }\n  }\n]\n"
-      },
-      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-      "typeVersion": 1.3,
-      "position": [
-        336,
-        48
-      ],
-      "id": "f568fa8b-3e98-484c-8e32-f0c67e030ec0",
-      "name": "Structured Output Parser"
     },
     {
       "parameters": {
@@ -110,15 +62,15 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -480,
-        -80
+        -832,
+        256
       ],
-      "id": "66519564-0266-4afb-bbba-758ea781a9b8",
+      "id": "fc1cebe2-ce72-4996-a174-2d20b25d386e",
       "name": "Get a channel1",
       "credentials": {
         "youTubeOAuth2Api": {
-          "id": "lP6X79rHDtk0jfT5",
-          "name": "Youtube_Account_EchoNovaLabs"
+          "id": "ls0zawE8FI2uctox",
+          "name": "YouTube account | LettersNeverSent"
         }
       }
     },
@@ -127,10 +79,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -256,
-        -176
+        -608,
+        160
       ],
-      "id": "b4ac28bb-64e0-4f34-876b-6366ed58d40e",
+      "id": "28b3ae47-3e2a-4cb1-9d7a-df4b4a2fdf32",
       "name": "Merge"
     },
     {
@@ -140,78 +92,78 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        992,
-        -192
+        640,
+        144
       ],
-      "id": "74ff480c-07f1-4224-b3e5-b3dcf014be1f",
+      "id": "f09f5517-4333-40e8-b787-1d7f4148a580",
       "name": "Merge1"
     },
     {
       "parameters": {
         "resource": "image",
-        "prompt": "={{ $json.output[0].fb_page.image_prompt }}",
+        "prompt": "={{ $json.output.fb_page.image_prompt }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        544,
-        -368
+        192,
+        -32
       ],
-      "id": "28b763cb-3530-4aff-ae10-0b3b784433c3",
+      "id": "4c528662-e73a-465f-bbfc-ed6c5f9fdaaf",
       "name": "FB Page Image Gen",
       "credentials": {
         "openAiApi": {
-          "id": "Vwg2FlhVu2bY7dZ6",
-          "name": "OpenAi account"
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
         }
       }
     },
     {
       "parameters": {
         "resource": "image",
-        "prompt": "={{ $json.output[0].fb_group.image_prompt }}",
+        "prompt": "={{ $json.output.fb_group.image_prompt }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        544,
-        -176
+        192,
+        160
       ],
-      "id": "4d232716-8560-445c-b32d-924b32aaeccf",
+      "id": "8d2dd9b7-22a0-4dd6-8a11-92108f601a94",
       "name": "FB Group Image Gen",
       "credentials": {
         "openAiApi": {
-          "id": "Vwg2FlhVu2bY7dZ6",
-          "name": "OpenAi account"
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
         }
       }
     },
     {
       "parameters": {
         "resource": "image",
-        "prompt": "={{ $json.output[0].linkedin.image_prompt }}",
+        "prompt": "={{ $json.output.linkedin.image_prompt }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        544,
-        16
+        192,
+        352
       ],
-      "id": "de257925-57e1-4785-86c3-480edb68dd2d",
+      "id": "8254a9a1-4ec9-43ac-b77c-b687bd329876",
       "name": "LinkedIn Image Gen",
       "credentials": {
         "openAiApi": {
-          "id": "Vwg2FlhVu2bY7dZ6",
-          "name": "OpenAi account"
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
         }
       }
     },
     {
       "parameters": {
-        "name": "={{ $('AI Agent').item.json.output[0].fb_page.image_prompt }}",
+        "name": "={{ $('AI Agent').item.json.output.fb_page.image_prompt }}",
         "driveId": {
           "__rl": true,
           "mode": "list",
@@ -227,21 +179,21 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        768,
-        -368
+        416,
+        -32
       ],
-      "id": "5cb7070f-6efb-41b8-b0da-efd57ed81f3f",
+      "id": "c3c1aec6-a229-4349-ad18-03882b466d55",
       "name": "Upload Image For FB Page",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "2KupETq4QLi8d9l8",
+          "id": "ArIUQPOkqI84L2K6",
           "name": "Google Drive account"
         }
       }
     },
     {
       "parameters": {
-        "name": "={{ $('AI Agent').item.json.output[0].fb_group.image_prompt }}",
+        "name": "={{ $('AI Agent').item.json.output.fb_group.image_prompt }}",
         "driveId": {
           "__rl": true,
           "mode": "list",
@@ -257,21 +209,21 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        768,
-        -176
+        416,
+        160
       ],
-      "id": "ffc2ca9e-cfed-4a33-ac84-a42577b7f517",
+      "id": "97824cbf-1587-495b-a795-1a1d08f898d5",
       "name": "Upload Image For FB Group",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "2KupETq4QLi8d9l8",
+          "id": "ArIUQPOkqI84L2K6",
           "name": "Google Drive account"
         }
       }
     },
     {
       "parameters": {
-        "name": "={{ $('AI Agent').item.json.output[0].linkedin.image_prompt }}",
+        "name": "={{ $('AI Agent').item.json.output.linkedin.image_prompt }}",
         "driveId": {
           "__rl": true,
           "mode": "list",
@@ -287,17 +239,71 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        768,
-        16
+        416,
+        352
       ],
-      "id": "45476946-4c51-4bfe-8b56-95b18c650988",
+      "id": "fe1b47a4-1c18-4745-8ecd-a5ba174fc7b6",
       "name": "Upload Image For LInkedIn",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "2KupETq4QLi8d9l8",
+          "id": "ArIUQPOkqI84L2K6",
           "name": "Google Drive account"
         }
       }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -160,
+        384
+      ],
+      "id": "ddba7e6f-052d-4585-b7fd-8066bde45507",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a content generator for AlgoNova Labs, creating educational social posts about AI automation for content creators.\n\nBUSINESS CONTEXT:\n- Company: AlgoNova Labs\n- Service: AI automation systems for content creators ($500-5000)\n- Goal: Teach automation → Build trust → Generate leads\n- Proof of concept: 2 automated YouTube channels (AlgoNova, EchoNova)\n\nTARGET AUDIENCE:\n- Content creators wanting to scale production\n- Entrepreneurs interested in AI automation\n- Marketing professionals exploring automation tools\n- Tech-savvy individuals learning workflow automation\n- Age: 25-45, professionals with disposable income\n\nCONTENT STRATEGY (70-20-10 RULE):\n- 70% VALUE: Tutorials, tips, tool comparisons, insights, breakdowns\n- 20% SOCIAL PROOF: Case studies, results, behind-the-scenes, community showcases\n- 10% SALES: Soft CTAs, offer mentions, lead generation\n\nCRITICAL RULES:\n1. FOCUS ON VALUE FIRST\n   - Teach something actionable\n   - Share insights from experience\n   - Compare tools/methods\n   - Break down mistakes/learnings\n   \n2. CHANNEL MENTIONS (USE SPARINGLY)\n   - Only mention channel stats in case studies or proof-of-concept posts\n   - When mentioned, include: subscriberCount, viewCount, videoCount, customUrl\n   - Frame as \"here's what I built\" not \"look how great I am\"\n   - Maximum once per week per platform\n   \n3. ENGAGEMENT HOOKS\n   - End with questions, polls, or challenges\n   - Use emoji options for polls (🔴🟡🟢)\n   - Encourage comments and sharing\n   - Create curiosity gaps\n   \n4. TONE & STYLE\n   - Professional but conversational (like talking to a colleague at coffee)\n   - Direct and actionable (no fluff)\n   - Honest about struggles and learnings\n   - Confident but not arrogant\n   - Use \"you\" language (audience-focused)\n   \n5. IMAGE PROMPTS\n   - Professional, clean, modern aesthetic\n   - Tech-focused: dashboards, code snippets, workflow diagrams, data visualizations\n   - Abstract geometric patterns with tech elements\n   - Clean gradients (blues, purples, teals for tech; warm tones for community)\n   - NO cartoons, NO fantasy, NO magical elements, NO childish aesthetics\n   - Space for text overlay when relevant\n   - Examples: \"Modern workflow diagram with connected nodes on dark background, purple and blue gradient\", \"Clean dashboard showing analytics data, minimalist style, teal accents\"\n\n6. PLATFORM ADAPTATION\n   - Facebook Page: Slightly more casual, storytelling format, emoji-friendly\n   - Facebook Group: Community-focused, questions and polls, encourage discussion\n   - LinkedIn: Professional tone, industry insights, thought leadership, results-oriented\n\n7. POST STRUCTURE\n   - Hook (first line grabs attention)\n   - Value/insight (teach or share)\n   - Proof/example (if relevant)\n   - Engagement (question/CTA)\n   \n8. FORBIDDEN CONTENT\n   - Don't spam channel milestones daily\n   - Don't post achievements without context/value\n   - Don't be salesy or pushy\n   - Don't use manipulative tactics\n   - Don't talk down to audience\n   - Don't overpromise results\n\n9. CALL-TO-ACTION GUIDELINES\n   - Soft CTAs: \"What would you automate first?\"\n   - Medium CTAs: \"Want help building this? DM me AUTOMATE\"\n   - Hard CTAs: Only on Sunday recap posts or case studies\n   - Always provide value before asking for anything\n\n10. CONTENT VARIETY\n    - Mix educational, inspirational, and community content\n    - Vary post lengths (some short/punchy, some detailed)\n    - Balance serious insights with light humor\n    - Show vulnerability and authenticity occasionally\n\nEXAMPLE POST TEMPLATES:\n\n**TUTORIAL POST:**\n\"[Hook: State the problem]\n\nHere's my [X-step] process:\n1. [Step with tool]\n2. [Step with tool]\n3. [Step with tool]\n\n[Personal result/insight]\n\n[Engagement question] 👇\"\n\n**TOOL COMPARISON:**\n\"[Tool A] vs [Tool B] for [use case]:\n\n[Tool A]:\n✅ [Pro]\n✅ [Pro]\n❌ [Con]\n\n[Tool B]:\n✅ [Pro]\n✅ [Pro]\n❌ [Con]\n\nMy take: [Recommendation based on scenario]\n\nWhat are you using? 💬\"\n\n**CASE STUDY (use channel data here):**\n\"I automated [outcome]\n\n[Timeframe] results:\n✅ [Metric with number]\n✅ [Metric with number]\n✅ [Metric with number]\n\nThe stack:\n- [Tool + purpose]\n- [Tool + purpose]\n- [Tool + purpose]\n\nChannels: @[Handle] & @[Handle]\n\n[Insight learned]\n\n[CTA: Want to build something similar?]\"\n\n**MISTAKE BREAKDOWN:**\n\"I wasted [time/money] doing [X] wrong.\n\nHere's what I learned:\n\n❌ [What I did wrong]\n✅ [The right way]\n\n[Why this matters]\n\nMade this mistake too? 👇\"\n\n**POLL POST:**\n\"[Question for audience] 👇\n\nWhat's your [specific challenge]?\n\n🔴 [Option 1]\n🟠 [Option 2]\n🟡 [Option 3]\n🟢 [Option 4]\n\nDrop your answer - [offer to help]\"\n\n**BEHIND-THE-SCENES:**\n\"[Insight about your process]\n\n[Show the messy reality]\n\n[What you learned]\n\n[Relatable question for audience]\"\n\nRemember: Every post must pass the \"Would this help someone?\" test. If it's just self-promotion, rewrite it to provide value first.\n\nGenerate posts that educate, inspire action, and build trust - not just announce achievements."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -160,
+        160
+      ],
+      "id": "16bc3612-a3db-4ec8-a565-4d974c878f6f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"date_to_post\": \"\",\n  \"fb_page\": {\n    \"text\": \"\",\n    \"image_prompt\": \"\"\n  },\n  \"fb_group\": {\n    \"text\": \"\",\n    \"image_prompt\": \"\"\n  },\n  \"linkedin\": {\n    \"text\": \"\",\n    \"image_prompt\": \"\"\n  }\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        384
+      ],
+      "id": "57758f0a-a344-4766-b310-93301d4695c5",
+      "name": "Structured Output Parser"
     }
   ],
   "connections": {
@@ -334,49 +340,6 @@
           {
             "node": "AI Agent",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent": {
-      "main": [
-        [
-          {
-            "node": "FB Page Image Gen",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "FB Group Image Gen",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "LinkedIn Image Gen",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Structured Output Parser": {
-      "ai_outputParser": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_outputParser",
             "index": 0
           }
         ]
@@ -469,11 +432,54 @@
           }
         ]
       ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "FB Page Image Gen",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "FB Group Image Gen",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "LinkedIn Image Gen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
   }
 }
