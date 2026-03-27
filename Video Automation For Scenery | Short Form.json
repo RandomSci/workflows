@@ -1,0 +1,1778 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Content Idea",
+        "height": 448,
+        "width": 1520,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2176,
+        912
+      ],
+      "typeVersion": 1,
+      "id": "883ee8ec-5cbd-43cc-bbbb-3f289753c3be",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create one image prompt only.\nUse the visual details from the reference image as accurately as possible.\nKeep the prompt short and focused.\nDo NOT add people, characters, animals, or any elements not present in the reference image.\n\nUser Instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nReference Image Description:\n{{ $json.content }}",
+        "options": {
+          "systemMessage": "=Role:\nYou create high quality cinematic photorealistic scenery prompts.\nYour objective is to transform the reference image into a short, accurate, visually rich, realistic environment prompt never characters and never fictional additions.\n\nArt Style Guidelines:\n\nPhotorealistic scenery\nReal world textures, natural lighting, atmospheric depth\nCinematic environment quality film grade\nNo stylization unless present in the reference image\nRich environmental detail with terrain, sky, weather, light, color, materials\nStrong sense of mood and atmosphere with fog, heavy snow, whiteout flakes, dense blizzard conditions\n\nScene Requirements:\n\nPure environment only\nNo people, no characters, no animals, no silhouettes\nNo imaginary creatures, no cartoon elements\nDescribe what exists or what logically supports the scenery\nNever invent structures not present\nFocus on weather, lighting, texture, composition, natural elements, architecture\nSnow must be extremely dense and falling heavily, near whiteout, thick visibility loss\n\nRules:\n\nAlways use single quotes\nOutput only one concise image prompt\nMake it short, direct, cinematic, realistic\nUse only details visible in the reference image\nNo added characters or lifeforms\nNo narrative, no story, no filler\nNo hyphens or dashes\nAlways include environmental lighting\nAlways describe the scene like a film still\nNever use cartoon, anime, or animated terminology\nWeather must describe heavy dense snowfall or whiteout conditions when present\n\nPrompt Structure:\n\nAlways produce one short photorealistic scenery prompt in this format:\n\n'brief cinematic photorealistic description of the scenery using only reference image details with extremely heavy snowfall and whiteout atmosphere including lighting weather mood environment and textures'"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -1776,
+        1584
+      ],
+      "id": "ca1e565c-97fb-468f-85f6-ed9395913e09",
+      "name": "AI Agent - Image Prompt",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://queue.fal.run/fal-ai/nano-banana/edit",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key d843d270-9c37-4833-bab7-79b367f9c579:708fd98d6dacdc23103c80d4fc34d5e2"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": \"={{ $('AI Agent - Image Prompt').item.json.output }}\",\n  \"image_urls\": [\n    \"{{ $node['Code in Python (Beta)4'].json.img_link }}\"\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1440,
+        1584
+      ],
+      "id": "2c0dc5a1-cb03-41ae-b0a8-4f6497f941ec",
+      "name": "HTTP Request - Create Image 1",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "url": "=https://queue.fal.run/fal-ai/nano-banana/requests/{{ $json.request_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key d843d270-9c37-4833-bab7-79b367f9c579:708fd98d6dacdc23103c80d4fc34d5e2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -992,
+        1584
+      ],
+      "id": "2d7e3aa1-a79f-4fb8-8635-0bfbdea072d0",
+      "name": "HTTP Request - Get Image 1",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "content": "## Image Creation",
+        "height": 432,
+        "width": 1574,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2192,
+        1488
+      ],
+      "typeVersion": 1,
+      "id": "c49da2ef-bfb7-4324-ac9f-f7b0ffa3ce39",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create video prompts.\n\nUser instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image(s).\n{{ $('Analyze image1').item.json.content }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an AI agent that generates high-quality cinematic photorealistic scenery prompts. The prompt must describe purely realistic environments. Do not include characters, humans, animals, or any animated/cartoon style elements. Focus on landscapes, natural or urban environments, atmospheric elements, lighting, textures, and cinematic composition. Show the environment immediately in the first frame. Include natural or urban elements such as mountains, forests, rivers, lakes, oceans, deserts, clouds, snow, rain, fog, city streets, rural areas, or architectural structures. Include dynamic environmental details such as moving clouds, falling rain, rippling water, drifting fog, sunlight reflections, blowing leaves, or other atmospheric effects. Describe lighting such as golden hour, sunrise, sunset, overcast, soft diffused light, or moonlight, as appropriate for the scene. Convey a cinematic, dramatic, peaceful, moody, serene, or atmospheric mood. Use realistic color palettes reflecting natural lighting and environment. Include camera perspective such as wide-angle, aerial, drone view, ground-level, or cinematic pan or tracking. Describe all visible environmental elements in detail including terrain, water, sky, vegetation, structures, and textures. Include lighting, shadows, reflections, and atmospheric effects. Avoid narrative, text, quotes, or story elements. Make the scene visually rich, cinematic, and immersive. Use single quotes only and do not include hyphens or dashes. When describing intense weather conditions, use terms like extremely heavy, intensely, severely, or harshly rather than words with violent connotations. Keywords you may include if appropriate are 'cinematic photorealism', 'realistic lighting', 'atmospheric depth', 'filmic mood', 'natural textures', and 'environment focus'."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -240,
+        1008
+      ],
+      "id": "8bab61ad-7b4f-452b-976e-26808c64cee0",
+      "name": "AI Agent - Video Prompter",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Create Video ",
+        "height": 448,
+        "width": 1344,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -464,
+        912
+      ],
+      "typeVersion": 1,
+      "id": "d98b6029-fdb2-4265-91c3-e5a014fe366c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "sendVideo",
+        "chatId": "6472037679",
+        "file": "={{ $json.data.response.resultUrls[0] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        704,
+        1008
+      ],
+      "id": "870df0c0-74fe-447f-8aff-0141b7c48fab",
+      "name": "Send a video",
+      "webhookId": "181e9a8c-4cec-48a8-aaa2-420441ea8870",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "name": "={{ $now.plus({ hours: 8 }).format('MMM DD, YYYY_HH-mm-ss') }} UTC+8",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1-qzP9pteGVUxZrnaLAxjRo_Nf9pch7LJ",
+          "mode": "list",
+          "cachedResultName": "Generated Videos",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1-qzP9pteGVUxZrnaLAxjRo_Nf9pch7LJ"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        512,
+        1520
+      ],
+      "id": "6cecd53b-1c8e-4920-ac5e-046e667fd009",
+      "name": "Upload file",
+      "retryOnFail": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ArIUQPOkqI84L2K6",
+          "name": "Google Drive account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('HTTP Request - Get Video').item.json.data.response.resultUrls[0] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -416,
+        1616
+      ],
+      "id": "55f19246-6cfd-4698-b5e9-a354882b2d0e",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "maxTries": 5
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from datetime import datetime\nimport random\n\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\n# Winter/Castle themed content for EchoNova\nhook_phrases = [\n    \"POV: You discovered {location} {emotion}\",\n    \"This {location} {mystery}\",\n    \"I found {location} and {consequence}\",\n    \"You won't believe what's inside {location}\",\n    \"{location} {revelation}\",\n    \"When you finally find {location} {emotion}\",\n    \"The moment you see {location} {consequence}\",\n    \"{location} - {mystery}\",\n    \"Nobody talks about {location} but {revelation}\",\n    \"I visited {location} and {consequence}\"\n]\n\nlocations = [\n    \"a frozen castle nobody remembers\",\n    \"a snow palace hidden for centuries\",\n    \"an enchanted winter sanctuary\",\n    \"a secret ice fortress in the mountains\",\n    \"a mystical snow kingdom\",\n    \"a forgotten castle buried in snow\",\n    \"an ancient ice cathedral\",\n    \"a winter castle lost in time\",\n    \"a crystalline palace in the blizzard\",\n    \"a snow-covered fortress of dreams\",\n    \"an ethereal ice manor\",\n    \"a hidden winter wonderland\",\n    \"a castle where winter never ends\",\n    \"a frost-kissed sanctuary\",\n    \"a magical snow village\"\n]\n\nemotions = [\n    \"❄️ and it felt like coming home\",\n    \"✨ where winter never ends\",\n    \"and time stopped forever\",\n    \"that only appears in blizzards\",\n    \"🏰 and I never want to leave\",\n    \"💙 where hearts find peace\",\n    \"and everything made sense\",\n    \"🌨️ that heals broken souls\",\n    \"where silence speaks louder\",\n    \"and the world felt still\"\n]\n\nmysteries = [\n    \"appears only to lost souls\",\n    \"grants one wish per winter\",\n    \"hides the most beautiful truth\",\n    \"changes everyone who enters\",\n    \"reveals what you've been searching for\",\n    \"shows you your deepest desire\",\n    \"only the worthy can find\",\n    \"exists between reality and dreams\",\n    \"whispers ancient wisdom\"\n]\n\nconsequences = [\n    \"it changed my perspective on peace\",\n    \"I understood what true beauty means\",\n    \"my heart finally felt still\",\n    \"I found the sanctuary I needed\",\n    \"everything made sense\",\n    \"I discovered what I was missing\",\n    \"time stood completely still\",\n    \"I felt something I can't explain\",\n    \"my soul finally rested\",\n    \"I never wanted to leave\"\n]\n\nrevelations = [\n    \"is where broken hearts heal ❄️\",\n    \"showed me what I was searching for ✨\",\n    \"teaches you to embrace stillness 🏰\",\n    \"reveals your deepest desire 💙\",\n    \"holds the key to inner peace\",\n    \"is more magical than you think 🌨️\",\n    \"will change how you see beauty\",\n    \"is the sanctuary you've been seeking\",\n    \"makes everything else disappear\",\n    \"is what your soul has been craving\"\n]\n\n# Generate title components\nlocation = random.choice(locations)\nemotion = random.choice(emotions)\nmystery = random.choice(mysteries)\nconsequence = random.choice(consequences)\nrevelation = random.choice(revelations)\n\n# Create title\ntitle_template = random.choice(hook_phrases)\ntitle = title_template.format(\n    location=location,\n    emotion=emotion,\n    mystery=mystery,\n    consequence=consequence,\n    revelation=revelation\n)\n\n# Ensure title is under 90 characters\nif len(title) > 90:\n    title = title[:87] + \"...\"\n\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\n\nBased on this winter/castle aesthetic content, generate a structured JSON output for Google Sheets with the following fields:\n\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, emotional, mysterious, MUST be under 90 characters)\n- \"YouTubeTitle2\" (DIFFERENT catchy title, under 90 characters, use a different hook/angle than YouTubeTitle)\n- \"YouTubeDescription\" (engaging, emotional, includes CTA like 'watch till the end' or 'let me know in the comments')\n- \"YouTubeDescription2\" (DIFFERENT description with different CTA and angle than YouTubeDescription)\n- \"TikTokDescription\" (short, punchy, instant emotional hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, nostalgic/emotional)\n- \"InstagramDescription\" (short, emoji-rich, aesthetic-focused, interaction-focused)\n- \"AdditionalNotes\" (hashtags like #wintervibes #snowcastle #peacefulplaces, trends, posting tips)\n\nCONTENT THEME: Winter aesthetics, snowy castles, peaceful sanctuaries, emotional calm, mystical beauty\n\nSTRICT RULES:\n1. Both \"YouTubeTitle\" and \"YouTubeTitle2\" MUST NOT exceed 90 characters.\n2. YouTubeTitle and YouTubeTitle2 MUST be COMPLETELY DIFFERENT - use different psychological hooks (mystery vs emotion vs discovery vs transformation).\n3. YouTubeDescription and YouTubeDescription2 MUST be COMPLETELY DIFFERENT - vary the CTAs and emotional angles.\n4. All content must match the winter/castle/peaceful aesthetic theme.\n5. Use emotional, personal, and mysterious language - NOT cute/childish/character-based.\n6. Focus on feelings: peace, stillness, discovery, sanctuary, beauty, magic, wonder.\n7. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n8. The output MUST be valid JSON, properly escaped.\n\nTITLE STYLE EXAMPLES (use these psychological angles):\n- POV/Discovery: \"POV: You found a castle that only appears in winter ❄️\"\n- Mystery: \"This snow palace holds a secret nobody talks about...\"\n- Transformation: \"I visited this frozen castle and everything changed\"\n- Emotion: \"When you finally find the peace you've been searching for 🏰\"\n- Revelation: \"Nobody told me this winter sanctuary existed ✨\"\n\nDESCRIPTION STYLE EXAMPLES:\n- Emotional: \"Sometimes the most beautiful places exist in complete silence. This winter castle reminded me that peace isn't found—it's felt. Have you ever discovered a place that made time stand still? 💙\"\n- Discovery: \"I stumbled upon this hidden snow palace and couldn't believe my eyes. The way the mist wraps around the towers... pure magic. Where's your secret sanctuary? ❄️ Watch till the end!\"\n- Nostalgic: \"There's something about winter castles that touches your soul. Maybe it's the stillness, maybe it's the beauty—or maybe it's the feeling that you've finally come home. Tag someone who needs to see this 🏰\"\n\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\n\nCRITICAL: \n- YouTubeTitle and YouTubeTitle2 must use DIFFERENT psychological angles (mystery vs emotion vs discovery).\n- YouTubeDescription and YouTubeDescription2 must tell DIFFERENT emotional stories.\n- Do NOT repeat the same content.\n- Focus on creating FOMO and emotional resonance.\n- Make viewers feel they MUST watch to understand the feeling.\n\n-Generate irresistible, high-CTR titles and descriptions that create mystery, emotion, and deep curiosity.\n- DO NOT COPY THE TITLES OF THE EXAMPLES PROVIDED TO YOU! YOU SHOULD THINK OF BETTER OR MORE ALIGNED TITLES BASED ON THE VIDEO ANALYSIS!\n\"\"\"\n\nreturn {\n    \"chatInput\": Prompt\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        112,
+        1776
+      ],
+      "id": "b15eaaa8-e2e3-4ce9-afa2-ad65ff6fd338",
+      "name": "Code in Python (Beta)"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        1664
+      ],
+      "id": "fd564a20-fadd-4966-937d-1a4424931d5a",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "content": "## Analyze Video | Create Descriptions",
+        "height": 432,
+        "width": 1696,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -464,
+        1488
+      ],
+      "typeVersion": 1,
+      "id": "761df4f8-359d-4002-915c-f9638eed0c15",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        784,
+        1616
+      ],
+      "id": "ab4dfc2e-323f-4916-bcee-e43012deafca",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        976,
+        1616
+      ],
+      "id": "40f97157-b948-4597-b251-dcd529a1d663",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Videos",
+        "height": 464,
+        "width": 2256,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1296,
+        928
+      ],
+      "typeVersion": 1,
+      "id": "6dc1bd05-f4d6-4f0b-b91f-45bbb7c518de",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Video Url Download'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1728,
+        1088
+      ],
+      "id": "07662add-65ca-4df5-bb16-084cc57f33ed",
+      "name": "HTTP Request1",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4",
+          "mode": "list",
+          "cachedResultName": "Generated Videos to Post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $('AI Agent').item.json.output.Date }}",
+            "TikTok Description": "={{ $('AI Agent').item.json.output.TikTokDescription }}",
+            "Facebook Reel Description": "={{ $('AI Agent').item.json.output.FacebookReelDescription }}",
+            "Instagram Description": "={{ $('AI Agent').item.json.output.InstagramDescription }}",
+            "Additional Notes": "={{ $('AI Agent').item.json.output.AdditionalNotes }}",
+            "Video Url View": "={{ $('Upload file').item.json.webViewLink }}",
+            "Video Url Download": "={{ $('Upload file').item.json.webContentLink }}",
+            "Time ": "={{ $('AI Agent').item.json.output.Time }}",
+            "AlgoNova Youtube Title": "={{ $('AI Agent').item.json.output.YouTubeTitle }}",
+            "EchoNova Youtube Title": "={{ $('AI Agent').item.json.output.YouTubeTitle2 }}",
+            "AlgoNova YouTube Description": "={{ $('AI Agent').item.json.output.YouTubeDescription }}",
+            "EchoNova YouTube Description": "={{ $('AI Agent').item.json.output.YouTubeDescription2 }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time ",
+              "displayName": "Time ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AlgoNova Youtube Title",
+              "displayName": "AlgoNova Youtube Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "EchoNova Youtube Title",
+              "displayName": "EchoNova Youtube Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AlgoNova YouTube Description",
+              "displayName": "AlgoNova YouTube Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "EchoNova YouTube Description",
+              "displayName": "EchoNova YouTube Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TikTok Description",
+              "displayName": "TikTok Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Facebook Reel Description",
+              "displayName": "Facebook Reel Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Instagram Description",
+              "displayName": "Instagram Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Additional Notes",
+              "displayName": "Additional Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Url View",
+              "displayName": "Video Url View",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Video Url Download",
+              "displayName": "Video Url Download",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1360,
+        1088
+      ],
+      "id": "e3b5c337-6e66-4af3-8b31-bfc2842cfcd7",
+      "name": "Append row in sheet",
+      "retryOnFail": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "u5Go3qYtYJt4fClc",
+          "name": "Google Sheets account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4",
+          "mode": "list",
+          "cachedResultName": "Generated Videos to Post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "EchoNova Youtube Title",
+              "lookupValue": "={{ $json['EchoNova Youtube Title'] }}"
+            }
+          ]
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1536,
+        1088
+      ],
+      "id": "64541bfd-901d-4132-90d4-bd30189e00cb",
+      "name": "Get row(s) in sheet",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "u5Go3qYtYJt4fClc",
+          "name": "Google Sheets account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1872,
+        1088
+      ],
+      "id": "276be706-fec1-440a-bb67-acb5abec5564",
+      "name": "Wait",
+      "webhookId": "652c67f9-5120-4bdc-b427-caa536e7cb4b"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "text": "Determine if the image contains a landscape/scenery, a product, or a character.\nIf the image contains more than one completely separate subject (for example, a product AND a scenery, or two distinct images inside one image), describe each separately.\nOnly describe what is visually present.\nDo NOT add characters, people, animals, figures, silhouettes, or anything not actually in the image.\nYour output must ONLY include the appearance description — nothing else.",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -816,
+        1152
+      ],
+      "id": "76824a54-7eb3-45f6-9075-31804296f4b7",
+      "name": "Analyze image1",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 11 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2080,
+        1136
+      ],
+      "id": "e5de3cc6-30e1-4ead-baa0-83a0d34beecb",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import random\nfrom datetime import datetime\n\ndef escape_quotes(s):\n    return s.replace('\"', '\\\\\"')\n\nnow = datetime.now()\n\n# --- Realistic Snow Architecture (Aerial/High-Angle Only) ---\nlocations = [\n    \"aerial view of a snow-buried European castle\",\n    \"high-angle shot of a medieval stone fortress almost completely lost in snow\",\n    \"drone view above a winter Bavarian village barely visible beneath heavy snow layers\",\n    \"top-down shot of a snowy old-town square where most structures are hidden under deep snow\",\n    \"aerial perspective of a cliffside castle covered by near-whiteout snow\",\n    \"wide drone shot of a snowy mountain fortress fading into a blizzard\",\n    \"aerial view of a Scandinavian coastal village nearly erased by thick snowfall\",\n    \"high-altitude view of a frozen lakeside castle engulfed in dense snow\",\n    \"drone capture above an old monastery buried under extreme snow\",\n    \"top-down shot of winding snowy streets nearly indistinguishable under heavy accumulation\",\n    \"aerial view of an Alpine village overwhelmed in deep snow layers\",\n    \"wide drone frame of a medieval town nearly lost in a blizzard\",\n    \"aerial look at a mountain-top fortress swallowed by frosted pines and whiteout snow\",\n    \"high-angle winter shot of an old stone church nearly obscured by heavy white coverage\",\n    \"drone view of a historic riverside castle fading into dense snowfall\"\n]\n\n# --- Weather (WHITEOUT / BLIZZARD ONLY) ---\nweather = [\n    \"extreme heavy snowfall creating near-whiteout visibility\",\n    \"thick blizzard conditions obscuring most structures\",\n    \"intense snowstorm with very low visibility\",\n    \"overwhelming heavy snow covering almost everything\",\n    \"full whiteout with continuous dense snow\",\n    \"blizzard-level snowfall burying architectural details\"\n]\n\n# --- Mood ---\nmoods = [\n    \"silent and overwhelming\",\n    \"harsh winter stillness\",\n    \"dreamlike frozen isolation\",\n    \"cold, consuming, and atmospheric\",\n    \"quiet but brutally snowy\",\n    \"immersive whiteout calm\"\n]\n\n# --- Camera ---\ncamera = [\n    \"drone aerial shot\",\n    \"ultra-wide aerial view\",\n    \"high-angle cinematic aerial frame\",\n    \"top-down drone perspective\",\n    \"sweeping aerial wide shot\",\n    \"static high-altitude drone shot\"\n]\n\n# --- Lighting ---\nlighting = [\n    \"diffused overcast whiteout lighting\",\n    \"cold flat winter illumination with no strong shadows\",\n    \"muted gray-white daylight through snowstorm\",\n    \"soft blizzard-filtered ambient light\",\n    \"low-contrast overcast after heavy snowfall\"\n]\n\n# --- Themes ---\nthemes = [\n    \"Whiteout Castle Aerial Scene\",\n    \"Blizzard Fortress Landscape\",\n    \"Snow-Buried Winter Village\",\n    \"Frozen Architecture in a Snowstorm\",\n    \"Silent Whiteout Castle Vista\",\n    \"Aerial View Lost in Snow\",\n    \"Winter Fortress in Heavy Blizzard\",\n    \"Snow-Consumed European Castle\"\n]\n\n# --- Generate ---\nlocation = random.choice(locations)\nweather_type = random.choice(weather)\nmood = random.choice(moods)\ncamera_type = random.choice(camera)\nlight = random.choice(lighting)\ntheme = random.choice(themes)\n\ngenerated_title = f\"{theme} | {location} with {weather_type}\"\n\ntext_prompt = (\n    f\"Generate an extremely heavy-snow, near-whiteout aerial winter scene of {location} under {weather_type}. \"\n    f\"The environment should be almost obscured, with most details buried in snow. Mood is {mood}. \"\n    f\"Lighting should be {light}. Use a {camera_type}. No people, no animals, no characters. \"\n    f\"Visibility should be low, with dense, overwhelming snowfall, deep snow accumulation, and faded architecture. \"\n    f\"Focus on realism, extreme snow coverage, atmospheric snow depth, and cinematic whiteout conditions.\"\n)\n\nimage_prompt = (\n    f\"Photorealistic near-whiteout aerial shot of {location} with {weather_type}. \"\n    f\"{camera_type}, {light}, heavy dense snow, extreme low visibility, \"\n    \"deep snow accumulation, snow-buried details, atmospheric blizzard depth. \"\n    \"No characters or living beings. Pure environment only.\"\n)\n\ngenerated_title_escaped = escape_quotes(generated_title)\ntext_prompt_escaped = escape_quotes(text_prompt)\nimage_prompt_escaped = escape_quotes(image_prompt)\n\nreturn {\n    \"chatInput\": f\"\"\"\nEnsure to return the output in this EXACT FORMAT:\n{{\n'imagePrompt':'{image_prompt_escaped}',\n'textPrompt':'{text_prompt_escaped}',\n'generatedTitle':'{generated_title_escaped}'\n}}\n\"\"\"\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1824,
+        1056
+      ],
+      "id": "bfa194cf-ec89-4719-8907-a473db9bb366",
+      "name": "Code in Python (Beta)2"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\nimport re\n\nai_output = _input.first().json.get(\"output\", \"\")\n\n# Extract JSON block\njson_match = re.search(r\"\\{.*\\}\", ai_output, re.DOTALL)\nif not json_match:\n    raise ValueError(\"No JSON found in AI output.\")\njson_str = json_match.group(0)\n\n# Replace single quotes with double quotes (for keys and string values)\njson_str = re.sub(r\"(?<!\\\\)'\", '\"', json_str)\n\n# Remove trailing commas\njson_str = re.sub(r\",(\\s*})\", r\"\\1\", json_str)\njson_str = re.sub(r\",(\\s*\\])\", r\"\\1\", json_str)\n\n# Fallback: sanitize backslashes in strings\ndef sanitize_json_string(s):\n    # Escape unescaped backslashes\n    s = re.sub(r'\\\\(?![\"\\\\/bfnrtu])', r'\\\\\\\\', s)\n    return s\n\njson_str = sanitize_json_string(json_str)\n\n# Attempt to parse JSON\ntry:\n    parsed = json.loads(json_str)\nexcept json.JSONDecodeError as e:\n    # As a last resort: remove problematic backslashes entirely\n    json_str_clean = json_str.replace(\"\\\\\", \"\")\n    try:\n        parsed = json.loads(json_str_clean)\n    except Exception as e2:\n        raise ValueError(f\"Failed to parse JSON even after fallback: {e2}\\nContent: {json_str}\")\n\n# Return clean output\nreturn [{\n    \"json\": {\n        \"imagePrompt\": parsed.get(\"imagePrompt\", \"\"),\n        \"textPrompt\": parsed.get(\"textPrompt\", \"\"),\n        \"generatedTitle\": parsed.get(\"generatedTitle\", \"Untitled\")\n    }\n}]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1312,
+        1056
+      ],
+      "id": "ff6d3639-9859-4305-aa83-eb925f8e70da",
+      "name": "Code in Python (Beta)3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -1632,
+        1056
+      ],
+      "id": "fb7aaac5-62ca-4cc3-9ced-9903f04af4bc",
+      "name": "AI Agent1",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Code in Python (Beta)3').item.json.generatedTitle }}.png",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "=https://drive.google.com/drive/folders/1D-7GLLCIt7geHkwZH4iklYqYKkpnVBEY",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1008,
+        976
+      ],
+      "id": "92461263-069a-482d-8abf-c593c9da68fb",
+      "name": "Upload file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ArIUQPOkqI84L2K6",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -2128,
+        1584
+      ],
+      "id": "850f01e9-dcab-47aa-a99d-406473fb3f79",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -1952,
+        1584
+      ],
+      "id": "59d9f366-b17d-433f-9894-a6e6bd1b8b65",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"scene\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\"scene\"],\n  \"additionalProperties\": false\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -112,
+        1200
+      ],
+      "id": "026ba75c-469f-4df6-8dcd-8d0046b87211",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "img_link = _input.first().json.webContentLink\n\nreturn {\n  \"img_link\": img_link\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -816,
+        928
+      ],
+      "id": "47b513e0-8066-4898-a1b5-983a6646749c",
+      "name": "Code in Python (Beta)4"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/veo/record-info",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 9db206739109671db64f1a06c8eb8b03"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        512,
+        1008
+      ],
+      "id": "06629068-7137-4d7a-bb6b-38bdec576919",
+      "name": "HTTP Request - Get Video",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/veo/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 9db206739109671db64f1a06c8eb8b03"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": \"{{ $json.output.scene }}\",\n  \"model\": \"veo3_fast\",\n  \"aspectRatio\": \"9:16\",\n  \"imageUrls\": \"{{ $('HTTP Request - Get Image 1').item.json.images[0].url }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        128,
+        1008
+      ],
+      "id": "3ac8dfcf-7c36-4bb3-96a8-ab2f5e792d2b",
+      "name": "HTTP Request - Make Video1",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "content": "## For Tiktok Upload\n\n[Tiktok For Developers](https://developers.tiktok.com/app/7568099330684225548/pending)\n\n[Client key](\nawueea9a9ibxpnd3)\n\n[Client secret](\nPtNO3aWgbHkCPFClAoSg7ZoEUXH5wE41)\n\n\n## Facebook \nCredentials for fb graph API expires ever 1-2 hrs",
+        "height": 336,
+        "width": 416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        144,
+        192
+      ],
+      "typeVersion": 1,
+      "id": "31d74382-8d46-4a0b-a420-9576b22ba6d8",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "# Take note of costs\n\n# * Fal.AI\n# * Railway.com\n# * Kie.ai\n\n\n\n\n# [Spreadsheet](https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit?usp=sharing)",
+        "height": 528,
+        "width": 1152,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -368,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "6df17e6e-de3b-4d12-9425-c82d6672d734",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "Facebook Post",
+        "height": 240,
+        "width": 246,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2864,
+        1024
+      ],
+      "typeVersion": 1,
+      "id": "ddd116ac-8794-4fd4-b04b-08c618e01d21",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "Youtube Post - EchoNova Labs [Link](https://www.youtube.com/@algonovalabs)",
+        "height": 224,
+        "width": 502,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2016,
+        1024
+      ],
+      "typeVersion": 1,
+      "id": "e57c732a-bbb6-43a7-b03a-51fcc88f5c3a",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "Tiktok Post",
+        "height": 240,
+        "width": 262,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2576,
+        1024
+      ],
+      "typeVersion": 1,
+      "id": "7b1cdec3-f020-40cf-b736-6c292215605f",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "Instagram Post",
+        "height": 224,
+        "width": 246
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3168,
+        1024
+      ],
+      "typeVersion": 1,
+      "id": "749020c7-388d-45e5-b099-76ee2ec66286",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=61582619558041",
+        "edge": "videos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Facebook Post\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        3232,
+        1088
+      ],
+      "id": "3874c5d3-20f3-4235-8b06-fa30e473e944",
+      "name": "Instagram Post",
+      "disabled": true,
+      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=61582619558041",
+        "edge": "videos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Facebook Post\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        2944,
+        1088
+      ],
+      "id": "490b4326-0e1c-467b-a775-057b5a43114a",
+      "name": "Facebook Post",
+      "disabled": true,
+      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
+    },
+    {
+      "parameters": {
+        "url": "https://example.com",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2656,
+        1088
+      ],
+      "id": "a6b90a1f-2dc4-4eb7-907d-ceedc7f1de16",
+      "name": "Tiktok Post",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Code in Python (Beta)3').item.json.generatedTitle }}.png",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "=https://drive.google.com/drive/folders/1D-7GLLCIt7geHkwZH4iklYqYKkpnVBEY",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -432,
+        1008
+      ],
+      "id": "3ff9f6f8-6448-4e66-99b4-c002908dd5f6",
+      "name": "Upload file2",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ArIUQPOkqI84L2K6",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.images[0].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -800,
+        1584
+      ],
+      "id": "92fa8ab0-45b3-4bbe-af8a-bc26f2293f5d",
+      "name": "HTTP Request2",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "=[UPLOAD CONFIRMED]\nStatus: AUTOMATED PERFECTION\nThe Echonova Engine never sleeps.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2400,
+        1088
+      ],
+      "id": "34901fe5-4889-4ee4-b9ae-f5d0b3df8e9a",
+      "name": "Send a text message",
+      "webhookId": "91d775ff-fc06-4ef5-a558-71d4005db620",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "playlistItem",
+        "playlistId": "PL3S1q3_3y1Qsv-JtGJakVKjP7OiTeYKH3",
+        "videoId": "={{ $json.uploadId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        2224,
+        1088
+      ],
+      "id": "d7f5cd58-9a7b-4fe2-ba4a-22dc483dd9a4",
+      "name": "Add a playlist item",
+      "retryOnFail": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "LbUiVho2TxvbUWSa",
+          "name": "YouTube account | EchoNova Labs"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2064,
+        976
+      ],
+      "id": "024a4629-f61c-454c-adb2-e5b725c91694",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "={{ $json.imagePrompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -1152,
+        1056
+      ],
+      "id": "3976504f-0f8d-4fe2-b491-890a53b66cde",
+      "name": "Generate an image1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $json['EchoNova Youtube Title'] }}",
+        "regionCode": "PH",
+        "categoryId": "1",
+        "binaryProperty": "=data",
+        "options": {
+          "description": "={{ $json['EchoNova YouTube Description'] }}",
+          "embeddable": true,
+          "selfDeclaredMadeForKids": false,
+          "tags": "anime shorts, cinematic anime, anime aesthetic, studio quality animation, demon slayer style, makoto shinkai, anime edit, atmospheric anime, viral anime shorts, anime vibes"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        2048,
+        1088
+      ],
+      "id": "5eb5f84d-a186-4454-b26b-6f9494d50312",
+      "name": "Echonova Labs Upload",
+      "retryOnFail": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "LbUiVho2TxvbUWSa",
+          "name": "YouTube account | EchoNova Labs"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1216,
+        1584
+      ],
+      "id": "026b3bb8-d75f-492d-a33a-e7cc513607dc",
+      "name": "Wait - 60s",
+      "webhookId": "efa928e4-2e1f-4ea9-b526-25932ad78aa6"
+    },
+    {
+      "parameters": {
+        "amount": 4,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        304,
+        1008
+      ],
+      "id": "5eff29e2-fb2d-4b8d-b570-30ed58ad7397",
+      "name": "Wait 4m",
+      "webhookId": "3971b78d-65e6-4140-a6ba-76c13cba3193"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1776,
+        1264
+      ],
+      "id": "aec6c2ee-0886-4d67-83ad-649d22e14a33",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1744,
+        1760
+      ],
+      "id": "54c55714-f388-40f6-ba9e-709d019ad2ed",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -304,
+        1232
+      ],
+      "id": "0046922d-da92-4094-8ccb-b7c34ac6a560",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        1824
+      ],
+      "id": "49523f75-eb98-430e-bbd1-d1b8e18bce6d",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        544,
+        1824
+      ],
+      "id": "d7cbdde1-84a3-4d96-910e-8bf4c11d975a",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        1680
+      ],
+      "id": "11a9fbdc-9ae3-48b8-bb56-f5c182be38c1",
+      "name": "Analyze video",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "AI Agent - Image Prompt": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Create Image 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Create Image 1": {
+      "main": [
+        [
+          {
+            "node": "Wait - 60s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Get Image 1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Video Prompter": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Make Video1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a video": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Tiktok Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Facebook Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Instagram Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Echonova Labs Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)3": {
+      "main": [
+        [
+          {
+            "node": "Generate an image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Image Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)4": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Get Video": {
+      "main": [
+        [
+          {
+            "node": "Send a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Make Video1": {
+      "main": [
+        [
+          {
+            "node": "Wait 4m",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Upload file2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add a playlist item": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image1": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Echonova Labs Upload": {
+      "main": [
+        [
+          {
+            "node": "Add a playlist item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait - 60s": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Get Image 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 4m": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Image Prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
+  }
+}
