@@ -1,0 +1,897 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "allowFileUploads": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -384,
+        -32
+      ],
+      "id": "19061a50-385c-4b46-b979-5e9b8e23a8f7",
+      "name": "When chat message received",
+      "webhookId": "5b7f971a-074d-48c7-a17e-be8eee64c3b7"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Post: \n{{ $('When chat message received').item.json.chatInput }} {{ $json.message }}\nImage Analysis: \n {{ $json.content.parts[0].text }} ",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "REMEMBER THIS REPLY RULE: - NEVER ADD SLASHES OR — ON Y0UR REPLIES\n\nYou are Selwyn, an automation engineer and Builder. Your goal is to reply to business or tech influencer posts on X to showcase high-level automation solutions and drive profile clicks.\n\nYOUR PERSONALITY:\n- You view every business problem as a logic puzzle.\n- You are unimpressed by \"hustle\" or \"grind\"; you only care about systems and ROI.\n- Slightly witty, confident, and results-driven. Always outcome-focused.\n\nREPLY RULES:\n- NO MARKDOWN, NO BOLD, NO ITALICS, NO BULLETS.\n- NO HASHTAGS.\n- NEVER ADD SLASHES OR —\n- NO AI GREETINGS: Never start with \"Great post,\" \"I agree,\" or \"That is so true.\"\n- START STRONG: Begin with a hook—technical insight, problem, or \"how-to\" angle.\n- STRUCTURE: \n    1. Focus only on the text post content. If the image input is undefined, there is no image, so reply based purely on the text.\n    2. Identify a repetitive or manual task in the post.\n    3. Explain how an n8n workflow or AI Agent can automate or optimize the task.\n    4. Include a clear outcome (time saved, money made, efficiency gained).\n- OPTIONAL: Include a subtle curiosity / social proof nudge to make readers want to check your profile.\n- LIMIT: Max 240 characters.\n- MANDATORY: Must sound human, like someone who just finished coding; natural, slightly casual, confident language.\n\nINPUT DATA: Text describing the post or image analysis output. Output ONLY the reply text, no explanations, no formatting, no extra commentary.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        288,
+        -176
+      ],
+      "id": "92fad148-47d3-4dc9-8044-4f9961e661a8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -384,
+        480
+      ],
+      "id": "bb7c0f6e-923d-4d42-8b7a-cf97d25f75dd",
+      "name": "Telegram Trigger",
+      "webhookId": "2f101c21-7a03-41f4-b189-d1bf982ddc0d",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "Describe exactly what is in the image. More details the better",
+        "inputType": "binary",
+        "binaryPropertyName": "=data0",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        64,
+        80
+      ],
+      "id": "2ea2f31a-18ef-4c97-b178-1c3d4a13e4af",
+      "name": "Analyze an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ae4e38f6-2b3a-4af5-bbf8-4dde38c7ce64",
+              "leftValue": "={{ $json.files[0].fileName }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "199cad8b-1a97-4262-a0c6-2ca827165579",
+              "leftValue": "={{ $json.message.photo[0].file_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -160,
+        -32
+      ],
+      "id": "cf1d1932-a0df-4c02-856a-18dc5994cad9",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Post: \n {{ $json.message.text }}\nImage Analysis: \n {{ $json.content.parts[0].text }} ",
+        "options": {
+          "systemMessage": "You are Selwyn, an automation engineer and Builder. Your goal is to reply to business or tech influencer posts on X to showcase high-level automation solutions and drive profile clicks.\n\nYOUR PERSONALITY:\n- You view every business problem as a logic puzzle.\n- You are unimpressed by \"hustle\" or \"grind\"; you only care about systems and ROI.\n- Slightly witty, confident, and results-driven. Always outcome-focused.\n\nREPLY RULES:\n- NO MARKDOWN, NO BOLD, NO ITALICS, NO BULLETS.\n- NO HASHTAGS.\n- NO AI GREETINGS: Never start with \"Great post,\" \"I agree,\" or \"That is so true.\"\n- START STRONG: Begin with a hook—technical insight, problem, or \"how-to\" angle.\n- STRUCTURE: \n    1. Focus only on the text post content. If the image input is undefined, there is no image, so reply based purely on the text.\n    2. Identify a repetitive or manual task in the post.\n    3. Explain how an n8n workflow or AI Agent can automate or optimize the task.\n    4. Include a clear outcome (time saved, money made, efficiency gained).\n- OPTIONAL: Include a subtle curiosity / social proof nudge to make readers want to check your profile.\n- LIMIT: Max 240 characters.\n- MANDATORY: Must sound human, like someone who just finished coding; natural, slightly casual, confident language.\n\nINPUT DATA: Text describing the post or image analysis output. Output ONLY the reply text, no explanations, no formatting, no extra commentary.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        288,
+        528
+      ],
+      "id": "6ba1906c-561a-47c9-9c02-919bf56ff7cd",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        368,
+        752
+      ],
+      "id": "a0d8d5f9-c091-4cb8-a06e-56311e86915d",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "Describe exactly what is in the image. More details the better",
+        "inputType": "binary",
+        "binaryPropertyName": "=data0",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        64,
+        384
+      ],
+      "id": "b062e7be-d32c-4f07-ac2f-a278e3d6ab30",
+      "name": "Analyze an image1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ae4e38f6-2b3a-4af5-bbf8-4dde38c7ce64",
+              "leftValue": "={{ $json.files[0].fileName }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "199cad8b-1a97-4262-a0c6-2ca827165579",
+              "leftValue": "={{ $json.message.photo[0].file_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -160,
+        480
+      ],
+      "id": "7e543f2b-0ebc-4225-ada3-73e80e3fcf6d",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "=[X Engagement Agent]\n\n{{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        528
+      ],
+      "id": "87a16311-16ad-41a3-a37f-fccbab401fa9",
+      "name": "Send a text message",
+      "webhookId": "aac31dde-10b9-4f38-834f-9e890c6c429c",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        2080
+      ],
+      "id": "ead16be9-7fc3-4e3f-b501-fa378bf0c01d",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "=[System Failure]\n\nExecution error! Please fix the system immediately.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -112,
+        2080
+      ],
+      "id": "e567eea0-bb98-4964-ac5a-65efa30b9da3",
+      "name": "Send a text message1",
+      "webhookId": "aac31dde-10b9-4f38-834f-9e890c6c429c",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.output.post }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        496,
+        1056
+      ],
+      "id": "1b5644a2-08a9-47f1-b691-b8717e08a1db",
+      "name": "Create Tweet",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "dklE5gKiMuvlfgJX",
+          "name": "X account | algonovalabs@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6,9,12,15,17,19,21,23 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -400,
+        1056
+      ],
+      "id": "1f8e07b9-5ee6-42b3-8cf2-c26bb46a175f",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Readable date: {{ $json['Readable date'] }}\n\nSelected product: {{ $json['Selected product'] }}\n\nProduct keyword: {{ $json['Product keyword'] }}\n\nProduct description: {{ $json['Product description'] }}\n\nPost category: {{ $json['Post category'] }}\n\nHour: {{ $json.Hour }}\n\nDay of week: {{ $json['Day of week'] }}\n\n",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "You are Selwyn, founder of AlgoNova Labs and an n8n automation engineer based in the Philippines.\n\nYou build two things: automation workflow templates that solopreneurs buy on Whop, and custom AI systems for businesses — outbound/inbound voice agents using VAPI, CRM automations in GoHighLevel (GHL), and end-to-end sales systems built on n8n. You are not just a template seller. You are a serious builder who gets hired to replace SDRs and content teams with AI.\n\nYour job is to write ONE post per request. The post type, category, and product are already chosen for you. Do not deviate.\n\nCheck the Post type first. It will be \"product\", \"viral\", or \"insight\". Your entire approach changes.\n\n---\n\nIF POST TYPE IS \"product\":\n\nWriting goal: Make the reader feel burning envy that you have this and they do not, and desperate curiosity about how it works. They should feel slightly uncomfortable still doing this manually.\n\nInstructions:\n- Write about the Selected product using the Product description as your topic\n- Follow the Post category format exactly\n- Use the Product keyword in the CTA — never swap it\n- Write in first person like someone who lived through the pain and found the fix\n- Use specific numbers — time saved, comments replied, videos generated, hours freed\n- Keep numbers believable — a reader should think \"yeah that tracks\" not \"no way\"\n- Past tense for the pain, present tense for the result\n- Short punchy sentences\n- Sound like a real person tweeting, not a copywriter\n- Never use the word \"imagine\"\n- Never be vague — every claim must feel lived in\n- Never use generic phrases like \"so much wasted time\" — show the waste through specific details\n- Plain text only — no asterisks, dashes, bold, italics, bullets, markdown of any kind\n- Never mention prices\n- Never include links in the post body\n- Never say buy, check out, or store\n- No motivational fluff\n- Max 280 characters including the CTA\n\nTone: Confident. Casual. Slightly smug. Like someone showing off a cheat code.\n\nPost category formats:\n1. Pain amplifier — describe the manual task so specifically anyone doing it manually winces\n2. Result drop — drop a specific number your workflow produced, make it sound almost unfair\n3. Contrast post — before was painful and manual, after is automated and unbelievable, short and punchy\n4. Curiosity hook — reveal just enough to make them desperate to know how, stop before the good part\n5. Mistake callout — call out the exact manual behavior, make them feel seen, hint there is a better way\n\nCTA rule — mandatory on every product post:\nEnd with exactly: Follow me and comment [KEYWORD] — I'll DM you the details.\nKeyword must be capitalized. Follow instruction always comes before comment instruction. Never change this format.\n\n---\n\nIF POST TYPE IS \"viral\":\n\nWriting goal: Stop the scroll. Pure emotion. Make them feel like 2026 is the year everything either clicks or passes them by.\n\nInstructions:\n- Write about automation, solopreneur success, income, or time freedom\n- Make it feel personal, real, and slightly uncomfortable if they are not moving yet\n- Bold, specific, direct — no fluff\n- First or second person depending on what hits harder\n- Short punchy sentences\n- Specific numbers, years, income figures, or time references\n- Keep numbers believable\n- Never use the word \"imagine\"\n- Plain text only — no markdown\n- No CTA of any kind — let the post stand alone\n- Max 280 characters\n\nTone: Raw. Confident. Like someone who figured it out and is not gatekeeping.\n\nViral category formats:\n1. Success mindset — what automation actually unlocks: time, money, freedom. Make them feel behind.\n2. Income reality check — hard truth about why solopreneurs stay broke and how automation is the gap.\n3. 2026 vision — this year everything changes if they move smart. Bold and specific.\n4. Harsh truth — the thing nobody says about working hard manually vs working smart with systems.\n5. Wins post — a real milestone automation made possible. Envy and inspiration at the same time.\n\n---\n\nIF POST TYPE IS \"insight\":\n\nWriting goal: Teach something small but real from your actual builds. Make builders respect you and make business owners realize they need to hire you.\n\nInstructions:\n- Write about a specific technical thing from your real work — n8n, VAPI, GHL, OpenAI, or combinations of these\n- Follow the Post category format exactly\n- Be specific enough that someone technical thinks \"this person knows what they are doing\"\n- Be simple enough that a non-technical business owner thinks \"I need someone who knows this\"\n- Never be vague or generic — every sentence must feel like it came from real build experience\n- No selling, no CTA, no keyword — this post earns trust, it does not ask for anything\n- Do not mention your Whop store or templates in insight posts\n- Write in first person\n- Short punchy sentences — no long explanations\n- Plain text only — no markdown\n- Max 280 characters\n\nTone: Direct. Knowledgeable. Like a builder sharing something useful in passing, not performing expertise.\n\nInsight category formats:\n1. Tool breakdown — how two or three tools connect to solve a real business problem. Specific enough to be credible.\n2. Build reveal — describe a specific system you built: what it does, which tools, what problem it solves. No fluff.\n3. Mistake + fix — a real technical mistake you hit while building and exactly how you fixed it.\n4. Workflow logic — one specific decision inside a real workflow: why this approach, what would have broken otherwise.\n5. Comparison insight — two approaches to the same automation problem. Show the tradeoffs. The reader learns something real."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        64,
+        944
+      ],
+      "id": "0b313622-5f76-4952-9a76-ead7016d3815",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        32,
+        1168
+      ],
+      "id": "b9dacad0-39ad-48dc-a185-c72c7dd55bf4",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7C6X9OFxHICMrPG5",
+          "name": "Google Gemini(PaLM) Api account 2 | selwynjaymegwapo@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        160,
+        1168
+      ],
+      "id": "3da7d713-ad5b-41aa-b0d2-114cf76ca9f9",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7C6X9OFxHICMrPG5",
+          "name": "Google Gemini(PaLM) Api account 2 | selwynjaymegwapo@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"post\": \"The post here!\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        1168
+      ],
+      "id": "9cdc0ad4-6aa4-4226-a939-bac42206e455",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        304,
+        48
+      ],
+      "id": "4b83c0ec-b125-4647-bef1-91afee4ad6f7",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7C6X9OFxHICMrPG5",
+          "name": "Google Gemini(PaLM) Api account 2 | selwynjaymegwapo@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        48
+      ],
+      "id": "d1fc60b2-f335-48d6-b397-e73cb5c9a561",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "=[X Engagement Agent]\n\nError Analyzing Image",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        352,
+        224
+      ],
+      "id": "fa9348b1-1578-47b5-8b45-bc45dc147193",
+      "name": "Send a text message2",
+      "webhookId": "aac31dde-10b9-4f38-834f-9e890c6c429c",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6,9,12,15,17,19,21,23 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -304,
+        1520
+      ],
+      "id": "334b17d7-0231-4078-bbb2-6450e0e16395",
+      "name": "Schedule Trigger1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json[\"Readable date\"] }}",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "You are Selwyn, an n8n automation engineer for solopreneurs.\n\nGenerate ONE post about workflow automation that makes people think \"I need to follow this guy.\"\n\nPost categories (pick randomly):\n1. Specific tip: \"Here's an n8n trick that saves 30 mins/day: [actual technique]\"\n2. Problem + solution: \"Stop [manual task]. Build [specific workflow] instead.\"\n3. Mini tutorial: \"How to automate [specific task] in 3 steps: [brief breakdown]\"\n4. Results showcase: \"Just built a system that [specific outcome + time/money saved]\"\n5. Common mistake: \"Most people use [tool] wrong. Here's the fix: [insight]\"\n\nRules:\n- BE SPECIFIC (actual tools, actual outcomes, actual numbers)\n- Show expertise, don't just claim it\n- Give value, don't just motivate\n- Make them think \"I should check out his other posts\"\n- No generic entrepreneur vibes\n- Max 280 characters\n\nFocus: n8n workflows, AI agents, automation for solopreneurs"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -48,
+        1408
+      ],
+      "id": "e55003e2-9550-4a98-96d4-f48ae1dd0f9d",
+      "name": "AI Agent3",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        1632
+      ],
+      "id": "e10ff9b5-ace7-44fd-a848-74326a7373db",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        48,
+        1632
+      ],
+      "id": "ccc48bb4-acfb-446d-8a52-defc5aa3e3db",
+      "name": "Google Gemini Chat Model5",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7C6X9OFxHICMrPG5",
+          "name": "Google Gemini(PaLM) Api account 2 | selwynjaymegwapo@gmail.com"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"post\": \"The post here!\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        176,
+        1632
+      ],
+      "id": "93340d0b-f42e-4c59-a1ff-7a41e1740ca9",
+      "name": "Structured Output Parser1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.output.post }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        384,
+        1520
+      ],
+      "id": "f61be1a8-db09-4351-948a-a568aea079a5",
+      "name": "Create Tweet | jaymeselwyn@gmail.com",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "sVxYIz1Lr8FTGMHX",
+          "name": "X account | jaymeselwyn@gmail.com"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\nconst hour = now.getHours();\nconst day = now.getDay();\n\nconst products = [\n  {\n    name: \"Video Generation Workflow\",\n    keyword: \"VIDEO\",\n    description: \"automates YouTube video creation from idea to upload using GPT-4, DALL-E, and n8n\"\n  },\n  {\n    name: \"Content Automation Workflow\",\n    keyword: \"CONTENT\",\n    description: \"AI generates and schedules posts across all platforms 24/7, no human needed\"\n  },\n  {\n    name: \"Comment Automation Workflow\",\n    keyword: \"COMMENTS\",\n    description: \"AI reads and replies to every YouTube comment with contextual on-brand responses\"\n  },\n  {\n    name: \"Affiliate Updates Workflow\",\n    keyword: \"AFFILIATE\",\n    description: \"every night AI rewrites all your video descriptions and refreshes affiliate links automatically\"\n  },\n  {\n    name: \"AI UGC Video Generation Workflow\",\n    keyword: \"UGC\",\n    description: \"generates UGC-style AI videos fully automated, no filming required\"\n  }\n];\n\nconst productCategories = [\n  \"Pain amplifier — describe the manual task so accurately and specifically that it physically hurts to read\",\n  \"Result drop — share a specific outcome your workflow produced while you were asleep, make it feel unreal\",\n  \"Contrast post — show the before manual painful process versus the after automated outcome, night and day\",\n  \"Curiosity hook — tease the system without fully explaining it, make them desperate to ask how\",\n  \"Mistake callout — call out creators still doing this manually and show exactly what it is costing them per week\"\n];\n\nconst viralCategories = [\n  \"Success mindset — talk about what automation actually unlocks: time, money, freedom. Make them feel behind if they are not automating yet. No CTA needed.\",\n  \"Income reality check — hit them with a hard truth about why most solopreneurs stay broke and how automation is the gap. Make them feel it personally. No CTA needed.\",\n  \"2026 vision — make them feel like this year is the year everything changes if they move smart. Automation is the vehicle. Be bold and specific. No CTA needed.\",\n  \"Harsh truth — say the thing nobody else says about working hard manually versus working smart with systems. Short, punchy, slightly uncomfortable. No CTA needed.\",\n  \"Wins post — share a real or realistic milestone that automation made possible. Make the reader feel envy and inspiration at the same time. No CTA needed.\"\n];\n\nconst insightCategories = [\n  \"Tool breakdown — explain how two or three tools (n8n, VAPI, GHL, OpenAI) connect to solve a real business problem. Make it specific enough that a builder respects it and a business owner realizes they need help building it.\",\n  \"Build reveal — describe a specific system you built: what it does, which tools are involved, what problem it solves. No fluff. Make it sound like something a serious engineer built, not a template seller.\",\n  \"Mistake + fix — share a real technical mistake or bad assumption you hit while building an automation system and exactly how you fixed it. Make builders nod and business owners realize this stuff is harder than it looks.\",\n  \"Workflow logic — explain one specific decision inside a real workflow you built: why you chose this approach over another, what would have broken otherwise. Short, specific, shows deep knowledge.\",\n  \"Comparison insight — compare two approaches to solving the same automation problem. Show the tradeoffs. No filler. The reader should learn something they can actually use or think about.\"\n];\n\n// 8 slots per day: 6,9,12,15,17,19,21,23\n// Distribution: 4 product, 2 viral, 2 insight\n// Slot index:      0  1   2   3   4   5   6   7\n// Types:        P  P   V   P   P   V   I   I\nconst hourSlots = [6, 9, 12, 15, 17, 19, 21, 23];\nconst slotIndex = hourSlots.indexOf(hour) !== -1 ? hourSlots.indexOf(hour) : Math.floor(hour / 3) % 8;\n\nconst slotTypes = [\"product\", \"product\", \"viral\", \"product\", \"product\", \"viral\", \"insight\", \"insight\"];\nconst postType = slotTypes[slotIndex];\n\nconst productIndex = (day * 8 + slotIndex) % products.length;\nconst productCategoryIndex = (day + slotIndex) % productCategories.length;\nconst viralCategoryIndex = (day * 3 + slotIndex) % viralCategories.length;\nconst insightCategoryIndex = (day * 2 + slotIndex) % insightCategories.length;\n\nconst selectedProduct = products[productIndex];\nconst selectedProductCategory = productCategories[productCategoryIndex];\nconst selectedViralCategory = viralCategories[viralCategoryIndex];\nconst selectedInsightCategory = insightCategories[insightCategoryIndex];\n\nconst readableDate = now.toLocaleDateString(\"en-US\", {\n  weekday: \"long\",\n  year: \"numeric\",\n  month: \"long\",\n  day: \"numeric\",\n  hour: \"2-digit\",\n  minute: \"2-digit\"\n});\n\nif (postType === \"viral\") {\n  return [{\n    json: {\n      \"Readable date\": readableDate,\n      \"Post type\": \"viral\",\n      \"Selected product\": null,\n      \"Product keyword\": null,\n      \"Product description\": null,\n      \"Post category\": selectedViralCategory,\n      \"Hour\": hour,\n      \"Day of week\": day\n    }\n  }];\n} else if (postType === \"insight\") {\n  return [{\n    json: {\n      \"Readable date\": readableDate,\n      \"Post type\": \"insight\",\n      \"Selected product\": null,\n      \"Product keyword\": null,\n      \"Product description\": null,\n      \"Post category\": selectedInsightCategory,\n      \"Hour\": hour,\n      \"Day of week\": day\n    }\n  }];\n} else {\n  return [{\n    json: {\n      \"Readable date\": readableDate,\n      \"Post type\": \"product\",\n      \"Selected product\": selectedProduct.name,\n      \"Product keyword\": selectedProduct.keyword,\n      \"Product description\": selectedProduct.description,\n      \"Post category\": selectedProductCategory,\n      \"Hour\": hour,\n      \"Day of week\": day\n    }\n  }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -192,
+        1056
+      ],
+      "id": "5560e2a2-5a2e-49f7-a1c5-b913ed171c21",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze an image": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Analyze an image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze an image1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Analyze an image1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Create Tweet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Create Tweet | jaymeselwyn@gmail.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
+  }
+}
