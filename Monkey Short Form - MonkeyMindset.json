@@ -1,0 +1,1129 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Create Video ",
+        "height": 448,
+        "width": 1504,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -160,
+        832
+      ],
+      "typeVersion": 1,
+      "id": "bd5a9ef6-ce18-4b88-a47a-b17ec4dd1ff7",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "sendVideo",
+        "chatId": "6472037679",
+        "file": "={{ $json.data.response.resultUrls[0] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1136,
+        912
+      ],
+      "id": "9932b5af-e9fa-4b97-b3b2-3cb4a14e5969",
+      "name": "Send a video",
+      "webhookId": "181e9a8c-4cec-48a8-aaa2-420441ea8870",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "name": "={{ $now.plus({ hours: 8 }).format('MMM DD, YYYY_HH-mm-ss') }} UTC+8",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1-qzP9pteGVUxZrnaLAxjRo_Nf9pch7LJ",
+          "mode": "list",
+          "cachedResultName": "Generated Videos",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1-qzP9pteGVUxZrnaLAxjRo_Nf9pch7LJ"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        832,
+        1424
+      ],
+      "id": "a93153d8-fda7-4a3e-b9cf-4e598b0dd1d9",
+      "name": "Upload file",
+      "retryOnFail": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ArIUQPOkqI84L2K6",
+          "name": "Google Drive account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('HTTP Request - Get Video').item.json.data.response.resultUrls[0] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        1504
+      ],
+      "id": "d7428125-d0e4-4c7c-8d29-1e2156c135df",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "maxTries": 5
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        1568
+      ],
+      "id": "0636d51f-6359-4108-b51d-999707d52457",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "content": "## Analyze Video | Create Descriptions",
+        "height": 432,
+        "width": 1696,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        1408
+      ],
+      "typeVersion": 1,
+      "id": "e8cb34ab-4dad-4b39-af44-104363ea6cba",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1104,
+        1520
+      ],
+      "id": "8f49a1a0-cc18-4905-925e-81adffcdf1be",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        1520
+      ],
+      "id": "beaa466d-de5e-4204-93f4-79c92c6a0577",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Videos",
+        "height": 464,
+        "width": 2352,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1568,
+        848
+      ],
+      "typeVersion": 1,
+      "id": "bb5814c7-9334-4c4e-9bc5-57a22cd061d0",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Video Url Download'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1984,
+        992
+      ],
+      "id": "b685cac8-edfa-44d6-be04-9e107261a905",
+      "name": "HTTP Request1",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "12j_lUB0Qs7pclxq1mNcmhBpo19Fygxads8nAqZZQdyA",
+          "mode": "list",
+          "cachedResultName": "Generated Videos to Post - MonkeyMindset ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12j_lUB0Qs7pclxq1mNcmhBpo19Fygxads8nAqZZQdyA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12j_lUB0Qs7pclxq1mNcmhBpo19Fygxads8nAqZZQdyA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.data[1].output.Date }}",
+            "Time ": "={{ $json.data[1].output.Time }}",
+            "AlgoNova Youtube Title": "={{ $json.data[1].output.YouTubeTitle }}",
+            "EchoNova Youtube Title": "={{ $json.data[1].output.YouTubeTitle2 }}",
+            "AlgoNova YouTube Description": "={{ $json.data[1].output.YouTubeDescription }}",
+            "EchoNova YouTube Description": "={{ $json.data[1].output.YouTubeDescription2 }}",
+            "TikTok Description": "={{ $json.data[1].output.TikTokDescription }}",
+            "Facebook Reel Description": "={{ $json.data[1].output.FacebookReelDescription }}",
+            "Instagram Description": "={{ $json.data[1].output.InstagramDescription }}",
+            "Additional Notes": "={{ $json.data[1].output.AdditionalNotes }}",
+            "Video Url Download": "={{ $('Upload file').item.json.webContentLink }}",
+            "Video Url View": "={{ $('Upload file').item.json.webViewLink }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time ",
+              "displayName": "Time ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AlgoNova Youtube Title",
+              "displayName": "AlgoNova Youtube Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EchoNova Youtube Title",
+              "displayName": "EchoNova Youtube Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AlgoNova YouTube Description",
+              "displayName": "AlgoNova YouTube Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EchoNova YouTube Description",
+              "displayName": "EchoNova YouTube Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TikTok Description",
+              "displayName": "TikTok Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Facebook Reel Description",
+              "displayName": "Facebook Reel Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Instagram Description",
+              "displayName": "Instagram Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Additional Notes",
+              "displayName": "Additional Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Url View",
+              "displayName": "Video Url View",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Url Download",
+              "displayName": "Video Url Download",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1616,
+        992
+      ],
+      "id": "8f3b7e80-e8bc-40b4-aa27-47d9a10997f1",
+      "name": "Append row in sheet",
+      "retryOnFail": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "64esdoEjk1s9lTl0",
+          "name": "Google Sheets account | selwyngwapo90@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "12j_lUB0Qs7pclxq1mNcmhBpo19Fygxads8nAqZZQdyA",
+          "mode": "list",
+          "cachedResultName": "Generated Videos to Post - MonkeyMindset ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12j_lUB0Qs7pclxq1mNcmhBpo19Fygxads8nAqZZQdyA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12j_lUB0Qs7pclxq1mNcmhBpo19Fygxads8nAqZZQdyA/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "EchoNova Youtube Title",
+              "lookupValue": "={{ $json['EchoNova Youtube Title'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1792,
+        992
+      ],
+      "id": "79b57ad3-471f-4c84-8e46-6f8855be8958",
+      "name": "Get row(s) in sheet",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "64esdoEjk1s9lTl0",
+          "name": "Google Sheets account | selwyngwapo90@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2128,
+        992
+      ],
+      "id": "ad0c7100-5e3d-47a7-8546-843a30c57f1b",
+      "name": "Wait",
+      "webhookId": "652c67f9-5120-4bdc-b427-caa536e7cb4b"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/veo/record-info",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 9db206739109671db64f1a06c8eb8b03"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        944,
+        912
+      ],
+      "id": "5c238a64-b4af-41ce-a5a0-a1b725f2bfec",
+      "name": "HTTP Request - Get Video",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "content": "## For Tiktok Upload\n\n[Tiktok For Developers](https://developers.tiktok.com/app/7568099330684225548/pending)\n\n[Client key](\nawueea9a9ibxpnd3)\n\n[Client secret](\nPtNO3aWgbHkCPFClAoSg7ZoEUXH5wE41)\n\n\n## Facebook \nCredentials for fb graph API expires ever 1-2 hrs",
+        "height": 336,
+        "width": 416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        512,
+        112
+      ],
+      "typeVersion": 1,
+      "id": "7199c387-04e8-4843-9c36-d9486cbd28f8",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "# Take note of costs\n\n# * Fal.AI\n# * Railway.com\n# * Kie.ai\n\n\n\n\n# [Spreadsheet](https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit?usp=sharing)",
+        "height": 528,
+        "width": 1152,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "a9be5e2b-1a08-49f7-a461-d7dcd0d243e8",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "Facebook Post",
+        "height": 240,
+        "width": 246,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3088,
+        928
+      ],
+      "typeVersion": 1,
+      "id": "066f6afd-e34f-4507-9fce-b25da737e07a",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "Youtube Post - MonkeyMindset [Link](https://www.youtube.com/@MonkeyMindset-x4i)",
+        "height": 224,
+        "width": 502,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2240,
+        928
+      ],
+      "typeVersion": 1,
+      "id": "93b957ac-64b6-46f2-8526-083644d54e41",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "Tiktok Post",
+        "height": 240,
+        "width": 262,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2800,
+        928
+      ],
+      "typeVersion": 1,
+      "id": "d0071938-8a1b-4548-8d0b-92d39658c077",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "Instagram Post",
+        "height": 224,
+        "width": 246
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3392,
+        928
+      ],
+      "typeVersion": 1,
+      "id": "2de89b99-25c7-4f2d-a56c-ee8a27bd6b8b",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=61582619558041",
+        "edge": "videos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Facebook Post\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        3456,
+        992
+      ],
+      "id": "c7bffd24-944f-4dc5-a7f3-3da64db93336",
+      "name": "Instagram Post",
+      "disabled": true,
+      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=61582619558041",
+        "edge": "videos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Facebook Post\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        3168,
+        992
+      ],
+      "id": "5704aa57-1c3b-4b6a-ab6b-405cfcd5dd85",
+      "name": "Facebook Post",
+      "disabled": true,
+      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
+    },
+    {
+      "parameters": {
+        "url": "https://example.com",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2880,
+        992
+      ],
+      "id": "8495c1fc-8b7d-4b94-bf49-810695211cab",
+      "name": "Tiktok Post",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "=[UPLOAD CONFIRMED]\nStatus: AUTOMATED PERFECTION\nThe MonkeyMindset Engine never sleeps.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2624,
+        992
+      ],
+      "id": "81aea58b-d2bd-4321-adb2-cd4e4246da54",
+      "name": "Send a text message",
+      "webhookId": "91d775ff-fc06-4ef5-a558-71d4005db620",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "playlistItem",
+        "playlistId": "PLZ4q_qNc8JRBSWJQUtg1IpHX-LNFh6T4A",
+        "videoId": "={{ $json.uploadId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        2448,
+        992
+      ],
+      "id": "5f8c3d85-2bad-43f7-baea-2c8a8e9cf80a",
+      "name": "Add a playlist item",
+      "retryOnFail": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "gQgu1mxoi6KHq5AV",
+          "name": "MonkeyMindset - selwyngwapo90@gmail.com"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 4,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        736,
+        912
+      ],
+      "id": "a6fc92d6-dbed-41e2-bef6-b3ae9ffe22e2",
+      "name": "Wait 4m",
+      "webhookId": "3971b78d-65e6-4140-a6ba-76c13cba3193"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        656,
+        1728
+      ],
+      "id": "a5d3ba15-15be-4e57-984b-90c48a01c79d",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        1728
+      ],
+      "id": "a31d3664-8b34-459c-a486-f56df1526a89",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import random\n\nenvironments = [\n    \"softly-lit outdoor garden surrounded by gentle natural foliage\",\n    \"cozy indoor kitchen with warm ambient lighting and wooden countertops\",\n    \"vibrant farmers market stall with colorful produce in the background\",\n    \"peaceful park bench under dappled oak tree sunlight\",\n    \"rustic countryside porch with flowering plants\",\n    \"modern cafe table near a sunny window\",\n    \"tropical beach setting with palm trees swaying gently\",\n    \"autumn forest clearing with golden leaves\",\n    \"spring meadow with wildflowers\",\n    \"urban rooftop garden at sunset\"\n]\n\nclothing = [\n    \"a blue and white striped shirt\",\n    \"a red plaid flannel shirt\",\n    \"a green hoodie with drawstrings\",\n    \"a yellow t-shirt with denim vest\",\n    \"a purple sweater\",\n    \"an orange polo shirt\",\n    \"a black and white baseball jersey\",\n    \"a brown cardigan\",\n    \"a teal windbreaker\",\n    \"a gray henley shirt\"\n]\n\nfood = [\n    \"a small chocolate chip cookie\",\n    \"a ripe banana slice\",\n    \"a tiny peanut butter sandwich\",\n    \"a fresh strawberry\",\n    \"a piece of mango\",\n    \"a mini donut\",\n    \"a small apple slice\",\n    \"a cookie with jam\",\n    \"a piece of watermelon\",\n    \"a tiny cupcake\"\n]\n\nselected_environment = random.choice(environments)\nselected_clothing = random.choice(clothing)\nselected_food = random.choice(food)\n\nprompt = f\"\"\"A cheerful young monkey wearing {selected_clothing} sits in {selected_environment}. The monkey holds {selected_food} and looks at it with wide, curious eyes. The monkey takes a bite and chews happily, eyes softening with contentment. After finishing, THE MONKEY'S FACE LIGHTS UP WITH A BIG, RADIANT SMILE and giggles joyfully - shoulders bouncing, eyes crinkling with pure delight. The monkey looks around playfully while smiling warmly, then settles into a gentle, satisfied smile with twinkling eyes.\n\nCRITICAL: The monkey must SMILE WIDELY and GIGGLE VISIBLY after eating. The smile and giggle are the emotional climax of the video.\n\nPhotorealistic, golden hour lighting, shallow depth of field, mid-chest framing. Facial expressions are the priority - especially the big smile and joyful giggle. Soft handheld camera motion. Natural, organic movements. Delicate ambient sounds with playful giggle.\"\"\"\n\nreturn {\"prompt\": prompt}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        96,
+        912
+      ],
+      "id": "d97474f8-0819-49d3-8be8-ac1f9664ef7b",
+      "name": "Code in Python (Beta)1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/veo/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 9db206739109671db64f1a06c8eb8b03"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ prompt: $json.prompt, model: \"veo3_fast\", aspectRatio: \"9:16\" }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        528,
+        912
+      ],
+      "id": "069dd27d-3535-4546-b172-58a4cf50d7b1",
+      "name": "HTTP Request - Make Video1",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "jsCode": "const prompt = $input.item.json.prompt;\n\nreturn {\n  json: {\n    prompt: prompt,\n    model: \"veo3_fast\",\n    aspectRatio: \"9:16\"\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        912
+      ],
+      "id": "dd7050d7-d8e6-419f-9935-b1a64aee79c7",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6,14,20 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -112,
+        912
+      ],
+      "id": "d5d0f542-d8cb-4be3-9f3a-1e21f7e984d2",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from datetime import datetime\nimport random\n\nVideo_Analysis = _input.first().json.content.parts[0].text\n\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n\n# Monkey/cute animal content hooks\nhook_phrases = [\n    \"POV: This monkey tried {food} and {reaction}\",\n    \"When {monkey_desc} tastes {food} for the first time {emotion}\",\n    \"This {monkey_desc} {action} and {consequence}\",\n    \"You won't believe how this monkey reacts to {food}\",\n    \"{monkey_desc} discovers {food} {reaction}\",\n    \"Watch this monkey's face when it tries {food} {emotion}\",\n    \"The moment {monkey_desc} realizes {discovery}\",\n    \"This little monkey {action} {consequence}\",\n    \"Nobody expected this monkey to {action}\",\n    \"{monkey_desc} eating {food} is {vibe}\"\n]\n\nmonkey_descriptions = [\n    \"adorable monkey\",\n    \"little monkey\",\n    \"curious monkey\",\n    \"happy monkey\",\n    \"cheerful monkey\",\n    \"sweet monkey\",\n    \"this precious monkey\",\n    \"baby monkey\",\n    \"silly monkey\",\n    \"playful monkey\"\n]\n\nfoods = [\n    \"fresh fruit\",\n    \"a juicy apple\",\n    \"sweet treats\",\n    \"snacks\",\n    \"delicious food\",\n    \"yummy treats\",\n    \"tasty snacks\",\n    \"something delicious\",\n    \"their favorite snack\",\n    \"a surprise treat\"\n]\n\nreactions = [\n    \"😍 the reaction is priceless\",\n    \"🐵 and the reaction melts hearts\",\n    \"the happiness is contagious\",\n    \"✨ pure joy happened\",\n    \"and it's the cutest thing ever\",\n    \"💚 instant happiness\",\n    \"you can see the joy\",\n    \"the smile says it all\",\n    \"🥰 wholesome overload\",\n    \"it's absolutely adorable\"\n]\n\nemotions = [\n    \"😊 and it's wholesome\",\n    \"🍎 pure happiness\",\n    \"and my heart melted\",\n    \"the cuteness is unreal\",\n    \"🐒 it's so precious\",\n    \"💕 most adorable thing\",\n    \"and I can't stop smiling\",\n    \"🌟 too cute to handle\",\n    \"instant serotonin boost\",\n    \"and it made my day\"\n]\n\nactions = [\n    \"tries new food\",\n    \"discovers treats\",\n    \"enjoys a snack\",\n    \"tastes something yummy\",\n    \"gets surprised by taste\",\n    \"reacts to food\",\n    \"enjoys their meal\",\n    \"has the best reaction\",\n    \"makes the cutest face\",\n    \"shows pure joy\"\n]\n\nconsequences = [\n    \"it's the cutest thing you'll see today\",\n    \"the reaction is priceless\",\n    \"you'll smile guaranteed\",\n    \"it's pure wholesomeness\",\n    \"your heart will melt\",\n    \"you'll want to watch on repeat\",\n    \"it's instant happiness\",\n    \"the joy is contagious\",\n    \"you can't help but smile\",\n    \"it's adorable overload\"\n]\n\ndiscoveries = [\n    \"food is amazing 🍎\",\n    \"treats are the best ✨\",\n    \"happiness tastes good 😋\",\n    \"snacks = pure joy 🐵\",\n    \"life is delicious 💚\",\n    \"this is the best day ever 🥰\",\n    \"food makes everything better\",\n    \"treats bring instant smiles 😊\",\n    \"yummy food = happy monkey 🌟\",\n    \"snack time is the best time\"\n]\n\nvibes = [\n    \"everything 🥰\",\n    \"pure wholesomeness 💚\",\n    \"the cutest content ✨\",\n    \"too adorable 🐵\",\n    \"instant serotonin 😊\",\n    \"heartwarming perfection 💕\",\n    \"absolutely precious 🌟\",\n    \"joy in its purest form\",\n    \"cuteness overload 😍\",\n    \"the best thing ever 🍎\"\n]\n\n# Generate title components\nmonkey_desc = random.choice(monkey_descriptions)\nfood = random.choice(foods)\nreaction = random.choice(reactions)\nemotion = random.choice(emotions)\naction = random.choice(actions)\nconsequence = random.choice(consequences)\ndiscovery = random.choice(discoveries)\nvibe = random.choice(vibes)\n\n# Create title\ntitle_template = random.choice(hook_phrases)\ntitle = title_template.format(\n    monkey_desc=monkey_desc,\n    food=food,\n    reaction=reaction,\n    emotion=emotion,\n    action=action,\n    consequence=consequence,\n    discovery=discovery,\n    vibe=vibe\n)\n\n# Ensure title is under 90 characters\nif len(title) > 90:\n    title = title[:87] + \"...\"\n\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{Video_Analysis}\n\nBased on this cute monkey eating/reacting content, generate a structured JSON output for Google Sheets with the following fields:\n\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, emotional, cute, MUST be under 90 characters)\n- \"YouTubeTitle2\" (DIFFERENT catchy title, under 90 characters, use a different hook/angle than YouTubeTitle)\n- \"YouTubeDescription\" (engaging, wholesome, includes CTA like 'watch till the end' or 'tag someone who loves animals')\n- \"YouTubeDescription2\" (DIFFERENT description with different CTA and angle than YouTubeDescription)\n- \"TikTokDescription\" (short, punchy, instant cute factor)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, feel-good vibes)\n- \"InstagramDescription\" (short, emoji-rich, engagement-focused)\n- \"AdditionalNotes\" (hashtags like #monkeylove #cuteanimals #animalreactions, trends, posting tips)\n\nCONTENT THEME: Cute monkey eating food, adorable reactions, wholesome animal content, happiness, joy, heartwarming moments\n\nSTRICT RULES:\n1. Both \"YouTubeTitle\" and \"YouTubeTitle2\" MUST NOT exceed 90 characters.\n2. YouTubeTitle and YouTubeTitle2 MUST be COMPLETELY DIFFERENT - use different psychological hooks (surprise vs cuteness vs joy vs relatability).\n3. YouTubeDescription and YouTubeDescription2 MUST be COMPLETELY DIFFERENT - vary the CTAs and emotional angles.\n4. All content must match the cute/wholesome/animal content theme.\n5. Use warm, joyful, uplifting language that makes people smile.\n6. Focus on feelings: happiness, cuteness, joy, wholesome vibes, heartwarming, adorable.\n7. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n8. The output MUST be valid JSON, properly escaped.\n\nTITLE STYLE EXAMPLES (use these psychological angles):\n- Reaction: \"This monkey's reaction to food is TOO cute 🐵\"\n- POV: \"POV: You just made a monkey's day with snacks 🍎\"\n- Surprise: \"Watch what happens when this monkey tries treats 😍\"\n- Relatable: \"Me when someone brings snacks to the function 🐒\"\n- Wholesome: \"Pure joy on this little monkey's face 💚\"\n\nDESCRIPTION STYLE EXAMPLES:\n- Wholesome: \"The way this little monkey enjoys every bite is pure happiness 🥰 Sometimes the simplest things bring the biggest smiles. Who else loves watching animals enjoying their food? Drop a 💚 below!\"\n- Engaging: \"That REACTION though! 😍 You can see the exact moment the monkey realizes how good it tastes. Have you ever seen something this wholesome? Watch till the end for the best part!\"\n- Relatable: \"Honestly same energy when I try something delicious 🐵✨ This monkey is living its best life and I'm here for it. Tag someone who reacts like this to good food 🍎\"\n\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\n\nCRITICAL: \n- YouTubeTitle and YouTubeTitle2 must use DIFFERENT psychological angles (cute vs funny vs heartwarming vs relatable).\n- YouTubeDescription and YouTubeDescription2 must tell DIFFERENT emotional stories.\n- DO NOT repeat the same content.\n- Focus on creating instant positive emotions and shareability.\n- Make viewers feel joy and want to share with friends.\n- Emphasize the REACTION and EMOTIONS of the monkey based on the video analysis.\n\n- Generate engaging, high-CTR titles and descriptions that create warmth, joy, and instant smiles.\n- DO NOT COPY THE TITLES OF THE EXAMPLES PROVIDED TO YOU! CREATE ORIGINAL TITLES BASED ON THE VIDEO ANALYSIS!\n- Pay attention to the monkey's actual reaction in the video (surprise, happiness, wide eyes, laughter, etc.) and reflect that in titles/descriptions.\n\"\"\"\n\nreturn {\n    \"chatInput\": Prompt\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        1680
+      ],
+      "id": "45da34c7-8bc2-4578-802f-2f87bf60a94b",
+      "name": "Code in Python (Beta)"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        192,
+        1632
+      ],
+      "id": "f83635dc-21e8-4984-ae61-ec74584f8a27",
+      "name": "Analyze video",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $json['EchoNova Youtube Title'] }}",
+        "regionCode": "PH",
+        "categoryId": "1",
+        "binaryProperty": "=data",
+        "options": {
+          "description": "={{ $json['EchoNova YouTube Description'] }}",
+          "embeddable": true,
+          "selfDeclaredMadeForKids": false,
+          "tags": "anime shorts, cinematic anime, anime aesthetic, studio quality animation, demon slayer style, makoto shinkai, anime edit, atmospheric anime, viral anime shorts, anime vibes"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        2272,
+        992
+      ],
+      "id": "e2f0e49c-1867-4dbf-9d6c-3d4d010d38e6",
+      "name": "MonkeyMindset Upload",
+      "retryOnFail": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "gQgu1mxoi6KHq5AV",
+          "name": "MonkeyMindset - selwyngwapo90@gmail.com"
+        }
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "connections": {
+    "Send a video": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Tiktok Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Facebook Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Instagram Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "MonkeyMindset Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Get Video": {
+      "main": [
+        [
+          {
+            "node": "Send a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add a playlist item": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 4m": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Make Video1": {
+      "main": [
+        [
+          {
+            "node": "Wait 4m",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Make Video1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MonkeyMindset Upload": {
+      "main": [
+        [
+          {
+            "node": "Add a playlist item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
+  }
+}
