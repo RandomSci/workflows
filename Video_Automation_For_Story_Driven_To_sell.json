@@ -9,11 +9,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -1664,
-        896
+        -1568,
+        752
       ],
       "typeVersion": 1,
-      "id": "a93fbbf8-92a7-4028-908a-6fd6a0f1928f",
+      "id": "541d73b8-2af6-4163-a7ab-9c1b854986c0",
       "name": "Sticky Note"
     },
     {
@@ -27,10 +27,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -1248,
-        1568
+        -1152,
+        1424
       ],
-      "id": "7eed4a2e-87c1-41eb-ab8a-b36840ab9ca5",
+      "id": "3504ecc1-7285-47fc-93b4-ff655bf22819",
       "name": "AI Agent - Image Prompt",
       "retryOnFail": true,
       "maxTries": 5,
@@ -57,10 +57,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -912,
-        1568
+        -816,
+        1424
       ],
-      "id": "e2c82c33-c937-4716-828f-96bb193149e5",
+      "id": "6e31fb0f-30f6-4a5d-aae5-20f0dbd0bc11",
       "name": "HTTP Request - Create Image 1",
       "executeOnce": false,
       "retryOnFail": true,
@@ -73,10 +73,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -688,
-        1568
+        -592,
+        1424
       ],
-      "id": "fcf119c5-7d20-44db-8f9f-e91468a21aac",
+      "id": "ee8c29a9-502a-4944-8a99-fe7a7d929625",
       "name": "Wait - 30s",
       "webhookId": "5baa5549-3b78-4c2e-84a6-e36f3dc93d0f"
     },
@@ -97,10 +97,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -464,
-        1568
+        -368,
+        1424
       ],
-      "id": "d8b8987c-99b7-4ca7-a26f-3b945dc44467",
+      "id": "93b0d693-4975-420d-87cc-f5a148cea78f",
       "name": "HTTP Request - Get Image 1",
       "retryOnFail": true,
       "waitBetweenTries": 2000
@@ -114,11 +114,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -1664,
-        1472
+        -1568,
+        1328
       ],
       "typeVersion": 1,
-      "id": "ebdd3090-b4ae-42e1-8013-a2b01bdbbf28",
+      "id": "949de450-c4ee-4a96-9c52-c90866b8a69a",
       "name": "Sticky Note1"
     },
     {
@@ -133,10 +133,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        288,
-        992
+        384,
+        848
       ],
-      "id": "d8735a0a-b955-48c4-895d-da42feb18846",
+      "id": "6b5fd99d-9a2f-4dd1-b70f-aa309d45291f",
       "name": "AI Agent - Video Prompter",
       "retryOnFail": true,
       "onError": "continueRegularOutput"
@@ -150,11 +150,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        64,
-        896
+        160,
+        752
       ],
       "typeVersion": 1,
-      "id": "5deac5d6-f921-4ecc-a116-8e5561eed71b",
+      "id": "92d2b76d-218e-4a23-9849-6d96617a04a3",
       "name": "Sticky Note2"
     },
     {
@@ -171,10 +171,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        192,
-        1600
+        288,
+        1456
       ],
-      "id": "995e89ba-d38d-4495-9e16-5174672a9f3a",
+      "id": "12e2c52f-2571-4d03-9a0b-50f58be4fe09",
       "name": "Aggregate"
     },
     {
@@ -194,10 +194,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        832,
-        1600
+        928,
+        1456
       ],
-      "id": "cff15fb0-2a98-4cdf-92e0-b9f032b4c2cc",
+      "id": "5b0b29aa-cf4a-44da-b668-8a5ca4b3f306",
       "name": "HTTP Request - Final Video",
       "retryOnFail": true,
       "waitBetweenTries": 2000
@@ -212,16 +212,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1040,
-        1600
+        1136,
+        1456
       ],
-      "id": "2458f523-70a2-47ac-a30b-76a9ac3fa161",
+      "id": "14b50a8b-ffe3-45aa-80e5-9630e4dcdd74",
       "name": "Send a video",
       "webhookId": "6682abc4-6151-49fb-ba03-5df55d648cad",
       "retryOnFail": true,
       "credentials": {
         "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
+          "id": "uH4mDEtyZeadnoI5",
           "name": "Telegram account"
         }
       },
@@ -248,10 +248,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        400,
-        1600
+        496,
+        1456
       ],
-      "id": "43276cc1-dffa-4389-a90a-0b510a5928d0",
+      "id": "46bdbd2a-b879-4797-8eab-136c3f5f8aa2",
       "name": "HTTP Request - Combine",
       "retryOnFail": true,
       "waitBetweenTries": 2000
@@ -276,15 +276,15 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        2592,
-        928
+        2688,
+        784
       ],
-      "id": "28efc653-691e-4b65-b4ab-0c1f5e6f6811",
+      "id": "6aa350d6-6627-45a0-9b12-2c3ac7508d88",
       "name": "Upload file",
       "retryOnFail": true,
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "2KupETq4QLi8d9l8",
+          "id": "ArIUQPOkqI84L2K6",
           "name": "Google Drive account"
         }
       },
@@ -298,10 +298,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1664,
-        1024
+        1760,
+        880
       ],
-      "id": "aa91a72a-fba5-46db-9985-1d9583033078",
+      "id": "5127b82f-a846-4363-afef-eacd627a3510",
       "name": "HTTP Request",
       "retryOnFail": true,
       "maxTries": 5
@@ -322,18 +322,18 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        1888,
-        1024
+        1984,
+        880
       ],
-      "id": "3cf282a1-8170-46b0-a395-32e18299c161",
+      "id": "1be2fc4b-b94e-4b07-8da7-c1ae0cb1e1b0",
       "name": "Analyze video",
       "retryOnFail": true,
       "maxTries": 5,
       "waitBetweenTries": 3000,
       "credentials": {
         "googlePalmApi": {
-          "id": "KbKuvqHOuDvNua6Q",
-          "name": "jaymeselwyn_YouTube Automation Related"
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
@@ -345,10 +345,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2096,
-        1024
+        2192,
+        880
       ],
-      "id": "a96733aa-f4f3-423d-8042-9c2abdfd3054",
+      "id": "d99c7927-6a5e-49e6-ae7f-76054e023a58",
       "name": "Code in Python (Beta)"
     },
     {
@@ -358,10 +358,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        2272,
-        1024
+        2368,
+        880
       ],
-      "id": "bab47a85-42d1-4466-be8a-3b6d200f1239",
+      "id": "61e3a1a5-84cc-4f91-b1db-21459fb6e689",
       "name": "AI Agent",
       "retryOnFail": true
     },
@@ -373,10 +373,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2592,
-        1072
+        2688,
+        928
       ],
-      "id": "273467a4-a1be-4617-9d9d-376dd9070b07",
+      "id": "75d80358-3f4f-4ce5-92bf-bc86457a0233",
       "name": "Code in Python (Beta)1"
     },
     {
@@ -388,11 +388,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1648,
-        896
+        1744,
+        752
       ],
       "typeVersion": 1,
-      "id": "1eb9edaa-6244-4b1a-8443-780965539c67",
+      "id": "c3dc4de8-ecae-4aea-8172-f2656c8db835",
       "name": "Sticky Note4"
     },
     {
@@ -400,10 +400,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        2800,
-        1024
+        2896,
+        880
       ],
-      "id": "d412d2e7-995e-45ad-837e-a0c858351204",
+      "id": "040748a6-150e-40d0-8129-6e043baf388f",
       "name": "Merge"
     },
     {
@@ -414,10 +414,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        2992,
-        1024
+        3088,
+        880
       ],
-      "id": "0889c67a-1463-40b5-b8cb-47ee68156028",
+      "id": "a8909498-4313-43ce-bb39-8b551bab3831",
       "name": "Aggregate1"
     },
     {
@@ -429,11 +429,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1648,
-        1472
+        1744,
+        1328
       ],
       "typeVersion": 1,
-      "id": "5c204784-b3ba-40c2-91ee-9b8c65ec58dc",
+      "id": "568f1a96-b0c7-4dd7-934d-bcf16a035128",
       "name": "Sticky Note5"
     },
     {
@@ -444,10 +444,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1984,
-        1584
+        2080,
+        1440
       ],
-      "id": "e0d3bc47-3790-49d4-862f-82c375956c78",
+      "id": "34a030d6-9029-46f1-b0d9-47fd73c932fc",
       "name": "HTTP Request1",
       "retryOnFail": true
     },
@@ -610,16 +610,16 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3168,
-        1024
+        3264,
+        880
       ],
-      "id": "30f2914c-e504-419d-b158-ec89489822b1",
+      "id": "0a143616-aed5-4332-930b-deed13d12146",
       "name": "Append row in sheet",
       "retryOnFail": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "Q33u7QDdFT7kx3S6",
-          "name": "Google Sheets account"
+          "id": "u5Go3qYtYJt4fClc",
+          "name": "Google Sheets account | jaymeselwyn@gmail.com"
         }
       }
     },
@@ -647,17 +647,17 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1696,
-        1584
+        1792,
+        1440
       ],
-      "id": "74cea3e1-5615-4297-bba6-83d75ed04795",
+      "id": "1b9b8692-91f1-4eb4-b82f-db63935e2711",
       "name": "Get row(s) in sheet",
       "retryOnFail": true,
       "waitBetweenTries": 2000,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "Q33u7QDdFT7kx3S6",
-          "name": "Google Sheets account"
+          "id": "u5Go3qYtYJt4fClc",
+          "name": "Google Sheets account | jaymeselwyn@gmail.com"
         }
       }
     },
@@ -668,10 +668,10 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        1840,
-        1584
+        1936,
+        1440
       ],
-      "id": "7ffa0518-2c26-4abd-8f0a-bd5d0b62658c",
+      "id": "9c563dbe-a62e-4166-8718-1f964fa33dc9",
       "name": "Limit"
     },
     {
@@ -681,10 +681,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        2128,
-        1584
+        2224,
+        1440
       ],
-      "id": "963f54ed-93fc-4257-9fec-67b7580d094a",
+      "id": "539ea5c1-f79a-4e31-9bae-8b6dc88022ee",
       "name": "Wait",
       "webhookId": "243ac7e5-5123-4ddd-a0ae-82903bd1ecbf"
     },
@@ -705,17 +705,17 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -288,
-        1136
+        -192,
+        992
       ],
-      "id": "9325af02-9aea-463d-8966-e660f2a33742",
+      "id": "c9314857-a267-4e32-a6e4-3b0fb028c527",
       "name": "Analyze image1",
       "retryOnFail": true,
       "waitBetweenTries": 2000,
       "credentials": {
         "openAiApi": {
-          "id": "Vwg2FlhVu2bY7dZ6",
-          "name": "OpenAi account"
+          "id": "7wRe2whxERwY0gjz",
+          "name": "OpenAi account 2 | selwyn@selwynbuilds.com"
         }
       }
     },
@@ -733,10 +733,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -1552,
-        1040
+        -1456,
+        896
       ],
-      "id": "4c58a3f1-c3ac-4671-b91a-9afd74eb71de",
+      "id": "b131dd9c-11b0-48ad-a3ee-4c8d41a23e4d",
       "name": "Schedule Trigger"
     },
     {
@@ -747,10 +747,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1296,
-        1040
+        -1200,
+        896
       ],
-      "id": "8cf1830a-3f9f-4da7-866d-e6081de5a889",
+      "id": "4a976f42-dc38-49dc-8cc1-efa010103265",
       "name": "Code in Python (Beta)2"
     },
     {
@@ -761,10 +761,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -784,
-        1040
+        -688,
+        896
       ],
-      "id": "f094711b-0395-4fcb-bc69-64b16255c750",
+      "id": "11a3c1a9-c616-4f22-b278-58bcf121cfa8",
       "name": "Code in Python (Beta)3"
     },
     {
@@ -774,10 +774,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -1104,
-        1040
+        -1008,
+        896
       ],
-      "id": "b27b94cd-2e08-4fa5-8f44-44a46aaa474b",
+      "id": "1bc3a2dc-736e-45cc-9c04-450d6d9c2325",
       "name": "AI Agent1",
       "retryOnFail": true
     },
@@ -799,14 +799,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -480,
-        960
+        -384,
+        816
       ],
-      "id": "711fddc0-f7f1-4ac7-994a-a8559cd746e4",
+      "id": "a862e19b-e8db-4949-9d20-dfe625286d1b",
       "name": "Upload file1",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "2KupETq4QLi8d9l8",
+          "id": "ArIUQPOkqI84L2K6",
           "name": "Google Drive account"
         }
       }
@@ -816,10 +816,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -1600,
-        1568
+        -1504,
+        1424
       ],
-      "id": "a40649cc-750a-4d99-b44f-f6aa14833f09",
+      "id": "0de5648a-313e-40fc-9e5a-78aede1ed7d1",
       "name": "Merge1"
     },
     {
@@ -829,10 +829,10 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        -1424,
-        1568
+        -1328,
+        1424
       ],
-      "id": "9f96885c-3db0-402d-be51-34af82673e62",
+      "id": "551d2f09-7e3c-4384-897d-2d4f843c9897",
       "name": "Limit1"
     },
     {
@@ -844,10 +844,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        416,
-        1184
+        512,
+        1040
       ],
-      "id": "3b787732-46fe-46dc-9d07-cb6537cc3ec8",
+      "id": "ed3c1fc6-aac5-4afb-9b31-28f8e34f66a8",
       "name": "Structured Output Parser"
     },
     {
@@ -858,10 +858,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -288,
-        912
+        -192,
+        768
       ],
-      "id": "cdf19b9d-1084-41bf-a13b-5308a61fd48f",
+      "id": "e90340e8-8ecc-4f0d-a4c4-b6ea2ddcb872",
       "name": "Code in Python (Beta)4"
     },
     {
@@ -872,10 +872,10 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        608,
-        992
+        704,
+        848
       ],
-      "id": "ee2012bc-46c1-435e-bf7e-7dba03e8cc39",
+      "id": "9d623403-92ed-4c17-badc-2443f5c9d968",
       "name": "Split Out"
     },
     {
@@ -904,10 +904,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1200,
-        992
+        1296,
+        848
       ],
-      "id": "e8d054b3-5426-4da8-be5e-68c709883d6b",
+      "id": "90f22ab5-32d4-498c-b28d-402a8733196b",
       "name": "HTTP Request - Get Video",
       "retryOnFail": true,
       "waitBetweenTries": 2000
@@ -937,10 +937,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        816,
-        992
+        912,
+        848
       ],
-      "id": "4e40022f-1fa3-4df4-a833-c56472d48a22",
+      "id": "5fad8dff-bc6e-4e4d-8c6b-f5b35321c2fc",
       "name": "HTTP Request - Make Video1",
       "retryOnFail": true,
       "waitBetweenTries": 2000
@@ -953,10 +953,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        992,
-        992
+        1088,
+        848
       ],
-      "id": "6844255b-5c44-4ad9-9e21-24d86c81628d",
+      "id": "22262c36-9f32-4693-a2af-3d76d3ba8f2e",
       "name": "Wait 4m",
       "webhookId": "ee11a144-63fc-43c8-84b8-3ccb9738b5d4"
     },
@@ -968,11 +968,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        64,
-        1472
+        160,
+        1328
       ],
       "typeVersion": 1,
-      "id": "2fea6ade-55cc-4b18-8a1d-3dc798f7d1c6",
+      "id": "cf467b26-7d93-4cf9-97cf-4643f8096638",
       "name": "Sticky Note3"
     },
     {
@@ -984,11 +984,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        112,
-        80
+        208,
+        -64
       ],
       "typeVersion": 1,
-      "id": "fb51406b-bf00-49ab-a116-43ef37117d85",
+      "id": "b30d71bd-a11b-4b34-ad74-30755d0b778b",
       "name": "Sticky Note6"
     },
     {
@@ -1009,16 +1009,16 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        96,
-        992
+        192,
+        848
       ],
-      "id": "f7f2567d-6b24-4574-b3d0-0c4aa6cc6151",
+      "id": "ecc0d733-dc31-4bf9-9363-9f3905f4df6d",
       "name": "Upload file2",
       "retryOnFail": true,
       "waitBetweenTries": 2000,
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "2KupETq4QLi8d9l8",
+          "id": "ArIUQPOkqI84L2K6",
           "name": "Google Drive account"
         }
       }
@@ -1031,10 +1031,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -272,
-        1568
+        -176,
+        1424
       ],
-      "id": "b664d11a-9080-4b3d-8a8f-6e510875c117",
+      "id": "8075a677-d919-4f8c-a8dc-78371a59e5d1",
       "name": "HTTP Request2",
       "retryOnFail": true,
       "waitBetweenTries": 2000
@@ -1050,15 +1050,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2688,
-        1584
+        2784,
+        1440
       ],
-      "id": "927ddb71-d1e2-4148-8327-ed95c6d5d71d",
+      "id": "4d6389d5-f1f3-48ce-a032-d6ee2a86172d",
       "name": "Send a text message",
       "webhookId": "531625fa-83f9-4368-959d-1276da50115d",
       "credentials": {
         "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
+          "id": "uH4mDEtyZeadnoI5",
           "name": "Telegram account"
         }
       }
@@ -1070,10 +1070,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        624,
-        1600
+        720,
+        1456
       ],
-      "id": "ac7ae496-14c9-45a9-8100-842c29d45031",
+      "id": "debf1341-dacf-42a2-b792-4d312effa7c3",
       "name": "Wait 60s",
       "webhookId": "f4b563de-6b0c-4f72-ba99-3a3d312fd33c"
     },
@@ -1095,16 +1095,16 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        2336,
-        1584
+        2432,
+        1440
       ],
-      "id": "3b451f35-d610-43d5-b44d-c291234579fd",
+      "id": "a3b93b1f-c0fe-4c5e-92b1-29c5c0ef375a",
       "name": "Algonova Labs Upload1",
       "retryOnFail": true,
       "credentials": {
         "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account_AlgoNovaLabs"
+          "id": "ls0zawE8FI2uctox",
+          "name": "YouTube account | LettersNeverSent"
         }
       },
       "onError": "continueRegularOutput"
@@ -1119,16 +1119,16 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        2512,
-        1584
+        2608,
+        1440
       ],
-      "id": "0786dc13-4595-4ab1-a818-c3bd55af0131",
+      "id": "a0afce80-1b4e-4a84-8c0f-dea87b22f644",
       "name": "Add a playlist item",
       "retryOnFail": true,
       "credentials": {
         "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account_AlgoNovaLabs"
+          "id": "ls0zawE8FI2uctox",
+          "name": "YouTube account | LettersNeverSent"
         }
       },
       "onError": "continueRegularOutput"
@@ -1140,15 +1140,15 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -1232,
-        1744
+        -1136,
+        1600
       ],
-      "id": "5abe6362-f185-4744-88b1-2498df6aa904",
+      "id": "68337861-0749-45d4-9b6b-e9210c71cee1",
       "name": "Google Gemini Chat Model3",
       "credentials": {
         "googlePalmApi": {
-          "id": "KbKuvqHOuDvNua6Q",
-          "name": "jaymeselwyn_YouTube Automation Related"
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
@@ -1161,15 +1161,15 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -624,
-        1040
+        -528,
+        896
       ],
-      "id": "ea3774d4-3775-459d-9d7a-1c5ee392e1dd",
+      "id": "45b1aec7-451f-4b5d-bb08-4519260d6115",
       "name": "Generate an image1",
       "credentials": {
         "openAiApi": {
-          "id": "Vwg2FlhVu2bY7dZ6",
-          "name": "OpenAi account"
+          "id": "7wRe2whxERwY0gjz",
+          "name": "OpenAi account 2 | selwyn@selwynbuilds.com"
         }
       }
     },
@@ -1185,15 +1185,15 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -1248,
-        1248
+        -1152,
+        1104
       ],
-      "id": "d07b69d2-8e16-400e-9966-ba259b87dd7d",
+      "id": "00470be0-3bbe-4535-b760-29a91b134506",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
-          "id": "Vwg2FlhVu2bY7dZ6",
-          "name": "OpenAi account"
+          "id": "7wRe2whxERwY0gjz",
+          "name": "OpenAi account 2 | selwyn@selwynbuilds.com"
         }
       }
     },
@@ -1204,15 +1204,15 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        2208,
-        1264
+        2304,
+        1120
       ],
-      "id": "7f1b4a04-42e0-483b-a1e0-6163351eb675",
+      "id": "989316ca-8d59-4c3e-9bf0-5ce43ec1bb1c",
       "name": "Google Gemini Chat Model4",
       "credentials": {
         "googlePalmApi": {
-          "id": "KbKuvqHOuDvNua6Q",
-          "name": "jaymeselwyn_YouTube Automation Related"
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
@@ -1223,15 +1223,15 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        176,
-        1296
+        272,
+        1152
       ],
-      "id": "609ea234-2714-400e-801b-393574250932",
+      "id": "e897bb17-15e3-450d-a1b6-2091b9c20db4",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "KbKuvqHOuDvNua6Q",
-          "name": "jaymeselwyn_YouTube Automation Related"
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     }
@@ -1762,6 +1762,6 @@
   "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
   }
 }
