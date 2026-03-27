@@ -1,0 +1,257 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        80
+      ],
+      "id": "adbec3bf-c17a-4a98-a296-db9c4c6ae6fd",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1zk27yI9eZ8-xaZ88Odp3QNPFpGSQPl9CZvquaGteLwo",
+          "mode": "list",
+          "cachedResultName": "Workflow that reduce data entry Spreadsheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zk27yI9eZ8-xaZ88Odp3QNPFpGSQPl9CZvquaGteLwo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zk27yI9eZ8-xaZ88Odp3QNPFpGSQPl9CZvquaGteLwo/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -64,
+        80
+      ],
+      "id": "39b95561-ee45-40f4-87b0-49dd9ea65782",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        160,
+        80
+      ],
+      "id": "b7913ff0-a51d-4ff9-bb55-b5261c6ceeb8",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "value": "1xOXzXheWRFWXn5C2JGDFP9CIRNDu5Ou37FRGAsV2Rfo",
+          "mode": "list",
+          "cachedResultName": "Sample Certificate Slides",
+          "cachedResultUrl": "https://docs.google.com/presentation/d/1xOXzXheWRFWXn5C2JGDFP9CIRNDu5Ou37FRGAsV2Rfo/edit?usp=drivesdk"
+        },
+        "name": "={{ $json[\"THIS CERTIFICATE IS PROUDLY PRESENTED TO\"] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        384,
+        0
+      ],
+      "id": "f561162e-a532-4084-8354-35e7cab080ee",
+      "name": "Copy file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "yFFuGYuegthpjHTa",
+          "name": "Google Drive | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "replaceText",
+        "presentationId": "={{ $json.id }}",
+        "textUi": {
+          "textValues": [
+            {
+              "pageObjectIds": [
+                "p"
+              ],
+              "text": "{{ Name }}",
+              "replaceText": "={{ $('Loop Over Items').item.json['THIS CERTIFICATE IS PROUDLY PRESENTED TO'] }}"
+            },
+            {
+              "pageObjectIds": [
+                "p"
+              ],
+              "text": "{{ Workshop }}",
+              "replaceText": "={{ $('Loop Over Items').item.json['HAS BEEN A CONTRIBUTING MEMBER OF'] }}"
+            },
+            {
+              "pageObjectIds": [
+                "p"
+              ],
+              "text": "{{ Day }}",
+              "replaceText": "={{ $('Loop Over Items').item.json['AND IS AWARDED THIS CERTIFICATE THIS DAY'] }}"
+            },
+            {
+              "pageObjectIds": [
+                "p"
+              ],
+              "text": "{{ Month }}",
+              "replaceText": "={{ $('Loop Over Items').item.json['AND IS AWARDED THIS CERTIFICATE THIS MONTH'] }}"
+            },
+            {
+              "pageObjectIds": [
+                "p"
+              ],
+              "text": "{{ Year }}",
+              "replaceText": "={{ String($('Loop Over Items').item.json.Year) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSlides",
+      "typeVersion": 2,
+      "position": [
+        608,
+        0
+      ],
+      "id": "9d8b881c-8b07-4b0d-b38f-f2c05b99fb50",
+      "name": "Replace text in a presentation",
+      "credentials": {
+        "googleSlidesOAuth2Api": {
+          "id": "zZjnPTUc7ifuJhOT",
+          "name": "Google Slides account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Copy file').item.json.id }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "https://drive.google.com/drive/u/1/folders/1jK4gaM-m05-uGraj8f6JISBr2sjKoC4p",
+          "mode": "url"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        832,
+        80
+      ],
+      "id": "12c87906-848c-4a86-98f2-81ece7e0c302",
+      "name": "Move file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "yFFuGYuegthpjHTa",
+          "name": "Google Drive | selwyn@selwynbuilds.com"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Copy file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copy file": {
+      "main": [
+        [
+          {
+            "node": "Replace text in a presentation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace text in a presentation": {
+      "main": [
+        [
+          {
+            "node": "Move file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move file": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
+  }
+}
