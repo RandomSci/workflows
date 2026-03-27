@@ -1,0 +1,980 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        3408,
+        2528
+      ],
+      "id": "b36edc08-878f-40a6-8a27-25016dcb9f41",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from datetime import datetime\nimport random\n\n# 1. Get current year automatically\nnow = datetime.now()\ncurrent_year = now.year\n\n# 2. Define High-Ticket Affiliate Niches (Highest commission potential)\nniches = [\n    \"SaaS tools for small business\", \n    \"CRM software for real estate\", \n    \"Best budget laptops for students\", \n    \"High-end mirrorless cameras for YouTube\", \n    \"Amazon home office desk setup\",\n    \"Best skincare routine for dry skin\", \n    \"Top credit card rewards\", \n    \"Best crypto hardware wallets\", \n    \"Home gym equipment essentials\",\n    \"Best web hosting for e-commerce\",\n    \"Top 10 travel gear for digital nomads\",\n    \"Best ergonomic office chairs\",\n    \"Top vitamin supplements for longevity\"\n]\n\n# 3. Define High-Intent Modifiers (Queries that signal a 'Top List' or 'Review')\nmodifiers = [\n    \"Best\", \"Top 10\", \"Must have\", \"Essentials\", \"Review\", \"Comparison\", \"Buying guide\"\n]\n\n# 4. Generate Random Search\nselected_niche = random.choice(niches)\nselected_modifier = random.choice(modifiers)\n\n# 5. Dynamic Year Lookback (1 to 3 years ago = The Decay Zone)\nlookback_years = [current_year - 1, current_year - 2, current_year - 3]\ntarget_year = random.choice(lookback_years)\n\n# 6. Final Query Construction\n# e.g., \"Must have CRM software for real estate 2024\"\nfinal_search = f\"{selected_modifier} {selected_niche} {target_year}\"\n\nreturn {\n    \"Search_\": final_search,\n    \"Calculated_Year\": target_year,\n    \"Niche_Category\": selected_niche,\n    \"Modifier\": selected_modifier,\n    \"Decay_Level\": f\"{current_year - target_year} years\",\n    \"Run_Timestamp\": now.strftime(\"%Y-%m-%d %H:%M:%S\")\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3856,
+        2528
+      ],
+      "id": "a0155c12-088c-4c5d-9e85-272debad2682",
+      "name": "Code in Python (Beta)"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/youtube/v3/search?part=snippet&q={{ $json.Search_ }}&type=video&maxResults=50&publishedAfter={{ $json.Calculated_Year }}-01-01T00:00:00Z&publishedBefore={{ $json.Calculated_Year }}-12-31T23:59:59Z&relevanceLanguage=en&key=AIzaSyDV5etfLvMaBIVgmrRx8X2QZ-H4sMYZrvQ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        4080,
+        2528
+      ],
+      "id": "ceab5aa2-3777-4c1b-8e21-f140f7667bdc",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Get existing leads from your Google Sheet (from the 'Get row(s)' node)\n// Note: Ensure the column name matches exactly what is in your sheet\nconst existingLeads = $(\"Get row(s) in sheet\").all().map(item => item.json[\"Channel URLs\"] || \"\");\n\n// 2. Get the new search results from YouTube\nconst youtubeItems = $input.first().json.items || [];\n\n// 3. Process and Filter\nconst results = youtubeItems\n  .map(item => {\n    const channelId = item.snippet.channelId;\n    const channelUrl = `https://www.youtube.com/channel/${channelId}`;\n    return { channelId, channelUrl };\n  })\n  // Deduplicate within the current search batch\n  .filter((v, i, a) => a.findIndex(t => t.channelId === v.channelId) === i)\n  // Deduplicate against the Google Sheet (Master List)\n  .filter(item => !existingLeads.includes(item.channelUrl));\n\n// 4. Handle Empty Data (Prevents the workflow from breaking)\nif (results.length === 0) {\n  return []; // n8n will stop execution here gracefully\n}\n\nreturn results.map(res => ({\n  json: {\n    channelId: res.channelId,\n    channelUrl: res.channelUrl\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4304,
+        2528
+      ],
+      "id": "4667b030-ffaf-4bc6-aa53-ea900156b04d",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        3408,
+        2848
+      ],
+      "id": "48e37afc-4461-4497-aaf8-03be131ae52d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "={{ $json.Subject }}",
+        "emailType": "text",
+        "message": "={{ $json[\"Message \"] }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        7344,
+        2752
+      ],
+      "id": "dc7c048c-675f-4e23-bf76-272f3a3c51e0",
+      "name": "Send a message",
+      "webhookId": "9284bed9-bf4d-4139-95d4-e2457b7d4560",
+      "executeOnce": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bG4MqC26LX77VMP0",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = items[0].json.channels;\n\nconst results = [];\n\nfor (const url of input) {\n  let channelId = null;\n\n  if (url.includes(\"/channel/\")) {\n    channelId = url.split(\"/channel/\")[1].split(/[/?]/)[0];\n  }\n\n  results.push({\n    json: {\n      channelUrl: url,\n    }\n  });\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4304,
+        2752
+      ],
+      "id": "89a44485-fa47-42cd-b58a-45a90f031a92",
+      "name": "Channel IDs",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1IMiQjoTJRrAddEVLTcBCKvriz2J5m8PKekqq0Qx-iZw",
+          "mode": "list",
+          "cachedResultName": "Messaged Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IMiQjoTJRrAddEVLTcBCKvriz2J5m8PKekqq0Qx-iZw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IMiQjoTJRrAddEVLTcBCKvriz2J5m8PKekqq0Qx-iZw/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4528,
+        2752
+      ],
+      "id": "88dd94ad-4fc9-4711-9179-389bb5cd0797",
+      "name": "Messaged Leads Data",
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HgYy-Q-dk7fCQQSK19CyTDhBD06yJH5IuT6ax-5F6mk",
+          "mode": "list",
+          "cachedResultName": "Whale Channel Reply System Affiliate Marketers Workflow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HgYy-Q-dk7fCQQSK19CyTDhBD06yJH5IuT6ax-5F6mk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HgYy-Q-dk7fCQQSK19CyTDhBD06yJH5IuT6ax-5F6mk/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3632,
+        2848
+      ],
+      "id": "fb541bbc-e3aa-4b46-bede-c43e076670fc",
+      "name": "Whale Channel Reply System Data",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst uniqueUrls = new Set();\n\nitems.forEach(item => {\n  // Check for the specific key \"Channel URLs\" that your data currently has\n  // Also checking \"YouTube Channel URL\" just in case your sheet headers vary\n  const channelUrl = item.json[\"Channel URLs\"] || item.json[\"YouTube Channel URL\"];\n  \n  if (channelUrl && channelUrl.trim() !== \"\") {\n    uniqueUrls.add(channelUrl.trim());\n  }\n});\n\nconst channelsArray = Array.from(uniqueUrls);\n\n// Handle the \"Empty Data\" scenario you were worried about\nif (channelsArray.length === 0) {\n    return [{\n        json: {\n            channels: [],\n            message: \"No valid channel URLs found in the input data.\"\n        }\n    }];\n}\n\nreturn [{\n  json: {\n    channels: channelsArray\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3856,
+        2848
+      ],
+      "id": "9029bf84-e9fa-42b6-81d3-ca264239bf0f",
+      "name": "Deduplication | YouTube Channels"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Get items from the two sheets\nconst whaleData = $('Whale Channel Reply System Data').all();\nconst messagedData = $input.all(); // This is the input from 'Messaged Leads Data'\n\n// 2. Identify the correct key (Column Name)\n// Using your shared data, the column is \"Channel URLs\"\nconst whaleKey = \"Channel URLs\";\nconst messagedKey = \"YouTube Channel URL\"; // Ensure this matches your 'Messaged' sheet header\n\n// 3. Create a Set of URLs we have ALREADY messaged (for O(1) lookup speed)\nconst messagedSet = new Set(\n  messagedData\n    .map(item => item.json[messagedKey] ? item.json[messagedKey].trim() : null)\n    .filter(url => url)\n);\n\n// 4. Filter out the whales we've already contacted\nconst newChannels = whaleData\n  .map(item => item.json[whaleKey] ? item.json[whaleKey].trim() : null)\n  .filter(url => url && !messagedSet.has(url));\n\n// 5. Deduplicate the new list (just in case the search ran twice)\nconst uniqueNewChannels = [...new Set(newChannels)];\n\n// 6. Extract the ID safely (Handles trailing slashes or @handles)\nconst channelsWithIds = uniqueNewChannels.map(url => {\n  // Removes trailing slash if it exists, then grabs the last segment\n  const cleanUrl = url.replace(/\\/$/, \"\"); \n  const channelId = cleanUrl.split('/').pop(); \n  \n  return {\n    channelUrl: url,\n    channelId: channelId\n  };\n});\n\n// 7. Return the structured data for the \"Split Out\" node\nreturn [{\n  json: {\n    channels: channelsWithIds,\n    totalWhalesFound: whaleData.length,\n    alreadyMessaged: messagedSet.size,\n    newLeadsToContact: channelsWithIds.length\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4752,
+        2752
+      ],
+      "id": "d34d851a-369a-4363-8294-92aeed066c42",
+      "name": "Deduplication | For Google Sheets"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "channels",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        4976,
+        2752
+      ],
+      "id": "040af881-5ed4-4e71-bce0-70bdb36f0b62",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst results = items.map(item => {\n  const channelData = item.json.items?.[0];\n  \n  return {\n    json: {\n      channelId: channelData?.id || 'N/A',\n      channelTitle: channelData?.snippet?.title || 'N/A',\n      channelDescription: channelData?.snippet?.description || 'N/A',\n      uploadsPlaylistId: channelData?.contentDetails?.relatedPlaylists?.uploads || 'N/A'\n    }\n  };\n});\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5648,
+        2752
+      ],
+      "id": "600aa13d-9ff7-4f0a-a2fb-06816b0f52f0",
+      "name": "Upload Playlists"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId={{ $json.uploadsPlaylistId }}&maxResults=5&key=AIzaSyDV5etfLvMaBIVgmrRx8X2QZ-H4sMYZrvQ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        5872,
+        2752
+      ],
+      "id": "7b70d8a9-d367-44f6-b809-9da35e6370a2",
+      "name": "LATEST video"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/youtube/v3/channels?part=contentDetails,snippet&id={{ $json.channelId }}&key=AIzaSyDV5etfLvMaBIVgmrRx8X2QZ-H4sMYZrvQ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        5424,
+        2752
+      ],
+      "id": "4e3444f5-bfca-4d27-8032-1eb2a1e56bd4",
+      "name": "Channel Details"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst formattedData = items.map(item => {\n  const data = item.json;\n  return `\n---\nChannel Title: ${data.channelTitle}\nChannel ID: ${data.channelId}\nDescription: ${data.channelDescription}\nLatest Video: ${data.latestVideoTitle}\n---`;\n}).join('\\n');\n\nconst prompt = `You are writing cold outreach emails on behalf of AlgoNova Labs.\n\nWe offer a YouTube Revenue Recovery System. Our core service is an automated Link Audit that identifies dead affiliate links and out-of-stock products in a creator's library, then auto-updates them to recover lost commissions.\n\nTARGET: YouTubers with 10k–500k subscribers who made product review, comparison, or \"best of\" videos in 2023-2024.\n\nTHE CORE INSIGHT:\nCreators with \"evergreen\" affiliate content from 2023-2024 are losing 15-20% of their passive income because their links have \"decayed\" (broken URLs, changed affiliate programs, or discontinued products). Their old videos still get views, but the money leaks out through dead links.\n\nFOR EACH CHANNEL BELOW, write ONE outreach message.\n\nCRITICAL RULES:\n1. Reference their LATEST video specifically in the hook (not their old 2023-2024 content)\n2. Connect the latest video to the link decay problem (e.g., \"still making product content means your 2023 links are bleeding money\")\n3. DO NOT mention \"comment management\" or \"engagement\" — this is about REVENUE RECOVERY from dead affiliate links\n\nOUTPUT: Valid JSON array only.\n\nJSON Structure:\n[\n  {\n    \"YouTube Channel URL\": \"https://www.youtube.com/channel/CHANNEL_ID\",\n    \"Channel ID\": \"CHANNEL_ID\",\n    \"Niche\": \"identified_niche\",\n    \"Generated Message\": \"exactly 3 sentences\",\n    \"Subject\": \"6-10 words\"\n  }\n]\n\nCHANNELS TO PROCESS:\n${formattedData}`;\n\nreturn [{\n  json: {\n    chatInput: prompt\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6320,
+        2752
+      ],
+      "id": "e30b43d1-d0af-4234-87b0-275839848ef3",
+      "name": "Data For AI Agent"
+    },
+    {
+      "parameters": {
+        "jsCode": "let aiResponse;\ntry {\n  const inputData = $input.first().json;\n  if (inputData.output && Array.isArray(inputData.output)) {\n    const firstOutput = inputData.output[0];\n    if (firstOutput && firstOutput.content && firstOutput.content[0] && firstOutput.content[0].text) {\n      aiResponse = firstOutput.content[0].text;\n    } else {\n      throw new Error('output array exists but missing content[0].text');\n    }\n  } else if (inputData.content && inputData.content.parts && inputData.content.parts[0]) {\n    aiResponse = inputData.content.parts[0].text;\n  } else if (inputData.message && inputData.message.content && inputData.message.content[0]) {\n    aiResponse = inputData.message.content[0].text;\n  } else if (inputData.text) {\n    aiResponse = inputData.text;\n  } else if (typeof inputData === 'string') {\n    aiResponse = inputData;\n  } else {\n    return [{\n      json: {\n        error: true,\n        message: 'Unknown AI response structure',\n        rawResponse: JSON.stringify(inputData, null, 2)\n      }\n    }];\n  }\n} catch (error) {\n  return [{\n    json: {\n      error: true,\n      message: `Error accessing AI response: ${error.message}`,\n      rawInput: JSON.stringify($input.first().json, null, 2)\n    }\n  }];\n}\n\nlet parsedData;\ntry {\n  let cleanedResponse = aiResponse.trim();\n  if (cleanedResponse.startsWith('```json')) {\n    cleanedResponse = cleanedResponse.replace(/^```json\\n?/, '').replace(/\\n?```$/, '');\n  } else if (cleanedResponse.startsWith('```')) {\n    cleanedResponse = cleanedResponse.replace(/^```\\n?/, '').replace(/\\n?```$/, '');\n  }\n  parsedData = JSON.parse(cleanedResponse);\n} catch (error) {\n  return [{\n    json: {\n      error: true,\n      message: `Failed to parse JSON: ${error.message}`,\n      rawResponse: aiResponse\n    }\n  }];\n}\n\nif (!Array.isArray(parsedData)) {\n  return [{\n    json: {\n      error: true,\n      message: 'AI response is not an array',\n      parsedData: parsedData\n    }\n  }];\n}\n\nconst results = parsedData.map((item, index) => {\n  const channelId = item['Channel ID'] || 'ERROR: Missing Channel ID';\n  return {\n    json: {\n      \"YouTube Channel URL\": `https://www.youtube.com/channel/${channelId}`,\n      \"Channel ID\": channelId,\n      \"Niche\": item['Niche'] || 'ERROR: Missing Niche',\n      \"Generated Message\": item['Generated Message'] || 'ERROR: Missing Message',\n      \"Subject\": item['Subject'] || 'ERROR: Missing Subject'\n    },\n    // Store the data in pairedItem so it flows through the Apify actor\n    pairedItem: {\n      item: index\n    }\n  };\n});\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6896,
+        2752
+      ],
+      "id": "f834b89a-5829-4630-99dd-d5f7949baeae",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1IMiQjoTJRrAddEVLTcBCKvriz2J5m8PKekqq0Qx-iZw",
+          "mode": "list",
+          "cachedResultName": "Messaged Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IMiQjoTJRrAddEVLTcBCKvriz2J5m8PKekqq0Qx-iZw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IMiQjoTJRrAddEVLTcBCKvriz2J5m8PKekqq0Qx-iZw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date & Time": "={{ $now.setZone('Asia/Manila').format('yyyy-MM-dd hh:mm a') }}",
+            "YouTube Channel URL": "={{ $('Code in JavaScript2').item.json[\"YouTube Channel URL\"] }}",
+            "Niche": "={{ $('Code in JavaScript2').item.json.Niche }}",
+            "Generated Message": "={{ $('Code in JavaScript2').item.json[\"Message \"] }}",
+            "Email": "={{ $('Code in JavaScript2').item.json.Email }}",
+            "Subject": "={{ $('Code in JavaScript2').item.json.Subject }} Done"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date & Time",
+              "displayName": "Date & Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "YouTube Channel URL",
+              "displayName": "YouTube Channel URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Niche",
+              "displayName": "Niche",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Generated Message",
+              "displayName": "Generated Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        7568,
+        2752
+      ],
+      "id": "1c011008-3a36-4e82-9a13-1803f799698d",
+      "name": "Messaged Leads New Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      },
+      "notes": "{{ $('Code in JavaScript2').item.json.Email }}\n\nManual Search for now"
+    },
+    {
+      "parameters": {
+        "content": "# SpreadSheets\n\n## [Whale Channel Reply System](https://docs.google.com/spreadsheets/d/1xc9oj03ep3FECCOCFDpnjfIjhJt57YV29SYzSKRlp38/edit?gid=0#gid=0)\n\n## [YouTube Comment IDs Sub Database](https://docs.google.com/spreadsheets/d/1mYI0HXZMEWH_tBOK3lXCWeajSGnqUEes8a3e5N0wkjw/edit?gid=0#gid=0)\n\n## [Messaged Leads](https://docs.google.com/spreadsheets/d/1IMiQjoTJRrAddEVLTcBCKvriz2J5m8PKekqq0Qx-iZw/edit?gid=0#gid=0)",
+        "height": 480,
+        "width": 1456
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        5360,
+        1776
+      ],
+      "typeVersion": 1,
+      "id": "92d36271-8156-42d8-a478-4bf92a7eb031",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $json.chatInput }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "instructions": "You are an Outreach Architect for AlgoNova Labs. You write cold outreach emails for YouTube creators who make affiliate/product content. Direct, confident, peer-to-peer. Not salesy. Not robotic.\n\n---\n\nWHAT WE SELL:\nA Free YouTube Revenue Recovery Audit. That is the ONLY ask.\nThe audit shows creators how much passive income they're losing from dead affiliate links in their 2023-2024 evergreen content.\nFunnel: Audit → Demo → Trial → Paid.\n\n---\n\nWHO WE'RE WRITING TO:\nYouTubers with 10k–500k subscribers who made product reviews, comparisons, or \"Top 10\" videos in 2023-2024. They're still creating content, but their old evergreen videos have broken affiliate links bleeding money every day. They don't lack views on those old videos. They lack a SYSTEM to keep the links alive.\n\n---\n\nDATA INTEGRITY (DO NOT BREAK THESE):\n- Output EXACTLY one JSON object per channel provided in the input. No more. No less.\n- \"YouTube Channel URL\" and \"Channel ID\" must be copied EXACTLY from the input. Do not construct, modify, or guess.\n- Do not invent or fabricate any data not provided in the input.\n- Output order must match input order.\n- If a field is missing from the input, work with what you have. Do not make something up.\n\n---\n\nNICHE IDENTIFICATION:\nIdentify each channel's niche from the Channel Title, Description, and Latest Video Title provided.\n\"YouTube Creator\" is NOT a niche. You are not allowed to use it.\nBe specific and accurate to what the channel actually covers:\n- Tech Reviews & Gadgets\n- Finance & Investing\n- Health & Fitness Gear\n- Gaming & PC Builds\n- Photography & Camera Gear\n- Home Office & Productivity Tools\n- Travel Gear & Digital Nomad Equipment\n- Beauty & Skincare Products\n- Smart Home & IoT Devices\n- Software & SaaS Reviews\n- E-Commerce & Dropshipping Tools\n- Course Reviews & Online Education\nIf genuinely unclear, pick the closest accurate category. Never default to \"YouTube Creator.\"\n\n---\n\nSUBJECT LINE RULES:\n- 6-10 words MAX.\n- The subject must be the natural entry point into the first sentence of the body. Someone reads the subject, opens the email, and the first sentence feels like the continuation of that thought. They must feel like one connected piece — not two separate things.\n- Must sound like a real person noticed something specific. Not an ad. Not a report. Not a template.\n- Think: if a fellow creator you actually respect sent you this, would you open it?\n\nBANNED in subject lines:\n- The words: \"Projected,\" \"Benchmark,\" \"Identified,\" \"Evaluating,\" \"Audit,\" \"Leak,\" \"Revenue,\" \"Recovery\"\n- Any percentage number\n- Any colon followed by a video title\n- \"Quick question,\" \"Just wanted to,\" \"Free\"\n\nEvery subject in the batch must use a completely different structure. Before outputting, check all subjects. If any two follow the same pattern, rewrite one.\n\nGOOD direction (understand the intent, do not copy):\n  \"your 2023 camera links might be dead\"\n  \"those old product reviews still paying you?\"\n  \"noticed your laptop comparison video from '24\"\n  \"evergreen content with dead links is rough\"\n  \"affiliate links decay faster than you think\"\n\n---\n\nMESSAGE BODY: EXACTLY 3 SENTENCES. NO MORE. NO LESS.\n\nSentence 1 — THE HOOK:\n- Must connect naturally to the subject line. The reader should feel like they are continuing the same thought.\n- Reference something SPECIFIC from their latest video or channel. Then BRIDGE to the link decay insight.\n- Example structure: \"Still making [product type] content means your [year] affiliate links are probably decaying — most creators lose 15-20% without realizing it.\"\n\nBANNED in the hook:\n- \"insights,\" \"great strategy,\" \"game-changing,\" \"really hit home,\" \"stood out to me,\" \"love the content,\" \"awesome,\" \"inspiring,\" \"valuable,\" \"crucial,\" \"refreshing\"\n- Any generic praise. Any rephrasing of the video title back at them.\n- DO NOT mention \"comments,\" \"engagement,\" or \"leads\" — this is about AFFILIATE REVENUE LOSS\n\nHOOK EXAMPLES (study these, understand WHY they work):\n\nInput: Latest Video = \"Best Budget Laptops 2026\"\nGOOD: \"Still covering budget laptops means your 2023-2024 recommendations are probably full of broken Amazon links — that's passive income bleeding out every day.\"\nBAD: \"Your insights on budget laptops really stood out to me.\"\n\nInput: Latest Video = \"Top 10 Cameras for YouTube in 2026\"\nGOOD: \"Camera gear evolves fast — curious if you've checked whether your 2023 affiliate links still convert or if they're sending people to discontinued models.\"\nBAD: \"Your camera recommendations were game-changing.\"\n\nInput: Latest Video = \"My Skincare Routine for Dry Skin\"\nGOOD: \"Skincare affiliate programs switch URLs constantly — creators in this space lose 18% on average from dead links in evergreen videos.\"\nBAD: \"Your skincare content is really valuable.\"\n\n---\n\nSentence 2 — THE PUNCH:\n- Name their specific niche. Tie it to the LINK DECAY problem (not engagement or comments).\n- The 15-20% benchmark must feel niche-specific — not generic.\n- Say \"In the [niche] space\" or \"Creators covering [niche]\" — never \"at your scale\" or \"channels like yours.\"\n- Vary the percentage between 15-20 across the batch. Do not use the same number twice.\n- Examples:\n  - \"In the tech review space, affiliate program migrations kill 17% of commissions from old content.\"\n  - \"Creators covering productivity tools see a 19% drop when Amazon changes ASINs and old links break.\"\n\n---\n\nSentence 3 — THE CTA:\n- One ask only: the free Revenue Recovery Audit (NOT a comment/engagement audit).\n- Direct and confident. Not soft. Not apologetic.\n- Before outputting, scan all CTAs in the batch. If any two match, rewrite one.\n\nCTA options (use each one only once per batch):\n  \"Want me to run a link audit on your 2023-2024 catalog?\"\n  \"I can pull a revenue leak report for you by tomorrow.\"\n  \"Should I check which of your old links are dead?\"\n  \"Worth running the numbers on your evergreen content?\"\n  \"Want to see where your passive income is leaking?\"\n\n---\n\nFINAL CHECKLIST BEFORE OUTPUTTING:\n- Every message is exactly 3 sentences? YES or rewrite.\n- Every subject is 6-10 words? YES or rewrite.\n- Subject and first sentence feel like one connected thought? YES or rewrite.\n- No two subjects follow the same structure? YES or rewrite one.\n- No two CTAs are the same? YES or rewrite one.\n- No percentage appears in any subject line? YES or rewrite.\n- No banned words appear anywhere? YES or rewrite.\n- No mention of \"comments,\" \"engagement,\" or \"community management\"? YES or rewrite.\n- Channel IDs and URLs are copied exactly from input? YES or rewrite.\n- Output count matches input count? YES or rewrite.\n\n---\n\nOUTPUT: Valid JSON array only. Nothing else. No markdown. No explanation. No text before or after.\n\n[\n  {\n    \"YouTube Channel URL\": \"copied exactly from input\",\n    \"Channel ID\": \"copied exactly from input\",\n    \"Niche\": \"specific niche identified\",\n    \"Generated Message\": \"exactly 3 sentences about REVENUE RECOVERY from dead affiliate links\",\n    \"Subject\": \"6-10 words about link decay or lost commissions\"\n  }\n]"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        6544,
+        2752
+      ],
+      "id": "13bc86f0-c55f-484f-b3e6-e603d63d38b9",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3aa8975f-8e09-4513-bc03-af950757869a",
+              "leftValue": "={{ $json.channels }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4080,
+        2848
+      ],
+      "id": "341beab6-8e1c-4eac-a9e0-4ad9c19dccdd",
+      "name": "Check If there's any data"
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "=[Whale Channel Reply System]\n\nNo Found leads. Need to scrape first.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4304,
+        2944
+      ],
+      "id": "ed1b9834-acfa-45e3-8c67-dae968e3a85e",
+      "name": "Send a text message",
+      "webhookId": "2673c9bd-2ef8-492a-a0c2-b9aa93b9d03f",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "=[Whale Channel Reply System]\n\nNew Leads handled successfully!",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        7792,
+        2752
+      ],
+      "id": "b49e392d-2595-48e5-afa1-2e8efc392949",
+      "name": "Send a text message1",
+      "webhookId": "359342be-d93d-4eff-9519-4a8ff4b0347a",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1HgYy-Q-dk7fCQQSK19CyTDhBD06yJH5IuT6ax-5F6mk",
+          "mode": "list",
+          "cachedResultName": "Whale Channel Reply System Affiliate Marketers Workflow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HgYy-Q-dk7fCQQSK19CyTDhBD06yJH5IuT6ax-5F6mk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HgYy-Q-dk7fCQQSK19CyTDhBD06yJH5IuT6ax-5F6mk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Channel URLs": "=https://www.youtube.com/channel/{{ $json.channelId }}",
+            "Search Query": "={{ $('Code in Python (Beta)').item.json.Search_ }}",
+            "Date Found": "={{ $now.setZone('Asia/Manila').format('yyyy-MM-dd') }}"
+          },
+          "matchingColumns": [
+            "Channel URLs"
+          ],
+          "schema": [
+            {
+              "id": "Channel URLs",
+              "displayName": "Channel URLs",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Search Query",
+              "displayName": "Search Query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date Found",
+              "displayName": "Date Found",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4528,
+        2528
+      ],
+      "id": "d6ef3859-5ac7-4643-a95d-46ed25d0053a",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HgYy-Q-dk7fCQQSK19CyTDhBD06yJH5IuT6ax-5F6mk",
+          "mode": "list",
+          "cachedResultName": "Whale Channel Reply System Affiliate Marketers Workflow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HgYy-Q-dk7fCQQSK19CyTDhBD06yJH5IuT6ax-5F6mk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HgYy-Q-dk7fCQQSK19CyTDhBD06yJH5IuT6ax-5F6mk/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3632,
+        2528
+      ],
+      "id": "021d71bb-58c1-4fbd-92f0-3e05fc0e3daf",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Node name: \"Merge Channel & Video Data\"\nconst channelItems = $('Upload Playlists').all();\nconst videoItems = $input.all();\n\nconst results = channelItems.map((channelItem, index) => {\n  const channelData = channelItem.json;\n  const videoData = videoItems[index]?.json;\n  \n  const latestVideoTitle = videoData?.items && videoData.items.length > 0 \n    ? videoData.items[0].snippet.title \n    : 'N/A';\n  \n  return {\n    json: {\n      channelId: channelData.channelId,\n      channelTitle: channelData.channelTitle,\n      channelDescription: channelData.channelDescription,\n      latestVideoTitle: latestVideoTitle\n    }\n  };\n});\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6096,
+        2752
+      ],
+      "id": "69946c32-b86a-4607-9530-bb2989b1383c",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst messageItems = $('Code in JavaScript3').all();\nconst emailItems = $input.all();\n\nconst results = emailItems.map((emailItem) => {\n  const emailData = emailItem.json;\n  \n  // Find the matching message by Channel ID\n  const matchingMessage = messageItems.find(\n    msg => msg.json[\"Channel ID\"] === emailData.ChannelId\n  );\n  \n  if (!matchingMessage) {\n    return {\n      json: {\n        error: true,\n        message: \"Could not find matching message data\",\n        emailData: emailData\n      }\n    };\n  }\n  \n  return {\n    json: {\n      \"Email\": emailData.Email || \"no-email@found.com\",\n      \"YouTube Channel URL\": matchingMessage.json[\"YouTube Channel URL\"],\n      \"Channel ID\": matchingMessage.json[\"Channel ID\"],\n      \"Niche\": matchingMessage.json.Niche,\n      \"Message \": matchingMessage.json[\"Generated Message\"],\n      \"Subject\": matchingMessage.json.Subject,\n      \"ChannelName\": emailData.ChannelName,\n      \"SubscriberCount\": emailData.SubscriberCount\n    }\n  };\n});\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7120,
+        2752
+      ],
+      "id": "d2898bbe-b1d7-4ffa-a3be-25fff4be0819",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "operation": "Run actor and get dataset",
+        "actorId": {
+          "__rl": true,
+          "value": "Xa3Un5HYidE8VMKZu",
+          "mode": "list",
+          "cachedResultName": "Youtube Channel Email Scraper (dataovercoffee/Youtube-Channel-Business-Email-Scraper)",
+          "cachedResultUrl": "https://console.apify.com/actors/Xa3Un5HYidE8VMKZu/input"
+        },
+        "customBody": "={\n    \"channels\": [{{ JSON.stringify($json.channelUrl) }}]\n} "
+      },
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [
+        5200,
+        2752
+      ],
+      "id": "709c4b8c-4852-42dd-a83e-41324fed4196",
+      "name": "Run an Actor and get dataset",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "apifyApi": {
+          "id": "tCY30dC4LXv8ijb3",
+          "name": "Apify account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Whale Channel Reply System Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Messaged Leads New Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Channel IDs": {
+      "main": [
+        [
+          {
+            "node": "Messaged Leads Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Messaged Leads Data": {
+      "main": [
+        [
+          {
+            "node": "Deduplication | For Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Whale Channel Reply System Data": {
+      "main": [
+        [
+          {
+            "node": "Deduplication | YouTube Channels",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplication | YouTube Channels": {
+      "main": [
+        [
+          {
+            "node": "Check If there's any data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplication | For Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Run an Actor and get dataset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Playlists": {
+      "main": [
+        [
+          {
+            "node": "LATEST video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LATEST video": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Channel Details": {
+      "main": [
+        [
+          {
+            "node": "Upload Playlists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data For AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Messaged Leads New Data": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If there's any data": {
+      "main": [
+        [
+          {
+            "node": "Channel IDs",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Data For AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run an Actor and get dataset": {
+      "main": [
+        [
+          {
+            "node": "Channel Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
+  }
+}
