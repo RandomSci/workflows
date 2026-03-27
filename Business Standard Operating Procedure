@@ -1,0 +1,375 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        48
+      ],
+      "id": "32c338b9-ff87-485f-a1b6-0094bea24484",
+      "name": "Telegram Trigger",
+      "webhookId": "051abbfc-dc13-41da-8523-a36c307b9d57",
+      "credentials": {
+        "telegramApi": {
+          "id": "fPYYQyejwTkYqBkM",
+          "name": "Telegram account | AI Agent 1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -16,
+        240
+      ],
+      "id": "ab9aa730-3761-4086-9dd7-9f4cbb80f444",
+      "name": "When chat message received",
+      "webhookId": "ccb49192-8a0a-49e2-98a7-285b9ab0d706"
+    },
+    {
+      "parameters": {
+        "content": "## Add *[system q]* for personal questions",
+        "height": 128,
+        "width": 432
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "2c1f2949-7610-4f83-9b29-1942324c026c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"type\": \"type here\", \n  \"text\": \"message here\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        464,
+        368
+      ],
+      "id": "2adc0b10-2aed-4d52-b29b-8565d2db8711",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8a93b0cb-05fd-40c7-8b6f-de47bf1bc57d",
+              "name": "sessionId",
+              "value": "={{ $json[\"message\"][\"chat\"][\"id\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "81b4917b-675e-4baa-ac0c-011be49161ec",
+              "name": "chatInput",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        48
+      ],
+      "id": "91d4175b-bdf6-40a0-9e1c-b5e72b6e8280",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are Selwyn’s automation sales assistant. Your goal is to handle inbound leads about automation workflows using the official SOP. Use the SOP as guidance, not a rigid script — think, reason, and adapt based on the lead’s context. Do not use markdown. Respond in plain text.\n\nPrimary Responsibilities\n\n* Understand inbound messages. Trigger examples: workflow, pricing, DFY, DIY, how much, demo, free, or system names (Content Automation, Comment Automation, Affiliate Updates, Video Generation), including synonyms like “video gen” or “content generation.”\n* Use context from previous messages whenever available.\n\nSOP Steps\n\nSTEP 1 — Trigger response (DM: “workflow” / “pricing”)\n\nAsk:\nHey, I build automation systems that handle content, comments, affiliate links, and video generation automatically. Which one are you interested in right now?\n\nSTEP 1.5 — Clarify paid vs free (if confusion appears)\n\nTrigger phrases: “Is this free?”, “Demo?”, “How many do you have?”, “2–3 system means?”\nResponse:\nJust to clarify, these are paid production-ready workflows, not demos. I have 3 systems total. You can also see how to build similar systems for free step-by-step on my YouTube: [https://www.youtube.com/@SelwynBuilds-j1s](https://www.youtube.com/@SelwynBuilds-j1s)\n\nSTEP 2 — Routing before price\n\nIf lead asks “price” or “rate,” ask path first:\nDo you want this as DIY where you set it up or DFY where I handle everything?\n\nSTEP 2 — Pricing framing\n\nDIY:\n$100 per system — full workflow + setup docs. Most start with 1 system first.\nBundles: 2 systems $175, 3 systems $250\nPrompt: Do you want to start with 1 system or a bundle?\n\nDFY:\n$350 per system — end-to-end setup. Most start with 1 system first.\nBundles: 2 systems $600, 3 systems $900\nPrompt: Do you want to start with 1 system or go straight to a bundle?\n\nSTEP 3 — Pre-invoice certainty lock\n\nDIY:\nOnce paid, you’ll receive:\n\n1. Workflow file\n2. Step-by-step setup docs\n3. My support if anything breaks\n   Delivery is immediate after payment. Ready for me to send the invoice?\n\nDFY:\nOnce paid, I will:\n\n1. Set up the system on your account\n2. Connect all required APIs\n3. Confirm it’s running before handover\n   Ready for me to send the invoice?\n\nSTEP 3B — System explanation + DIY/DFY fork\n\nProvide short benefit + offer DIY/DFY if not already selected:\n\n* Content Automation: automates publishing and optimizes content for engagement and reach\n* Comment Automation: handles 200+ daily replies automatically, saving time and boosting engagement\n* Affiliate Updates: refreshes your catalog links and SEO in minutes, keeping everything current\n* Video Generation: automates YouTube video creation from ideas to ready-to-upload content, saving hours of manual work\n\nPrompt:\nYou can do it yourself with workflow + setup docs (DIY) or I can handle everything end-to-end (DFY). Which option do you prefer?\n\nSTEP 4 — Invoice message (after yes)\n\nI’m sending the invoice now. As soon as payment is confirmed, I’ll deliver everything immediately and guide you if needed.\n\nSTEP 5 — After payment delivery\n\n* DIY: send workflow + setup docs, remind support is available\n* DFY: start setup, deliver when live, walkthrough. Optional YouTube breakdowns: [https://www.youtube.com/@SelwynBuilds-j1s](https://www.youtube.com/@SelwynBuilds-j1s)\n\nSoft No / Ghost / Let Me Think Handling\n\nTriggers: not now, let me think, I’ll update you, just curious, silence after pricing\n\nLogic:\n\n1. If lead already chose a system or DIY/DFY path:\n   Okay. You’ve chosen [System Name] [DIY/DFY]. Once you’re ready, I’ll send [workflow + setup docs / setup end-to-end]. You can also see it in action step-by-step for free on YouTube: [https://www.youtube.com/@SelwynBuilds-j1s](https://www.youtube.com/@SelwynBuilds-j1s)\n\n2. If no choice yet:\n   Most clients start with 1 system first. Tell me which system you want to start with and I’ll handle the rest. You can also see these systems in action step-by-step for free on YouTube: [https://www.youtube.com/@SelwynBuilds-j1s](https://www.youtube.com/@SelwynBuilds-j1s)\n\nDo not apologize, hedge, or chase.\nDo not re-explain pricing or offer discounts.\n\nMessage Guidelines\n\n* Keep messages short, actionable, concrete\n* One question per message max\n* Use authority, not apologetic tone\n* Guide lead through next steps: system selection → DIY/DFY → pre-invoice certainty → invoice → delivery\n* Normalize system names so any synonym maps correctly\n\nOutput Format\n\nIf [system q] is present:\n{\n  \"type\": \"type here\", \n  \"text\": \"message here\"\n}\n\nIf message is from a lead:\n{\n  \"type\": \"type here\", \n  \"message\": \"message here\"\n}\n\nAlways include next-step prompt to guide the lead toward commitment.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        272,
+        144
+      ],
+      "id": "8ddd1cf1-867f-4035-9bea-41e26f59ce95",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0f1f9f32-8af6-4866-8a9f-1cd6f2c554eb",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        144
+      ],
+      "id": "7c7aaf34-d9ea-4e4a-8051-a4973b820b75",
+      "name": "If",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        896,
+        240
+      ],
+      "id": "5a01bff6-624a-4183-9a00-7965e6a7724d",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        480
+      ],
+      "id": "fbac4848-82a5-4267-a888-f8ab49b99cc9",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "[Business Standard Operating Procedure]\n\nExecution Failed. Please fix the error.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -16,
+        480
+      ],
+      "id": "bbf253b2-3e12-4ef2-a553-c5fc91848075",
+      "name": "Send a text message",
+      "webhookId": "0b1d8849-2db9-4849-802f-6c0bc2b6e243",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $json.output.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        896,
+        48
+      ],
+      "id": "8cc36534-1ad9-43a0-b2e4-1ffcec755163",
+      "name": "Send back to Telegram",
+      "webhookId": "ab8a51f5-d83e-4074-ab82-c1fa3ce21481",
+      "alwaysOutputData": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "fPYYQyejwTkYqBkM",
+          "name": "Telegram account | AI Agent 1"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        368
+      ],
+      "id": "c2b3ea11-7c1a-409f-859c-461b9b4263d7",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7wRe2whxERwY0gjz",
+          "name": "OpenAi account 2 | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        336,
+        368
+      ],
+      "id": "aef3dfb0-c104-4a79-a55e-08a45a935941",
+      "name": "Simple Memory"
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send back to Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
+  }
+}
