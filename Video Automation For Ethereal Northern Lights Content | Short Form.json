@@ -1,0 +1,2096 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Content Idea",
+        "height": 448,
+        "width": 1520,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1312,
+        832
+      ],
+      "typeVersion": 1,
+      "id": "e20ba891-717c-4bba-9ca9-f8cc3e3d89f5",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create ONE photorealistic image prompt for a cinematic aurora borealis and winter landscape scene.\n\nEnsure you capture the essence of the reference image: vivid aurora colors, realistic snow/ice textures, atmospheric depth, and cinematic composition.\n\nKeep the prompt under 150 words but pack it with visual details.\n\nUser Instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image:\n{{ $json.content }}",
+        "options": {
+          "systemMessage": "=Role: You create **image prompts for CINEMATIC AURORA BOREALIS and WINTER LANDSCAPE scenes**, National Geographic/BBC Earth-inspired.\n\nMain objective: Transform the reference image into a **photorealistic, breathtaking Arctic scene** with vivid northern lights over pristine winter landscapes.\n\n### Art Style Guidelines:\n* Photorealistic nature cinematography (National Geographic, BBC Earth, Planet Earth quality)\n* Ultra-detailed 4K/8K quality with sharp clarity\n* Vivid aurora colors: greens, purples, pinks, blues with natural light physics\n* Pristine white snow with realistic texture and ice crystal details\n* Cinematic wide-angle landscape composition\n* Natural atmospheric effects: mist, fog, stars, moonlight\n* Ethereal, majestic, awe-inspiring aesthetic\n* Documentary-style realism with magical natural beauty\n\n---\n\n### Aurora Design:\n* Dynamic northern lights with flowing, dancing movement\n* Realistic light physics: reflections on snow/ice/water\n* Vivid color gradients blending naturally\n* Celestial backdrop with visible stars and Milky Way\n* Atmospheric depth with layered aurora curtains\n* Natural light intensity variations creating dramatic effect\n\n---\n\n### Landscape Style:\n* Photorealistic Arctic/winter environments\n* Detailed snow textures: powder, ice crystals, frost patterns\n* Natural formations: mountains, glaciers, frozen lakes, forests\n* Atmospheric perspective with depth and scale\n* Volumetric lighting from aurora illuminating terrain\n* Pristine, untouched wilderness aesthetic\n* Cinematic wide shots showcasing vastness\n\n---\n\n### Rules:\n* Always use **single quotes ('')**, never double quotes (\"\")\n* Output only the **image prompt text**\n* No hyphens or dashes\n* Always specify: `'photorealistic'`, `'cinematic nature photography'`, `'4K quality'`, `'National Geographic style'`\n* Describe as if it's a **frame from a premium nature documentary**\n* Make it majestic, ethereal, and visually stunning\n* Include **aurora details, lighting physics, and atmospheric effects**\n\n---\n\n### Example Outputs:\n\n✅ GOOD:\n'Breathtaking photorealistic scene of vivid green and purple aurora borealis dancing across starlit sky over frozen Arctic lake with perfect reflection, snow covered mountains in background with detailed ice crystal textures, soft mist rising from water surface, Milky Way visible above aurora curtains, cinematic nature photography, National Geographic style, 4K quality, wide angle landscape composition, ethereal natural lighting, pristine winter wilderness, ultra detailed, documentary cinematography'\n\n✅ GOOD:\n'Stunning photorealistic aurora borealis in electric blue and emerald green cascading over snow laden pine forest at twilight, individual snowflakes visible on tree branches catching aurora glow, frozen ground with detailed frost patterns, volumetric light beams piercing through trees, starry sky backdrop, cinematic nature photography, BBC Earth quality, 4K photorealistic, atmospheric depth, magical natural phenomenon, pristine Arctic environment'\n\n❌ BAD:\n'Aurora over snow'\n\n---\n\n### Style Keywords to Include:\n* 'Photorealistic'\n* 'Cinematic nature photography'\n* 'National Geographic style' or 'BBC Earth quality'\n* '4K quality' or '8K ultra detailed'\n* 'Aurora borealis' or 'northern lights'\n* 'Pristine winter wilderness'\n* 'Natural lighting physics'\n* 'Documentary cinematography'\n* 'Atmospheric depth'\n\n### Lighting Options (Always Specify):\n* 'Aurora glow illuminating landscape' (magical, ethereal)\n* 'Starlit sky with Milky Way visible' (cosmic, vast)\n* 'Twilight blue hour atmosphere' (serene, mystical)\n* 'Moonlight reflecting on snow' (peaceful, luminous)\n* 'Aurora reflections in ice/water' (mirror-like, stunning)\n* 'Volumetric light beams' (dramatic, cinematic)"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -896,
+        1504
+      ],
+      "id": "fac643ec-a62e-451e-bf47-93c24a14adde",
+      "name": "AI Agent - Image Prompt",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://queue.fal.run/fal-ai/nano-banana/edit",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key d843d270-9c37-4833-bab7-79b367f9c579:708fd98d6dacdc23103c80d4fc34d5e2"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": \"={{ $('AI Agent - Image Prompt').item.json.output }}\",\n  \"image_urls\": [\n    \"{{ $node['Code in Python (Beta)4'].json.img_link }}\"\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -560,
+        1504
+      ],
+      "id": "356144c9-399d-4ec7-bd8c-7b863a4bda24",
+      "name": "HTTP Request - Create Image 1",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "url": "=https://queue.fal.run/fal-ai/nano-banana/requests/{{ $json.request_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key d843d270-9c37-4833-bab7-79b367f9c579:708fd98d6dacdc23103c80d4fc34d5e2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -112,
+        1504
+      ],
+      "id": "7cb916eb-69e4-4813-bddd-db6d104a9ee9",
+      "name": "HTTP Request - Get Image 1",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "content": "## Image Creation",
+        "height": 368,
+        "width": 1536,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1312,
+        1408
+      ],
+      "typeVersion": 1,
+      "id": "c973fa0c-74bd-4096-a8c2-a9d832cf0e4a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create video prompts.\n\nUser instructions:\n{{ $('Code in Python (Beta)3').item.json.textPrompt }}\n\nDescription of the reference image(s).\n{{ $('Analyze image1').item.json.content }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an AI agent that generates high-quality cinematic photorealistic winter blizzard scenery prompts with aurora borealis for Veo 3.\nCRITICAL: Final prompt MUST be under 500 characters. Be ruthlessly concise.\nYour output:\n```json\n{\n\"scene\": \"\"\n}\n```\nCORE REQUIREMENTS:\nThe prompt must describe purely realistic winter storm environments with aurora borealis faintly visible through extreme blizzard conditions. Do not include characters, humans, animals, or any animated/cartoon style elements.\nPRIMARY FOCUS: Heavy blizzard and snowstorm conditions dominate the scene. Aurora is secondary, barely visible through the storm.\nShow the intense snowstorm immediately in the first frame. Aurora should be subtle background element.\nInclude MANDATORY dynamic winter storm elements (MOST IMPORTANT):\n- Extreme heavy falling snow filling entire frame\n- Fierce wind-driven snow creating near-whiteout conditions\n- Thick blowing snow reducing visibility dramatically\n- Intense swirling snow patterns dominating view\n- Dense snowfall obscuring most of the landscape\n- Snow accumulation rapidly building on all surfaces\n- Snowdrifts actively forming and shifting\n- Blizzard intensity as primary visual focus\nInclude winter landscape elements:\n- Snow-covered mountains, frozen lakes, forests, glaciers, or tundra\n- Terrain buried under deep snow layers\n- Atmospheric storm effects with heavy wind\n- Natural textures of blowing and accumulated snow\n- Ground blizzard conditions with snow moving horizontally\nInclude aurora elements (SECONDARY, SUBTLE):\n- Faint aurora borealis glow barely visible through thick snow\n- Aurora colors (green, purple, pink, blue - pick 2) heavily obscured\n- Aurora partially hidden behind dense snowfall\n- Dim aurora glow faintly penetrating storm\n- Aurora presence felt more than clearly seen\nDescribe lighting:\n- Twilight or night storm conditions\n- Faint aurora glow illuminating swirling snow particles\n- Diffused light through heavy snowfall\n- Snow reflecting minimal aurora colors\n- Dark moody storm atmosphere\nInclude camera perspective:\n- Wide-angle through blizzard\n- Ground-level immersed in storm\n- Slow push through heavy snow\n- Static shot emphasizing storm movement and intensity\nDescribe all visible elements prioritizing storm:\n- Sky filled with heavy falling snow\n- Landscape mostly obscured by blizzard\n- Texture of wind-driven snow\n- Dense atmospheric storm effects dominating\n- Minimal visibility creating dramatic mood\nWRITING STYLE:\nStorm elements first. Aurora mentioned last. Short precise phrases.\nExample: \"4K fierce Arctic blizzard with extreme wind-driven snow creating near-whiteout, thick falling snow filling frame, intense swirling snowstorm over buried landscape, faint green aurora barely visible through dense snowfall, ground-level wide shot, twilight storm atmosphere\"\nESSENTIAL KEYWORDS (use 3-4):\ncinematic photorealism, 4K, fierce blizzard, heavy snowstorm, extreme winter conditions, atmospheric depth, natural storm textures, faint aurora glow\nBANNED WORDS/PHRASES:\n- \"showcasing\"\n- \"featuring\"\n- \"approximately\"\n- \"pristine\"\n- \"dancing aurora\" (too prominent)\n- \"vivid aurora\" (too bright)\n- \"violent\" (content policy trigger)\n- \"brutal\" (content policy trigger)\n- Any repetition\nRULES:\n- Photorealistic nature only (no animation/cartoon)\n- No people, buildings (unless distant/abandoned), text overlays\n- Single quotes only\n- Under 500 characters mandatory\n- STORM is primary focus (70%), aurora is secondary (30%)\n- Extreme heavy snowfall mandatory in every prompt\n- Aurora must be faint, barely visible, heavily obscured\nAvoid narrative, text, quotes, or story elements. Make the scene visually rich, cinematic, and immersive with intense winter storm atmosphere dominating the frame. Aurora should feel like a subtle magical touch barely breaking through nature's powerful display."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        640,
+        928
+      ],
+      "id": "c366ef08-0566-49fa-8cb2-b67605c8281a",
+      "name": "AI Agent - Video Prompter",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Create Video ",
+        "height": 448,
+        "width": 1360,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        848
+      ],
+      "typeVersion": 1,
+      "id": "6922840e-5eff-4c4a-a800-6a8c34e41d98",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "sendVideo",
+        "chatId": "6472037679",
+        "file": "={{ $json.data.response.resultUrls[0] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1616,
+        928
+      ],
+      "id": "be15ae0e-4a68-4223-a50a-15358637ace3",
+      "name": "Send a video",
+      "webhookId": "99320899-067d-4b15-b754-ef183d9dcdf6",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "name": "={{ $now.plus({ hours: 8 }).format('MMM DD, YYYY_HH-mm-ss') }} UTC+8",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1-qzP9pteGVUxZrnaLAxjRo_Nf9pch7LJ",
+          "mode": "list",
+          "cachedResultName": "Generated Videos",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1-qzP9pteGVUxZrnaLAxjRo_Nf9pch7LJ"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1376,
+        1440
+      ],
+      "id": "4798f0a5-b50b-401c-9254-a2fac2cdc787",
+      "name": "Upload file",
+      "retryOnFail": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ArIUQPOkqI84L2K6",
+          "name": "Google Drive account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('HTTP Request - Get Video').item.json.data.response.resultUrls[0] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        1536
+      ],
+      "id": "fbad6dc3-ce6a-4ac3-8e5c-279caa6deabd",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "maxTries": 5
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        1600
+      ],
+      "id": "8a1b675d-45e2-4a6a-bfb4-d01ce709d8bd",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "content": "## Analyze Video | Create Descriptions",
+        "height": 480,
+        "width": 1696,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        1408
+      ],
+      "typeVersion": 1,
+      "id": "17091208-3beb-4b2f-9007-4c4439976f4b",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1584,
+        1536
+      ],
+      "id": "190caf59-fa73-409c-9fe0-306d028da6b3",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1776,
+        1536
+      ],
+      "id": "5e7eef94-fad9-4832-977d-fe8853ddaf4e",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Videos",
+        "height": 672,
+        "width": 2048,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2016,
+        704
+      ],
+      "typeVersion": 1,
+      "id": "6adca65f-937b-4a01-a844-b9c992ad47b3",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Video Url Download'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2368,
+        928
+      ],
+      "id": "f259982f-bf1f-4212-a5e0-eea68786ce10",
+      "name": "HTTP Request1",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4",
+          "mode": "list",
+          "cachedResultName": "Generated Videos to Post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $('AI Agent').item.json.output.Date }}",
+            "TikTok Description": "={{ $('AI Agent').item.json.output.TikTokDescription }}",
+            "Facebook Reel Description": "={{ $('AI Agent').item.json.output.FacebookReelDescription }}",
+            "Instagram Description": "={{ $('AI Agent').item.json.output.InstagramDescription }}",
+            "Additional Notes": "={{ $('AI Agent').item.json.output.AdditionalNotes }}",
+            "Video Url View": "={{ $('Upload file').item.json.webViewLink }}",
+            "Video Url Download": "={{ $('Upload file').item.json.webContentLink }}",
+            "Time ": "={{ $('AI Agent').item.json.output.Time }}",
+            "AlgoNova Youtube Title": "={{ $('AI Agent').item.json.output.YouTubeTitle }}",
+            "EchoNova Youtube Title": "={{ $('AI Agent').item.json.output.YouTubeTitle2 }}",
+            "AlgoNova YouTube Description": "={{ $('AI Agent').item.json.output.YouTubeDescription }}",
+            "EchoNova YouTube Description": "={{ $('AI Agent').item.json.output.YouTubeDescription2 }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time ",
+              "displayName": "Time ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AlgoNova Youtube Title",
+              "displayName": "AlgoNova Youtube Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "EchoNova Youtube Title",
+              "displayName": "EchoNova Youtube Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AlgoNova YouTube Description",
+              "displayName": "AlgoNova YouTube Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "EchoNova YouTube Description",
+              "displayName": "EchoNova YouTube Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TikTok Description",
+              "displayName": "TikTok Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Facebook Reel Description",
+              "displayName": "Facebook Reel Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Instagram Description",
+              "displayName": "Instagram Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Additional Notes",
+              "displayName": "Additional Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Url View",
+              "displayName": "Video Url View",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Video Url Download",
+              "displayName": "Video Url Download",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1952,
+        1536
+      ],
+      "id": "4f5aab7c-0cca-40de-8841-7fea0ec24751",
+      "name": "Append row in sheet",
+      "retryOnFail": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "u5Go3qYtYJt4fClc",
+          "name": "Google Sheets account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4",
+          "mode": "list",
+          "cachedResultName": "Generated Videos to Post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit#gid=0"
+        },
+        "combineFilters": "OR",
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2080,
+        928
+      ],
+      "id": "e163e34a-3219-408e-ae26-7accb7b4ce73",
+      "name": "Get row(s) in sheet",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "u5Go3qYtYJt4fClc",
+          "name": "Google Sheets account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        2224,
+        928
+      ],
+      "id": "a10a3444-f828-43f7-a67c-70ada3b08d3a",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2512,
+        928
+      ],
+      "id": "1ab0b73e-6058-4659-8f9b-f2c5ece6b267",
+      "name": "Wait",
+      "webhookId": "0b66134d-ea9d-4839-b211-696af5cfe24f"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        64,
+        1072
+      ],
+      "id": "1d87ae19-9305-4091-a00c-e01ebc5a3824",
+      "name": "Analyze image1",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 10 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1200,
+        1056
+      ],
+      "id": "21007de2-7ce4-4f07-a667-1608a8eda231",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import random\nfrom datetime import datetime\n\ndef escape_quotes(s):\n    return s.replace('\"', '\\\\\"')\n\nnow = datetime.now()\n\nlandscapes = [\n    \"snow-covered frozen lagoon\", \"buried glacial ice field\", \"snow-laden Arctic tundra\",\n    \"frozen mountain peak\", \"snowy pine forest\", \"ice-covered frozen lake\",\n    \"snow-buried valley\", \"Arctic plateau\", \"frozen coastal shoreline\",\n    \"glacial basin\", \"snowy canyon\", \"ice shelf\",\n    \"frozen fjord\", \"snow-covered highlands\", \"Arctic ice ridge\"\n]\n\n# --- EXTREME WEATHER (Blizzard Priority) ---\nweather_intensity = [\n    \"extreme heavy falling snow filling frame\",\n    \"fierce wind-driven swirling snow creating near-whiteout\",\n    \"intense blizzard with thick blowing snow\",\n    \"violent snowstorm obscuring visibility\",\n    \"brutal Arctic blizzard conditions\",\n    \"overwhelming heavy snowfall dominating scene\"\n]\n\naurora_colors = [\n    \"faint green and purple aurora\", \"dim blue and green aurora glow\",\n    \"barely visible pink and green aurora\", \"subtle purple aurora light\",\n    \"faint emerald and violet aurora\", \"dim multicolored aurora\"\n]\n\nmoods = [\n    \"Brutal\", \"Fierce\", \"Extreme\", \"Intense\", \"Violent\", \"Overwhelming\",\n    \"Harsh\", \"Relentless\", \"Savage\", \"Unforgiving\"\n]\n\ntimes = [\n    \"twilight storm\", \"deep winter night\", \"polar night conditions\",\n    \"midnight blizzard\", \"dark evening storm\"\n]\n\nstorm_details = [\n    \"thick blowing snow obscuring terrain\",\n    \"violent snow patterns dominate frame\",\n    \"deep snow accumulation and shifting snowdrifts\",\n    \"dense snowfall reducing visibility dramatically\",\n    \"horizontal wind-driven snow across landscape\",\n    \"swirling snow particles filling air\"\n]\n\nlandscape = random.choice(landscapes)\nweather = random.choice(weather_intensity)\naurora = random.choice(aurora_colors)\nmood = random.choice(moods)\ntime = random.choice(times)\nstorm_detail = random.choice(storm_details)\n\n# --- Build prompts (STORM FIRST, AURORA LAST) ---\ngenerated_title = f\"{mood} Arctic Blizzard Over {landscape.title()} - Hidden Aurora Glow | Epic Winter Storm\"\n\ntext_prompt = (\n    f\"Create cinematic photorealistic scene of {weather.lower()} over {landscape} during {time}. \"\n    f\"{storm_detail.capitalize()}. {aurora.capitalize()} barely visible through dense snowfall, \"\n    \"heavily obscured behind storm. Ground-level wide shot emphasizing brutal blizzard atmosphere. \"\n    \"4K quality, National Geographic style. NO text, NO people, NO buildings. Pure winter storm fury.\"\n)\n\nimage_prompt = (\n    f\"4K cinematic photorealism, {weather.lower()} over {landscape}, {storm_detail.lower()}, \"\n    f\"ground-level wide shot in {time}, {aurora.lower()} barely visible heavily obscured behind dense snowfall, \"\n    \"dim aurora glow faintly lighting swirling snow particles, atmospheric storm depth, \"\n    \"natural textures of brutal blizzard, National Geographic style\"\n)\n\n# --- Escape quotes ---\ngenerated_title_escaped = escape_quotes(generated_title)\ntext_prompt_escaped = escape_quotes(text_prompt)\nimage_prompt_escaped = escape_quotes(image_prompt)\n\n# --- Return ---\nreturn {\n    \"chatInput\": f\"\"\"\nEnsure to return the output in this EXACT FORMAT:\n{{\n'imagePrompt':'{image_prompt_escaped}',\n'textPrompt':'{text_prompt_escaped}',\n'generatedTitle':'{generated_title_escaped}'\n}}\n\"\"\"\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -944,
+        976
+      ],
+      "id": "7b046d10-18cb-4530-83a2-3a4e52b43abb",
+      "name": "Code in Python (Beta)2"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\nimport re\n\nai_output = _input.first().json.get(\"output\", \"\")\n\n# Extract JSON block\njson_match = re.search(r\"\\{.*\\}\", ai_output, re.DOTALL)\nif not json_match:\n    raise ValueError(\"No JSON found in AI output.\")\njson_str = json_match.group(0)\n\n# Replace single quotes with double quotes (for keys and string values)\njson_str = re.sub(r\"(?<!\\\\)'\", '\"', json_str)\n\n# Remove trailing commas\njson_str = re.sub(r\",(\\s*})\", r\"\\1\", json_str)\njson_str = re.sub(r\",(\\s*\\])\", r\"\\1\", json_str)\n\n# Fallback: sanitize backslashes in strings\ndef sanitize_json_string(s):\n    # Escape unescaped backslashes\n    s = re.sub(r'\\\\(?![\"\\\\/bfnrtu])', r'\\\\\\\\', s)\n    return s\n\njson_str = sanitize_json_string(json_str)\n\n# Attempt to parse JSON\ntry:\n    parsed = json.loads(json_str)\nexcept json.JSONDecodeError as e:\n    # As a last resort: remove problematic backslashes entirely\n    json_str_clean = json_str.replace(\"\\\\\", \"\")\n    try:\n        parsed = json.loads(json_str_clean)\n    except Exception as e2:\n        raise ValueError(f\"Failed to parse JSON even after fallback: {e2}\\nContent: {json_str}\")\n\n# Return clean output\nreturn [{\n    \"json\": {\n        \"imagePrompt\": parsed.get(\"imagePrompt\", \"\"),\n        \"textPrompt\": parsed.get(\"textPrompt\", \"\"),\n        \"generatedTitle\": parsed.get(\"generatedTitle\", \"Untitled\")\n    }\n}]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        976
+      ],
+      "id": "923a2906-35ee-4b25-ba45-5fbf6547bc68",
+      "name": "Code in Python (Beta)3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -752,
+        976
+      ],
+      "id": "dcf4f9d0-c153-4516-bc3f-d15dba890cfa",
+      "name": "AI Agent1",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Code in Python (Beta)3').item.json.generatedTitle }}.png",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "=https://drive.google.com/drive/folders/1D-7GLLCIt7geHkwZH4iklYqYKkpnVBEY",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -128,
+        896
+      ],
+      "id": "1baf7da5-94fa-423b-91ca-a2241fef624a",
+      "name": "Upload file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ArIUQPOkqI84L2K6",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1248,
+        1504
+      ],
+      "id": "4cd03be0-2857-4712-ab19-e99488cf762f",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -1072,
+        1504
+      ],
+      "id": "c4ed1659-21e2-4b54-9643-641deea0e7df",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"scene\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"scene\": { \"type\": \"string\" }\n      },\n      \"required\": [\"scene\"]\n    }\n  },\n  \"required\": [\"scene\"],\n  \"additionalProperties\": false\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        768,
+        1120
+      ],
+      "id": "38b40188-c679-48bc-ac3f-24569c830243",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "img_link = _input.first().json.webContentLink\n\nreturn {\n  \"img_link\": img_link\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        848
+      ],
+      "id": "53888d32-d29d-4e36-89e7-4664bb1bf99a",
+      "name": "Code in Python (Beta)4"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/veo/record-info",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 9db206739109671db64f1a06c8eb8b03"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1408,
+        928
+      ],
+      "id": "6e3ba51e-1e2e-469d-a102-352d514d5288",
+      "name": "HTTP Request - Get Video",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/veo/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 9db206739109671db64f1a06c8eb8b03"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": \"{{ $json.output.scene.scene }}\",\n  \"model\": \"veo3_fast\",\n  \"aspectRatio\": \"9:16\",\n  \"imageUrls\": \"{{ $('HTTP Request - Get Image 1').item.json.images[0].url }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        992,
+        928
+      ],
+      "id": "088a8311-9555-4836-b93f-69ee7a3a5c33",
+      "name": "HTTP Request - Make Video1",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "amount": 4,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1200,
+        928
+      ],
+      "id": "ad0dae2d-eb26-4089-b8f9-3afbcb7ef50d",
+      "name": "Wait 4m",
+      "webhookId": "7feaead4-5997-4d66-a596-78729fcf0ae5"
+    },
+    {
+      "parameters": {
+        "content": "## For Tiktok Upload\n\n[Tiktok For Developers](https://developers.tiktok.com/app/7568099330684225548/pending)\n\n[Client key](\nawueea9a9ibxpnd3)\n\n[Client secret](\nPtNO3aWgbHkCPFClAoSg7ZoEUXH5wE41)\n\n\n## Facebook \nCredentials for fb graph API expires ever 1-2 hrs",
+        "height": 336,
+        "width": 416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1056,
+        112
+      ],
+      "typeVersion": 1,
+      "id": "45a27f30-7340-4dec-a757-36104d7bb164",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "# Take note of costs\n\n# * Fal.AI\n# * Railway.com\n# * Kie.ai\n\n\n\n\n# [Spreadsheet](https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit?usp=sharing)",
+        "height": 528,
+        "width": 1152,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        464,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "01dcb387-aaec-4767-917b-e83a9842fe1b",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "Facebook Post",
+        "height": 240,
+        "width": 246,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3488,
+        752
+      ],
+      "typeVersion": 1,
+      "id": "8e2dd7f4-ff78-443b-8a1e-ce820bbe2f65",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "Youtube Post - AlgoNova [Link](https://www.youtube.com/@algonovalabs)",
+        "height": 224,
+        "width": 486,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2656,
+        752
+      ],
+      "typeVersion": 1,
+      "id": "6880d5c1-2570-4aa2-8e93-a4a9de0aa954",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "Tiktok Post",
+        "height": 240,
+        "width": 262,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3200,
+        752
+      ],
+      "typeVersion": 1,
+      "id": "bf1d5771-f61f-4596-ad03-a784bd0b1170",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "Instagram Post",
+        "height": 224,
+        "width": 246
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3792,
+        752
+      ],
+      "typeVersion": 1,
+      "id": "64b9ec0f-b183-40a5-bf62-1358d53c12d6",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=61582619558041",
+        "edge": "videos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Facebook Post\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        3856,
+        816
+      ],
+      "id": "a2b8b47f-d166-4738-94ea-e4869ca6fd84",
+      "name": "Instagram Post",
+      "disabled": true,
+      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=61582619558041",
+        "edge": "videos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Facebook Post\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        3568,
+        816
+      ],
+      "id": "a8683bd2-5a77-4a7a-bea5-86b2c756b4ef",
+      "name": "Facebook Post",
+      "disabled": true,
+      "notes": "702571242870419 (FB Page ID)\nEdge: feed (To post)\nEdge: photos (To post with Image) "
+    },
+    {
+      "parameters": {
+        "url": "https://example.com",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3280,
+        816
+      ],
+      "id": "80508054-5b8f-40bf-b505-0a705fb90d8a",
+      "name": "Tiktok Post",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Code in Python (Beta)3').item.json.generatedTitle }}.png",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "=https://drive.google.com/drive/folders/1D-7GLLCIt7geHkwZH4iklYqYKkpnVBEY",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        928
+      ],
+      "id": "8ccb9011-19db-49f7-a282-163f89bf9540",
+      "name": "Upload file2",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ArIUQPOkqI84L2K6",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.images[0].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        1504
+      ],
+      "id": "9074d441-62c0-4141-a330-f79f88233790",
+      "name": "HTTP Request2",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "=[UPLOAD CONFIRMED]\nStatus: AUTOMATED PERFECTION\nThe AlgoNova Engine never sleeps.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3024,
+        816
+      ],
+      "id": "cf7125ca-78ba-46f8-b3cd-14dd11788605",
+      "name": "Send a text message",
+      "webhookId": "b5323e80-6737-4449-97e2-a9cc0302db37",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $('Limit').first().json['EchoNova Youtube Title'] }}",
+        "regionCode": "PH",
+        "categoryId": "1",
+        "binaryProperty": "=data",
+        "options": {
+          "description": "={{ $('Limit').first().json['EchoNova YouTube Description'] }}",
+          "embeddable": true,
+          "selfDeclaredMadeForKids": false,
+          "tags": "anime shorts, cinematic anime, anime aesthetic, studio quality animation, demon slayer style, makoto shinkai, anime edit, atmospheric anime, viral anime shorts, anime vibes"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        3536,
+        1072
+      ],
+      "id": "e555b4a7-684d-4b9e-a7b3-7263464a6dc7",
+      "name": "Echonova Labs Upload",
+      "retryOnFail": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "ls0zawE8FI2uctox",
+          "name": "YouTube account | LettersNeverSent"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2880,
+        1072
+      ],
+      "id": "f5c92365-6a57-4049-8509-fb0a26a3bdef",
+      "name": "Wait for Both Files",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://workflows-production-dbc6.up.railway.app/combine-video-audio",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "video",
+              "inputDataFieldName": "video"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "audio",
+              "inputDataFieldName": "audio"
+            },
+            {
+              "name": "audio_volume",
+              "value": "0.15"
+            },
+            {
+              "name": "fade_duration",
+              "value": "1.0"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3376,
+        1072
+      ],
+      "id": "eda4ffbf-692e-48f7-9c46-4389ba18110c",
+      "name": "HTTP Request3",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3200,
+        1072
+      ],
+      "id": "587ab23b-27ba-491e-ade3-1c44eabeafce",
+      "name": "Wait1",
+      "webhookId": "76a2314b-a64a-4a8b-908f-56e963b63a8b",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1meWwW44VVX3nvwEdTwN_Xpy7sNpznkOA",
+          "mode": "list",
+          "cachedResultName": "Landra's Dream.mp3"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2704,
+        1056
+      ],
+      "id": "701be3ba-86cc-44e6-adaf-6c5ce0d359ac",
+      "name": "Download Music",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ArIUQPOkqI84L2K6",
+          "name": "Google Drive account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "Youtube Post - EchoNova [Link](https://www.youtube.com/@EchoNovaLabs)",
+        "height": 304,
+        "width": 1392,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2656,
+        1008
+      ],
+      "typeVersion": 1,
+      "id": "5e239058-7c0a-41d5-9dab-80496da76c89",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get items from both inputs\nconst input1 = $('HTTP Request1').first();\nconst input2 = $('Download Music').first();\n\nconsole.log('Video binary exists:', !!input1.binary);\nconsole.log('Audio binary exists:', !!input2.binary);\n\nreturn [\n  {\n    json: {},\n    binary: {\n      video: input1.binary.data,\n      audio: input2.binary.data\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3040,
+        1072
+      ],
+      "id": "e19591db-5b93-4ba1-a94f-3d9b544360ac",
+      "name": "Combine Files",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "=[UPLOAD CONFIRMED]\nStatus: AUTOMATED PERFECTION\nThe EchoNova Engine never sleeps.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3856,
+        1072
+      ],
+      "id": "af566ac1-e2dc-4c51-ad9d-a556d94f05c1",
+      "name": "EchoNova Confirmation",
+      "webhookId": "b5323e80-6737-4449-97e2-a9cc0302db37",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "playlistItem",
+        "playlistId": "PL3S1q3_3y1Qsv-JtGJakVKjP7OiTeYKH3",
+        "videoId": "={{ $json.uploadId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        3696,
+        1072
+      ],
+      "id": "576c95ac-d6eb-4329-93a4-0a2b23a749e6",
+      "name": "Echonova Labs playlist",
+      "retryOnFail": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "ls0zawE8FI2uctox",
+          "name": "YouTube account | LettersNeverSent"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "playlistItem",
+        "playlistId": "PLDwTA4rx1Wnn5dgBXA9a8C6mrFZ8S622K",
+        "videoId": "={{ $json.uploadId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        2848,
+        816
+      ],
+      "id": "e8e57d4f-a4a7-4567-8cdb-e6e2e856243d",
+      "name": "Add a playlist item",
+      "retryOnFail": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "buXpxt448yigQv78",
+          "name": "YouTube account | AlgoNova"
+        }
+      },
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        896
+      ],
+      "id": "6b733171-147d-4655-b875-1d69da5338ae",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "={{ $json.imagePrompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -272,
+        976
+      ],
+      "id": "5a372544-a794-498e-b07d-e89a9724d6cd",
+      "name": "Generate an image1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -336,
+        1504
+      ],
+      "id": "2c0e2b32-f101-4502-82c1-154edcd66b9a",
+      "name": "Wait - 60s",
+      "webhookId": "e85f5cb5-8bf9-4cff-b1f3-bc165cc25236"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from datetime import datetime\nimport random\n# Get real current date and time\nnow = datetime.now()\ndate_str = now.strftime(\"%m/%d/%Y\")\ntime_str = now.strftime(\"%H:%M\")\n# Define some dynamic hooks and actions\nhook_phrases = [\n    \"When {character} {action}!\",\n    \"You won't believe what {character} does!\",\n    \"Watch {character} {action} in pastel magic!\",\n    \"I can't believe {character} just {action}!\",\n    \"{character} {action} and it's adorable!\"\n]\nactions = [\n    \"dances in the candy clouds\",\n    \"discovers a rainbow waterfall\",\n    \"giggles while floating on lanterns\",\n    \"throws a sparkly magic spell\",\n    \"plays hide-and-seek in the pastel garden\",\n    \"slides down a fluffy cloud slide\",\n    \"spins under the twinkling stars\",\n    \"sings with magical sparkles around\",\n    \"jumps between floating petals\"\n]\n# Example character (you can replace with your generated character)\ncharacter = random.choice([\n    \"Cheerful Girl in Pink\", \n    \"Tiny Mermaid Girl\", \n    \"Adorable Elf Girl\", \n    \"Joyful Princess\", \n    \"Cute Wizard Girl\", \n    \"Playful School Girl\"\n])\naction = random.choice(actions)\ntitle = random.choice(hook_phrases).format(character=character, action=action)\n# Build the prompt for AI node\nPrompt = f\"\"\"\nVideo Analysis Result:\n{_input.first().json.content.parts[0].text}\nBased on this, generate a structured JSON output for Google Sheets with the following fields:\n- \"Date\" (MM/DD/YYYY)\n- \"Time\" (HH:MM)\n- \"YouTubeTitle\" (catchy, FOMO-style, MUST be under 90 characters)\n- \"YouTubeTitle2\" (DIFFERENT catchy title, under 90 characters, use a different hook/angle than YouTubeTitle)\n- \"YouTubeDescription\" (engaging, includes CTA like 'watch till the end' or 'subscribe for more')\n- \"YouTubeDescription2\" (DIFFERENT description with different CTA and angle than YouTubeDescription)\n- \"TikTokDescription\" (short, punchy, instant hook)\n- \"FacebookReelDescription\" (attention-grabbing, shareable, engaging)\n- \"InstagramDescription\" (short, emoji-rich, interaction-focused)\n- \"AdditionalNotes\" (hashtags, trends, posting tips)\nSTRICT RULES:\n1. Both \"YouTubeTitle\" and \"YouTubeTitle2\" MUST NOT exceed 90 characters.\n2. YouTubeTitle and YouTubeTitle2 MUST be COMPLETELY DIFFERENT - use different hooks, emotions, or angles.\n3. YouTubeDescription and YouTubeDescription2 MUST be COMPLETELY DIFFERENT - vary the CTAs and storytelling.\n4. The \"Date\" and \"Time\" should be accurate based on the current date and time provided below:\n   - CurrentDate: {date_str}\n   - CurrentTime: {time_str}\n5. The output MUST be valid JSON, properly escaped.\nExample structure:\n{{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}}\nCRITICAL: YouTubeTitle and YouTubeTitle2 must be DISTINCT. YouTubeDescription and YouTubeDescription2 must be DISTINCT. Do NOT repeat the same content.\nGenerate irresistible, high-CTR titles and descriptions that make viewers feel they CAN'T miss the video.\n\"\"\"\nreturn {\n    \"chatInput\": Prompt\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        848,
+        1632
+      ],
+      "id": "91428cc3-dfe1-4a29-a22b-ef2caa45aa32",
+      "name": "Code in Python (Beta)5"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -896,
+        1184
+      ],
+      "id": "75a669f7-2e1f-4c96-a1d0-6853825c7af6",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -960,
+        1696
+      ],
+      "id": "4e582a51-9767-4d16-882f-d38df75ee3e5",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        592,
+        1216
+      ],
+      "id": "500ef164-4709-4929-95a2-61c06efb6ee7",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        992,
+        1792
+      ],
+      "id": "930c6a83-e0b9-4427-925e-71f57452fe38",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"Date\": \"{date_str}\",\n  \"Time\": \"{time_str}\",\n  \"YouTubeTitle\": \"{title}\",\n  \"YouTubeTitle2\": \"...\",\n  \"YouTubeDescription\": \"...\",\n  \"YouTubeDescription2\": \"...\",\n  \"TikTokDescription\": \"...\",\n  \"FacebookReelDescription\": \"...\",\n  \"InstagramDescription\": \"...\",\n  \"AdditionalNotes\": \"...\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1328,
+        1808
+      ],
+      "id": "6c7e382f-7f04-442c-b900-cd3589305a60",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $('Get row(s) in sheet').item.json[\"AlgoNova Youtube Title\"] }}",
+        "regionCode": "PH",
+        "categoryId": "1",
+        "binaryProperty": "=data",
+        "options": {
+          "description": "={{ $('Get row(s) in sheet').item.json[\"AlgoNova YouTube Description\"] }}",
+          "embeddable": true,
+          "selfDeclaredMadeForKids": false,
+          "tags": "anime shorts, cinematic anime, anime aesthetic, studio quality animation, demon slayer style, makoto shinkai, anime edit, atmospheric anime, viral anime shorts, anime vibes"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        2672,
+        816
+      ],
+      "id": "9d2afce4-cfc8-4ae9-b5de-493570ec79e9",
+      "name": "Algonova Labs Upload",
+      "retryOnFail": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "buXpxt448yigQv78",
+          "name": "YouTube account | AlgoNova"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        672,
+        1648
+      ],
+      "id": "1a594bd0-6f9f-473d-8510-802539d45b1f",
+      "name": "Analyze video",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "AI Agent - Image Prompt": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Create Image 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Create Image 1": {
+      "main": [
+        [
+          {
+            "node": "Wait - 60s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Get Image 1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Video Prompter": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Make Video1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a video": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Tiktok Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Facebook Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Instagram Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Download Music",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait for Both Files",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Algonova Labs Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)3": {
+      "main": [
+        [
+          {
+            "node": "Generate an image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Image Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)4": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Get Video": {
+      "main": [
+        [
+          {
+            "node": "Send a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Make Video1": {
+      "main": [
+        [
+          {
+            "node": "Wait 4m",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 4m": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Upload file2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Echonova Labs Upload": {
+      "main": [
+        [
+          {
+            "node": "Echonova Labs playlist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Both Files": {
+      "main": [
+        [
+          {
+            "node": "Combine Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Echonova Labs Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Music": {
+      "main": [
+        [
+          {
+            "node": "Wait for Both Files",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Combine Files": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Echonova Labs playlist": {
+      "main": [
+        [
+          {
+            "node": "EchoNova Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add a playlist item": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image1": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait - 60s": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Get Image 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)5": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Image Prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Algonova Labs Upload": {
+      "main": [
+        [
+          {
+            "node": "Add a playlist item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
+  }
+}
