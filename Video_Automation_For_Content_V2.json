@@ -10,15 +10,15 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        -96,
-        -128
+        0,
+        832
       ],
-      "id": "ab9d5710-8127-4bd4-a3b0-2f56593293f0",
+      "id": "e4975a9d-c90c-4d64-8e73-a982cd6b1ae6",
       "name": "Telegram Trigger",
       "webhookId": "da5e0ee4-b069-4c99-8d86-363b2419c20a",
       "credentials": {
         "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
+          "id": "uH4mDEtyZeadnoI5",
           "name": "Telegram account"
         }
       }
@@ -40,10 +40,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        112,
-        -128
+        208,
+        832
       ],
-      "id": "9038437f-3425-43c6-88e3-dd8393ba29f1",
+      "id": "43043ee4-4fc1-47bf-80f1-47dd6a8a4db0",
       "name": "Edit Fields - Bot ID 1"
     },
     {
@@ -54,10 +54,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        304,
-        -128
+        400,
+        832
       ],
-      "id": "d678e160-1667-4ebb-84d9-747ba8e811c0",
+      "id": "862a928c-9da9-4d34-9c0b-f037e97a4006",
       "name": "HTTP Request - Image Path"
     },
     {
@@ -77,15 +77,15 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        496,
-        -128
+        592,
+        832
       ],
-      "id": "679a5543-4018-4ee2-af0f-38c35a78c4c8",
+      "id": "3227ea01-5260-4430-b509-262685c09d24",
       "name": "Analyze image",
       "credentials": {
         "openAiApi": {
-          "id": "Vwg2FlhVu2bY7dZ6",
-          "name": "OpenAi account"
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
         }
       }
     },
@@ -98,11 +98,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -176,
-        -208
+        -80,
+        752
       ],
       "typeVersion": 1,
-      "id": "8442643a-1292-466c-92c4-6dadee8f62e7",
+      "id": "07602f3f-9743-4bf0-88c1-abfc1a4a9e96",
       "name": "Sticky Note"
     },
     {
@@ -116,10 +116,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -112,
-        464
+        -16,
+        1424
       ],
-      "id": "6ccedb90-d6b4-4d6b-85c8-efddb1cf788c",
+      "id": "bf69deeb-fb1f-4645-a60b-289cf99d601f",
       "name": "AI Agent - Image Prompt"
     },
     {
@@ -143,10 +143,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        192,
-        464
+        288,
+        1424
       ],
-      "id": "07bb591d-12ac-4d91-88e5-51add960f5c7",
+      "id": "57c1c765-f1aa-46f6-bbdd-550286c60633",
       "name": "HTTP Request - Create Image 1"
     },
     {
@@ -156,10 +156,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        416,
-        464
+        512,
+        1424
       ],
-      "id": "6d66097f-6b38-42bb-9887-fd462fd4be7f",
+      "id": "cfb817fa-1132-46af-bf1f-554207e2c7ab",
       "name": "Wait - 30s",
       "webhookId": "30695efb-5b4a-42f7-ab1c-c61b0cac59f2"
     },
@@ -180,10 +180,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        608,
-        464
+        704,
+        1424
       ],
-      "id": "50c21983-de47-4732-a555-6ca77a383965",
+      "id": "0077ea4c-acdb-4e1a-a662-c2c8d5881156",
       "name": "HTTP Request - Get Image 1"
     },
     {
@@ -195,11 +195,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -176,
-        368
+        -80,
+        1328
       ],
       "typeVersion": 1,
-      "id": "b49e6e7d-3a43-4b93-ba41-8a6dbacc76a5",
+      "id": "cb44233f-d450-4bff-9342-bb39bc7f5e9b",
       "name": "Sticky Note1"
     },
     {
@@ -211,10 +211,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        1488,
-        176
+        1584,
+        1136
       ],
-      "id": "de075178-ad3f-4c07-b443-7a9842d466e8",
+      "id": "4cd778db-8634-40b1-ad55-66ef24840cfb",
       "name": "Structured Output Parser"
     },
     {
@@ -225,10 +225,10 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        1568,
-        -96
+        1664,
+        864
       ],
-      "id": "ccff8e60-8d00-494d-b022-acf9ad1ef19e",
+      "id": "5307428e-a8b7-4051-ad85-7aacd515b3ed",
       "name": "Split Out"
     },
     {
@@ -252,10 +252,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1952,
-        -96
+        2048,
+        864
       ],
-      "id": "058f0256-5bb3-4b08-b698-3c81cac68402",
+      "id": "541d69d1-0c58-4d28-946d-9681980df5b3",
       "name": "HTTP Request - Make Video 1"
     },
     {
@@ -284,10 +284,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2352,
-        -96
+        2448,
+        864
       ],
-      "id": "de5604d8-d18c-4123-b2d2-c9a7cef34a86",
+      "id": "6c9e31e3-6f5e-4be3-bc85-34842da55840",
       "name": "HTTP Request - Get Video"
     },
     {
@@ -299,11 +299,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        976,
-        -192
+        1072,
+        768
       ],
       "typeVersion": 1,
-      "id": "a4e11a06-9cea-41bc-bd6c-f174a4b305c4",
+      "id": "900361f0-d3a8-48eb-bead-73a56f093e5a",
       "name": "Sticky Note2"
     },
     {
@@ -320,10 +320,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1024,
-        512
+        1120,
+        1472
       ],
-      "id": "2496aeab-8e2f-4b5d-99e2-8a40430f9edc",
+      "id": "dabb2e1d-6133-48c7-8b56-4b9eddb0d3b1",
       "name": "Aggregate"
     },
     {
@@ -347,10 +347,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1232,
-        512
+        1328,
+        1472
       ],
-      "id": "0704c6dc-357f-4ad6-9454-31cb1b84ae34",
+      "id": "fad3b910-1070-4eb3-9eff-ab88b401baf3",
       "name": "HTTP Request - Combine"
     },
     {
@@ -369,10 +369,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1648,
-        512
+        1744,
+        1472
       ],
-      "id": "2c6df343-04d1-41ec-bc7b-4902f3494efb",
+      "id": "38b21a6e-9848-4dde-a994-2dc1ea92bdc3",
       "name": "HTTP Request - Final Video"
     },
     {
@@ -385,15 +385,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1856,
-        512
+        1952,
+        1472
       ],
-      "id": "fd2ca827-6a25-49fe-9477-4f0967b8c937",
+      "id": "e19b0cdb-e750-49f1-8952-f59fed3ede26",
       "name": "Send a video",
       "webhookId": "67601a6f-71cf-4857-bab1-6d2d79510b08",
       "credentials": {
         "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
+          "id": "uH4mDEtyZeadnoI5",
           "name": "Telegram account"
         }
       }
@@ -406,11 +406,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        976,
-        384
+        1072,
+        1344
       ],
       "typeVersion": 1,
-      "id": "7230a07f-a3d2-49ea-b98f-e23eab28ac6a",
+      "id": "23b983b0-0280-4105-95fa-d98a4058cb07",
       "name": "Sticky Note3"
     },
     {
@@ -420,10 +420,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        2144,
-        -96
+        2240,
+        864
       ],
-      "id": "6a01333d-7785-470b-90d0-2751fb3d3b9b",
+      "id": "c7743e77-31c5-4ab9-92b9-06ef63fd7aa0",
       "name": "Wait 4m",
       "webhookId": "97b47dbf-b89f-4d02-a0f8-ef4e35fd2e8b"
     },
@@ -434,15 +434,15 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -80,
-        672
+        16,
+        1632
       ],
-      "id": "6253abbe-548c-4ced-9f00-065d5d897407",
+      "id": "990d02d3-d270-4367-9d16-392d072d7c18",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "LuvQlz3qmejdhs7S",
-          "name": "selwyngwapo90_Youtube Automation Related"
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
@@ -453,15 +453,15 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1264,
-        192
+        1360,
+        1152
       ],
-      "id": "afce7e4b-7e37-49f0-a14e-07dfc512738a",
+      "id": "c34e243e-b020-4f21-80bb-266315e598c5",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
-          "id": "LuvQlz3qmejdhs7S",
-          "name": "selwyngwapo90_Youtube Automation Related"
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
@@ -474,11 +474,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1040,
-        -848
+        1136,
+        112
       ],
       "typeVersion": 1,
-      "id": "32b9dcd2-6fc3-4a36-a7e6-c5807440456c",
+      "id": "794e4f5c-dabd-463a-a916-02740874b35a",
       "name": "Sticky Note7"
     },
     {
@@ -490,11 +490,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        448,
-        -944
+        544,
+        16
       ],
       "typeVersion": 1,
-      "id": "06f65ad0-5c85-4131-9a24-440468cd396f",
+      "id": "139d4b72-a6b4-46fa-8e44-2350ef1a78fd",
       "name": "Sticky Note6"
     },
     {
@@ -505,10 +505,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1072,
-        -96
+        1168,
+        864
       ],
-      "id": "b66ae43f-bc26-4f84-8741-fed131f853e4",
+      "id": "1b60b74b-ecb6-4af4-8fb6-854b3421c621",
       "name": "Code in Python (Beta)"
     },
     {
@@ -521,10 +521,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        1280,
-        -96
+        1376,
+        864
       ],
-      "id": "2761a5da-dc60-4358-9105-069a713256b2",
+      "id": "ec11c3f4-6be4-46e0-982d-e155c57e8066",
       "name": "AI Agent"
     },
     {
@@ -535,10 +535,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1744,
-        -96
+        1840,
+        864
       ],
-      "id": "f3db3b35-16f1-4556-9570-6e89a526c2b7",
+      "id": "cf998af5-7768-49cb-9ad8-c453ce2530a1",
       "name": "Code in Python (Beta)1"
     },
     {
@@ -548,10 +548,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1440,
-        512
+        1536,
+        1472
       ],
-      "id": "f665dbc3-f9af-4ee6-9612-cbf2fafee934",
+      "id": "f1be22b2-f4fc-4227-8e2b-24fc0b5604b6",
       "name": "Wait 60s",
       "webhookId": "b70dc42b-e545-46a1-850f-ac1792a25dd3"
     },
@@ -578,15 +578,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2048,
-        512
+        2144,
+        1472
       ],
-      "id": "0bc33543-4d21-4502-b272-868c407d52df",
+      "id": "af11b8a8-5e57-47ab-8276-63142c6e675b",
       "name": "Send message and wait for response",
       "webhookId": "5f251bb2-f37e-49c3-ab52-823c73cde73b",
       "credentials": {
         "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
+          "id": "uH4mDEtyZeadnoI5",
           "name": "Telegram account"
         }
       },
@@ -856,6 +856,6 @@
   "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
   }
 }
