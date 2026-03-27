@@ -9,18 +9,18 @@
           "download": false
         }
       },
-      "id": "694c3ce9-ac78-4b6c-b119-7f7f06829020",
+      "id": "207bd4b1-c46e-4a4b-8d37-020db555cdcf",
       "name": "Telegram Message Trigger",
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        -416,
-        48
+        -864,
+        1088
       ],
       "webhookId": "55acc711-c248-4ac9-b6cd-e295c2d33f4b",
       "credentials": {
         "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
+          "id": "uH4mDEtyZeadnoI5",
           "name": "Telegram account"
         }
       }
@@ -61,9 +61,31 @@
                 },
                 "conditions": [
                   {
+                    "id": "dfe93c75-5ee3-40ae-843b-81ab6a6e3411",
+                    "leftValue": "={{ $json.chatInput }}",
+                    "rightValue": "data",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
                     "id": "9c85a368-53a8-4ff1-a0e0-06cabe5cb4df",
                     "leftValue": "={{ $json.chatInput }}",
-                    "rightValue": "upload",
+                    "rightValue": "={{\"upload\" || \"data\"}}",
                     "operator": {
                       "type": "string",
                       "operation": "notContains"
@@ -80,10 +102,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        32,
-        48
+        -416,
+        1072
       ],
-      "id": "d42beb48-601a-4bcc-812b-44801ccabb47",
+      "id": "970c8f8c-191f-412f-af92-f47f44f00089",
       "name": "Switch"
     },
     {
@@ -95,10 +117,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        256,
-        192
+        -192,
+        976
       ],
-      "id": "3101cf00-2d5f-425b-a48c-410b2b333dc6",
+      "id": "f3f4cfc6-c387-4f26-96de-496aac17271e",
       "name": "AI Agent"
     },
     {
@@ -108,15 +130,15 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        272,
-        416
+        -128,
+        1200
       ],
-      "id": "aa6146cd-4042-46f8-b970-72a65437d284",
+      "id": "843696cf-576c-4ca3-88fd-8cd5086de39e",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "LuvQlz3qmejdhs7S",
-          "name": "selwyngwapo90_Youtube Automation Related"
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
@@ -137,15 +159,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        320,
-        -112
+        -128,
+        784
       ],
-      "id": "d882e79b-1e33-44ef-9346-55cfdfaf7174",
+      "id": "fdd55c0e-ea2a-45b4-9c3c-29aff7b06d79",
       "name": "Send a text message",
       "webhookId": "b1362959-c345-4ea2-a0d2-96b727ce5739",
       "credentials": {
         "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
+          "id": "uH4mDEtyZeadnoI5",
           "name": "Telegram account"
         }
       }
@@ -178,10 +200,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        608,
-        -112
+        160,
+        784
       ],
-      "id": "63708a3e-cd29-4d4d-a884-665541ea6427",
+      "id": "1faf912d-2dad-49d7-a2cb-0adbb1f03640",
       "name": "If"
     },
     {
@@ -194,15 +216,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1056,
-        -208
+        608,
+        688
       ],
-      "id": "2e3f6d72-08cb-4638-91c6-a590bfad9d5a",
+      "id": "c1e6d2be-0793-4f0e-a78e-af50de715ff8",
       "name": "Approved",
       "webhookId": "4832387d-a393-45ae-bde2-b445cd01b26b",
       "credentials": {
         "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
+          "id": "uH4mDEtyZeadnoI5",
           "name": "Telegram account"
         }
       }
@@ -217,15 +239,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1056,
-        -16
+        608,
+        992
       ],
-      "id": "b7fa1129-064d-4c78-b2ff-bbbf716785ec",
+      "id": "1a19c46f-0c81-4cca-aaff-636c9f69dfdd",
       "name": "Cancelled",
       "webhookId": "b1362959-c345-4ea2-a0d2-96b727ce5739",
       "credentials": {
         "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
+          "id": "uH4mDEtyZeadnoI5",
           "name": "Telegram account"
         }
       }
@@ -243,14 +265,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        832,
-        -208
+        384,
+        688
       ],
-      "id": "d1a2be11-82ce-4694-bdfc-e5af20ca1636",
+      "id": "5f1a69d3-1200-478e-b585-f3036a849ad3",
       "name": "Approve Image",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "2KupETq4QLi8d9l8",
+          "id": "ArIUQPOkqI84L2K6",
           "name": "Google Drive account"
         }
       }
@@ -270,14 +292,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        832,
-        -16
+        384,
+        992
       ],
-      "id": "cf9bc6f6-5824-47e5-b672-b230a6ab5157",
+      "id": "b682bbde-7585-4296-bc5b-a22f22050308",
       "name": "Disapprove",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "2KupETq4QLi8d9l8",
+          "id": "ArIUQPOkqI84L2K6",
           "name": "Google Drive account"
         }
       }
@@ -293,15 +315,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1280,
-        -208
+        832,
+        688
       ],
-      "id": "a5f4aad9-d189-4025-93b1-87cca01084c0",
+      "id": "00443ec4-848c-471d-8e79-6fce8dfd5be4",
       "name": "Wait Message",
       "webhookId": "b1362959-c345-4ea2-a0d2-96b727ce5739",
       "credentials": {
         "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
+          "id": "uH4mDEtyZeadnoI5",
           "name": "Telegram account"
         }
       }
@@ -317,38 +339,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        608,
-        192
+        160,
+        1088
       ],
-      "id": "17822603-aaa2-492a-89b4-d171846b41d2",
+      "id": "bddfac38-abb7-49e5-a747-850e245a874a",
       "name": "Response",
       "webhookId": "b1362959-c345-4ea2-a0d2-96b727ce5739",
       "credentials": {
         "telegramApi": {
-          "id": "k7m8mevEdyBrdj98",
+          "id": "uH4mDEtyZeadnoI5",
           "name": "Telegram account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
-        "additionalParameters": {
-          "country": "PH"
-        }
-      },
-      "type": "@brave/n8n-nodes-brave-search.braveSearchTool",
-      "typeVersion": 1,
-      "position": [
-        400,
-        416
-      ],
-      "id": "8e9eaff6-c9ad-4d42-a6e4-f4d90231b1fa",
-      "name": "Brave Search",
-      "credentials": {
-        "braveSearchApi": {
-          "id": "yWPuBONN9BexjXnA",
-          "name": "Brave Search account"
         }
       }
     },
@@ -359,25 +359,184 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -192,
-        48
+        -640,
+        1088
       ],
-      "id": "e2ca9286-e736-4f6e-95a4-b2131eddb591",
+      "id": "22e49e71-2a8e-4165-a56e-8fbd441cc757",
       "name": "Code in JavaScript",
       "retryOnFail": true
     },
     {
       "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('Telegram Message Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        1376
+      ],
+      "id": "5c671f69-eca0-47bf-8beb-acd99fff2c3b",
+      "name": "Approved1",
+      "webhookId": "4832387d-a393-45ae-bde2-b445cd01b26b",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1T_smq46mrPg1xDyt3EV_SjEDeqUPVVSm",
+          "mode": "list"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -128,
+        1376
+      ],
+      "id": "1e33d649-827a-439a-85ea-2ae0c83c843c",
+      "name": "Approve Image1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ArIUQPOkqI84L2K6",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Message Trigger').item.json.message.chat.id }}",
+        "text": "🎬 SOCIAL PROSPECTOR IGNITED |Autonomous synthesis in progress... ETA: 3-5 minutes",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        1376
+      ],
+      "id": "460646c6-8ae5-433f-83f7-74ebaddb95cb",
+      "name": "Wait Message1",
+      "webhookId": "b1362959-c345-4ea2-a0d2-96b727ce5739",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "907cba9d-fe87-4c0f-9b93-fc00f786c21d",
+              "leftValue": "={{ $json.Title }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        832,
+        1376
+      ],
+      "id": "2c068a0b-259b-4a41-afc7-1dcd0f182d4c",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Message Trigger').item.json.message.chat.id }}",
+        "text": "✅ Social Prospector completed successfully!",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1056,
+        1088
+      ],
+      "id": "7484cd6c-d17c-4750-9816-cc282bea158f",
+      "name": "Sent Successfully!",
+      "webhookId": "b1362959-c345-4ea2-a0d2-96b727ce5739",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Message Trigger').item.json.message.chat.id }}",
+        "text": "❌ Social Prospector workflow failed to execute",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1056,
+        1472
+      ],
+      "id": "b1f21bde-d110-4483-8ee5-65d8f1b736d0",
+      "name": "Failed to Send!",
+      "webhookId": "b1362959-c345-4ea2-a0d2-96b727ce5739",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "qT7lUl2dziNBSFpy",
+          "value": "3To9OcBjxuwyB282",
           "mode": "list",
-          "cachedResultUrl": "/workflow/qT7lUl2dziNBSFpy",
-          "cachedResultName": "Video Automation For Story Driven Content For Scenery"
+          "cachedResultUrl": "/workflow/3To9OcBjxuwyB282",
+          "cachedResultName": "Social Prospector"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
-          "value": {}
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
         },
         "options": {
           "waitForSubWorkflow": true
@@ -386,11 +545,41 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        1504,
-        -208
+        608,
+        1376
       ],
-      "id": "84bd0aa5-a89b-4522-b416-3814544e1b36",
-      "name": "Call 'Video Automation For Story Driven Content For Scenery'"
+      "id": "c3fc3193-5d1c-46d8-8d59-a0aacf0e87eb",
+      "name": "Social Prospector"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "rl0FreViD8mxgeeu",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/rl0FreViD8mxgeeu",
+          "cachedResultName": "X Auto Post | AlgoNova Labs"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1056,
+        688
+      ],
+      "id": "bc938309-d340-4d63-88e6-820266033e21",
+      "name": "Call 'X Auto Post | AlgoNova Labs'"
     }
   ],
   "connections": {
@@ -410,6 +599,13 @@
         [
           {
             "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Approve Image1",
             "type": "main",
             "index": 0
           }
@@ -511,19 +707,8 @@
       "main": [
         [
           {
-            "node": "Call 'Video Automation For Story Driven Content For Scenery'",
+            "node": "Call 'X Auto Post | AlgoNova Labs'",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Brave Search": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -539,11 +724,73 @@
           }
         ]
       ]
+    },
+    "Approved1": {
+      "main": [
+        [
+          {
+            "node": "Wait Message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approve Image1": {
+      "main": [
+        [
+          {
+            "node": "Approved1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait Message1": {
+      "main": [
+        [
+          {
+            "node": "Social Prospector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Sent Successfully!",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failed to Send!",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Social Prospector": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
   }
 }
