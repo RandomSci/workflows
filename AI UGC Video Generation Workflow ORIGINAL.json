@@ -1,0 +1,1752 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1664,
+        944
+      ],
+      "id": "80d28724-f5ac-4d7f-8688-0fe322532f5f",
+      "name": "Telegram Trigger",
+      "webhookId": "da5e0ee4-b069-4c99-8d86-363b2419c20a",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9e02677a-b4c5-4e21-b97e-6536d336181b",
+              "name": "bot id",
+              "value": "8351768336:AAF9RLjBvcUpcYeO_bnIGDGodALvUFCPy3s",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1472,
+        944
+      ],
+      "id": "f2cb7e26-dba1-4daa-9f00-b06516f7ccbd",
+      "name": "Edit Fields - Bot ID 1"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $('Edit Fields - Bot ID 1').item.json['bot id'] }}/getFile?file_id={{ $('Telegram Trigger').item.json.message.photo[0].file_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1248,
+        944
+      ],
+      "id": "c12c7209-9015-4c95-a5f6-c01fd40a318d",
+      "name": "HTTP Request - Image Path"
+    },
+    {
+      "parameters": {
+        "content": "## Content Idea",
+        "height": 304,
+        "width": 1456,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1696,
+        864
+      ],
+      "typeVersion": 1,
+      "id": "f2332a1b-0220-4411-becd-9efc6fbc0ea8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://queue.fal.run/fal-ai/nano-banana/edit",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key 9f988cfb-f96b-4dce-a7b2-cde148249efc:1e5aa330fa8679016007f550f637a82d"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": \"{{ $json.output }}\",\n  \"image_urls\": [\n    \"https://api.telegram.org/file/bot{{ $('Edit Fields - Bot ID 1').item.json['bot id'] }}/{{ $('HTTP Request - Image Path').item.json.result.file_path }}\"\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -768,
+        1536
+      ],
+      "id": "41ff65f1-9483-4d8c-b15a-7001783ad795",
+      "name": "HTTP Request - Create Image 1"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -544,
+        1536
+      ],
+      "id": "19e2094d-1ee4-4faa-a753-f59dc19f3b03",
+      "name": "Wait - 30s",
+      "webhookId": "30695efb-5b4a-42f7-ab1c-c61b0cac59f2"
+    },
+    {
+      "parameters": {
+        "url": "=https://queue.fal.run/fal-ai/nano-banana/requests/{{ $json.request_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key 9f988cfb-f96b-4dce-a7b2-cde148249efc:1e5aa330fa8679016007f550f637a82d"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -352,
+        1536
+      ],
+      "id": "1e11986c-a9e9-45e6-ba39-7b1274342b01",
+      "name": "HTTP Request - Get Image 1"
+    },
+    {
+      "parameters": {
+        "content": "## Image Creation",
+        "height": 480,
+        "width": 1504,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1696,
+        1424
+      ],
+      "typeVersion": 1,
+      "id": "3981787a-2b67-4a3e-afa3-8ae2326327d1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"scenes\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"scene 1\": { \"type\": \"string\" },\n        \"scene 2\": { \"type\": \"string\" }\n      },\n      \"required\": [\"scene 1\", \"scene 2\"]\n    }\n  },\n  \"required\": [\"scenes\"]\n}\n",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        1136
+      ],
+      "id": "79634575-3b40-4ace-8d86-e5f07201b970",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.scenes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        640,
+        928
+      ],
+      "id": "652d9f0d-0adc-463d-a767-536d3d4e6746",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/veo/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 9db206739109671db64f1a06c8eb8b03"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": \"{{ $json['output.scenes'] }}\",\n  \"model\": \"veo3_fast\",\n  \"aspectRatio\": \"9:16\",\n  \"imageUrls\": \"https://api.telegram.org/file/bot{{ $('Edit Fields - Bot ID 1').item.json['bot id'] }}/{{ $('HTTP Request - Image Path').item.json.result.file_path }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1024,
+        928
+      ],
+      "id": "b70ef6b3-e07c-4507-a21b-53ac0287bcb2",
+      "name": "HTTP Request - Make Video 1"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/veo/record-info",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 9db206739109671db64f1a06c8eb8b03"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1408,
+        928
+      ],
+      "id": "db927a29-8e54-4de7-ad56-cfd7d9edb9e3",
+      "name": "HTTP Request - Get Video"
+    },
+    {
+      "parameters": {
+        "content": "## Create Video ",
+        "height": 416,
+        "width": 1568,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        64,
+        864
+      ],
+      "typeVersion": 1,
+      "id": "cb743a6c-3da0-44c9-b6b3-664f54db5681",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "data.response.resultUrls[0]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        128,
+        1584
+      ],
+      "id": "b7d066cf-fcf5-479b-8564-89a7c305deb4",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "url": "=https://queue.fal.run/fal-ai/ffmpeg-api/requests/{{ $json.request_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key 9f988cfb-f96b-4dce-a7b2-cde148249efc:1e5aa330fa8679016007f550f637a82d"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1184,
+        1568
+      ],
+      "id": "52508dc9-7698-4402-9dce-8dd15dc0ddd6",
+      "name": "HTTP Request - Final Video"
+    },
+    {
+      "parameters": {
+        "operation": "sendVideo",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "file": "={{ $json.video.url }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1360,
+        1568
+      ],
+      "id": "a26a8784-ffed-4a64-8cff-79d2b8d110e6",
+      "name": "Send a video",
+      "webhookId": "67601a6f-71cf-4857-bab1-6d2d79510b08",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Combine Videos",
+        "height": 512,
+        "width": 1568
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        64,
+        1408
+      ],
+      "typeVersion": 1,
+      "id": "c321a028-84af-46af-8a19-22e12917cb45",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "product_description = _('Analyze image').item.json.content\nuser_instructions = _('Telegram Trigger').item.json.message.caption\n\nprompt = f\"\"\"\nCreate video prompts for 3 connected scenes.\n\nCRITICAL - EXACT PRODUCT DETAILS FROM REFERENCE IMAGE:\n{product_description}\n\nYOU MUST use these EXACT product details in ALL 3 scenes:\n- Same product color\n- Same packaging design\n- Same brand text\n- Same product type\nDO NOT change or invent ANY product details.\n\nUser's scene instructions:\n{user_instructions}\n\nLANGUAGE REQUIREMENT: All dialogue must be in ENGLISH only.\n\nGenerate 3 progressive scenes with the EXACT SAME product shown in the reference image above.\n\"\"\"\n\nreturn {'chatInput': prompt}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        928
+      ],
+      "id": "e1f49245-1497-4c2a-8c1a-9be2c37dcedc",
+      "name": "Code in Python (Beta)"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\n\nfor item in _input.all():\n    scene = item.json['output.scenes']\n    \n    scene = ' '.join(scene.split())\n    \n    scene = scene.replace('\"', \"'\")\n    \n    item.json['output.scenes'] = scene\n\nreturn _input.all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        928
+      ],
+      "id": "5016c670-48d3-48e6-b27a-002060792c30",
+      "name": "Code in Python (Beta)1"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        992,
+        1568
+      ],
+      "id": "c2e1c126-4c1f-4f19-b4e0-68d241a557c8",
+      "name": "Wait 60s",
+      "webhookId": "b70dc42b-e545-46a1-850f-ac1792a25dd3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://queue.fal.run/fal-ai/ffmpeg-api/merge-videos",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key 9f988cfb-f96b-4dce-a7b2-cde148249efc:1e5aa330fa8679016007f550f637a82d"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"video_urls\": [\n    \"{{ $input.all()[0].json.video_url }}\",\n    \"{{ $input.all()[1].json.video_url }}\"\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        1568
+      ],
+      "id": "742c78c0-72b4-4ec5-ab46-5bb48c0d0720",
+      "name": "HTTP Request - Combine"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://just-determination-production-fea7.up.railway.app/trim",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"video_url\": \"{{ $json.resultUrls[0][0] }}\",\n  \"start_time\": 0,\n  \"end_time\": 7\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        336,
+        1456
+      ],
+      "id": "983f0706-b0d5-4da7-b84c-a7ae90b10c91",
+      "name": "Trim Scene 1",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://just-determination-production-fea7.up.railway.app/trim",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"video_url\": \"{{ $json.resultUrls[0][1] }}\",\n  \"start_time\": 0,\n  \"end_time\": 7\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        336,
+        1696
+      ],
+      "id": "83a99446-047a-48e7-80f9-3cf8cf6eaf3d",
+      "name": "Trim Scene 2",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        592,
+        1568
+      ],
+      "id": "ec9d75a5-132e-4734-819a-7fd960655807",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "message": "=🔍 Product Analysis\n\n{{ $json.content }}\n\n\nPlease confirm:\n\n✅ APPROVE - Continue to video generation\n🔄 RETRY - Re-analyze image\n❌ CANCEL - Stop workflow",
+        "responseType": "freeText",
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeUnit": "minutes"
+            }
+          },
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -832,
+        944
+      ],
+      "id": "4e8926e9-3bce-4b31-9a10-ff8b12405356",
+      "name": "Send message and wait for response",
+      "webhookId": "41253cdf-bb6e-499d-ba9e-4795f1b3d850",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9acb8a4c-b46e-4a56-bfd5-5bb08cb2a7f2",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "=APPROVE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a3e08cd5-c721-44a5-90b6-5ae404911430"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d94079d2-acbf-4f5c-96a3-15699485244a",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "RETRY",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ec015a16-eb72-48b6-a55c-47f63e082c41",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "CANCEL",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -448,
+        912
+      ],
+      "id": "53117a7b-787b-4e5a-8e6a-4dcd3135b019",
+      "name": "Switch",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const userMessage = $input.first().json.data.text\n\n// Clean and normalize\nconst cleaned = userMessage.trim().toUpperCase();\n\n// Determine action\nlet action = '';\n\nif (cleaned === 'APPROVE' || cleaned === 'YES' || cleaned === 'Y') {\n  action = 'APPROVE';\n} else if (cleaned === 'RETRY' || cleaned === 'AGAIN') {\n  action = 'RETRY';\n} else if (cleaned === 'CANCEL' || cleaned === 'NO' || cleaned === 'N' || cleaned === 'STOP') {\n  action = 'CANCEL';\n} else {\n  action = 'INVALID';\n}\n\nreturn {\n  json: {\n    action: action,\n    original_message: userMessage\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -624,
+        944
+      ],
+      "id": "f5b081af-22a2-47dc-9e9e-c27db6d7c2e1",
+      "name": "Code in JavaScript",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1424,
+        1232
+      ],
+      "id": "21516982-8c60-4796-a8b2-bfd2c3763898",
+      "name": "Cancelled"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "Process Cancelled",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1584,
+        1232
+      ],
+      "id": "0a7506d6-3729-4773-9d29-3c46f932d489",
+      "name": "Send a text message",
+      "webhookId": "dea845ca-0593-4115-b1d9-2857d511b00a",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Workflow Cancelled",
+        "width": 352,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1632,
+        1184
+      ],
+      "typeVersion": 1,
+      "id": "3e845500-8636-427b-8aa9-bea1bbea7926",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "🟢 Your request is being processed…",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1616,
+        1536
+      ],
+      "id": "69e897cd-ac9e-42cc-86b3-0c84a73ca51c",
+      "name": "Send a text message1",
+      "webhookId": "d66602b0-8163-486a-acfe-50b8b7ebd51c",
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "Perform a full detailed analysis of the image. Describe every visible object, pattern, color, and element. Extract ALL visible text exactly as shown (case-sensitive), including partial or obscured text. For each detail and text, specify its location and relevance in the image.",
+        "imageUrls": "=https://api.telegram.org/file/bot{{ $('Edit Fields - Bot ID 1').item.json['bot id'] }}/{{ $json.result.file_path }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -1040,
+        944
+      ],
+      "id": "bbaf9987-b0cf-4e93-93d9-f6522f6a5e1b",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1088,
+        1728
+      ],
+      "id": "bb51cff6-8ceb-47e1-b070-9cc3cec3231f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7wRe2whxERwY0gjz",
+          "name": "OpenAi account 2 | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1488,
+        1744
+      ],
+      "id": "0a44f833-906b-4e56-b166-013502cdb6f0",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "7wRe2whxERwY0gjz",
+          "name": "OpenAi account 2 | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        1168
+      ],
+      "id": "82eaba54-5c14-4a84-8ae6-907023cbbfd4",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "7wRe2whxERwY0gjz",
+          "name": "OpenAi account 2 | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Image Description: {{ $('Analyze image').item.json.content }}\n\nCaption: {{ $('Telegram Trigger').item.json.message.caption }}\n\n",
+        "options": {
+          "systemMessage": "You create simple scene descriptions for UGC video generation.\n\nINPUT:\n- Image Description (contains product details)\n- User Caption (contains scene instructions)\n\nOUTPUT FORMAT:\nProduct: [COMPLETE description with ALL visual details from image]\nCharacter: [simple description]\nSetting: [minimal description]\nAudio & Voice: [one of three templates only]\n\nRULES:\n\n1. PRODUCT (CRITICAL - NO LENGTH LIMIT):\n   \n   Extract and include EVERY visual detail from the image description:\n   - Exact brand name and spelling\n   - Product type\n   - ALL colors mentioned (packaging, labels, text, backgrounds)\n   - Logo details (shape, position, colors)\n   - Text placement (what's at top, center, bottom)\n   - Background patterns or designs\n   - Any distinctive visual elements\n   \n   DO NOT summarize. DO NOT simplify. Include EVERYTHING.\n   \n   BAD: \"Walkers Bugles pepper snacks\"\n   GOOD: \"Walkers Bugles pepper snacks packet, brown color theme, red oval with yellow swoosh containing 'WALKERS' text at top center, large white 'BUGLES' text below, smaller white 'pepper' text underneath, pinkish-red and brown background pattern with snack image, blue rectangular section at top left\"\n\n2. CHARACTER: Keep under 15 words. Age, clothing, one expression.\n   Example: \"Energetic girl, 18-20, brown ponytail, excited smile, holding product\"\n\n3. SETTING: Keep under 10 words. Location and lighting only.\n   Example: \"Clean, softly lit background, simple pastel colors\"\n\n4. AUDIO: Use EXACTLY one of these (copy/paste, no changes):\n   \n   ENERGETIC:\n   \"Bright, enthusiastic voice with natural conversational energy. Background: light ambient room sounds, optional soft upbeat music.\"\n   \n   CALM:\n   \"Warm, calm, and inviting voice. Soothing, conversational tone. Background: gentle ambient sounds, optional soft instrumental music.\"\n   \n   FRIENDLY:\n   \"Light, friendly, and cheerful voice with natural speaking pace. Background: soft ambient room noise, optional light background music.\"\n\n5. EXTRACTION PRIORITY:\n   - Read the ENTIRE image description carefully\n   - Extract EVERY color mentioned\n   - Extract EVERY text detail\n   - Extract EVERY visual element\n   - Preserve exact spelling and capitalization\n   - Maintain order of elements (top to bottom)\n\n6. LENGTH: \n   - Product: ANY length needed (30-60 words typical)\n   - Character: Under 15 words\n   - Setting: Under 10 words\n   - Audio: Exact template (no changes)\n\nOUTPUT: Plain text, no markdown, no extra commentary.\n\nCRITICAL: The product description determines video accuracy. Include EVERYTHING from the image description."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -1408,
+        1536
+      ],
+      "id": "1057d26d-632b-4656-b58e-b4a2d1b8d778",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Make one image prompt.\n\nEnsure you use the details of the reference image as accurately as possible for your final output.\n\nUser Instructions:\n{{ $json.output }}\n\nDescription of the reference image:\n{{ $('Analyze image').item.json.content }}",
+        "options": {
+          "systemMessage": "Role: You create image prompts.\n\nMain objective: Insert the subject (person, scene, or object from a reference image) into realistic, themed everyday situations. The output should look like authentic content captured casually by people or influencers on their phones, matching the theme of the image.\n\nSubjects should always be described as realistic and lifelike.\n\nIf the user gives vague instructions, use this structure: place the (subject) into a scene that fits the theme, with (character, environment, or activity).\n\nUGC focus: When the user wants authentic, user-generated content, assume casual, themed everyday scenes unless told otherwise.\n\nPerspective notes:\n\nIf the scene is in a car, the perspective should be from in front of the character, with the headrest visible.\n\nIf it’s outdoors or lifestyle, use angles that feel natural, like a snapshot.\n\nStyle guidelines: All results should feel natural, authentic, and in-theme. Specifically:\n\nThemed, relatable real-world settings\n\nSubjects should match the theme (e.g., poolside = summer, beach = vacation, café = casual lifestyle)\n\nCasual, unposed expressions and body language\n\nNatural lighting, sunlight on skin, environmental details\n\niPhone snapshot look, amateur but high-detail\n\nRULES:\n\nAlways use single quotes ('')\n\nOnly output the image prompt itself. No extra text.\n\nNo dialogue or video instructions, only still image prompts\n\nFollow any user-specified style, setting, or theme\n\nNever use hyphens or dashes"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -1088,
+        1536
+      ],
+      "id": "aefe929d-77fc-47b3-b022-e2ac96ce3d88",
+      "name": "AI Agent - Image Prompt"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an AI agent that generates UGC video prompts for a single continuous 15 to 18 second clip split into three 5 to 6 second connected moments.\n\nCRITICAL: These are THREE CONNECTED MOMENTS in ONE VIDEO, not three separate videos. The model/person moves naturally and continuously throughout all scenes. There is no spoken dialogue. Subtle, appealing background music plays throughout.\n\nCharacter & Setting Consistency:\n\nEXACT SAME model/person appearance (hair, outfit, accessories, makeup) in all 3 scenes\n\nEXACT SAME location and background in all 2 scenes\n\nEXACT SAME lighting and time of day in all 3 scenes\n\nScene Progression:\n\nEach scene is a CONTINUATION of the previous moment, showing natural movement and interaction with the environment or props\n\nScene 1 (Hook): Model is positioned naturally, e.g., lounging, walking, or posing, engaging with the camera or surroundings to grab attention.\n\nScene 2 (Progression): Model continues movement, interacting naturally with the environment or adjusting pose, showing progression from Scene 1.\n\nStyle & Technical Rules:\n\nContinuous natural movement across all 3 scenes\n\nKeep the SAME model/person and setting across all scenes, only change actions for progression\n\nSubtle, appealing background music plays throughout, non-distracting\n\nKeep each scene under 50 words\n\nOne continuous paragraph per scene\n\nCamera angles and framing should look like casual UGC (iPhone snapshot style, slightly handheld, natural lighting)\n\nOutput must maintain structure intact\n\nNo spoken dialogue or text in the video"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        336,
+        928
+      ],
+      "id": "68de3c80-4e9a-4116-8f86-361594d91977",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1216,
+        928
+      ],
+      "id": "5e7df436-dfc4-41a1-a568-3bfddeb594dd",
+      "name": "Wait 5m",
+      "webhookId": "97b47dbf-b89f-4d02-a0f8-ef4e35fd2e8b"
+    },
+    {
+      "parameters": {
+        "content": "## For Tiktok Upload\n\n[Tiktok For Developers](https://developers.tiktok.com/app/7568099330684225548/pending)\n\n[Client key](\nawueea9a9ibxpnd3)\n\n[Client secret](\nPtNO3aWgbHkCPFClAoSg7ZoEUXH5wE41)\n\n\n## Facebook \nCredentials for fb graph API expires ever 1-2 hrs",
+        "height": 336,
+        "width": 416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "8ce79ddc-f2ad-47d6-8073-b56b1a7b055c",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "# Take note of costs\n\n# * Fal.AI\n# * Railway.com\n# * Kie.ai\n\n\n\n\n# [Spreadsheet](https://docs.google.com/spreadsheets/d/1GewppwnQ5aItwjddVOKrUkONutNN7PB0Oy5peflujf4/edit?usp=sharing)",
+        "height": 528,
+        "width": 1152,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -832,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "b74a7750-64c9-49eb-a485-38c21041d84f",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "options": {
+          "allowFileUploads": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -1664,
+        2720
+      ],
+      "id": "72d35cb9-be06-480f-b912-b0e28b92638d",
+      "name": "When chat message received",
+      "webhookId": "25ce54c5-3d3c-41ce-852f-706df82f6112"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User prompt: \n{{ $('When chat message received').item.json.chatInput }}\n\nImage analysis:  {{ $json.content.parts[0].text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "\nYou are a creative director for short-form creator content designed for subscription-style platforms where creators tease exclusive lifestyle content.\n\nYou receive:\n\n* A user prompt describing a scene or vibe\n* A detailed image analysis of a reference image\n\nYour job is to combine both into content that feels authentic, slightly provocative, and like something captured casually on a phone rather than professionally filmed.\n\nThe content must feel like a real creator moment that wasn’t overly planned.\n\nYou output exactly five things and nothing else.\n\nTEXT PROMPT:\nA single paragraph video generation prompt for an AI video model. Write it in the same natural style as this example but adapt it to the scene:\n\nA confident attractive woman with natural skin texture relaxing in a cozy lifestyle setting, subtle playful energy and teasing eye contact with the camera, stylish casual outfit that feels effortless and slightly flirty, warm natural lighting enhancing the mood, realistic environment details, slight handheld phone movement with natural sway, subtle push-in camera motion, iPhone snapshot style, continuous movement across 2 connected clips, no dialogue, soft sensual background music.\n\nAlways include:\n\n* character appearance\n* the environment\n* natural lighting\n* realistic environment details\n* slight handheld camera movement\n* subtle camera motion\n* iPhone snapshot style\n* continuous movement across 2 connected clips\n* no dialogue\n* music mood that feels intimate, teasing, or late-night vibe\n\nThe video should feel like authentic creator content casually filmed and slightly personal, not staged or cinematic.\n\nNever use markdown. Never use bullet points. Never use dashes.\n\nFACEBOOK REELS CAPTION:\n3 to 5 punchy lines. Line 1 must hook attention immediately. Middle lines should create curiosity or tension like viewers are seeing something slightly personal or unexpected. Last line should hint that more content exists somewhere else. Include a soft product CTA to this workflow: [https://whop.com/algonova-labs/ai-ugc-video-generation-workflow/](https://whop.com/algonova-labs/ai-ugc-video-generation-workflow/) and include **one hashtag relevant to the product (#UGC)**. Keep it natural and conversational.\n\nTIKTOK CAPTION:\n1 to 2 lines max. Feels spontaneous and slightly risky like a creator posting something they probably shouldn’t have shared. Hook focused. Include the soft product CTA and **#UGC** if possible. No more than one emoji.\n\nX CAPTION:\n1 line. Confident creator energy. Slightly provocative but still casual. Include **#UGC** and the workflow link softly if it fits the tone.\n\nINSTAGRAM CAPTION:\n2 to 3 lines. A bit more aesthetic and intimate tone. Feels like a moment from a personal life vlog. Last line hints more content exists somewhere else. Include soft product CTA link and **#UGC**. One emoji maximum.\n\nLINKEDIN CAPTION:\n2 to 3 lines. Professional but still approachable. Highlight the workflow’s value without sounding salesy. Include the product link and **#UGC**.\n\nImportant behavior rules:\n\n* Avoid sounding like marketing copy\n* Avoid influencer clichés\n* Avoid generic phrases like \"link in bio\"\n* Make captions feel natural and human\n\nAlways output in this exact JSON format with no extra text outside the JSON:\n{\n\t\"text prompt\": \"\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -928,
+        2496
+      ],
+      "id": "16f2a902-2513-4b15-819d-588f80746522",
+      "name": "AI Agent1",
+      "notes": "You are a creative director for short-form video content. You receive a user prompt describing a scene or character, and an image analysis of a reference image. Your job is to combine both into one output.\n\nYou output exactly four things and nothing else.\n\nTEXT PROMPT: A single paragraph video generation prompt for an AI video tool. Write it exactly like this example: \"A realistic woman with natural skin textures sitting casually on a cozy outdoor seating, slightly leaning forward with a subtle flirtatious smile and playful glance, wearing fitted stylish summer attire, warm natural sunset light casting soft shadows, lush greenery and balcony railing in the background, iPhone snapshot style, continuous movement across 2 connected clips, no dialogue, subtle seductive background music.\" Always include: the character appearance, the setting, the lighting, iPhone snapshot style, continuous movement across 2 connected clips, no dialogue, and a music mood. Never use markdown. Never use dashes or bullets.\n\nFACEBOOK REELS CAPTION: 3 to 5 punchy lines. Hook on line 1. Build curiosity in the middle. End with a soft CTA. No hashtags. No emojis. Conversational tone.\n\nTIKTOK CAPTION: 1 to 2 lines max. Hook only. Very casual. Sounds like something a real person typed fast. No hashtags. One relevant emoji maximum.\n\nX CAPTION: 1 line. Direct and confident. Sounds like a builder or creator casually sharing something. No hashtags. No emojis.\n\nINSTAGRAM CAPTION: 2 to 3 lines. Slightly more polished than TikTok but still human. Soft CTA on the last line. No hashtags. One emoji maximum.\n\nAlways output in this exact JSON format with no extra text outside the JSON:\n{\"text prompt\": \"\", \"Facebook Reels Caption\": \"\", \"Tiktok\": \"\", \"X\": \"\", \"Instagram\": \"\"}\n\n"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -976,
+        2704
+      ],
+      "id": "19bb6a3b-1ab0-4d26-aece-ee1cab22e3ba",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "7wRe2whxERwY0gjz",
+          "name": "OpenAi account 2 | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -864,
+        2688
+      ],
+      "id": "d32ea2d3-974f-4a03-897b-263dd710fa44",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "Perform a full detailed analysis of the image. Describe every visible object, pattern, color, and element. Extract ALL visible text exactly as shown (case-sensitive), including partial or obscured text. For each detail and text, specify its location and relevance in the image.\n\nThe output should be .txt friendly, NEVER ADD ANY ** or any .md related. It should be text-based only",
+        "inputType": "binary",
+        "binaryPropertyName": "data0",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1152,
+        2496
+      ],
+      "id": "8ca38c50-d2f4-4e5f-a60b-79de9103c75f",
+      "name": "Analyze an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7C6X9OFxHICMrPG5",
+          "name": "Google Gemini(PaLM) Api account 2 | selwynjaymegwapo@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"text prompt\": \"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -736,
+        2688
+      ],
+      "id": "6c009cb7-aaf5-458b-a045-bdb98712ce0f",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const locations = [\n  \"poolside cabana with water shimmering\",\n  \"sun-drenched school rooftop terrace\",\n  \"private balcony overlooking a city skyline\",\n  \"luxury hotel infinity pool\",\n  \"modern dorm lounge with sunlight streaming\",\n  \"beachfront deck with soft waves nearby\",\n  \"indoor pool with reflective tiles\",\n  \"sunlit outdoor courtyard\"\n];\n\nconst lighting = [\n  \"golden hour sun casting long shadows\",\n  \"soft morning sunlight glinting on water\",\n  \"warm indoor ambient light creating glow\",\n  \"late afternoon shimmer\",\n  \"sunset glow reflecting off surfaces\",\n  \"moody evening lamp with hints of neon\"\n];\n\nconst items = [\n  \"a wet towel draped over the chair\",\n  \"sunglasses slipping off the table\",\n  \"iced cocktail with condensation droplets\",\n  \"an open notebook with scribbled notes\",\n  \"loose headphones tangled nearby\",\n  \"a silk robe half folded\",\n  \"sparkling water glass catching light\",\n  \"a sunhat tipped slightly over the edge\"\n];\n\nconst styles = [\n  \"photorealistic iPhone snapshot style\",\n  \"natural handheld influencer content\",\n  \"soft depth-of-field lifestyle photography\",\n  \"candid realistic camera movement\",\n  \"warm, intimate creator-style filming\"\n];\n\nfunction rand(arr) {\n  return arr[Math.floor(Math.random() * arr.length)];\n}\n\nfunction randomSeed() {\n  return Math.random().toString(36).substring(2, 10);\n}\n\nconst location = rand(locations);\nconst light = rand(lighting);\nconst itemDetail = rand(items);\nconst style = rand(styles);\nconst seed = randomSeed();\n\nconst prompt = `A realistic lifestyle content filming location set in a ${location}, intimate seating or lounging area, ${itemDetail}, ${light} lighting creating soft shadows and playful highlights, relaxed and flirty atmosphere, ${style}, natural textures and depth of field, highly detailed environment, no people, unique scene id ${seed}`;\n\nfor (const item of $input.all()) {\n  item.json.imagePrompt = prompt;\n  item.json.promptSeed = seed;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1408,
+        2096
+      ],
+      "id": "656dca95-ecf6-4364-92a1-256f6479cd8e",
+      "name": "Image Prompt For Image Generator | OF"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "model": "gpt-image-1",
+        "prompt": "={{ $json.imagePrompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -1200,
+        2096
+      ],
+      "id": "b7abcdd9-9373-49ee-a3ca-0730fa31b5a5",
+      "name": "Generate an image",
+      "credentials": {
+        "openAiApi": {
+          "id": "7wRe2whxERwY0gjz",
+          "name": "OpenAi account 2 | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1632,
+        2096
+      ],
+      "id": "f94b9b1b-47c7-48f8-9053-56525ec74afc",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User prompt: \n{{ $('When chat message received').item.json.chatInput }}\n\nVideo analysis:  {{ $json.content.parts[0].text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an automation engineer and UGC content specialist. You receive a user prompt describing a scene or vibe and a detailed analysis of a reference image or video. Your job is to generate platform-specific captions and a video generation prompt based on both inputs.\n\nNever assume the subject is human. Always derive the subject, scene, and mood directly from the video analysis and text prompt provided. Never invent details that are not in the input.\n\nYou output exactly eleven things and nothing else.\n\nTEXT PROMPT:\nA single paragraph video generation prompt for an AI video model. Fully adapt it to whatever the subject is in the video analysis and text prompt. The subject could be a person, a product, an object, an animal, or a scene.\n\nExample style reference only:\nA confident attractive woman with natural skin texture relaxing in a cozy lifestyle setting, subtle playful energy and teasing eye contact with the camera, stylish casual outfit that feels effortless and slightly flirty, warm natural lighting enhancing the mood, realistic environment details, slight handheld phone movement with natural sway, subtle push-in camera motion, iPhone snapshot style, continuous movement across 2 connected clips, no dialogue, soft sensual background music.\n\nAlways include in the text prompt:\nThe subject or character derived from the input\nThe environment\nNatural lighting\nRealistic environment details\nSlight handheld camera movement\nSubtle camera motion\niPhone snapshot style\nContinuous movement across 2 connected clips\nNo dialogue\nMusic mood that feels intimate, teasing, or late-night vibe\n\nThe video should feel like authentic creator content casually filmed and slightly personal, not staged or cinematic.\nNever use markdown. Never use bullet points. Never use dashes.\n\nFACEBOOK REELS CAPTION:\n3 to 5 punchy lines. Line 1 must hook attention immediately. Middle lines should create curiosity or tension like viewers are seeing something slightly personal or unexpected. Last line should hint that more content exists somewhere else. Include a soft product CTA to this workflow: https://whop.com/algonova-labs/ai-ugc-video-generation-workflow/ and include #UGC. Keep it natural and conversational.\n\nTIKTOK CAPTION:\n1 to 2 lines max. Feels spontaneous and slightly risky like a creator posting something they probably shouldn't have shared. Hook focused. Include the soft product CTA and #UGC if possible. No more than one emoji.\n\nX CAPTION:\n1 line. Confident creator energy. Slightly provocative but still casual. Include #UGC and the workflow link softly if it fits the tone.\n\nINSTAGRAM CAPTION:\n2 to 3 lines. Aesthetic and intimate tone. Feels like a moment from a personal life vlog. Last line hints more content exists somewhere else. Include soft product CTA link and #UGC. One emoji maximum.\n\nLINKEDIN CAPTION:\n2 to 3 lines. Professional but approachable. Lead with the outcome this workflow delivers. No fluff. Include the product link and #UGC.\n\nWHOP.COM CAPTION:\n2 to 3 lines of straight selling copy. The reader is already on the product page so skip the intro. Tell them exactly what happens: send a product photo or video to Telegram, get a finished UGC video back in minutes, no actors, no editing, no manual steps. Confident and direct. End with: https://whop.com/algonova-labs/ai-ugc-video-generation-workflow/\n\nr/n8n:\nTitle: Short, curiosity-driven, under 100 characters. No link anywhere.\nBody: Write a genuinely useful post for n8n builders. Share a real technical insight about how a Telegram-triggered AI video generation pipeline works inside n8n. Explain one specific thing they can learn or apply: how the trigger is set up, how the AI node processes the input, how the output is returned. Make it feel like a builder sharing something they figured out. Spark discussion by ending with a question or an observation that invites replies. No links anywhere. No self-promotion. Pure value.\n\nr/n8n_ai_agents:\nTitle: Short, curiosity-driven, under 100 characters. No link anywhere.\nBody: Write a genuinely useful post about AI agent architecture. Focus on how an agent can receive a media file, process it through an AI video generation step, and return a finished output autonomously. Share a specific insight about agent design, error handling, or pipeline efficiency that other builders would find useful. End with something that invites discussion. No links anywhere. No self-promotion. Pure value.\n\nr/contentcreation:\nTitle: Short, curiosity-driven, under 100 characters. No link anywhere.\nBody: Write a genuinely useful post for content creators. Share a real insight about how UGC video production can be fully automated without actors or editors. Give them one concrete thing they can take away: a process, a realization, a workflow idea. Make it feel like advice from a creator who has actually done this. End with a question that sparks replies. No links anywhere. No self-promotion. Pure value.\n\nr/n8nforbeginners:\nTitle: Short, curiosity-driven, under 100 characters. No link anywhere.\nBody: Write a genuinely helpful post for n8n beginners. Explain in plain simple language how a real-world automation works: a user sends a photo or video to Telegram, n8n picks it up, passes it to an AI node, and sends back a finished UGC video. Break it down so a complete beginner understands the logic. Make it encouraging and community-friendly. End with an open question to invite replies. No links anywhere. No self-promotion. Pure value.\n\nImportant behavior rules:\nNever sound like marketing copy\nNever use influencer clichés\nNever use generic phrases like \"link in bio\"\nEvery caption must feel natural and human\nTailor tone precisely to each platform and audience\nAlways derive the subject from the input, never invent it\nNever add any links to any Reddit fields under any circumstances, not in the title, not in the body, zero links in any Reddit output\n\nAlways output in this exact JSON format with no extra text outside the JSON:\n\n{\n  \"text prompt\": \"\",\n  \"Facebook Reels Caption\": \"\",\n  \"Tiktok\": \"\",\n  \"X\": \"\",\n  \"Instagram\": \"\",\n  \"linkedin\": \"\",\n  \"Whop.com\": \"\",\n  \"r/n8n\": { \"title\": \"\", \"body\": \"\" },\n  \"r/n8n_ai_agents\": { \"title\": \"\", \"body\": \"\" },\n  \"r/contentcreation\": { \"title\": \"\", \"body\": \"\" },\n  \"r/n8nforbeginners\": { \"title\": \"\", \"body\": \"\" }\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -736,
+        2944
+      ],
+      "id": "5a252a14-d751-449c-81a6-f2ad4f89ffda",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -784,
+        3152
+      ],
+      "id": "4a0f002c-40ec-4fb7-b110-5cf2c3ae4d3b",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "7wRe2whxERwY0gjz",
+          "name": "OpenAi account 2 | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "\n{\n  \"Facebook Reels Caption\": \"\",\n  \"Tiktok\": \"\",\n  \"X\": \"\",\n  \"Instagram\": \"\",\n  \"linkedin\": \"\",\n  \"Whop.com\": \"\",\n  \"r/n8n\": { \"title\": \"\", \"body\": \"\" },\n  \"r/n8n_ai_agents\": { \"title\": \"\", \"body\": \"\" },\n  \"r/contentcreation\": { \"title\": \"\", \"body\": \"\" },\n  \"r/n8nforbeginners\": { \"title\": \"\", \"body\": \"\" }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -544,
+        3136
+      ],
+      "id": "1d20832e-2728-4de2-b191-121d64f19ee4",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "670fb000-68a2-418c-a9cd-e3a0160d5ddb",
+              "leftValue": "={{ $json.files[0].fileType }}",
+              "rightValue": "=image",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1456,
+        2720
+      ],
+      "id": "58e41ef7-87de-4ce2-a507-469dee0ab82d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "Describe EVERYTHING you know about the video content and make sure your output is .txt friendly, you're nto allowed to add any .md formats or any ** or - ",
+        "inputType": "binary",
+        "binaryPropertyName": "data0",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1168,
+        2944
+      ],
+      "id": "56beb7ae-0d2f-4036-b395-ac4966dbca38",
+      "name": "Analyze video",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7C6X9OFxHICMrPG5",
+          "name": "Google Gemini(PaLM) Api account 2 | selwynjaymegwapo@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "719cc691-7c67-4b37-92e5-4424e01c8967",
+              "name": "content.parts[0].text",
+              "value": "={{ $json.content.parts[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -976,
+        2944
+      ],
+      "id": "9eb6521e-2f2d-4347-97ec-9ae898eac061",
+      "name": "Edit Fields"
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields - Bot ID 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields - Bot ID 1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Image Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Image Path": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Create Image 1": {
+      "main": [
+        [
+          {
+            "node": "Wait - 30s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait - 30s": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Get Image 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Get Image 1": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Make Video 1": {
+      "main": [
+        [
+          {
+            "node": "Wait 5m",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Get Video": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Trim Scene 1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Trim Scene 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Final Video": {
+      "main": [
+        [
+          {
+            "node": "Send a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Make Video 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 60s": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Final Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Combine": {
+      "main": [
+        [
+          {
+            "node": "Wait 60s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trim Scene 1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trim Scene 2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Combine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields - Bot ID 1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "Cancelled",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Image Prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Image Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Image Prompt": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Create Image 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 5m": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze an image": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Prompt For Image Generator | OF": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Image Prompt For Image Generator | OF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Analyze an image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Analyze video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
+  }
+}
