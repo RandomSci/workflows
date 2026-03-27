@@ -1,0 +1,1260 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "*/30 * * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1792,
+        288
+      ],
+      "id": "f4857322-1cdb-4579-8705-4ca8acaeb052",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "const posts = [];\nconst data = $input.first().json;\n\nif (data.data && data.data.children) {\n  for (const post of data.data.children) {\n    const p = post.data;\n    \n    posts.push({\n      title: p.title,\n      subreddit: p.subreddit,\n      author: p.author,\n      post_url: `https://www.reddit.com${p.permalink}`,\n      post_id: p.id,\n      created_utc: p.created_utc,\n      age_hours: Math.floor((Date.now() / 1000 - p.created_utc) / 3600),\n      selftext: p.selftext || '',\n      upvotes: p.ups,\n      num_comments: p.num_comments,\n      full_text: `${p.title} ${p.selftext || ''}`.toLowerCase()\n    });\n  }\n}\n\nreturn posts.map(post => ({ json: post }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -896,
+        368
+      ],
+      "id": "8ac56ce4-631f-45e2-aab0-53662dfa0898",
+      "name": "Parse Reddit Posts",
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.posts_json }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You will receive {{ $json.post_count }} Reddit posts as a JSON array.\n\nFor EACH post, generate TWO things:\n\n1. A SHORT, casual Reddit comment (for public replies - optional)\n2. A DIRECT MESSAGE (for private outreach - primary use)\n\n=== COMMENT REPLY GUIDELINES ===\n\n- Casual like you're browsing Reddit at 2am\n- Vary sentence structure, use fillers: \"honestly\", \"ngl\", \"tbh\"\n- Sometimes start mid-thought: \"Oh man,\", \"Dude,\", \"Wait,\"\n- 2-4 sentences, vary length\n- Don't always mention automation\n- Reference specific things from their post\n- Only 50-60% should have CTAs\n\nCTA VARIATIONS (sparingly):\n- \"lmk if you want to see the setup\"\n- \"happy to show you what I built if you're curious\"\n- \"shoot me a dm if you want help with this\"\n\n=== DM MESSAGE GUIDELINES ===\n\nSTRUCTURE:\n1. Acknowledge their specific pain from the post\n2. Share brief personal experience or insight (1 sentence)\n3. Mention you built automation that solves this\n4. Include clear CTA with link: \"Check it out: selwynbuilds.com\"\n5. Offer to help: \"Happy to show you how it works\"\n\nTONE:\n- More direct than comment (it's private, not public)\n- Still casual and helpful, not salesy\n- Can be slightly more specific about your solution\n- ALWAYS include the link to selwynbuilds.com\n- Keep under 80 words total\n\nDM EXAMPLES:\n\nBAD (too formal):\n\"Hello, I noticed your post regarding YouTube automation challenges. I have developed a comprehensive solution that may address your needs. Would you be interested in learning more about my services?\"\n\nGOOD:\n\"Hey, saw your post about spending 3hrs/day on YouTube comments. I had the same problem last year - built automation that handles it automatically with AI. Went from 3hrs to 15mins daily. Check it out: selwynbuilds.com - happy to walk you through the setup if it's relevant.\"\n\nGOOD:\n\"Yo, that YouTube description update pain is real. I dealt with that updating 50+ videos manually until I built a system that does bulk updates via API in like 10 minutes. Saved me hours. Here's how it works: selwynbuilds.com - lmk if you want help setting it up.\"\n\nGOOD:\n\"Dude, faceless channels + automation is exactly what I'm doing. Built workflows that handle comments, descriptions, and scheduling automatically. Running 3 channels with maybe 2hrs/week of actual work. Demo here: selwynbuilds.com - happy to show you the setup.\"\n\n=== CRITICAL: WHEN TO SET should_reply = FALSE (BE VERY STRICT) ===\n\n❌ ALWAYS FALSE for these contexts (even if keywords match):\n\nPEOPLE/COMMUNITY POSTS:\n- \"looking for accountability partner\"\n- \"building a mastermind\"\n- \"need a team\"\n- \"looking for co-founder\"\n- \"anyone want to join\"\n→ They need PEOPLE, not tools. Automation doesn't solve this.\n\nYOUTUBE POLICY/LEGAL ISSUES:\n- \"copyright strike\"\n- \"video taken down\"\n- \"community guidelines\"\n- \"channel terminated\"\n- \"appeal denied\"\n→ These are LEGAL/POLICY issues. Automation doesn't solve this.\n\nWRONG INDUSTRY:\n- \"e-commerce conversion\"\n- \"shopify sales\"\n- \"amazon FBA\"\n- \"dropshipping\"\n- \"product sales\"\n→ Your automation is for YOUTUBE CONTENT CREATION, not e-commerce.\n\nMINDSET/MOTIVATION ONLY:\n- \"need motivation\"\n- \"can't stay consistent\"\n- \"struggling with discipline\"\n- \"procrastination\"\n- NO mention of specific tasks or workflows\n→ These are PSYCHOLOGY issues. Automation doesn't solve mindset problems.\n\nALREADY SELLING/PROMOTING:\n- OP is promoting their own service\n- OP is sharing referral links\n- Post is an advertisement\n- Just celebrating wins with no question\n\n❌ Other automatic FALSE triggers:\n- Crypto trading, forex, MLM schemes\n- Investment opportunities\n- OP seems very experienced/advanced\n- Post is clearly spam\n\n=== WHEN TO SET should_reply = TRUE ===\n\n✅ ONLY TRUE if post has ALL of these:\n\n1. CLEAR PAIN about REPETITIVE TASKS:\n   - \"spending X hours on [task]\"\n   - \"manually doing [task]\"\n   - \"overwhelmed by [task]\"\n   - \"too much time on [task]\"\n\n2. RELATED TO CONTENT CREATION:\n   - YouTube channel management\n   - Video content creation\n   - Social media posting\n   - Blog/content publishing\n   - NOT e-commerce, NOT sales funnels\n\n3. ASKING FOR HELP OR EXPRESSING FRUSTRATION:\n   - \"how do I\", \"need help\", \"stuck on\"\n   - \"any advice\", \"looking for\"\n   - \"tired of\", \"frustrated with\"\n\nBEST SIGNALS (set should_reply = TRUE immediately):\n✅ \"spending 3 hours daily on YouTube comments\"\n✅ \"manually updating 50+ video descriptions\"\n✅ \"overwhelmed by content scheduling\"\n✅ \"need to automate my YouTube workflow\"\n✅ \"running multiple channels, no time\"\n✅ Person is ALREADY trying to automate (perfect fit!)\n\n=== RELEVANCE SCORING (1-10) ===\n\nUse this strict rubric:\n\n10 = PERFECT FIT\n- Already automating content\n- Mentions YouTube + time-consuming tasks\n- Asking for automation solutions\nExample: \"I automated content for 45 days\"\n\n9 = EXCELLENT FIT\n- Clear YouTube/content pain\n- Mentions specific hours wasted\n- Open to tools/solutions\nExample: \"Spending 3hrs/day on comments\"\n\n8 = VERY GOOD FIT\n- YouTube/content creator\n- Mentions workflow pain\n- Not asking directly but clearly struggling\nExample: \"Managing multiple channels is exhausting\"\n\n7 = GOOD FIT\n- Content creation mentioned\n- Time/scale pain implied\n- Could benefit from automation\nExample: \"Growing my YouTube channel\"\n\n6 = MODERATE FIT\n- Tangentially related (social media, blogging)\n- Some workflow pain\n- Not specifically YouTube\nExample: \"Content marketing taking too long\"\n\n5 = WEAK FIT\n- Generic productivity question\n- No specific tasks mentioned\n- Could apply to anything\nExample: \"How to be more productive?\"\n\n4 = VERY WEAK\n- Wrong context (e-commerce, sales)\n- Or mindset-only question\nExample: \"Need motivation to post\"\n\n3 = BARELY RELEVANT\n- Keywords match but wrong problem\nExample: \"YouTube strike appeal\"\n\n2 = NOT RELEVANT\n- Wrong industry entirely\nExample: \"Shopify conversion rates\"\n\n1 = COMPLETELY IRRELEVANT\n- No connection to content creation\nExample: \"Forex trading tips\"\n\n=== OUTPUT FORMAT ===\n\nReturn ONLY a JSON array:\n[\n  {\n    \"title\": \"exact title from input\",\n    \"post_url\": \"exact URL from input\",\n    \"reply\": \"casual comment for public reply\",\n    \"dm_message\": \"personalized DM with CTA and link\",\n    \"relevance_score\": 7,\n    \"should_reply\": true\n  }\n]\n\n=== CRITICAL RULES ===\n\n- Include ALL {{ $json.post_count }} posts in output\n- Keep replies under 70 words, DMs under 80 words\n- VARY your responses - don't sound like a template\n- Every DM MUST include selwynbuilds.com\n- Be EXTREMELY STRICT with should_reply - when in doubt, set to FALSE\n- If post is about people/community/legal/wrong-industry, ALWAYS FALSE\n- Only set should_reply = TRUE if they have a CONTENT CREATION workflow pain\n\nPosts:\nUser input"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "e8d030bf-b3e4-4e59-84fe-35daebfcd5b3",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[\n  {\n    \"title\": \"exact title from input\",\n    \"post_url\": \"exact URL from input\",\n    \"reply\": \"casual comment for public reply (optional use)\",\n    \"dm_message\": \"personalized DM with CTA and link (PRIMARY use)\",\n    \"relevance_score\": 7,\n    \"should_reply\": true\n  }\n]"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        592,
+        224
+      ],
+      "id": "16fe5495-30f7-4cc2-9236-59cdb7d97468",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "14BYLMvTpFBZOPHXxX3PoNkAgYCS_BaKGcnoouP4eQvI",
+          "mode": "list",
+          "cachedResultName": "Scraped Reddit Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14BYLMvTpFBZOPHXxX3PoNkAgYCS_BaKGcnoouP4eQvI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14BYLMvTpFBZOPHXxX3PoNkAgYCS_BaKGcnoouP4eQvI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $json.Title }}",
+            "Post_url": "={{ $json.Post_url }}",
+            "Reply": "={{ $json.Reply }}",
+            "Relevance_score": "={{ $json.Relevance_score }}",
+            "Should_reply": "={{ $json.Should_reply }}",
+            "Date & Time": "={{ $json[\"Date & Time\"] }}",
+            "Suggested_Message": "={{ $json.DM_message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date & Time",
+              "displayName": "Date & Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post_url",
+              "displayName": "Post_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reply",
+              "displayName": "Reply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Relevance_score",
+              "displayName": "Relevance_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Should_reply",
+              "displayName": "Should_reply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Suggested_Message",
+              "displayName": "Suggested_Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1024,
+        0
+      ],
+      "id": "312a84f3-6c7e-4c19-82eb-ebcecd93d84c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        464,
+        224
+      ],
+      "id": "b6d345ef-db45-4c60-a27d-61f2cb57cc08",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "title"
+            },
+            {
+              "fieldToAggregate": "post_url"
+            },
+            {
+              "fieldToAggregate": "selftext"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0f189491-55c1-4a2c-be1d-063ac2934b34",
+      "name": "Aggregate",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "//Get the aggregated arrays\nconst titles = $json.title || [];\nconst urls = $json.post_url || [];\nconst selftexts = $json.selftext || [];\n\n// Combine into array of post objects\nconst posts = titles.map((title, index) => ({\n  title: title,\n  post_url: urls[index] || '',\n  selftext: selftexts[index] || ''\n    }));\n\nreturn [{\n  json: {\n    posts_json: JSON.stringify(posts),\n    post_count: posts.length\n      }\n    }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "a06483d7-e94c-4f3e-ab3e-315b51bd7401",
+      "name": "Code in JavaScript",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the AI Agent output\nconst aiOutput = $json.output;\n\n// Handle different output formats\nlet posts;\n\nif (Array.isArray(aiOutput)) {\n  // Already an array - use directly\n  posts = aiOutput;\n} else if (typeof aiOutput === 'string') {\n  // String response - need to parse\n  try {\n    // Remove markdown code fences if present\n    let cleaned = aiOutput\n      .replace(/```json\\n?/g, '')\n      .replace(/```\\n?/g, '')\n      .trim();\n    \n    posts = JSON.parse(cleaned);\n  } catch (e) {\n    console.error('Failed to parse AI output:', e);\n    console.error('Raw output:', aiOutput);\n    return [];\n  }\n} else if (typeof aiOutput === 'object' && aiOutput !== null) {\n  // Object response - might be wrapped\n  posts = aiOutput.posts || aiOutput.data || [aiOutput];\n} else {\n  console.error('Unexpected AI output format:', typeof aiOutput);\n  return [];\n}\n\n// Validate it's an array\nif (!Array.isArray(posts)) {\n  console.error('Expected array but got:', typeof posts);\n  return [];\n}\n\n// Add timestamp to each post\nconst timestamp = new Date().toISOString();\n\n// Return each post as a separate item for Google Sheets\nreturn posts.map(post => ({\n  json: {\n    \"Date & Time\": timestamp,\n    \"Title\": post.title || '',\n    \"Post_url\": post.post_url || '',\n    \"Reply\": post.reply || '',\n    \"DM_message\": post.dm_message || '',\n    \"Relevance_score\": post.relevance_score || 0,\n    \"Should_reply\": post.should_reply || false\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        0
+      ],
+      "id": "05048e02-fe41-4bc3-9c18-4328eb287182",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const qualified = [];\n\nfor (const item of $input.all()) {\n  const post = item.json;\n  \n  const selftext = post.selftext || '';\n  const title = post.title || '';\n  const text = `${title} ${selftext}`.toLowerCase();\n  \n  // === BASIC QUALITY FILTERS ===\n  const isFresh = post.age_hours < 168;\n  const hasContent = (selftext.length > 30) || (title.length > 40);\n  const notTooPopular = post.num_comments < 100;\n  const notDeleted = post.author !== '[deleted]';\n  \n  if (!isFresh || !hasContent || !notTooPopular || !notDeleted) {\n    continue;\n  }\n  \n  // === SKIP YOUR OWN POSTS ===\n  const yourAccounts = ['fit-leading-8873', 'fitleading8873'];\n  if (yourAccounts.some(acc => post.author.toLowerCase() === acc)) continue;\n  \n  // === RED FLAGS ===\n  const redFlags = ['free only', 'no budget', 'pirate', 'crack', 'scam'];\n  const hasRedFlag = redFlags.some(flag => text.includes(flag));\n  if (hasRedFlag) continue;\n  \n  // === HARD NEGATIVE KEYWORDS (Auto-reject totally irrelevant) ===\n  const hardNegatives = [\n    'fintech startup', 'investment fund', 'crypto wallet', 'nft marketplace',\n    'restaurant menu', 'real estate agent', 'medical practice',\n    'law firm client', 'therapy session', 'dental office'\n  ];\n  const hasHardNegative = hardNegatives.some(kw => text.includes(kw));\n  if (hasHardNegative) continue;\n  \n  // === SOFT RELEVANCE (Optional but boosts score if present) ===\n  const softRelevance = [\n    'youtube', 'video', 'channel', 'content', 'creator',\n    'blog', 'wordpress', 'website', 'post', 'article',\n    'social media', 'instagram', 'tiktok', 'facebook',\n    'automation', 'automate', 'n8n', 'zapier', 'workflow'\n  ];\n  const hasSoftRelevance = softRelevance.some(kw => text.includes(kw));\n  \n  // === INTENT SCORING ===\n  let score = 0;\n  \n  // RELEVANCE BONUS (If they mention content/automation)\n  if (hasSoftRelevance) score += 2; // Boost relevant posts\n  \n  // HIGH INTENT PAIN (+3)\n  const highPain = ['struggling with', 'overwhelmed', 'frustrated', 'tired of', 'fed up', 'exhausted', 'burning out', 'no idea'];\n  highPain.forEach(kw => { if (text.includes(kw)) score += 3; });\n  \n  // ACTIVE SEEKING (+2)\n  const seeking = ['looking for', 'need help', 'need advice', 'anyone recommend', 'what should i', 'how do i', 'best way', 'trying to find', 'need a', 'help me'];\n  seeking.forEach(kw => { if (text.includes(kw)) score += 2; });\n  \n  // YOUR CORE SOLUTIONS (+5 - highest weight)\n  const solutions = [\n    'automate youtube', 'youtube automation', 'automate comment', \n    'manage comment', 'automate description', 'faceless channel', \n    'youtube workflow', 'content automation', 'passive income youtube',\n    'bulk update', 'broken link', 'affiliate link'\n  ];\n  solutions.forEach(kw => { if (text.includes(kw)) score += 5; });\n  \n  // BUYING SIGNALS (+3)\n  const buying = ['willing to pay', 'budget', 'invest', 'hire', 'serious', 'monetiz', 'making money', 'revenue', 'income'];\n  buying.forEach(kw => { if (text.includes(kw)) score += 3; });\n  \n  // GENERAL PAIN (+1)\n  const generalPain = ['struggling', 'help', 'advice', 'stuck', 'starting', 'beginner', 'confused', 'difficult', 'hard', 'problem', 'issue'];\n  generalPain.forEach(kw => { if (text.includes(kw)) score += 1; });\n  \n  // TIME/SCALE PAIN (+2)\n  const timePain = ['no time', 'too much time', 'time consuming', 'takes forever', 'scale', 'grow', 'multiple channels', 'expand'];\n  timePain.forEach(kw => { if (text.includes(kw)) score += 2; });\n  \n  // ENGAGEMENT SIGNALS (+1 each)\n  if (text.includes('?')) score += 1;\n  if ((text.match(/!/g) || []).length >= 2) score += 1;\n  if (selftext.length > 200) score += 1;\n  if (post.age_hours < 24) score += 2;\n  if (post.upvotes >= 5) score += 1;\n  \n  // === PENALTY FOR ESSAYS (Reduces false positives) ===\n  if (selftext.length > 5000) score -= 2;\n  \n  // === FLEXIBLE THRESHOLD ===\n  // Accept posts with score >= 4 (lowered from 5)\n  // OR posts with core solutions mentioned (score >= 3)\n  const passesCoreCheck = solutions.some(kw => text.includes(kw)) && score >= 3;\n  \n  if (score >= 4 || passesCoreCheck) {\n    qualified.push({ \n      json: {\n        ...post,\n        lead_score: score,\n        priority: score >= 10 ? 'ULTRA_HIGH' : score >= 8 ? 'HIGH' : score >= 6 ? 'MEDIUM' : 'LOW'\n      }\n    });\n  }\n}\n\n// === DEDUPLICATION ===\nconst seen = new Set();\nconst deduplicated = qualified.filter(item => {\n  if (seen.has(item.json.post_id)) return false;\n  seen.add(item.json.post_id);\n  return true;\n});\n\n// Sort by score\ndeduplicated.sort((a, b) => b.json.lead_score - a.json.lead_score);\n\n// Limit to top 50 (increased from 30)\nconst top50 = deduplicated.slice(0, 10);\n\nreturn top50;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -896,
+        96
+      ],
+      "id": "7b4ed457-47de-4a97-a608-fb01004a2e55",
+      "name": "Code in JavaScript2",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.reddit.com/r/{{ $json.Subreddit }}/search.json?q={{ $json.Search_Query }}&restrict_sr=on&sort=new&limit=10&t={{ $now.toUnixInteger() }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1120,
+        288
+      ],
+      "id": "239ae7c7-614c-4f95-bb73-d7628b4c45f3",
+      "name": "HTTP Request",
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// MASSIVELY EXPANDED subreddit list - from 17 to 45+ subreddits\nconst subreddits = [\n  // === PRIMARY TARGETS (High intent) ===\n  'passive_income',\n  'n8n',\n  'SideProject',\n  \n  // === YOUTUBE CREATOR COMMUNITIES ===\n  'PartneredYoutube',\n  'NewTubers',\n  'youtubers',\n  'SmallYTChannel',\n  'YouTubeCreators',\n  'letsplay',              // Gaming channels\n  'SmallYoutubers',\n  \n  // === BLOGGING & SEO (DEAD LINKS GOLD MINE) ===\n  'Blogging',              // Main blogging community\n  'juststart',             // SEO/affiliate blog builders\n  'SEO',                   // SEO professionals\n  'content_marketing',     // Content marketers\n  'wordpresshelp',         // WordPress site owners\n  'BigSEO',                // Professional SEOs\n  'TechSEO',               // Technical SEO folks\n  'Wordpress',             // WordPress users\n  \n  // === AFFILIATE MARKETING ===\n  // 'affiliatemarketing',  // YOU'RE BANNED - SKIP\n  'AffiliateMarket',       // Alternative\n  'AmazonAffiliate',       // Amazon Associates\n  'AffiliateMarketting',   // Typo version (yes it exists)\n  \n  // === AUTOMATION & PRODUCTIVITY ===\n  'Automate',\n  'nocode',\n  'zapier',\n  'Entrepreneur',          // YOU'RE BANNED BUT TRY CAREFULLY\n  'growmybusiness',\n  'SaaS',\n  'productivity',\n  'selfhosted',            // Self-hosters who'd use n8n\n  \n  // === CONTENT CREATION ===\n  'ContentCreation',\n  'videography',\n  'VideoEditing',\n  'podcasting',            // Podcasters often have YouTube\n  'Twitch',                // Streamers with YouTube backup\n  \n  // === FREELANCE & SIDE HUSTLE ===\n  'freelance',\n  'Freelancers',\n  'sidehustle',\n  'sweatystartup',\n  'solopreneur',\n  'smallbusiness',\n  \n  // === MONEY-FOCUSED ===\n  'making_money_online',\n  'WorkOnline',\n  'beermoney',\n  'beermoneyuk',\n  \n  // === E-COMMERCE (Also have link issues) ===\n  'ecommerce',\n  'shopify',\n  'FulfillmentByAmazon',   // FBA sellers with blogs\n  \n  // === DIGITAL NOMAD & REMOTE ===\n  'digitalnomad',\n  'remotework',\n  \n  // === NICHE BUT HIGH-VALUE ===\n  'IMadeThis',             // Builders showing projects\n  'indiebiz',\n  'Flipping',\n  'marketing',             // General marketing\n  'webdev',                // Web devs managing sites\n  'web_design'             // Designers with portfolio blogs\n];\n\nconst queries = [\n  // === HIGH-INTENT YOUTUBE AUTOMATION ===\n  \"youtube automation\",\n  \"automate youtube channel\",\n  \"youtube automation tools\",\n  \"automated youtube channel\",\n  \"youtube automation workflow\",\n  \"best youtube automation software\",\n  \"youtube automation for beginners\",\n  \n  // === COMMENT MANAGEMENT (Your core product) ===\n  \"youtube comment management\",\n  \"manage youtube comments\",\n  \"automate youtube comments\",\n  \"reply to youtube comments automatically\",\n  \"youtube comment spam\",\n  \"overwhelmed by youtube comments\",\n  \"youtube comment moderation\",\n  \"bulk reply youtube comments\",\n  \n  // === CONTENT CREATION PAIN ===\n  \"struggling with youtube\",\n  \"content creation burnout\",\n  \"struggling with content creation\",\n  \"tired of creating content\",\n  \"content creation too time consuming\",\n  \"consistent youtube posting\",\n  \"youtube content calendar automation\",\n  \"batch create youtube content\",\n  \n  // === DESCRIPTION/AFFILIATE AUTOMATION ===\n  \"affiliate link management youtube\",\n  \"update youtube descriptions automatically\",\n  \"bulk update video descriptions\",\n  \"manage affiliate links youtube\",\n  \"automate youtube descriptions\",\n  \"change all youtube video descriptions\",\n  \n  // === FACELESS/SCALING OPPORTUNITIES ===\n  \"faceless youtube channel\",\n  \"automate faceless channel\",\n  \"faceless youtube automation\",\n  \"scale youtube channel\",\n  \"youtube growth automation\",\n  \"multiple youtube channels management\",\n  \"run youtube channel hands free\",\n  \n  // === PASSIVE INCOME ANGLE ===\n  \"passive income youtube\",\n  \"automated income streams\",\n  \"make money while sleeping\",\n  \"automated side hustle\",\n  \"youtube passive income automation\",\n  \"monetize youtube automatically\",\n  \n  // === TIME/PRODUCTIVITY PAIN ===\n  \"no time for youtube\",\n  \"youtube taking too much time\",\n  \"automate youtube workflow\",\n  \"youtube time management\",\n  \"efficient youtube channel management\",\n  \n  // === ENGAGEMENT AUTOMATION ===\n  \"youtube engagement automation\",\n  \"automate youtube replies\",\n  \"increase youtube engagement\",\n  \"youtube community management\",\n  \"automate youtube interactions\",\n  \n  // === N8N SPECIFIC ===\n  \"n8n youtube automation\",\n  \"n8n workflows for youtube\",\n  \"automate youtube with n8n\",\n  \"n8n content creation\",\n  \n  // === MONETIZATION FOCUS ===\n  \"youtube monetization help\",\n  \"increase youtube revenue\",\n  \"optimize youtube earnings\",\n  \"youtube affiliate marketing automation\",\n  \"monetize small youtube channel\",\n  \n  // === SOCIAL MEDIA CROSS-POST ===\n  \"automate content posting\",\n  \"repurpose youtube content\",\n  \"youtube to social media automation\",\n  \"cross post youtube content\",\n  \n  // === COMPETITOR ANGLE ===\n  \"alternative to youtube automation tools\",\n  \"cheap youtube automation\",\n  \"affordable youtube automation\",\n  \"diy youtube automation\",\n  \n  // === SPECIFIC USE CASES ===\n  \"automate youtube shorts\",\n  \"bulk upload youtube videos\",\n  \"schedule youtube content\",\n  \"youtube seo automation\",\n  \"automate youtube thumbnails\",\n  \"youtube analytics automation\",\n  \n  // ========================================\n  // === DEAD LINKS & BLOG AUTOMATION ===\n  // ========================================\n  \n  // === BROKEN LINKS PAIN (HIGH INTENT) ===\n  \"broken affiliate links\",\n  \"dead amazon links\",\n  \"affiliate links not working\",\n  \"update old blog links\",\n  \"fix broken links blog\",\n  \"amazon affiliate links dead\",\n  \"product links broken\",\n  \"outdated affiliate products\",\n  \"changed affiliate program\",\n  \"update youtube descriptions bulk\",\n  \"broken links youtube\",\n  \"old video descriptions\",\n  \"404 errors blog\",\n  \"broken links hurting seo\",\n  \n  // === LINK MANAGEMENT PAIN ===\n  \"manage affiliate links\",\n  \"track affiliate links\",\n  \"affiliate link management tool\",\n  \"update links across website\",\n  \"bulk update affiliate links\",\n  \"change all product links\",\n  \"affiliate link rot\",\n  \"link management wordpress\",\n  \n  // === BLOG/SEO SPECIFIC ===\n  \"old blog posts not converting\",\n  \"update old blog content\",\n  \"refresh old articles\",\n  \"fix 404 errors blog\",\n  \"monetize old blog posts\",\n  \"revive old content\",\n  \"update blog affiliate links\",\n  \"wordpress broken links\",\n  \"broken link checker wordpress\",\n  \n  // === YOUTUBE DESCRIPTION SPECIFIC ===\n  \"update all youtube descriptions\",\n  \"change video descriptions\",\n  \"bulk edit youtube descriptions\",\n  \"youtube description automation\",\n  \"update affiliate links youtube\",\n  \"change product links videos\",\n  \n  // === AMAZON ASSOCIATES PAIN ===\n  \"amazon affiliate conversion dropped\",\n  \"amazon links not working\",\n  \"amazon affiliate link issues\",\n  \"update amazon product links\",\n  \"amazon discontinued products\",\n  \"find replacement amazon products\",\n  \"amazon affiliate earnings down\",\n  \n  // === MIGRATION/CHANGE PAIN ===\n  \"switched affiliate networks\",\n  \"changed from clickbank\",\n  \"moved to different program\",\n  \"new affiliate program migration\",\n  \"update links new platform\",\n  \n  // === CONTENT REFRESH ===\n  \"refresh old youtube videos\",\n  \"update old content strategy\",\n  \"repurpose old blog posts\",\n  \"monetize existing content\",\n  \"passive income from old content\",\n  \"update old wordpress posts\",\n  \n  // === TECHNICAL SEO ===\n  \"fix broken links automatically\",\n  \"automate link checking\",\n  \"301 redirect affiliate links\",\n  \"wordpress automation plugins\",\n  \n  // === TIME/SCALE PAIN (Works for both niches) ===\n  \"too many videos to update\",\n  \"hundreds of blog posts to fix\",\n  \"no time update old content\",\n  \"scale affiliate marketing\",\n  \"automate content updates\",\n  \"bulk editing wordpress\",\n  \n  // === REVENUE LOSS PAIN ===\n  \"lost affiliate commissions\",\n  \"passive income dropped\",\n  \"old content not earning\",\n  \"revenue from old posts\",\n  \"maximize old content earnings\",\n  \"affiliate earnings decreased\",\n  \n  // === WORDPRESS AUTOMATION ===\n  \"wordpress plugin broken links\",\n  \"automate wordpress updates\",\n  \"wordpress bulk editing\",\n  \"wordpress affiliate management\",\n  \"wordpress automation\",\n  \n  // === MULTI-PLATFORM PAIN ===\n  \"manage multiple blogs\",\n  \"multiple youtube channels management\",\n  \"cross-platform link updates\",\n  \"sync affiliate links platforms\",\n  \n  // === PRODUCT RESEARCH ===\n  \"find new affiliate products\",\n  \"replace discontinued products\",\n  \"product research automation\",\n  \"update product recommendations\",\n  \n  // === BLOG MONETIZATION ===\n  \"blog not making money\",\n  \"increase blog revenue\",\n  \"monetize blog traffic\",\n  \"blog affiliate income\",\n  \"blog passive income\"\n];\n\n// More sophisticated selection with time-based variation\nconst getRandomQuery = () => {\n  const hour = new Date().getHours();\n  \n  // Weight certain queries during business hours (9-5 local)\n  if (hour >= 9 && hour <= 17) {\n    // Higher chance of business/productivity queries\n    const businessQueries = queries.filter(q => \n      q.includes('automation') || \n      q.includes('time') || \n      q.includes('scale') ||\n      q.includes('manage') ||\n      q.includes('bulk') ||\n      q.includes('broken')\n    );\n    if (Math.random() > 0.3 && businessQueries.length > 0) {\n      return businessQueries[Math.floor(Math.random() * businessQueries.length)];\n    }\n  }\n  \n  // Default: random from all queries\n  return queries[Math.floor(Math.random() * queries.length)];\n};\n\n// Return one search per subreddit with smart query selection\nconst randomQuery = getRandomQuery();\n\nreturn subreddits.map(sub => ({\n  json: {\n    Search_Query: randomQuery,\n    Subreddit: sub,\n    Timestamp: new Date().toISOString(),\n    QueryCategory: randomQuery.includes('comment') ? 'comment_mgmt' :\n                   randomQuery.includes('faceless') ? 'faceless' :\n                   randomQuery.includes('passive') ? 'passive_income' :\n                   randomQuery.includes('affiliate') || randomQuery.includes('broken') || randomQuery.includes('dead') ? 'affiliate_links' :\n                   randomQuery.includes('blog') || randomQuery.includes('wordpress') ? 'blog_seo' : 'general'\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1568,
+        288
+      ],
+      "id": "2a02027e-c7af-4a36-88e6-12262246a7c6",
+      "name": "Code in JavaScript3",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "14BYLMvTpFBZOPHXxX3PoNkAgYCS_BaKGcnoouP4eQvI",
+          "mode": "list",
+          "cachedResultName": "Scraped Reddit Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14BYLMvTpFBZOPHXxX3PoNkAgYCS_BaKGcnoouP4eQvI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14BYLMvTpFBZOPHXxX3PoNkAgYCS_BaKGcnoouP4eQvI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -672,
+        96
+      ],
+      "id": "dd665137-f083-46c0-99f8-5a85ee27ffba",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get new posts from filter\nconst newPosts = $('Code in JavaScript2').all();\n\n// Get existing posts from Google Sheets\nconst existingPosts = $('Get row(s) in sheet').all();\n\n// Extract existing post URLs into a Set for fast lookup\nconst existingUrls = new Set(\n  existingPosts.map(item => item.json.Post_url)\n);\n\n// Filter out posts we've already processed\nconst uniquePosts = newPosts.filter(item => {\n  const url = item.json.post_url;\n  return !existingUrls.has(url);\n});\n\nconsole.log(`Found ${newPosts.length} filtered posts`);\nconsole.log(`${existingUrls.size} posts already in sheet`);\nconsole.log(`${uniquePosts.length} new unique posts to process`);\n\nreturn uniquePosts;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        96
+      ],
+      "id": "fbacb0ba-2786-4a1f-a7b3-a1716646ad78",
+      "name": "Code in JavaScript4",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1792,
+        784
+      ],
+      "id": "1263d0db-d6ed-41cb-953b-46650a49c05e",
+      "name": "Social Prospector Command"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2ec37b89-9898-468a-953e-3650d340a13e",
+              "leftValue": "={{ $json.title }}",
+              "rightValue": "''",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -224,
+        96
+      ],
+      "id": "7a327f7d-4693-4033-afe6-6d2586b8bcde",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "No more Reddit data to scrape. Try again later.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        192
+      ],
+      "id": "db6f4697-5b84-40ca-9df4-b1e9d5f8d384",
+      "name": "Sent Successfully!",
+      "webhookId": "b1362959-c345-4ea2-a0d2-96b727ce5739",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1344,
+        288
+      ],
+      "id": "576b92dd-68a5-4a65-9e7e-5dde3fc9c224",
+      "name": "Loop Over Items",
+      "executeOnce": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        96
+      ],
+      "id": "5a0e0053-d9aa-4a7f-b3b8-7d2b821a4728",
+      "name": "Done Parsing"
+    },
+    {
+      "parameters": {
+        "jsCode": "const qualified = [];\nconst rejectionLog = [];\n\nconsole.log('=== DATA EXPLORATION ===');\nconsole.log('Total input items:', $input.all().length);\n\nlet allResults = [];\n\n// Collect all tweets from input\nfor (const item of $input.all()) {\n  const searchData = item.json;\n  \n  if (searchData.data && Array.isArray(searchData.data)) {\n    allResults = allResults.concat(searchData.data);\n  } else {\n    console.log('No data array found in this input item');\n  }\n}\n\nconsole.log('Total tweets collected:', allResults.length);\n\nif (allResults.length === 0) {\n  console.log('ERROR: No tweets found in any input item!');\n  return [];\n}\n\n// Process all tweets\nfor (const tweet of allResults) {\n  const url = `https://x.com/i/web/status/${String(tweet.id)}`;\n  const text = tweet.text.toLowerCase();\n  const description = tweet.text; \n  const title = tweet.text.substring(0, 60);\n\n  const reject = (reason) => {\n    rejectionLog.push({\n      url: url.substring(0, 50),\n      reason: reason,\n      title: title\n    });\n    return false;\n  };\n\n  if (text.includes('algonovalabs')) continue;\n  if (['2020','2021','2022'].some(year => text.includes(year))) continue;\n  if (text.length < 50) continue;\n  if (['join our early access','sign up now','limited spots','dm for price','make money fast'].some(s => text.includes(s))) continue;\n  if (!url.includes('/status/') && !url.includes('/intent/')) continue;\n\n  let score = 0;\n  let engagementType = 'SHOWCASE';\n\n  const questionWords = ['how do i','how to','how can i','how should i','what is the best','which tool','anyone know','can someone help','does anyone','help me','can\\'t figure out','why is'];\n  const has_question = questionWords.some(q => text.includes(q)) || text.includes('?');\n  if (has_question) { score += 25; engagementType='QUESTION'; }\n\n  const painWords = ['struggling','frustrated','stuck','not working','error','issue','problem','failing','doesn\\'t work','broken'];\n  const is_pain_point = painWords.some(p => text.includes(p));\n  if (is_pain_point && engagementType==='SHOWCASE') engagementType='PAIN_POINT'; \n  if (is_pain_point) score+=20;\n\n  const adviceWords = ['looking for','recommend','suggestion','advice','best way','should i use','alternative','better than','vs','choosing between'];\n  const is_seeking_advice = adviceWords.some(a => text.includes(a));\n  if (is_seeking_advice && engagementType==='SHOWCASE') engagementType='SEEKING_ADVICE'; \n  if (is_seeking_advice) score+=18;\n\n  const tutorialWords = ['tutorial','guide','how it works','complete','learn','build','created','wrote'];\n  const is_tutorial = tutorialWords.some(t => text.includes(t));\n  if (is_tutorial && engagementType==='SHOWCASE') engagementType='TUTORIAL_SHOWCASE'; \n  if (is_tutorial) score+=12;\n\n  const businessContext = ['n8n','zapier','make.com','workflow','automation','api','integration','no-code','low-code','agent'];\n  if (businessContext.some(b => text.includes(b))) score+=10;\n\n  if (url.includes('/status/')) score+=5;\n  if (description.length>80) score+=5;\n  if (text.startsWith('rt @')) score-=10;\n\n  const minScore = 20;\n  if (score >= minScore) {\n    qualified.push({\n      json: {\n        url,\n        title,\n        description,\n        full_text: tweet.text,\n        author_id: tweet.author_id,\n        engagement_score: score,\n        engagement_type: engagementType,\n        priority: score >= 40 ? 'ULTRA_HIGH' : score >=30 ? 'HIGH' : score >=23 ? 'MEDIUM':'LOW',\n        has_question,\n        is_pain_point,\n        is_seeking_advice,\n        is_tutorial,\n        source: 'twitter_api'\n      }\n    });\n  } else {\n    reject(`low_score_${score}_type_${engagementType}`);\n  }\n}\n\n// === DEDUPLICATION ===\nconst seen = new Set();\nconst deduplicated = qualified.filter(item => {\n  const key = `${item.json.author_id}|${item.json.full_text}`;\n  if (seen.has(key)) return false;\n  seen.add(key);\n  return true;\n});\n\ndeduplicated.sort((a,b)=>b.json.engagement_score - a.json.engagement_score);\n\nconsole.log('Qualified after filtering:', deduplicated.length);\nconsole.log('Total rejected:', rejectionLog.length);\n\nreturn deduplicated.slice(0,15);\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1120,
+        784
+      ],
+      "id": "df7b8b00-818d-4f40-931f-e1b4741cbd67",
+      "name": "Quality Test",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const newPosts = $('Quality Test').all();\nconst existingPosts = $('X Data').all();\n\nconsole.log('New posts from Quality Test:', newPosts.length);\nconsole.log('Existing posts from spreadsheet:', existingPosts.length);\nconsole.log('First existing post if any:', existingPosts[0]?.json);\n\n// If spreadsheet is empty, existingUrls will be an empty Set\nconst existingUrls = new Set(\n  existingPosts.map(item => item.json.Post_url)\n);\n\nconsole.log('Existing URLs:', Array.from(existingUrls));\n\nconst uniquePosts = newPosts.filter(item => {\n  const url = item.json.url;\n  const exists = existingUrls.has(url);\n  if (exists) {\n    console.log(`Duplicate found: ${url}`);\n  }\n  return !exists;\n});\n\nconsole.log(`Found ${newPosts.length} filtered posts`);\nconsole.log(`${existingUrls.size} posts already in sheet`);\nconsole.log(`${uniquePosts.length} new unique posts to process`);\n\nreturn uniquePosts;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -672,
+        784
+      ],
+      "id": "f58ade20-1c23-4295-ae79-298b1bb023d0",
+      "name": "Code in JavaScript6",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1wycWaJ5ek5O1F0s4PB_mut_XXLCIb4D4pyjguyWi-e8",
+          "mode": "list",
+          "cachedResultName": "Scraped X Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wycWaJ5ek5O1F0s4PB_mut_XXLCIb4D4pyjguyWi-e8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wycWaJ5ek5O1F0s4PB_mut_XXLCIb4D4pyjguyWi-e8/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -896,
+        784
+      ],
+      "id": "4258fddd-ac76-4397-96a4-4d8a4666f6ef",
+      "name": "X Data",
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.posts_json }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "={\n  \"system_message\": \"You will receive {{ $json.post_count }} X (Twitter) posts as a JSON array.\n\nFor EACH post, generate TWO things:\n\n1. A SHORT, casual X reply (for public replies - optional)\n2. A DIRECT MESSAGE (for private outreach - primary use)\n\n=== X REPLY GUIDELINES ===\n\n- Casual like you're scrolling X at 2am\n- Vary sentence structure, use conversational fillers: \\\"honestly\\\", \\\"ngl\\\", \\\"tbh\\\", \\\"fr\\\"\n- Sometimes start mid-thought: \\\"Yo,\\\", \\\"Wait,\\\", \\\"Hold up,\\\"\n- 1-3 sentences MAX, keep it snackable for X\n- Don't always mention automation - be natural\n- Reference specific things from their tweet\n- Only 30% should have subtle follow hints\n\nSUBTLY FOLLOW HINTS (natural, not CTA):\n- \\\"Following for more like this\\\"\n- \\\"Your content hits different - followed\\\"\n- \\\"Keep this content coming\\\"\n- \\\"More of this please 👀\\\"\n\n=== DM MESSAGE GUIDELINES ===\n\nSTRUCTURE:\n1. Acknowledge their specific automation/n8n/tech pain from tweet\n2. Share brief personal experience (1 sentence)\n3. Mention you build automation systems that solve this\n4. Include clear CTA with link: \\\"Check my stuff: selwynbuilds.com\\\"\n5. Offer to help/show setup\n\nTONE:\n- Direct but casual (X DMs are more personal)\n- Helpful, not salesy - be the expert who shares\n- Can mention \\\"I automate this for myself/clients\\\"\n- ALWAYS include selwynbuilds.com link\n- Keep under 60 words total (X character limit vibe)\n\n=== CRITICAL: WHEN TO SET should_reply = FALSE (BE VERY STRICT) ===\n\n❌ ALWAYS FALSE for these contexts:\n\nPEOPLE/COMMUNITY POSTS:\n- \\\"looking for co-founder\\\"\n- \\\"need a team\\\"\n- \\\"hiring for position\\\"\n- \\\"looking for collaborators\\\"\n→ They need PEOPLE, not tools.\n\nLEGAL/POLICY ISSUES:\n- \\\"account suspended\\\"\n- \\\"copyright issue\\\"\n- \\\"DMCA takedown\\\"\n- \\\"reporting abuse\\\"\n→ These are platform issues, not automation.\n\nWRONG INDUSTRY:\n- \\\"e-commerce sales\\\"\n- \\\"crypto trading\\\"\n- \\\"forex signals\\\"\n- \\\"real estate investing\\\"\n→ Your automation is for CONTENT/SYSTEMS, not unrelated fields.\n\nGENERIC/MINDSET:\n- \\\"need motivation\\\"\n- \\\"can't stay consistent\\\"\n- \\\"procrastination\\\"\n- Generic inspirational quotes\n→ Psychology issues, not automation.\n\nSPAM/PROMOTION:\n- OP promoting their own service aggressively\n- Affiliate links everywhere\n- Clear advertisement\n- Giveaway/engagement bait\n\n❌ Other automatic FALSE triggers:\n- MLM/pyramid schemes\n- Investment opportunities\n- OP is clearly advanced enterprise user\n- Tweet is just complaining with no actionable pain\n\n=== WHEN TO SET should_reply = TRUE ===\n\n✅ ONLY TRUE if tweet has automation/tech pain:\n\nBEST SIGNALS:\n✅ Mentions n8n, automation, workflows\n✅ \\\"spending X hours on [repetitive task]\\\"\n✅ \\\"manually doing [something automatable]\\\"\n✅ \\\"built automation but [problem]\\\"\n✅ \\\"looking for automation solutions\\\"\n✅ \\\"how to automate [specific thing]\\\"\n\nGOOD FIT:\n- Content creators talking about workflow pain\n- Developers discussing automation challenges\n- Tech people frustrated with manual processes\n- People already trying to automate but stuck\n\n=== RELEVANCE SCORING (1-10) ===\n\n10 = PERFECT FIT\n- Mentions n8n specifically\n- Already building automation\n- Asking for automation help\nExample: \\\"Migrating to n8n v2.0\\\"\n\n9 = EXCELLENT FIT\n- Clear automation pain\n- Mentions specific hours wasted\n- Open to solutions\nExample: \\\"Spending hours on manual workflows\\\"\n\n8 = VERY GOOD FIT\n- Tech/developer audience\n- Workflow frustration\n- Could use automation\nExample: \\\"Workflow issues driving me crazy\\\"\n\n7 = GOOD FIT\n- Content creator with scale problems\n- Managing multiple channels/systems\nExample: \\\"Running 3 channels manually\\\"\n\n6 = MODERATE FIT\n- Tech-adjacent, some process pain\n- Not specifically automation but could be\nExample: \\\"Too much manual work\\\"\n\n5 = WEAK FIT\n- Generic productivity\n- No specific tasks\nExample: \\\"How to be more efficient?\\\"\n\n4-1 = NOT RELEVANT\n- Wrong context/industry\n- No automation connection\n\n=== YOUR PERSONAL CONTEXT ===\n\nYou're @algonovalabs on X:\n- Filipino automation builder\n- Focus on \\\"real automation for people who actually ship\\\"\n- Share n8n workflows and practical systems\n- Building audience (subtly!)\n- Website: selwynbuilds.com\n\n=== CRITICAL RULES ===\n\n- Keep replies UNDER 280 characters (X limit)\n- Keep DMs under 60 words\n- Every DM MUST include selwynbuilds.com\n- Be EXTREMELY strict with should_reply - when in doubt, FALSE\n- Only true for automation/tech workflow pain\n- Subtly encourage follows in replies (natural, not pushy)\n- Save tokens: make responses concise but human\n- Remember: goal is audience growth through genuine help\n\n=== CRITICAL OUTPUT FORMAT ===\n\nReturn **ONLY** a JSON array with {{ $json.post_count }} items in this EXACT format:\n\n[\n  {\n    \\\"title\\\": \\\"exact title from input\\\",\n    \\\"post_url\\\": \\\"exact URL from input\\\",\n    \\\"reply\\\": \\\"short casual X reply (1-3 sentences)\\\",\n    \\\"dm_message\\\": \\\"personalized DM with CTA and link\\\",\n    \\\"relevance_score\\\": 7,\n    \\\"should_reply\\\": true\n  }\n]\n\n**DO NOT** include any other text, explanations, or formatting. Return ONLY the JSON array.\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        224,
+        688
+      ],
+      "id": "cfceee5a-7c4b-418a-97b9-dc6457cf49f5",
+      "name": "AI Agent1",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[\n  {\n    \"title\": \"exact title from input\",\n    \"post_url\": \"exact URL from input\",\n    \"reply\": \"casual comment for public reply (optional use)\",\n    \"dm_message\": \"personalized DM with CTA and link (PRIMARY use)\",\n    \"relevance_score\": 7,\n    \"should_reply\": true\n  }\n]"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        912
+      ],
+      "id": "19a5e310-acb3-4bd4-a842-4babdf121abe",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "title"
+            },
+            {
+              "fieldToAggregate": "url"
+            },
+            {
+              "fieldToAggregate": "selftext"
+            },
+            {
+              "fieldToAggregate": "full_text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        688
+      ],
+      "id": "bacc21df-cd47-45a6-8351-f9cae4dd79ea",
+      "name": "Aggregate1",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the aggregated arrays\nconst titles = $json.title || [];\nconst urls = $json.url || [];\nconst full_texts = $json.full_text || [];\n\n// Function to clean text - remove HTML tags and decode HTML entities\nfunction cleanText(text) {\n  if (!text) return '';\n  \n  // Remove HTML tags\n  let cleaned = text.replace(/<[^>]*>/g, '');\n  \n  // Replace common HTML entities\n  cleaned = cleaned\n    .replace(/&quot;/g, '\"')\n    .replace(/&apos;/g, \"'\")\n    .replace(/&amp;/g, '&')\n    .replace(/&lt;/g, '<')\n    .replace(/&gt;/g, '>')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&#39;/g, \"'\")\n    .replace(/&#34;/g, '\"');\n  \n  // Remove extra whitespace\n  cleaned = cleaned.replace(/\\s+/g, ' ').trim();\n  \n  return cleaned;\n}\n\n// Function to create a clean description\nfunction createDescription(text, maxLength = 120) {\n  if (!text) return '';\n  const cleaned = cleanText(text);\n  return cleaned.length > maxLength \n    ? cleaned.substring(0, maxLength) + '...' \n    : cleaned;\n}\n\n// Combine into array of post objects with cleaned data\nconst posts = titles.map((title, index) => {\n  const rawFullText = full_texts[index] || '';\n  const cleanedFullText = cleanText(rawFullText);\n  \n  return {\n    title: cleanText(title || ''),\n    post_url: urls[index] || '',\n    full_text: cleanedFullText,\n    description: createDescription(rawFullText, 100), // Shorter description\n    // Optional: add character count for reference\n    char_count: cleanedFullText.length\n  };\n});\n\n// Calculate some stats\nconst totalChars = posts.reduce((sum, post) => sum + post.char_count, 0);\nconst avgChars = Math.round(totalChars / posts.length);\n\n// Return aggregated data\nreturn [{\n  json: {\n    posts_json: JSON.stringify(posts),\n    post_count: posts.length,\n    cleaned_char_count: totalChars,\n    avg_chars_per_post: avgChars,\n    summary: `Processed ${posts.length} posts (${totalChars.toLocaleString()} total chars)`\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        688
+      ],
+      "id": "1559901e-33ad-4bd3-8ac1-e4e32c978ba3",
+      "name": "Code in JavaScript7",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the AI Agent output\nconst aiOutput = $json.output;\n\n// Handle different output formats\nlet posts;\n\nif (Array.isArray(aiOutput)) {\n  // Already an array - use directly\n  posts = aiOutput;\n} else if (typeof aiOutput === 'string') {\n  // String response - need to parse\n  try {\n    // Remove markdown code fences if present\n    let cleaned = aiOutput\n      .replace(/```json\\n?/g, '')\n      .replace(/```\\n?/g, '')\n      .trim();\n    \n    posts = JSON.parse(cleaned);\n  } catch (e) {\n    console.error('Failed to parse AI output:', e);\n    console.error('Raw output:', aiOutput);\n    return [];\n  }\n} else if (typeof aiOutput === 'object' && aiOutput !== null) {\n  // Object response - might be wrapped\n  posts = aiOutput.posts || aiOutput.data || [aiOutput];\n} else {\n  console.error('Unexpected AI output format:', typeof aiOutput);\n  return [];\n}\n\n// Validate it's an array\nif (!Array.isArray(posts)) {\n  console.error('Expected array but got:', typeof posts);\n  return [];\n}\n\n// Add timestamp to each post\nconst timestamp = new Date().toISOString();\n\n// Return each post as a separate item for Google Sheets\nreturn posts.map(post => ({\n  json: {\n    \"Date & Time\": timestamp,\n    \"Title\": post.title || '',\n    \"Post_url\": post.post_url || '',\n    \"Reply\": post.reply || '',\n    \"DM_message\": post.dm_message || '',\n    \"Relevance_score\": post.relevance_score || 0,\n    \"Should_reply\": post.should_reply || false\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        688
+      ],
+      "id": "33a20666-f226-4f2a-856d-a3f6ee9d00bb",
+      "name": "Code in JavaScript8"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2ec37b89-9898-468a-953e-3650d340a13e",
+              "leftValue": "={{ $json.title }}",
+              "rightValue": "''",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -448,
+        784
+      ],
+      "id": "04e91948-16d5-468d-9a9d-d0d97a907e1d",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "chatId": "6472037679",
+        "text": "No more X data to scrape. Try again later.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -224,
+        880
+      ],
+      "id": "e831b8b4-3e58-4e5e-a224-3db125cfa2bb",
+      "name": "Sent Successfully!1",
+      "webhookId": "b1362959-c345-4ea2-a0d2-96b727ce5739",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "uH4mDEtyZeadnoI5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1wycWaJ5ek5O1F0s4PB_mut_XXLCIb4D4pyjguyWi-e8",
+          "mode": "list",
+          "cachedResultName": "Scraped X Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wycWaJ5ek5O1F0s4PB_mut_XXLCIb4D4pyjguyWi-e8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14BYLMvTpFBZOPHXxX3PoNkAgYCS_BaKGcnoouP4eQvI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $json.Title }}",
+            "Post_url": "={{ $json.Post_url }}",
+            "Reply": "={{ $json.Reply }}",
+            "Relevance_score": "={{ $json.Relevance_score }}",
+            "Should_reply": "={{ $json.Should_reply }}",
+            "Date & Time": "={{ $json[\"Date & Time\"] }}",
+            "Suggested_Message": "={{ $json.DM_message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date & Time",
+              "displayName": "Date & Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post_url",
+              "displayName": "Post_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reply",
+              "displayName": "Reply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Relevance_score",
+              "displayName": "Relevance_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Should_reply",
+              "displayName": "Should_reply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Suggested_Message",
+              "displayName": "Suggested_Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        800,
+        688
+      ],
+      "id": "56a8b951-f5b8-439c-aa4a-a7b19d05f8a4",
+      "name": "New X Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        240,
+        912
+      ],
+      "id": "9bff6a25-1375-4eb0-a3c7-8a3cc9f55797",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.twitter.com/2/tweets/search/recent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ $json.Search_Query }} -is:retweet"
+            },
+            {
+              "name": "max_results",
+              "value": "100"
+            },
+            {
+              "name": "tweet.fields",
+              "value": "author_id,created_at,public_metrics,conversation_id"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "766c76b0-dd3c-4a23-9cfa-99747ba38859",
+      "name": "X Recent Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -1792,
+        1104
+      ],
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "dklE5gKiMuvlfgJX",
+          "name": "X account | algonovalabs@gmail.com"
+        },
+        "httpBearerAuth": {
+          "id": "pCvotOHxYF29x8Um",
+          "name": "Bearer Auth account | X"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import datetime\n\n# === CLEAN SEARCH TERMS FOR APIFY ===\nsearch_terms = [\n    'n8n automation',\n    'workflow automation',\n    'zapier alternative',\n    'automation error',\n    'workflow issue',\n    'how to automate',\n    'automation help'\n]\n\n# Apify expects this JSON structure\napify_input = {\n    \"includeSearchTerms\": False,\n    \"maxItems\": 1000,\n    \"searchTerms\": search_terms,\n    \"sort\": \"Latest\"\n}\n\n# Return in n8n format\nreturn [{\n    'json': {\n        'Apify_Input': apify_input,\n        'Timestamp': str(datetime.datetime.utcnow())\n    }\n}]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1568,
+        784
+      ],
+      "id": "e3b002f9-468d-4511-98a6-4606be5f4081",
+      "name": "Code in Python (Beta)",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "# Using X Official API",
+        "height": 288,
+        "width": 336,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1920,
+        976
+      ],
+      "typeVersion": 1,
+      "id": "ca17f35e-9865-41e9-bd23-5a9e390b2155",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "Run actor and get dataset",
+        "actorId": {
+          "__rl": true,
+          "value": "nfp1fpt5gUlBwPcor",
+          "mode": "list",
+          "cachedResultName": "Twitter (X.com) Scraper Unlimited: No Limits (apidojo/twitter-scraper-lite)",
+          "cachedResultUrl": "https://console.apify.com/actors/nfp1fpt5gUlBwPcor/input"
+        },
+        "customBody": "={\n    \"includeSearchTerms\": false,\n    \"maxItems\": 1000,\n    \"searchTerms\": [\n        \"n8n automation\",\n        \"workflow automation\",\n        \"zapier alternative\",\n        \"automation error\",\n        \"workflow issue\",\n        \"how to automate\",\n        \"automation help\"\n    ],\n    \"sort\": \"Latest\"\n} "
+      },
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [
+        -1344,
+        784
+      ],
+      "id": "1936924f-5cd3-4c1c-96f8-6a90c43d315f",
+      "name": "Run an Actor and get dataset",
+      "credentials": {
+        "apifyApi": {
+          "id": "wq9rLBaaDPzl48FA",
+          "name": "Apify account | jaymeselwyn@gmail.com"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Reddit Posts": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Parse Reddit Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript4": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Social Prospector Command": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sent Successfully!",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Done Parsing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Done Parsing": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quality Test": {
+      "main": [
+        [
+          {
+            "node": "X Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript6": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "X Data": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript7": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript8": {
+      "main": [
+        [
+          {
+            "node": "New X Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sent Successfully!1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "X Recent Search": {
+      "main": [
+        []
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "Run an Actor and get dataset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run an Actor and get dataset": {
+      "main": [
+        [
+          {
+            "node": "Quality Test",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
+  }
+}
