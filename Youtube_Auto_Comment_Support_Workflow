@@ -3,50 +3,16 @@
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "comment_text = _input.first().json.text\ncomment_ID = _input.first().json.commentId\n\nPrompt = f\"\"\"\nComment: {comment_text}\n\nReturn a JSON object with:\n- reply: Your reply text\n- comment_ID: The comment ID\n\"\"\"\n\nreturn {\n    \"chatInput\": Prompt,\n    \"comment_text\": comment_text,\n    \"comment_ID\": comment_ID\n}\n"
+        "pythonCode": "comment_text = _input.first().json.text\ncomment_ID = _input.first().json.commentId\n\nPrompt = f\"\"\"\nComment: {comment_text}\n\nReturn a JSON object with:\n- reply: Your reply text\n- comment_ID: {_input.first().json.commentId}\n\"\"\"\n\nreturn {\n    \"chatInput\": Prompt,\n    \"comment_text\": comment_text,\n    \"comment_ID\": comment_ID\n}\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1344,
-        112
+        624,
+        128
       ],
-      "id": "8052ef47-0f37-466a-a3c0-e55bf79a434c",
+      "id": "f226a14c-bbc9-4955-a933-9649ada1f1f4",
       "name": "Code in Python (Beta)"
-    },
-    {
-      "parameters": {
-        "options": {
-          "systemMessage": "=You are an AI assistant representing AlgoNova Labs, a YouTube channel that creates mesmerizing AI-generated animated shorts featuring cute, cinematic cartoon characters in magical pastel worlds. Your content is inspired by Pixar/Disney aesthetics and focuses on delivering heartwarming, whimsical visual experiences.\n\n## Channel Identity\n- **Channel Name**: AlgoNova Labs\n- **Content Focus**: AI-generated animated shorts, cute character animations, magical storytelling, cinematic cartoon aesthetics\n- **Audience**: Animation enthusiasts, AI art lovers, people seeking wholesome/cozy content, digital artists, and families\n- **Vibe**: Magical, dreamy, heartwarming, innovative, creative\n\n## Your Role\nYou exist to engage with the community by responding to comments on our videos. Your goal is to foster a warm, magical community around our AI-generated art while showcasing enthusiasm for animation and AI creativity.\n\n## Tone Guidelines\n- **Warm & Welcoming**: Like a friendly animator excited to share their work\n- **Enthusiastic**: Passionate about AI art and animation\n- **Encouraging**: Support viewer creativity and curiosity\n- **Magical**: Use whimsical language that matches the content aesthetic\n- **Authentic**: Don't pretend to be human; you're AI helping AI art thrive\n\n## Response Strategy\n\n**When viewers compliment the art:**\n- Thank them genuinely and highlight specific techniques used\n- Share behind-the-scenes insights about the AI generation process\n- Encourage them to follow for more magical content\n\n**When viewers ask technical questions:**\n- Explain AI tools transparently (Gemini, Fal.AI, Veo3, etc.)\n- Share prompt engineering insights when appropriate\n- Direct them to resources if they want to create similar content\n\n**When viewers request specific content:**\n- Show excitement about their ideas\n- Note suggestions for future videos\n- Describe how AI makes diverse content possible\n\n**When viewers are skeptical about AI art:**\n- Acknowledge their perspective respectfully\n- Emphasize AI as a creative tool, not a replacement\n- Focus on the joy and accessibility it brings\n\n## What to AVOID\n- Generic responses like \"Thanks for watching!\" without substance\n- Pretending the content is hand-animated by humans\n- Overly corporate or salesy language\n- Ignoring negative feedback; address concerns thoughtfully\n- Long-winded explanations; keep replies concise (2-3 sentences max)\n\n## Examples of Good Replies\n\n**For: \"This is so adorable! 🥺💖\"**\n\"Thank you so much! ✨ The pastel magical garden theme in this one was generated with extra attention to sparkles and soft lighting. More dreamy animations coming soon!\"\n\n**For: \"How did you make this?\"**\n\"Great question! This was created using AI image generation (Gemini 2.0) and AI video tools (Veo3) with carefully crafted prompts for that Pixar-style look. The magic is in the prompt engineering! 🎨✨\"\n\n**For: \"AI art isn't real art\"**\n\"I respect your view! For us, AI is a tool that makes animation accessible to creators like me. The storytelling, composition, and vision still require creativity. Appreciate you watching! 🌸\"\n\n**For: \"Can you make a video about [specific theme]?\"**\n\"Love that idea! 💫 [Theme] would look magical in our animated style. Noted for a future video—stay tuned!\"\n\n**For: \"Which AI tools do you use?\"**\n\"We use a combo of Gemini for image gen, Veo3 for video, and custom n8n workflows for automation. All about that AI-powered creativity! 🚀\"\n\n## Your Tasks\n1. Read the incoming comment carefully and understand the sentiment/intent\n2. Generate a reply that's authentic, adds value, and matches the magical vibe\n3. Keep responses between 1-3 sentences unless complex questions require more\n4. Include relevant emojis sparingly (✨🌸💫🎨 fit the aesthetic)\n5. Always include the exact comment ID in your JSON output\n\n## Output Format\nReturn **only** JSON in this format:\n{\n  \"reply\": \"<your reply here>\",\n  \"comment_ID\": \"{{ $json.comment_ID }}\"\n}\n\nRemember: You're building a community around AI-generated beauty. Be warm, be magical, be real about what you are. Every reply should make someone smile or spark curiosity. ✨"
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        -1120,
-        112
-      ],
-      "id": "1b524a40-d993-4e1c-8646-6a76ba0778c1",
-      "name": "AI Agent"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        -1056,
-        336
-      ],
-      "id": "6f15f5ad-6ab8-4599-96d7-1acca4eb7f93",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "LuvQlz3qmejdhs7S",
-          "name": "selwyngwapo90_Youtube Automation Related"
-        }
-      }
     },
     {
       "parameters": {
@@ -71,15 +37,15 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2464,
-        112
+        -496,
+        256
       ],
-      "id": "67d4adfe-940c-4fbb-a85c-fa15cbfbb1a0",
+      "id": "b2557ec8-3913-42cd-b208-f897cff36a86",
       "name": "HTTP Request",
       "credentials": {
         "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account_AlgoNovaLabs"
+          "id": "bulw9qSSLviW2aW9",
+          "name": "YouTube account | Selwyn Builds"
         }
       }
     },
@@ -93,15 +59,15 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -2688,
-        112
+        -720,
+        256
       ],
-      "id": "600aab56-913d-4393-8761-ad24d3bed158",
+      "id": "af8ae6bb-f2db-461c-af45-2a7e19ca1d17",
       "name": "Get many videos",
       "credentials": {
         "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account_AlgoNovaLabs"
+          "id": "bulw9qSSLviW2aW9",
+          "name": "YouTube account | Selwyn Builds"
         }
       }
     },
@@ -110,8 +76,8 @@
         "rule": {
           "interval": [
             {
-              "field": "hours",
-              "hoursInterval": 5
+              "field": "cronExpression",
+              "expression": "0 */5 * * *"
             }
           ]
         }
@@ -119,24 +85,24 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -2912,
-        112
+        -944,
+        256
       ],
-      "id": "57168583-3d98-4263-b2b4-1f88ba19f83a",
+      "id": "7ff0c9cc-6813-4a03-a6b3-9046850341eb",
       "name": "Schedule Trigger"
     },
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "my_channel_id = \"UCr2Q0TirO6tHV-ZTEFNzfGQ\"\nunique_comments = {}\n\nfor item in items:\n    data = item[\"json\"]\n    responses = data if isinstance(data, list) else [data]\n\n    for response in responses:\n        for thread in response.get(\"items\", []):\n            # Check if we can reply to this thread\n            thread_snippet = thread.get(\"snippet\", {})\n            can_reply = thread_snippet.get(\"canReply\", True)\n            \n            # Top-level comment\n            top = thread_snippet.get(\"topLevelComment\", {})\n            cid = top.get(\"id\")\n            snippet = top.get(\"snippet\", {})\n            author_id = snippet.get(\"authorChannelId\", {}).get(\"value\")\n            ctext = snippet.get(\"textDisplay\")\n\n            # ✅ Only add if can reply AND not your comment\n            if cid and ctext and author_id != my_channel_id and can_reply:\n                unique_comments[cid] = ctext\n\n            # Replies to comments (these we can also reply to)\n            if can_reply:  # ✅ Check if thread allows replies\n                for reply in thread.get(\"replies\", {}).get(\"comments\", []):\n                    rcid = reply.get(\"id\")\n                    r_snip = reply.get(\"snippet\", {})\n                    rtext = r_snip.get(\"textDisplay\")\n                    r_author_id = r_snip.get(\"authorChannelId\", {}).get(\"value\")\n\n                    if rcid and rtext and r_author_id != my_channel_id:\n                        unique_comments[rcid] = rtext\n\n# Return in n8n format\nreturn [{\"json\": {\"commentId\": cid, \"text\": text}} for cid, text in unique_comments.items()]\n"
+        "pythonCode": "my_channel_id = \"UCKKJhi5GUjxENIWFErKWy6Q\"\nunique_comments = {}\n\nfor item in items:\n    data = item[\"json\"]\n    responses = data if isinstance(data, list) else [data]\n\n    for response in responses:\n        for thread in response.get(\"items\", []):\n            # Check if we can reply to this thread\n            thread_snippet = thread.get(\"snippet\", {})\n            can_reply = thread_snippet.get(\"canReply\", True)\n            \n            # Top-level comment\n            top = thread_snippet.get(\"topLevelComment\", {})\n            cid = top.get(\"id\")\n            snippet = top.get(\"snippet\", {})\n            author_id = snippet.get(\"authorChannelId\", {}).get(\"value\")\n            ctext = snippet.get(\"textDisplay\")\n\n            # ✅ Only add if can reply AND not your comment\n            if cid and ctext and author_id != my_channel_id and can_reply:\n                unique_comments[cid] = ctext\n\n            # Replies to comments (these we can also reply to)\n            if can_reply:  # ✅ Check if thread allows replies\n                for reply in thread.get(\"replies\", {}).get(\"comments\", []):\n                    rcid = reply.get(\"id\")\n                    r_snip = reply.get(\"snippet\", {})\n                    rtext = r_snip.get(\"textDisplay\")\n                    r_author_id = r_snip.get(\"authorChannelId\", {}).get(\"value\")\n\n                    if rcid and rtext and r_author_id != my_channel_id:\n                        unique_comments[rcid] = rtext\n\n# Return in n8n format\nreturn [{\"json\": {\"commentId\": cid, \"text\": text}} for cid, text in unique_comments.items()]\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -2240,
-        112
+        -272,
+        256
       ],
-      "id": "363f90a5-1dd6-4f1d-981a-be2b00178a98",
+      "id": "50d3276d-9539-45d6-bffe-367bd7e49f53",
       "name": "Code in Python (Beta)1"
     },
     {
@@ -146,10 +112,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -2016,
-        112
+        -48,
+        256
       ],
-      "id": "94b4a219-dc55-4d4f-bc7e-bf724b3be16b",
+      "id": "9755abaa-62cb-4bc4-8f3a-66c1589a97e0",
       "name": "Loop Over Items"
     },
     {
@@ -157,15 +123,15 @@
         "operation": "rowNotExists",
         "dataTableId": {
           "__rl": true,
-          "value": "qZwYUmgoEIL7D9c1",
+          "value": "baVu7hYSNP4TgDsu",
           "mode": "list",
-          "cachedResultName": "Saved_Comment_IDs",
-          "cachedResultUrl": "/projects/9d6VQ33EHkH1tRpt/datatables/qZwYUmgoEIL7D9c1"
+          "cachedResultName": "Comment_ID_List",
+          "cachedResultUrl": "/projects/pOP3ATtXLDsPCi3M/datatables/baVu7hYSNP4TgDsu"
         },
         "filters": {
           "conditions": [
             {
-              "keyName": "Comment_ID",
+              "keyName": "Youtube_ID",
               "keyValue": "={{ $json.commentId }}"
             }
           ]
@@ -174,10 +140,10 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        -1792,
-        32
+        176,
+        128
       ],
-      "id": "205f753d-1210-4d22-abc6-1d87e592d300",
+      "id": "748166f9-224a-424a-acd4-928da1cbae4c",
       "name": "If row does not exist",
       "alwaysOutputData": true
     },
@@ -196,7 +162,7 @@
               "leftValue": "={{ $json.commentId }}",
               "rightValue": "",
               "operator": {
-                "type": "boolean",
+                "type": "string",
                 "operation": "exists",
                 "singleValue": true
               }
@@ -210,10 +176,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -1568,
-        112
+        400,
+        128
       ],
-      "id": "aab2e90d-1f62-4bb5-9262-a91478afa376",
+      "id": "b8b8810f-f638-4553-94f5-f6fb9ba82a4d",
       "name": "If"
     },
     {
@@ -221,10 +187,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -1792,
-        -160
+        176,
+        -64
       ],
-      "id": "b6a37aa5-0f0a-4240-b047-845478b5fc2c",
+      "id": "3ea9906c-86e1-4b74-894e-68657368f7c7",
       "name": "No Operation, do nothing"
     },
     {
@@ -235,33 +201,33 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -768,
-        112
+        1200,
+        128
       ],
-      "id": "656303fd-2918-4b03-93cc-231ca3acef51",
+      "id": "87f5c353-4084-4a7b-88e1-ce851da1a7df",
       "name": "Code in Python (Beta)2"
     },
     {
       "parameters": {
         "dataTableId": {
           "__rl": true,
-          "value": "qZwYUmgoEIL7D9c1",
+          "value": "baVu7hYSNP4TgDsu",
           "mode": "list",
-          "cachedResultName": "Saved_Comment_IDs",
-          "cachedResultUrl": "/projects/9d6VQ33EHkH1tRpt/datatables/qZwYUmgoEIL7D9c1"
+          "cachedResultName": "Comment_ID_List",
+          "cachedResultUrl": "/projects/pOP3ATtXLDsPCi3M/datatables/baVu7hYSNP4TgDsu"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "Comment_ID": "={{ $json.comment_ID }}"
+            "Youtube_ID": "={{ $json.comment_ID }}"
           },
           "matchingColumns": [
-            "Comment_ID"
+            "Youtube_ID"
           ],
           "schema": [
             {
-              "id": "Comment_ID",
-              "displayName": "Comment_ID",
+              "id": "Youtube_ID",
+              "displayName": "Youtube_ID",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -278,10 +244,10 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        -544,
-        208
+        1424,
+        224
       ],
-      "id": "e91a1be9-8a5a-4673-b00e-8320bf4afe88",
+      "id": "f2347b6f-dfc3-44c3-8f6c-38d595276f1a",
       "name": "Insert row"
     },
     {
@@ -289,10 +255,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -320,
-        208
+        1648,
+        224
       ],
-      "id": "ffc3a8b2-7b32-4b91-8fd1-538c7c1e5a7f",
+      "id": "4c619a64-1c14-41e7-a150-6e9f1fab9032",
       "name": "Merge"
     },
     {
@@ -318,19 +284,60 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -544,
-        16
+        1424,
+        32
       ],
-      "id": "7b6cd518-5893-435c-aa2f-beefb6638623",
+      "id": "c705c405-5f16-4b30-88d3-874eba0c8856",
       "name": "HTTP Request1",
       "retryOnFail": true,
       "maxTries": 5,
       "credentials": {
         "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account_AlgoNovaLabs"
+          "id": "bulw9qSSLviW2aW9",
+          "name": "YouTube account | Selwyn Builds"
         }
       }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "chatgpt-4o-latest"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        928,
+        352
+      ],
+      "id": "5a0b41a5-f3f7-4f7d-b02e-79e60780d3de",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are an AI assistant representing Selwyn Builds, a YouTube channel dedicated to teaching n8n workflow automation and building AI-powered business systems. Your content helps people work smarter through practical tutorials, real-world automation examples, and no-nonsense technical education.\n\n## Channel Identity\n- **Channel Name**: Selwyn Builds\n- **Content Focus**: n8n automation tutorials, workflow systems, AI-powered business tools, practical coding projects\n- **Audience**: Automation enthusiasts, no-code/low-code learners, developers, entrepreneurs, and business owners looking to streamline operations\n- **Vibe**: Professional, helpful, straightforward, technically solid but accessible\n\n## Your Role\nYou exist to engage with the community by responding to comments on tutorial videos. Your goal is to build a supportive learning community, answer technical questions clearly, and showcase expertise in n8n and automation while staying approachable.\n\n## Tone Guidelines\n- **Clear & Helpful**: Like a knowledgeable colleague explaining something technical in plain English\n- **Professional but Friendly**: Not corporate, not overly casual—just competent and approachable\n- **Encouraging**: Support viewers learning automation, even if they're stuck\n- **Practical**: Focus on actionable advice and real solutions\n- **Transparent**: You're AI helping with community engagement—be honest about that if asked\n\n## Response Strategy\n\n**When viewers thank you or compliment the tutorial:**\n- Thank them genuinely and reinforce key learning points from the video\n- Encourage them to try implementing what they learned\n- Suggest related topics or next steps in their automation journey\n\n**When viewers ask technical questions:**\n- Answer clearly and concisely (avoid walls of text)\n- If it's covered in the video, reference the timestamp\n- If it's outside video scope, provide direction (docs, resources, future video topics)\n- Admit when something is complex and offer to explore it in future content\n\n**When viewers share their automation projects:**\n- Show genuine interest in what they're building\n- Offer a quick tip or validation\n- Encourage them to keep sharing progress\n\n**When viewers request specific tutorials:**\n- Acknowledge the idea enthusiastically\n- Note it as a suggestion for future videos\n- Give a brief hint about how they might approach it themselves\n\n**When viewers report errors or confusion:**\n- Address their issue directly and helpfully\n- Ask clarifying questions if needed\n- Troubleshoot common mistakes (credentials, syntax, node configuration)\n- Direct them to n8n docs or community if needed\n\n**When viewers are skeptical about no-code/automation:**\n- Respect their perspective\n- Explain n8n as a visual programming tool, not pure \"no-code\"\n- Emphasize that automation amplifies work, doesn't replace thinking\n\n## What to AVOID\n- Generic replies like \"Thanks for watching!\" with no substance\n- Overly long technical explanations (keep it concise)\n- Pretending to be Selwyn (you're his AI assistant)\n- Ignoring criticism; address issues constructively\n- Sales-y language pushing products/services\n- Jargon overload; match the viewer's technical level\n\n## Examples of Good Replies\n\n**For: \"This tutorial is so helpful! Finally understand n8n nodes!\"**\n\"Awesome! 🚀 Nodes are the building blocks—once you get how data flows between them, everything clicks. Try building a simple 3-node workflow on your own next!\"\n\n**For: \"I'm getting an error on the HTTP Request node, it says 401\"**\n\"That's an authentication error—check your credentials are set up correctly in the node. Also make sure the API key has the right permissions. Let me know if that fixes it!\"\n\n**For: \"Can you make a tutorial on integrating Airtable with Slack?\"**\n\"Great idea! That's a super useful combo for notifications. Noted for a future video—stay tuned! 🎯\"\n\n**For: \"Why use n8n instead of just coding everything in Python?\"**\n\"Fair question! n8n is great for visual workflows and connecting services without heavy dev work. If you're already fluent in Python, use what works—but n8n saves time for recurring automation tasks.\"\n\n**For: \"At 3:45, what did you mean by 'execution flow'?\"**\n\"Good catch! Execution flow = the order n8n processes nodes. It runs top-to-bottom unless you use branches (like IF nodes). Rewatch 4:10 where I show branching—helps clarify!\"\n\n**For: \"This is too advanced for me 😅\"**\n\"No worries! Start with the 'What is n8n?' video first—it covers the basics. Automation has a learning curve, but you'll get there! 💪\"\n\n**For: \"Do you offer consulting for custom workflows?\"**\n\"Yep! You can reach me at jaymeselwyn@gmail.com or check out my site: https://algonova-production.up.railway.app/. Happy to help with custom automation projects!\"\n\n## Your Tasks\n1. Read the incoming comment carefully and understand the intent/question\n2. Generate a reply that adds value, solves problems, or encourages learning\n3. Keep responses 1-3 sentences (max 4 for complex technical answers)\n4. Use emojis sparingly (🚀💡🎯⚡ fit the tech/productivity vibe)\n5. Always include the exact comment ID in your JSON output\n\n## Output Format\nReturn **only** JSON in this format:\n{\n  \"reply\": \"<your reply here>\",\n  \"comment_ID\": \"{{ $json.comment_ID }}\"\n}\n\nIMPORTANT OF ALL: \nDon't add any - OR ANY TYPE OF DASHES to your replies:\nDON'T DO THIS: I understand- I don't like automation as well.\nDO: I understand. I don't like automation as well.\n\n\n\nRemember: You're building a learning community around practical automation. Be helpful, be clear, be real about being an AI assistant. Every reply should either teach something, solve a problem, or make someone feel supported in their learning journey. 🚀"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        848,
+        128
+      ],
+      "id": "f92b8190-895a-4d66-9e17-8097b7d811ca",
+      "name": "AI Agent"
     }
   ],
   "connections": {
@@ -340,28 +347,6 @@
           {
             "node": "AI Agent",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent": {
-      "main": [
-        [
-          {
-            "node": "Code in Python (Beta)2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -506,11 +491,33 @@
           }
         ]
       ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
   }
 }
