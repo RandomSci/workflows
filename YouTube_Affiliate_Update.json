@@ -3,7 +3,7 @@
     {
       "parameters": {
         "resource": "video",
-        "limit": 1,
+        "returnAll": true,
         "filters": {},
         "options": {
           "order": "date"
@@ -12,30 +12,30 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        -1472,
-        1200
+        -496,
+        2048
       ],
-      "id": "523be390-624e-4ebd-bf4d-d2690497f2b4",
+      "id": "91e17574-bdb9-4602-9eee-a462a8addbb4",
       "name": "Get many videos",
       "credentials": {
         "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account_AlgoNovaLabs"
+          "id": "bulw9qSSLviW2aW9",
+          "name": "YouTube account | Selwyn Builds"
         }
       }
     },
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "import json\n\n# Get all input items\nitems_list = []\n# When \"Run Once for All Items\" is enabled, access .json property\nfor item in items:\n    youtube_title = item.json[\"snippet\"][\"title\"]\n    youtube_description = item.json[\"snippet\"][\"description\"]\n    \n    # Clean the description for JSON formatting\n    youtube_description_clean = youtube_description.replace(\"\\n\", \" \").replace('\"', '\\\\\"')\n    \n    prompt = f\"\"\"You are a YouTube description optimizer for Algonova Labs - creating magical content that makes people feel ALIVE! ✨\n\nYOUR MISSION:\n1. FIRST: Use the datatable tool to get ALL available links\n2. Read what types of links exist (support? tools? resources? community?)\n3. Create a UNIQUE header that matches the vibe of the links\n4. Write engaging copy for EACH link based on its actual purpose\n5. Add a SHORT, warm closing (2-3 sentences MAX!)\n6. Use \\\\n for line breaks!\n\nTitle: {youtube_title}\nDescription: {youtube_description_clean}\n\nCRITICAL INSTRUCTIONS:\n- Call datatable tool FIRST\n- Use EVERY link from datatable (use exact URLs, never make up links)\n- Create FRESH, ORIGINAL content every time - NO repetition across videos!\n- Read each link's purpose and write compelling copy for it\n- END with a BRIEF, heartfelt closing (keep it SHORT!)\n\nOUTPUT FORMAT:\n{{\n  \"Title\": \"{youtube_title}\",\n  \"New_Description\": \"enhanced description with ALL real links AND warm closing\",\n  \"What_Changed\": \"summary\"\n}}\n\nLINKS SECTION - HEADER CREATION:\nRead the links first, then CREATE YOUR OWN unique header. Don't copy these - use them as inspiration:\n\nStyle inspiration (create your own versions):\n- Community vibe: Connection, family, journey together\n- Tools/Resources vibe: Discovery, helpful stuff, what powers the magic\n- Mixed vibe: Blend warmth with utility\n- Support vibe: Gratitude and reciprocity\n\nUse varied emojis, varied phrasing, varied energy. Never repeat headers!\n\nLINKS WRITING:\n[Your creative header]\n\n[For each link, write SHORT engaging copy - 1 sentence max per link]\n[Brief hook] [emoji]\n[ACTUAL URL from datatable]\n\n[Next link - keep it snappy!]\n\nCLOSING SECTION - KEEP IT SHORT & SWEET:\n⚠️ MAXIMUM 2-3 SENTENCES! ⚠️\n\nAfter all links, write a BRIEF closing that:\n- Thanks them quickly OR invites engagement\n- Mentions like/subscribe naturally (don't overdo it)\n- Signs off warmly\n- Matches the video's vibe\n\nGOOD CLOSING EXAMPLES (short & punchy):\n✅ \"Thanks for watching! 💖 Drop a like if you enjoyed this, and subscribe for more magic! What's your favorite part? ✨\"\n\n✅ \"Hope this made you smile! If it did, show some love and hit subscribe! See you next time! 💫\"\n\n✅ \"You're amazing for watching till the end! 🌟 Like, subscribe, and let us know your thoughts below! Stay magical! ✨\"\n\n✅ \"Thanks for being here! 💕 If you loved this, subscribe for more enchantment! What should we create next? ✨\"\n\nBAD CLOSING EXAMPLES (too long, too wordy):\n❌ \"Wow, what an incredible journey into the heart of magic! 💖 Thank you so much for joining us and letting your own light shine with our princess. If this enchantment sparked joy in you, please give us a radiant like and subscribe to our channel for more magical adventures! We'd absolutely love to hear what magic you believe in – tell us your thoughts in the comments below! ✨ Until our next wondrous tale, keep believing in the extraordinary within you!\"\n\n❌ Any closing over 3 sentences\n❌ Using flowery language that takes forever to say simple things\n❌ Multiple CTAs crammed together\n\nCLOSING FORMULA:\n[Quick thank you OR hope statement] + [Brief CTA] + [Short sign-off]\nThat's it! Keep it tight!\n\nTONE GUIDELINES:\n- Be CONVERSATIONAL and AUTHENTIC\n- Match the video's energy (read the title!)\n- Keep link descriptions to ONE sentence each\n- Keep closing to 2-3 sentences MAX\n- Sound like a friend, not a corporate script\n- Punchy, not preachy!\n\nFORMAT RULES:\n- Use \\\\n for line breaks\n- Pattern: brief_text\\\\nURL\\\\n\\\\n (double break between links)\n- Include ALL links from datatable\n- End with SHORT closing (2-3 sentences!)\n\nCREATIVITY MANDATE:\n🚨 Never repeat yourself across videos! 🚨\n- Every header should be ORIGINAL\n- Every closing should be UNIQUE but BRIEF\n- Let the video title inspire your tone\n- Make each description feel handcrafted, not templated\n- Be creative but CONCISE\n\"\"\"\n    \n    items_list.append({\n        \"json\": {\n            \"chatInput\": prompt,\n            \"videoId\": item.json[\"id\"][\"videoId\"],\n            \"snippet\": item.json[\"snippet\"]\n        }\n    })\n\nreturn items_list"
+        "pythonCode": "import json\n\n# Get all input items\nitems_list = []\n# When \"Run Once for All Items\" is enabled, access .json property\nfor item in items:\n    youtube_title = item.json[\"snippet\"][\"title\"]\n    youtube_description = item.json[\"snippet\"][\"description\"]\n    \n    # Clean the description for JSON formatting\n    youtube_description_clean = youtube_description.replace(\"\\n\", \" \").replace('\"', '\\\\\"')\n    \n    prompt = f\"\"\"You are a YouTube description optimizer for Selwyn Builds - teaching n8n automation and workflow systems that help people work smarter! 🚀\n\nYOUR MISSION:\n1. FIRST: Use the datatable tool to get ALL available links\n2. Read what types of links exist (resources? tools? community? courses?)\n3. Create a RELEVANT header that matches n8n/automation content\n4. Write clear, helpful copy for EACH link based on its actual purpose\n5. Add a SHORT, professional closing (2-3 sentences MAX!)\n6. Use \\\\n for line breaks!\n\nTitle: {youtube_title}\nDescription: {youtube_description_clean}\n\nCRITICAL INSTRUCTIONS:\n- Call datatable tool FIRST\n- Use EVERY link from datatable (use exact URLs, never make up links)\n- Create FRESH, ORIGINAL content every time - NO repetition across videos!\n- Read each link's purpose and write helpful copy for it\n- END with a BRIEF, friendly closing (keep it SHORT!)\n\nOUTPUT FORMAT:\n{{\n  \"Title\": \"{youtube_title}\",\n  \"New_Description\": \"enhanced description with ALL real links AND warm closing\",\n  \"What_Changed\": \"summary\"\n}}\n\nLINKS SECTION - HEADER CREATION:\nRead the links first, then CREATE YOUR OWN unique header for an n8n/automation tutorial channel. Don't copy these - use them as inspiration:\n\nStyle inspiration (create your own versions):\n- Resource vibe: \"Helpful Resources\", \"Tools & Links\", \"What I Use\"\n- Learning vibe: \"Continue Learning\", \"More Automation Content\", \"Dive Deeper\"\n- Community vibe: \"Connect With Me\", \"Join the Automation Journey\"\n- Business vibe: \"Work With Me\", \"Automation Services\", \"Let's Build Together\"\n\nUse varied emojis, varied phrasing, varied energy. Never repeat headers!\n\nLINKS WRITING:\n[Your creative header]\n\n[For each link, write SHORT helpful copy - 1 sentence max per link]\n[Clear description] [emoji]\n[ACTUAL URL from datatable]\n\n[Next link - keep it snappy!]\n\nCLOSING SECTION - KEEP IT SHORT & PROFESSIONAL:\n⚠️ MAXIMUM 2-3 SENTENCES! ⚠️\n\nAfter all links, write a BRIEF closing that:\n- Thanks them OR invites engagement\n- Mentions like/subscribe naturally (don't overdo it)\n- Signs off warmly but professionally\n- Matches the tutorial/educational vibe\n\nGOOD CLOSING EXAMPLES (short & effective):\n✅ \"Thanks for watching! 🚀 If this helped you understand n8n better, hit subscribe for more automation tutorials. Questions? Drop them below!\"\n\n✅ \"Hope this made n8n click for you! 💡 Like and subscribe for more workflow automation content. What should I cover next?\"\n\n✅ \"Appreciate you learning with me! 🎯 Subscribe for practical n8n tutorials every week. Let me know what you want to automate!\"\n\n✅ \"That's it for today's tutorial! ⚡ Hit like if this was helpful, and subscribe for more n8n content. See you in the next one!\"\n\nBAD CLOSING EXAMPLES (too long, too fluffy):\n❌ \"Thank you so much for joining me on this incredible automation journey! I really hope this tutorial has empowered you to take your workflows to the next level and unlock the full potential of n8n. If you found value in this content, I'd be incredibly grateful if you could show your support by liking this video and subscribing to the channel for more amazing tutorials!\"\n\n❌ Any closing over 3 sentences\n❌ Using marketing speak or overly salesy language\n❌ Multiple CTAs crammed together\n\nCLOSING FORMULA:\n[Quick thank you OR value statement] + [Brief CTA] + [Short sign-off]\nThat's it! Keep it tight and professional!\n\nTONE GUIDELINES:\n- Be CLEAR and HELPFUL (you're teaching!)\n- Professional but approachable (not corporate, not too casual)\n- Match the tutorial's technical level\n- Keep link descriptions to ONE sentence each\n- Keep closing to 2-3 sentences MAX\n- Sound like a knowledgeable friend explaining something\n- Focus on VALUE, not hype\n\nFORMAT RULES:\n- Use \\\\n for line breaks\n- Pattern: brief_text\\\\nURL\\\\n\\\\n (double break between links)\n- Include ALL links from datatable\n- End with SHORT closing (2-3 sentences!)\n\nCREATIVITY MANDATE:\n🚨 Never repeat yourself across videos! 🚨\n- Every header should be ORIGINAL\n- Every closing should be UNIQUE but BRIEF\n- Let the video title/topic inspire your tone\n- Make each description feel handcrafted, not templated\n- Be educational but CONCISE\n\"\"\"\n    \n    items_list.append({\n        \"json\": {\n            \"chatInput\": prompt,\n            \"videoId\": item.json[\"id\"][\"videoId\"],\n            \"snippet\": item.json[\"snippet\"]\n        }\n    })\n\nreturn items_list"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1248,
-        1200
+        -272,
+        2048
       ],
-      "id": "815198d0-427d-4036-9a76-894d744c878f",
+      "id": "a3837ac4-fa8a-4138-a3b6-267343aeef0a",
       "name": "Code in Python (Beta)",
       "alwaysOutputData": false
     },
@@ -46,10 +46,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -1024,
-        1200
+        -48,
+        2048
       ],
-      "id": "6a3fcfb7-8499-4f39-8474-ce4657dc9435",
+      "id": "cf0cf07e-2a0b-43ea-a071-87be064b396d",
       "name": "Loop Over Items"
     },
     {
@@ -60,10 +60,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -800,
-        1200
+        176,
+        2048
       ],
-      "id": "a8688b02-9121-4793-bd12-fee1f34b7bc9",
+      "id": "a3a95fff-fee5-4095-a904-ce2010d1d743",
       "name": "Assign AI Agent"
     },
     {
@@ -146,68 +146,11 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        -576,
-        1184
+        400,
+        2032
       ],
-      "id": "fd5f9947-c2c0-496c-957b-47d694512200",
+      "id": "23ec4623-5d33-480d-846e-bd2be21f7911",
       "name": "Switch"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $json.chatInput }}",
-        "hasOutputParser": true,
-        "options": {
-          "systemMessage": "="
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        -352,
-        1088
-      ],
-      "id": "2549ee9d-2a8f-4b89-aad4-1f3e1c35bc54",
-      "name": "AI Agent - Video Prompter",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $json.chatInput }}",
-        "hasOutputParser": true,
-        "options": {
-          "systemMessage": "="
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        -352,
-        480
-      ],
-      "id": "07989ab5-fa93-4196-9f0d-2682714711fc",
-      "name": "AI Agent - Video Prompter2",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $json.chatInput }}",
-        "hasOutputParser": true,
-        "options": {
-          "systemMessage": "="
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        -352,
-        1904
-      ],
-      "id": "98f127de-2df1-4a69-bace-e8febe2e908c",
-      "name": "AI Agent - Video Prompter3",
-      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -218,50 +161,31 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -160,
-        704
+        832,
+        1552
       ],
-      "id": "0d613a54-86ce-4497-af07-1edbe4087f75",
+      "id": "28feeaf7-462c-472e-ac81-722d778535e3",
       "name": "Structured Output Parser"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        -224,
-        2336
-      ],
-      "id": "1b99ff19-769c-49bd-ad5a-8eb65206e53f",
-      "name": "Google Gemini Chat Model2",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "LuvQlz3qmejdhs7S",
-          "name": "selwyngwapo90_Youtube Automation Related"
-        }
-      }
     },
     {
       "parameters": {
         "operation": "get",
         "dataTableId": {
           "__rl": true,
-          "value": "XT3hOMxnfcNHXtT7",
+          "value": "sHHirlfbchihjnIs",
           "mode": "list",
-          "cachedResultName": "Affiliate Links",
-          "cachedResultUrl": "/projects/9d6VQ33EHkH1tRpt/datatables/XT3hOMxnfcNHXtT7"
+          "cachedResultName": "AffiliateLinks",
+          "cachedResultUrl": "/projects/pOP3ATtXLDsPCi3M/datatables/sHHirlfbchihjnIs"
         },
         "returnAll": true
       },
       "type": "n8n-nodes-base.dataTableTool",
       "typeVersion": 1,
       "position": [
-        -288,
-        704
+        704,
+        1552
       ],
-      "id": "329bf7ea-895d-4f68-ae5f-f5333aea5aae",
+      "id": "f1b2424e-13f8-44b0-a7ea-07aa650d0543",
       "name": "Get row(s) in Data table"
     },
     {
@@ -271,10 +195,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        224,
-        1296
+        1200,
+        2144
       ],
-      "id": "2d5a8250-ba9b-4bc7-b6cf-904862ad65d6",
+      "id": "f5f58961-1ec9-44d1-8408-7833819511f0",
       "name": "Code in JavaScript",
       "retryOnFail": true,
       "maxTries": 5
@@ -287,11 +211,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        704,
-        496
+        1680,
+        1328
       ],
       "typeVersion": 1,
-      "id": "ed052612-e34a-4aec-bb4e-9a2ebb6edf6a",
+      "id": "6067d294-125b-4464-afe0-c042b06be31d",
       "name": "Sticky Note"
     },
     {
@@ -303,10 +227,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -160,
-        1312
+        832,
+        2976
       ],
-      "id": "989ea0fc-7a09-4125-b0ba-84af09234f6b",
+      "id": "43a5aab5-7e0f-4466-9235-4b3ead941444",
       "name": "Structured Output Parser1"
     },
     {
@@ -314,20 +238,20 @@
         "operation": "get",
         "dataTableId": {
           "__rl": true,
-          "value": "XT3hOMxnfcNHXtT7",
+          "value": "sHHirlfbchihjnIs",
           "mode": "list",
-          "cachedResultName": "Affiliate Links",
-          "cachedResultUrl": "/projects/9d6VQ33EHkH1tRpt/datatables/XT3hOMxnfcNHXtT7"
+          "cachedResultName": "AffiliateLinks",
+          "cachedResultUrl": "/projects/pOP3ATtXLDsPCi3M/datatables/sHHirlfbchihjnIs"
         },
         "returnAll": true
       },
       "type": "n8n-nodes-base.dataTableTool",
       "typeVersion": 1,
       "position": [
-        -288,
-        1312
+        704,
+        2160
       ],
-      "id": "a1feb827-b0de-49f9-92c6-1efc91e11dc7",
+      "id": "0316141a-7022-46c9-a038-247e30afe085",
       "name": "Get row(s) in Data table1"
     },
     {
@@ -339,10 +263,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -160,
-        2128
+        832,
+        2160
       ],
-      "id": "23282ec5-31cb-46d5-b42f-b13412b39f2f",
+      "id": "3ab652bc-3614-4ba5-832e-392006323dc0",
       "name": "Structured Output Parser2"
     },
     {
@@ -350,69 +274,31 @@
         "operation": "get",
         "dataTableId": {
           "__rl": true,
-          "value": "XT3hOMxnfcNHXtT7",
+          "value": "sHHirlfbchihjnIs",
           "mode": "list",
-          "cachedResultName": "Affiliate Links",
-          "cachedResultUrl": "/projects/9d6VQ33EHkH1tRpt/datatables/XT3hOMxnfcNHXtT7"
+          "cachedResultName": "AffiliateLinks",
+          "cachedResultUrl": "/projects/pOP3ATtXLDsPCi3M/datatables/sHHirlfbchihjnIs"
         },
         "returnAll": true
       },
       "type": "n8n-nodes-base.dataTableTool",
       "typeVersion": 1,
       "position": [
-        -288,
-        2128
+        704,
+        2976
       ],
-      "id": "0b598e03-a7d6-448a-84ee-769c4ea227ce",
+      "id": "41a3a4df-3094-4fa0-bc93-5e2f5a06a93a",
       "name": "Get row(s) in Data table2"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        -224,
-        912
-      ],
-      "id": "9144ed37-1a22-4f39-b37e-0cacef5a498d",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "KbKuvqHOuDvNua6Q",
-          "name": "jaymeselwyn_YouTube Automation Related"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        -224,
-        1520
-      ],
-      "id": "95af1429-f1d0-4a02-b172-d2c0911b15df",
-      "name": "Google Gemini Chat Model3",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "LuvQlz3qmejdhs7S",
-          "name": "selwyngwapo90_Youtube Automation Related"
-        }
-      }
     },
     {
       "parameters": {
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "12-pAQisSOVLPXx6TL0914T4hUzDHxa3BJ9pKxuVuxxA",
+          "value": "1zJ_ghaxdjCXYtJ8z42v9w_hVEXFTShZB6CCZjookK4g",
           "mode": "list",
           "cachedResultName": "Youtube Description Update",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12-pAQisSOVLPXx6TL0914T4hUzDHxa3BJ9pKxuVuxxA/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zJ_ghaxdjCXYtJ8z42v9w_hVEXFTShZB6CCZjookK4g/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
@@ -424,17 +310,17 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "Old_Description": "={{ $('Get many videos').item.json.snippet.description }}",
-            "Title": "={{ $json.Title }}",
             "New_Description": "={{ $json.New_Description }}",
             "What_Changed": "={{ $json.What_Changed }}",
-            "Youtube Link": "=https://www.youtube.com/shorts/{{ $('Get many videos').item.json.id.videoId }}"
+            "Youtube Link": "=https://www.youtube.com/shorts/{{ $('Get many videos').item.json.id.videoId }}",
+            "Title ": "={{ $json.Title }}",
+            "Old_Description ": "={{ $('Get many videos').item.json.snippet.description }}"
           },
           "matchingColumns": [],
           "schema": [
             {
-              "id": "Title",
-              "displayName": "Title",
+              "id": "Title ",
+              "displayName": "Title ",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -453,8 +339,8 @@
               "removed": false
             },
             {
-              "id": "Old_Description",
-              "displayName": "Old_Description",
+              "id": "Old_Description ",
+              "displayName": "Old_Description ",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -491,28 +377,23 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        448,
-        1296
+        1424,
+        2144
       ],
-      "id": "977f0868-3033-4727-8a11-5fc8fc5e7406",
+      "id": "a549b81b-cca1-449d-a9da-c54000d55720",
       "name": "Append row in sheet",
       "retryOnFail": true,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "Q33u7QDdFT7kx3S6",
-          "name": "Google Sheets account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {},
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -800,
-        1008
+        176,
+        1856
       ],
-      "id": "40c491f1-a623-45b8-966d-0e209c21989f",
+      "id": "0aa16506-f462-40f9-8c5a-ce058d154c93",
       "name": "Done"
     },
     {
@@ -522,9 +403,9 @@
         "videoId": "={{ $('Get many videos').item.json.id.videoId }}",
         "title": "={{ $('Get many videos').item.json.snippet.title }}",
         "regionCode": "PH",
-        "categoryId": "1",
+        "categoryId": "28",
         "updateFields": {
-          "description": "={{ $('Code in JavaScript').item.json.New_Description.split('\\\\n').join('\\n') }}",
+          "description": "={{ $json.New_Description }}",
           "embeddable": true,
           "notifySubscribers": true
         }
@@ -532,16 +413,16 @@
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
       "position": [
-        672,
-        1776
+        1648,
+        2624
       ],
-      "id": "3038ee3b-ff48-4b35-ad0b-27bc602d2bd4",
+      "id": "5b286d7b-af76-41af-9a4f-7cb9180d4eb4",
       "name": "Update a video",
       "retryOnFail": true,
       "credentials": {
         "youTubeOAuth2Api": {
-          "id": "Fnm7ZvrVLhKsF77T",
-          "name": "YouTube account_AlgoNovaLabs"
+          "id": "bulw9qSSLviW2aW9",
+          "name": "YouTube account | Selwyn Builds"
         }
       }
     },
@@ -559,11 +440,137 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -1696,
-        1200
+        -720,
+        2048
       ],
-      "id": "930b5855-fe41-4169-aee7-ab8971d01d4b",
+      "id": "60fd2f5c-879d-40be-b6fa-a67a6943bc5e",
       "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        768,
+        1760
+      ],
+      "id": "7b5bed67-9933-474a-ada2-e7dd84b3c184",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Copy the exact links you find in datatable tool"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        624,
+        1328
+      ],
+      "id": "c429a558-995c-4118-974c-3a8607a811c3",
+      "name": "AI Agent - Video Prompter2"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Copy the exact links you find in datatable tool"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        624,
+        1936
+      ],
+      "id": "fe2227bc-c50c-4326-97c7-699616583231",
+      "name": "AI Agent - Video Prompter"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Copy the exact links you find in datatable tool"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        624,
+        2752
+      ],
+      "id": "130c6c7e-5dd7-4282-9ba8-fd1c94fa1e22",
+      "name": "AI Agent - Video Prompter3"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        768,
+        2368
+      ],
+      "id": "eb1f77c5-b256-45d0-96cf-442959c43e75",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        768,
+        3184
+      ],
+      "id": "f6944112-9ae5-4086-8490-b1fd57f2a24c",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZaIblaOs0sHA2vzl",
+          "name": "OpenAi account | jaymeselwyn@gmail.com"
+        }
+      }
     }
   ],
   "connections": {
@@ -643,61 +650,12 @@
         ]
       ]
     },
-    "AI Agent - Video Prompter": {
-      "main": [
-        [
-          {
-            "node": "Code in JavaScript",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent - Video Prompter2": {
-      "main": [
-        [
-          {
-            "node": "Code in JavaScript",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent - Video Prompter3": {
-      "main": [
-        [
-          {
-            "node": "Code in JavaScript",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Structured Output Parser": {
       "ai_outputParser": [
         [
           {
             "node": "AI Agent - Video Prompter2",
             "type": "ai_outputParser",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model2": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent - Video Prompter3",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "Structured Output Parser2",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -729,7 +687,7 @@
       "ai_outputParser": [
         [
           {
-            "node": "AI Agent - Video Prompter",
+            "node": "AI Agent - Video Prompter3",
             "type": "ai_outputParser",
             "index": 0
           }
@@ -751,7 +709,7 @@
       "ai_outputParser": [
         [
           {
-            "node": "AI Agent - Video Prompter3",
+            "node": "AI Agent - Video Prompter",
             "type": "ai_outputParser",
             "index": 0
           }
@@ -764,38 +722,6 @@
           {
             "node": "AI Agent - Video Prompter3",
             "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent - Video Prompter2",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "Structured Output Parser",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model3": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent - Video Prompter",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "Structured Output Parser1",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -833,11 +759,92 @@
           }
         ]
       ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Video Prompter2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Video Prompter2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Video Prompter": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Video Prompter3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser2",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Video Prompter",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Video Prompter3",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "4af2c75c32748c7c93d533d26198e06ab497144efb254415d51b6ecf0348ed74"
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
   }
 }
