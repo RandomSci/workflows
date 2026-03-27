@@ -1,0 +1,155 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 7,9,18 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        -128
+      ],
+      "id": "836f600c-531a-4166-9ed2-64fc1d91eebc",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.content.parts[0].text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        1136,
+        -32
+      ],
+      "id": "e2fc8083-6f5f-4e4a-875c-7477a3705d40",
+      "name": "Create Tweet",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "dklE5gKiMuvlfgJX",
+          "name": "X account | algonovalabs@gmail.com"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import random\n\n# CONTENT PILLARS - focused on value, proof, and demonstration\ncontent_types = [\n    {\n        \"type\": \"proof\",\n        \"angles\": [\n            \"my YouTube automation handled every comment this week while I slept\",\n            \"someone tried to break my comment auto-reply. here's what happened\",\n            \"I let strangers test my automation live on my channel. results:\",\n            \"built a system that replies to comments better than I do\",\n            \"my affiliate link updater just saved me hours of manual work\",\n            \"my comment bot responded faster than I ever could. and sounded more helpful\"\n        ]\n    },\n    {\n        \"type\": \"educational\",\n        \"angles\": [\n            \"most creators automate the wrong things first\",\n            \"why your YouTube comments are sitting on a goldmine\",\n            \"the automations every content creator needs but nobody builds\",\n            \"I automated my YouTube workflow. here's what actually moved the needle\",\n            \"comment engagement vs content creation: what to automate first\",\n            \"the difference between automation that works and automation that wastes time\"\n        ]\n    },\n    {\n        \"type\": \"challenge\",\n        \"angles\": [\n            \"test my comment automation right now. I dare you\",\n            \"go comment on my latest video. watch what happens\",\n            \"think AI can't handle YouTube comments? prove it. test mine\",\n            \"drop a question on any of my videos. see if you can tell it's automated\",\n            \"my automation vs your toughest question. let's see who wins\",\n            \"try to stump my comment bot. seriously, go try\"\n        ]\n    },\n    {\n        \"type\": \"problem_insight\",\n        \"angles\": [\n            \"you're losing time every time you manually update affiliate links\",\n            \"unanswered comments = missed conversations sitting there\",\n            \"while you're editing, automation is handling everything else\",\n            \"manual YouTube work doesn't scale. systems do\",\n            \"spending hours on comments means hours not creating content\",\n            \"you built an audience. now you're drowning in engagement\"\n        ]\n    },\n    {\n        \"type\": \"behind_scenes\",\n        \"angles\": [\n            \"here's the exact n8n workflow that runs my YouTube channel\",\n            \"building a comment auto-reply that doesn't sound like a bot\",\n            \"from idea to deployment: YouTube automation in minutes\",\n            \"the workflow I use vs what most people think automation looks like\",\n            \"what happens when your automation fails at 3am\",\n            \"I built this live. here's every mistake I made\"\n        ]\n    },\n    {\n        \"type\": \"contrarian\",\n        \"angles\": [\n            \"automation isn't about working less. it's about scaling impact\",\n            \"you don't need more content. you need better systems\",\n            \"unpopular: build systems before hiring people\",\n            \"the best automation is the one nobody notices\",\n            \"stop optimizing your content. start systematizing your workflow\",\n            \"your bottleneck isn't creativity. it's repetitive tasks\"\n        ]\n    },\n    {\n        \"type\": \"demonstration\",\n        \"angles\": [\n            \"my comment auto-reply is running right now on my channel\",\n            \"I automated my entire YouTube engagement workflow. watch\",\n            \"this system handles my comments while I focus on content\",\n            \"built this in n8n. it runs 24/7 on my channel\",\n            \"my channel is the test lab. everything runs live\",\n            \"the automation you see working is the automation I actually use\"\n        ]\n    }\n]\n\n# Pick a random content type and angle\nselected_type = random.choice(content_types)\nselected_angle = random.choice(selected_type[\"angles\"])\ncontent_category = selected_type[\"type\"]\n\ntone_variations = [\n    \"direct and no-BS\",\n    \"educational but conversational\", \n    \"provocative but helpful\",\n    \"confident builder sharing real experience\"\n]\n\ntone = random.choice(tone_variations)\n\n# CTA OPTIONS - Focus on demonstration, testing, and learning (never selling)\ncta_options = {\n    \"proof\": [\n        \"Test it: youtube.com/@SelwynBuilds-j1s\",\n        \"See it work: youtube.com/@SelwynBuilds-j1s\",\n        \"Try it yourself: youtube.com/@SelwynBuilds-j1s\",\n        \"Watch it live: youtube.com/@SelwynBuilds-j1s\"\n    ],\n    \"educational\": [\n        \"See how: selwynbuilds.com\",\n        \"Full breakdown: selwynbuilds.com\",\n        \"Learn more: selwynbuilds.com\",\n        \"Watch the build: youtube.com/@SelwynBuilds-j1s\"\n    ],\n    \"challenge\": [\n        \"Test it now: youtube.com/@SelwynBuilds-j1s\",\n        \"Try to break it: youtube.com/@SelwynBuilds-j1s\",\n        \"Go test it: youtube.com/@SelwynBuilds-j1s\",\n        \"Comment now: youtube.com/@SelwynBuilds-j1s\"\n    ],\n    \"problem_insight\": [\n        \"Here's what I built: selwynbuilds.com\",\n        \"See the alternative: youtube.com/@SelwynBuilds-j1s\",\n        \"Watch how it works: youtube.com/@SelwynBuilds-j1s\",\n        \"I built this: selwynbuilds.com\"\n    ],\n    \"behind_scenes\": [\n        \"See it here: selwynbuilds.com\",\n        \"Watch the build: youtube.com/@SelwynBuilds-j1s\",\n        \"See it in action: youtube.com/@SelwynBuilds-j1s\",\n        \"Full demo: youtube.com/@SelwynBuilds-j1s\"\n    ],\n    \"contrarian\": [\n        \"Here's how: selwynbuilds.com\",\n        \"I'll show you: youtube.com/@SelwynBuilds-j1s\",\n        \"See the proof: youtube.com/@SelwynBuilds-j1s\",\n        \"More here: selwynbuilds.com\"\n    ],\n    \"demonstration\": [\n        \"See it live: youtube.com/@SelwynBuilds-j1s\",\n        \"Test it now: youtube.com/@SelwynBuilds-j1s\",\n        \"Watch it work: youtube.com/@SelwynBuilds-j1s\",\n        \"Check it out: selwynbuilds.com\"\n    ]\n}\n\nselected_cta = random.choice(cta_options.get(content_category, [\"selwynbuilds.com\"]))\n\nprompt = f\"\"\"You are Selwyn, founder of AlgoNova Labs and the \"Selwyn Builds\" YouTube channel.\n\nYOUR POSITIONING:\n- You build YouTube automation workflows for yourself (comment auto-reply, affiliate link updaters, content generators)\n- You use YOUR channel as the live demo/testing ground\n- You're a builder who shares what works - you show, don't sell\n- Everything runs live on your channel for people to test\n\nTWEET OBJECTIVE: {content_category.upper()} - Demonstrate value and invite testing\n\nWrite a {tone} tweet about: \"{selected_angle}\"\n\nCRITICAL RULES:\n- Max 280 characters total\n- NO hashtags, NO emojis (unless it's a perfect fit)\n- NO fixed numbers (avoid \"247 comments\", \"4 hours\", etc.)\n- Use vague quantifiers: \"every comment\", \"hours of work\", \"multiple workflows\"\n- Short sentences (5-12 words max)\n- Start with a scroll-stopping hook\n- Focus on ONE idea only\n- ALWAYS end with this CTA: \"{selected_cta}\"\n\nABSOLUTELY FORBIDDEN - NEVER mention:\n❌ \"selling\", \"buy\", \"purchase\", \"available\", \"get it\", \"grab\", \"offer\"\n❌ \"customers\", \"clients\", \"revenue\", \"paying\"\n❌ \"product\", \"service\", \"pricing\"\n❌ Any transactional language\n\nINSTEAD USE:\n✅ \"built\", \"created\", \"automated\", \"system\", \"workflow\"\n✅ \"test\", \"try\", \"see\", \"watch\", \"check out\"\n✅ \"here's how\", \"see it work\", \"I'll show you\"\n✅ Focus on demonstration and proof, not transactions\n\nHOOK FORMULAS (pick one that fits):\n- Direct statement: \"I automated X. Here's what happened:\"\n- Challenge: \"Test my system. Right now.\"\n- Contrarian: \"Unpopular opinion: [controversial take]\"\n- Proof: \"My automation handled everything this week while I slept.\"\n- Problem: \"You're wasting time every time you [manual task]\"\n- Behind-scenes: \"Here's the exact workflow that [result]\"\n\nVOICE GUIDELINES:\n✅ \"I built X. Here's what I learned.\"\n✅ \"Test it yourself: [link]\"\n✅ \"My system handled all my comments. See it work.\"\n✅ Direct, specific, proof-based - builder energy\n\n❌ \"Imagine if you could...\"\n❌ \"Are you tired of...\"  \n❌ \"The secret to...\"\n❌ Generic guru-speak\n❌ Any sales language\n\nEXAMPLES OF YOUR STYLE:\n\"My YouTube automation responded to every comment this week. I didn't touch it once. Test it: youtube.com/@SelwynBuilds-j1s\"\n\n\"You're manually updating affiliate links? I built a workflow that handles it. See how: selwynbuilds.com\"\n\n\"Go comment on my latest video right now. Watch what happens: youtube.com/@SelwynBuilds-j1s\"\n\n\"Built a system that replies better than I do. See it work: youtube.com/@SelwynBuilds-j1s\"\n\nSTRUCTURE:\n[Hook] + [1-2 supporting sentences] + [CTA: {selected_cta}]\n\nReturn ONLY the final tweet text. No explanation. No extra formatting.\n\"\"\"\n\nreturn {'chatInput': prompt}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        -32
+      ],
+      "id": "828ac59d-ef9e-46b2-b00a-70db419c6ea9",
+      "name": "Code in Python (Beta)"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $json.chatInput }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        784,
+        -32
+      ],
+      "id": "32204585-9d9d-4a6c-a21a-82e29e50cf71",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tAI89OLMq06uUcQE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        336,
+        64
+      ],
+      "id": "ab3724b6-d046-449f-9920-601f09a9197b",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Create Tweet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
+  }
+}
