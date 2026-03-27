@@ -1,0 +1,1038 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// Get raw input\nconst items = $input.all();\nconst webhookData = items[0]?.json || items[0] || {};\nconst body = webhookData.body || {};\n\n// Extract conversation messages\nconst messages = body?.message?.artifact?.messages || [];\n\n// Extract call info\nconst call = body?.call || {};\nconst callId = call?.id || 'unknown';\nconst callStatus = call?.status || 'unknown';\n\n// Extract assistant info\nconst assistant = body?.assistant || {};\nconst assistantName = assistant?.name || 'Unknown';\n\n// Build transcript\nlet transcript = 'No conversation data available';\nif (messages.length > 0) {\n  transcript = messages\n    .filter(msg => msg.role === 'user' || msg.role === 'bot')\n    .map(msg => `${msg.role === 'bot' ? 'Agent' : 'Lead'}: ${msg.message || ''}`)\n    .join('\\n');\n}\n\n// Extract tool call arguments\nconst toolCall = body?.message?.toolCalls?.[0]?.function?.arguments || {};\n\n// Normalize lead info\nconst leadData = {\n  first_name: toolCall.firstname || '',\n  last_name: toolCall.lastname || '',\n  email: (toolCall.lead_email || '').replace(/\\s+at\\s+|\\s+dot\\s+/gi, match => match.includes('at') ? '@' : '.').replace(/\\s/g,''),\n  phone: (toolCall.lead_phone || '').replace(/\\D/g, ''),\n  company: toolCall.lead_company || ''\n};\n\n// Determine call outcome\nlet callOutcome = 'completed';\nif (toolCall.disposition === 'not_interested') callOutcome = 'not_interested';\nelse if (toolCall.intent === 'schedule_meeting') callOutcome = 'meeting_scheduled';\nelse if (!leadData.email && !leadData.phone) callOutcome = 'hung_up_early';\n\n// --- Timestamp Handling --- //\n// Use transcript + Date now to compute next Thursday 9AM Philippines time\nconst dateNow = new Date();\nconst timezoneOffset = 8; // Philippines UTC+8\nconst nextThursday = (() => {\n  const dayNow = dateNow.getUTCDay(); // 0=Sun, 4=Thu\n  const targetDay = 4; // Thursday\n  let delta = (targetDay - dayNow + 7) % 7;\n  if (delta === 0 && dateNow.getUTCHours() + timezoneOffset >= 9) delta = 7; // If today is Thursday but time passed\n  const thursday = new Date(dateNow);\n  thursday.setUTCDate(dateNow.getUTCDate() + delta);\n  thursday.setUTCHours(1,0,0,0); // 9AM PHT -> 01:00 UTC\n  return thursday.toISOString().replace(/\\.\\d{3}Z$/, '.000Z');\n})();\n\n// Build action object\nconst action = {\n  type: toolCall.action_type === 'create_calendar_event' || toolCall.intent === 'schedule_meeting' ? 'create_calendar_event' : '',\n  startTime: nextThursday,\n  duration_minutes: toolCall.action_duration_minutes || 30,\n  assigned_to: toolCall.action_assigned_to || 'SDR_1'\n};\n\n// Output JSON\nreturn {\n  chatInput: `Call ID: ${callId}\nCall Status: ${callStatus}\nCall Outcome: ${callOutcome}\nAssistant: ${assistantName}\nDate now: ${dateNow.toISOString()}\n\n=== CONVERSATION TRANSCRIPT ===\n${transcript}\n\n=== EXTRACTED DATA ===\nFirst Name: ${leadData.first_name || 'Not provided'}\nLast Name: ${leadData.last_name || 'Not provided'}\nEmail: ${leadData.email || 'Not provided'}\nPhone: ${leadData.phone || 'Not provided'}\nCompany: ${leadData.company || 'Not provided'}\nIntent: ${toolCall.intent || 'unknown'}\nDisposition: ${toolCall.disposition || 'unknown'}\nAction Type: ${action.type || 'none'}\nStart Time: ${action.startTime}\nDuration: ${action.duration_minutes} minutes\nAssigned To: ${action.assigned_to}\nNotes: ${toolCall.notes || callOutcome}`\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -928,
+        -688
+      ],
+      "id": "a40f9f7d-e60a-4501-9ecb-4af1d6daa70e",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "fe929958-debc-43c1-ad14-9ddd95917657",
+        "responseMode": "streaming",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1152,
+        -688
+      ],
+      "id": "eb945734-6df2-4a28-a28e-b7bbf0121165",
+      "name": "Log Disposition",
+      "webhookId": "fe929958-debc-43c1-ad14-9ddd95917657"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -640,
+        -464
+      ],
+      "id": "4a2c484e-4a4f-43b3-b25e-caea08e2b1fb",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7wRe2whxERwY0gjz",
+          "name": "OpenAi account 2 | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "email": "={{ $json.Email }}",
+        "phone": "={{ $json.Phone }}",
+        "additionalFields": {
+          "firstName": "={{ $json[\"First Name\"] }}",
+          "lastName": "={{ $json[\"Last Name\"] }}",
+          "notes": "={{ $json.Notes }}",
+          "tags": "Warm Lead"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.highLevel",
+      "typeVersion": 2,
+      "position": [
+        320,
+        -784
+      ],
+      "id": "46c531a2-40c9-497c-befc-aff2e3289067",
+      "name": "Create or update a contact",
+      "credentials": {
+        "highLevelOAuth2Api": {
+          "id": "Ee7nH0EyATI3qbQi",
+          "name": "HighLevel account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const results = [];\n\nfor (const item of $input.all()) {\n  const parsedData = JSON.parse(item.json.output);\n  \n  results.push({\n    json: parsedData\n  });\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        -688
+      ],
+      "id": "3da0aa75-33b2-4cc8-8adc-1dcbab49d447",
+      "name": "Fix Structure"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "\nYou are an autonomous SDR AI agent whose primary responsibility is to analyze conversation input and convert it into structured CRM-ready JSON.\n\nYour highest priority is to **strictly follow the input as the single source of truth**. You must **never invent, hallucinate, or guess data** that is not supported by the input.\n\nFailure to correctly interpret the input is unacceptable and considered a critical error.\n\n---\n\n## Absolute Output Requirement\n\n* Output **valid JSON only**.\n* Do **not** output text, explanations, markdown, or comments outside the JSON object.\n* **All fields must exist.** If data is missing, return empty string `\"\"`.\n\n---\n\n## Required Output Schema\n\n```json\n{\n  \"lead\": {\n    \"first_name\": \"\",\n    \"last_name\": \"\",\n    \"email\": \"\",\n    \"phone\": \"\",\n    \"company\": \"\"\n  },\n  \"intent\": \"\",\n  \"action\": {\n    \"type\": \"\",\n    \"startTime\": \"\",\n    \"duration_minutes\": 0,\n    \"assigned_to\": \"\"\n  },\n  \"disposition\": \"\",\n  \"notes\": \"\"\n}\n```\n\n---\n\n## Input Interpretation Rules\n\n1. **Conversation transcript** is the most reliable source.\n2. **Date now** must be used to validate or reconstruct any timestamps.\n3. **Extracted data** is supportive only and must be rejected if logically inconsistent with transcript or Date now.\n4. **Call metadata** is last priority.\n\nYou are forbidden from guessing or creating values that conflict with any part of the input.\n\n---\n\n## Lead Extraction Rules\n\n* Extract **first name, last name, email, phone, company**.\n* Spoken email text must be normalized to proper format (`j a m e s b o n d at g mail dot com` → `jamesbond@gmail.com`).\n* Spoken phone numbers must be merged into continuous digits.\n* If company is not mentioned, return empty string `\"\"`.\n\n---\n\n## Intent Detection Rules\n\n* `schedule_meeting` → lead confirms exact meeting time.\n* `follow_up` → lead shows interest but no confirmed schedule.\n* `not_interested` → lead rejects opportunity.\n* `information_request` → lead asks questions only.\n* `wrong_contact` → lead states they are not the correct contact.\n\n---\n\n## Disposition Mapping\n\n* `booked` → meeting confirmed.\n* `interested` → strong interest but unscheduled.\n* `follow_up` → uncertain or delayed.\n* `not_interested` → rejected.\n\n---\n\n## Action Object Rules\n\n* If intent = `schedule_meeting`:\n\n  * `type` = `create_calendar_event`\n  * `duration_minutes` = extracted duration or default `30`\n  * `assigned_to` = extracted value or default `SDR_1`\n* If intent ≠ `schedule_meeting`:\n\n  * `type` = `\"\"`\n  * `startTime` = `\"\"`\n  * `duration_minutes` = `0`\n  * `assigned_to` = `\"\"`\n\n---\n\n## Mandatory Time Validation & Reconstruction\n\n* Always validate meeting timestamps using **Date now** and **transcript context**.\n* Checks:\n\n  1. Year must match or logically follow Date now.\n  2. Weekday in transcript must match calendar date.\n  3. Timezone conversion must match transcript agreement.\n* If any check fails, **rebuild the timestamp from transcript and Date now**.\n\n---\n\n## Time Reconstruction Procedure\n\n1. Identify meeting weekday and time from transcript.\n2. Determine next occurrence of that weekday relative to Date now.\n3. Use lead timezone if explicitly mentioned, else agent timezone.\n4. Convert to **UTC format**.\n\n---\n\n## Required Timestamp Format\n\n`YYYY-MM-DDTHH:mm:ss.000Z`\n\n**Examples of proper UTC `startTime` values:**\n\n```json\n[\n\"2026-02-19T01:00:00.000Z\",\n\"2026-03-03T15:00:00.000Z\",\n\"2026-03-05T09:30:00.000Z\",\n\"2026-03-07T22:00:00.000Z\",\n\"2026-03-10T08:15:00.000Z\",\n\"2026-03-12T16:45:00.000Z\",\n\"2026-03-15T14:00:00.000Z\",\n\"2026-03-18T11:00:00.000Z\",\n\"2026-03-20T19:30:00.000Z\",\n\"2026-03-22T07:00:00.000Z\",\n\"2026-03-25T13:15:00.000Z\",\n\"2026-03-27T10:00:00.000Z\",\n\"2026-03-30T21:00:00.000Z\",\n\"2026-04-01T06:30:00.000Z\",\n\"2026-04-03T15:45:00.000Z\",\n\"2026-04-06T12:00:00.000Z\",\n\"2026-04-08T20:15:00.000Z\",\n\"2026-04-10T09:00:00.000Z\",\n\"2026-04-12T23:30:00.000Z\",\n\"2026-04-15T05:00:00.000Z\"\n]\n```\n\n---\n\n## Timezone Conversion Rules\n\n* Philippines = UTC+8\n* Eastern = UTC-5 or UTC-4 with daylight saving\n* Conversion must be precise.\n\n---\n\n## Notes Field Rules\n\n* Include factual summary:\n\n  * Meeting time\n  * Location preferences\n  * Buying/selling goal\n  * Any special requirements\n* Notes must be concise and factual.\n\n---\n\n## Internal Validation Checklist\n\nBefore outputting:\n\n* JSON is valid.\n* All required fields exist.\n* Timestamp matches transcript and converted to UTC.\n* Timestamp is after Date now.\n* Intent matches conversation.\n* Disposition matches intent.\n* No hallucinations.\n\n---\n\n## Final Execution Command\n\n* Output only the JSON object.\n* Obey transcript and Date now above all else.\n* Reject extracted data if inconsistent.\n* Any failure is a **critical error**.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -704,
+        -688
+      ],
+      "id": "5ff94a29-783a-4be1-a812-674fe1ede47c",
+      "name": "Extract Data",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "15dd0c40-94c7-41c3-a1ef-ca6476b6fcdd",
+              "leftValue": "={{ $json.intent }}",
+              "rightValue": "not_interested",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -128,
+        -688
+      ],
+      "id": "1ae6ff1a-3707-4fbf-affc-8f7ef7b4668c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1IVuhr4kMinIIIKK-m3YHQdRjs5_9QQRlt6EZ78fUS8o",
+          "mode": "list",
+          "cachedResultName": "Outbound Call Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IVuhr4kMinIIIKK-m3YHQdRjs5_9QQRlt6EZ78fUS8o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IVuhr4kMinIIIKK-m3YHQdRjs5_9QQRlt6EZ78fUS8o/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "First Name": "={{ $json.lead.first_name }}",
+            "Last Name": "={{ $json.lead.last_name }}",
+            "Email": "={{ $json.lead.email }}",
+            "Phone": "={{ $json.lead.phone }}",
+            "Company": "={{ $json.lead.company }}",
+            "Intent": "={{ $json.intent }}",
+            "Action": "={{ $json.action }}",
+            "Disposition": "={{ $json.disposition }}",
+            "Notes": "={{ $json.notes }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Intent",
+              "displayName": "Intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Disposition",
+              "displayName": "Disposition",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        96,
+        -592
+      ],
+      "id": "88bacb15-4e15-46ea-b359-ec521eff08ae",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1IVuhr4kMinIIIKK-m3YHQdRjs5_9QQRlt6EZ78fUS8o",
+          "mode": "list",
+          "cachedResultName": "Outbound Call Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IVuhr4kMinIIIKK-m3YHQdRjs5_9QQRlt6EZ78fUS8o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IVuhr4kMinIIIKK-m3YHQdRjs5_9QQRlt6EZ78fUS8o/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "First Name": "={{ $json.lead.first_name }}",
+            "Last Name": "={{ $json.lead.last_name }}",
+            "Email": "={{ $json.lead.email }}",
+            "Phone": "={{ $json.lead.phone }}",
+            "Company": "={{ $json.lead.company }}",
+            "Intent": "={{ $json.intent }}",
+            "Action": "={{ $json.action }}",
+            "Disposition": "={{ $json.disposition }}",
+            "Notes": "={{ $json.notes }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Intent",
+              "displayName": "Intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Disposition",
+              "displayName": "Disposition",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        96,
+        -784
+      ],
+      "id": "eedbb972-4898-42ab-94f8-8e3e3328af5f",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a263bc78-aef8-4db2-8163-a2050bb23ff1",
+              "leftValue": "={{ $('Append row in sheet1').item.json.Intent }}",
+              "rightValue": "schedule_meeting",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        544,
+        -784
+      ],
+      "id": "118d3c3c-5cff-4ba5-a75a-cf242db19d72",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendarId": "JoDAM6j2zZ19qtLoabs4",
+        "locationId": "={{ $json.locationId }}",
+        "contactId": "={{ $json.id }}",
+        "startTime": "={{ $('Fix Structure').item.json.action.startTime }}",
+        "additionalFields": {
+          "title": "={{ $('Append row in sheet1').item.json.Notes }}"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.highLevel",
+      "typeVersion": 2,
+      "position": [
+        768,
+        -784
+      ],
+      "id": "d29bfb4e-434e-4c9e-87b0-33a89844d869",
+      "name": "Book appointment in a calendar",
+      "credentials": {
+        "highLevelOAuth2Api": {
+          "id": "BmnceuG6AQByCoSD",
+          "name": "HighLevel account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# LEADS QUALIFICATIONS + AUTOMATED CRM ",
+        "height": 624,
+        "width": 2352,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1328,
+        -944
+      ],
+      "typeVersion": 1,
+      "id": "9f905e8a-a312-41ca-bf6b-1ec8a89dc77f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1168,
+        -1472
+      ],
+      "id": "54c853d1-c90a-44ec-b810-5b086b0f2132",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1jNjQrJI2YRRT5f16tlNnVlG7k0yX-8ZDEBsprOk3gcM",
+          "mode": "list",
+          "cachedResultName": "LEADS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jNjQrJI2YRRT5f16tlNnVlG7k0yX-8ZDEBsprOk3gcM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jNjQrJI2YRRT5f16tlNnVlG7k0yX-8ZDEBsprOk3gcM/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status",
+              "lookupValue": "New"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -944,
+        -1472
+      ],
+      "id": "72567a46-9733-420e-b724-170c17142de2",
+      "name": "Extract Leads",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.vapi.ai/call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 8f844687-36c3-4716-b47d-9dd0a17bd07a"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"assistantId\": \"bb02e9e9-1ca1-4f94-a49d-f9a5524cf6f0\",\n  \"phoneNumberId\": \"0e2c77d4-d1e5-42d5-8486-59ad6ebee753\",\n  \"customer\": {\n    \"number\": \"+{{ $json.Phone }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -496,
+        -1552
+      ],
+      "id": "b601ec0f-137b-42be-a934-5240f7045de4",
+      "name": "HTTP Request",
+      "alwaysOutputData": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1jNjQrJI2YRRT5f16tlNnVlG7k0yX-8ZDEBsprOk3gcM",
+          "mode": "list",
+          "cachedResultName": "LEADS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jNjQrJI2YRRT5f16tlNnVlG7k0yX-8ZDEBsprOk3gcM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jNjQrJI2YRRT5f16tlNnVlG7k0yX-8ZDEBsprOk3gcM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "Called",
+            "Phone": "={{ $('Extract Leads').item.json.Phone }}"
+          },
+          "matchingColumns": [
+            "Phone"
+          ],
+          "schema": [
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -272,
+        -1472
+      ],
+      "id": "70af7a3d-fd81-43e0-8bd1-08c87732bb54",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# For better data processing, combine the columns and use one spreadsheet only. For the Status since the number isn't saved automatically on the other spreadsheet\n",
+        "height": 288,
+        "width": 864
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        272,
+        -1472
+      ],
+      "typeVersion": 1,
+      "id": "a6de3be7-0106-49fb-8a66-d2b7a8623662",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -720,
+        -1472
+      ],
+      "id": "02fc8d66-6aa0-4b9f-a6a4-5327593cd5fd",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Done",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        -1744
+      ],
+      "id": "0f49ec07-6850-4d57-9446-2a108cc841e6"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1jNjQrJI2YRRT5f16tlNnVlG7k0yX-8ZDEBsprOk3gcM",
+          "mode": "list",
+          "cachedResultName": "LEADS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jNjQrJI2YRRT5f16tlNnVlG7k0yX-8ZDEBsprOk3gcM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jNjQrJI2YRRT5f16tlNnVlG7k0yX-8ZDEBsprOk3gcM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "Can't be called",
+            "Phone": "={{ $('Extract Leads').item.json.Phone }}"
+          },
+          "matchingColumns": [
+            "Phone"
+          ],
+          "schema": [
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -272,
+        -1280
+      ],
+      "id": "6264206e-00cb-47fb-8a81-98d354e3cb10",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wa3G2Z5nJqoCy4I7",
+          "name": "Google Sheets account | selwyn@selwynbuilds.com"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Extract Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Disposition": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Extract Data",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create or update a contact": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fix Structure": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Data": {
+      "main": [
+        [
+          {
+            "node": "Fix Structure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Create or update a contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Book appointment in a calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Leads": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Done",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Done": {
+      "main": [
+        []
+      ]
+    },
+    "Update row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1b5795ef3a4c9f21772ed779f224a8776fb0b15a1fe23b9b48a11d4e439596f6"
+  }
+}
